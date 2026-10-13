@@ -4,12 +4,12 @@ Plataforma de investigación orientada al procesamiento en tiempo real de señal
 
 ---
 
-## 🚀 Descripción del Proyecto
+## Descripción del Proyecto
 Este repositorio forma parte del desarrollo de investigación tecnológica enfocado en interfaces cerebro-computadora (BCI) y entornos virtuales adaptativos. El sistema procesa y analiza telemetría EEG para evaluar la carga cognitiva y los estados atencionales, integrando herramientas de procesamiento de datos en Python y entornos interactivos.
 
 ---
 
-## 📂 Estructura del Repositorio
+## Estructura del Repositorio
 
 ```text
 Project/
@@ -26,7 +26,7 @@ Project/
 
 ---
 
-## 🛠️ Tecnologías y Herramientas Utilizadas
+## Tecnologías y Herramientas Utilizadas
 * **Lenguaje:** Python
 * **Procesamiento de Datos:** Análisis de señales EEG, filtrado y modelado de conjuntos de datos experimentales.
 * **Entornos y Simulación:** Integración orientada a entornos virtuales y arquitecturas de retroalimentación en tiempo real.
@@ -34,7 +34,7 @@ Project/
 
 ---
 
-## ⚙️ Configuración e Instalación
+## Configuración e Instalación
 
 1. Clona el repositorio:
    ```bash
@@ -49,7 +49,7 @@ Project/
 
 ---
 
-## 👤 Autor
+## Autor
 **Ricardo Monrreal Pool**  
 *Ingeniería en Datos e Inteligencia Organizacional — Universidad del Caribe*  
 *Participante del MIRAI Innovation Training Program (Japón)*
