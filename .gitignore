@@ -1,3 +1,10 @@
+# === Carpetas excluidas del repositorio ===
+
+# Carpeta AURA
 /AURA/
+
+# Carpeta Benkyokai
 /Benkyokai-oct/
-/Tests/EEG Dataset 9-10/raw_data/
+
+# Carpeta raw_data (en cualquier subdirectorio de Tests)
+**/raw_data/
