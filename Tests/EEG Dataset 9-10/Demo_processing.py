@@ -1,18 +1,13 @@
 """
-Visualizador de señales EEG (Stroop) - versión mejorada
-=======================================================
+Visualizador de señales EEG (Stroop) - versión mejorada con Trim de 3s
+=====================================================================
 Mejoras:
-  1. Autoescalado robusto por canal (ignora picos/artefactos para que la señal se vea bien).
-  2. Slider de ventanas temporales (epochs) + duración de ventana configurable.
-  3. Ventana de Densidad Espectral de Potencia (PSD, método de Welch) con bandas
+  1. Trim automático de los primeros 3 segundos para eliminar transitorios de encendido y ruido inicial.
+  2. Autoescalado robusto por canal (ignora picos/artefactos para que la señal se vea bien).
+  3. Slider de ventanas temporales (epochs) + duración de ventana configurable.
+  4. Ventana de Densidad Espectral de Potencia (PSD, método de Welch) con bandas
      Delta/Theta/Alpha/Beta e índices de carga cognitiva.
-  4. Filtros opcionales (pasa-banda 1-40 Hz y notch 50/60 Hz) y selección de canales.
-  5. Biomarcadores del scope "Dopamine Scrolling": theta tónico (Fz), ráfagas de theta fásico
-     (FM-theta, control inhibitorio), alfa tónico, asimetría alfa frontal (FAA = ln α F4 - ln α F3),
-     su evolución temporal y su comparación entre niveles.
-  6. Vista de la señal filtrada por banda (Delta/Theta/Alpha/Beta) con las ráfagas theta marcadas.
-
-Dependencias: numpy, pandas, matplotlib, scipy  
+  5. Biomarcadores del scope (theta tónico/fásico, alfa tónico, FAA) y comparaciones entre niveles.
 """
 import os
 import re
@@ -29,7 +24,7 @@ from tkinter import ttk, filedialog, messagebox
 # Configuración
 # ----------------------------------------------------------------------------
 DIRECTORY_PATH = "raw_data/raw_data/Stroop_Data"
-DEFAULT_FS = 250.0  # Hz (OpenBCI Cyton). Modifícalo en la interfaz si tu equipo es otro.
+DEFAULT_FS = 250.0  # Hz (OpenBCI Cyton)
 CHANNEL_NAMES = ['Fp1', 'Fp2', 'F7', 'F3', 'FZ', 'F4', 'F8', 'C2']
 FRONTAL = ['Fp1', 'Fp2', 'F7', 'F3', 'FZ', 'F4', 'F8']
 BANDS = {
@@ -38,7 +33,7 @@ BANDS = {
     "Alpha": (8, 13),
     "Beta": (13, 30),
 }
-BAND_EDGES = [0, 4, 8, 13, 30]  # marcas del eje de frecuencia
+BAND_EDGES = [0, 4, 8, 13, 30]
 BAND_COLORS = {"Delta": "#9e9e9e", "Theta": "#1f77b4", "Alpha": "#2ca02c",
                "Beta": "#ff7f0e"}
 WINDOW_OPTIONS = ["1 s", "2 s", "5 s", "10 s", "20 s", "30 s", "60 s", "Todo"]
@@ -46,7 +41,7 @@ LEVEL_PREFIX = {"Natural": 'n', "Low level": 'l', "Mid level": 'm', "High level"
 
 
 # ----------------------------------------------------------------------------
-# Procesamiento (independiente de la interfaz)
+# Procesamiento y Pipeline
 # ----------------------------------------------------------------------------
 def numeric_sort_key(filename):
     m = re.search(r'(\d+)\.txt$', filename)
@@ -61,8 +56,17 @@ def load_eeg(path):
     return df.to_numpy(dtype=float)
 
 
-def preprocess(x, fs, bandpass=True, notch=None):
-    """Quita offset (DC) y aplica filtros opcionales de fase cero."""
+def preprocess(x, fs, bandpass=True, notch=None, trim_seconds=3.0):
+    """Pipeline: 
+       1. Recorta los primeros N segundos para eliminar transitorios de encendido.
+       2. Quita offset (DC) y aplica filtros opcionales de fase cero.
+    """
+    # 1. Trim de los primeros 3 segundos
+    trim_samples = int(trim_seconds * fs)
+    if len(x) > trim_samples:
+        x = x[trim_samples:]
+        
+    # 2. Centrado y filtros
     x = x - x.mean(axis=0)
     nyq = fs / 2
     if bandpass and len(x) > 100:
@@ -75,7 +79,7 @@ def preprocess(x, fs, bandpass=True, notch=None):
 
 
 def compute_psd(x, fs):
-    """PSD de Welch por canal. x: (n, ch). Devuelve f, P (ch, nf) en unidades^2/Hz."""
+    """PSD de Welch por canal. Devuelve f, P (ch, nf) en unidades^2/Hz."""
     nperseg = int(min(len(x), 2 * fs))
     f, P = signal.welch(x, fs=fs, nperseg=nperseg, noverlap=nperseg // 2,
                         window="hann", axis=0, detrend="constant")
@@ -93,7 +97,6 @@ def band_powers(f, P):
 
 
 def cognitive_indices(bp):
-    """Índices clásicos de carga cognitiva a partir de potencias de banda (arrays por canal)."""
     eps = 1e-12
     th, al, be = bp["Theta"], bp["Alpha"], bp["Beta"]
     return {
@@ -104,12 +107,12 @@ def cognitive_indices(bp):
 
 
 # ----------------------------------------------------------------------------
-# Biomarcadores del scope (theta tónico/fásico, alfa tónico, FAA)
+# Biomarcadores del scope
 # ----------------------------------------------------------------------------
-THETA_CH = 'FZ'                  # theta frontal medial (FM-theta)
-ALPHA_PREF = ['O1', 'O2', 'Pz']  # alfa parieto-occipital según el scope
-ALPHA_FALLBACK = ['C2']          # proxy si el montaje no tiene O1/O2/Pz
-FAA_L, FAA_R = 'F3', 'F4'        # asimetría alfa frontal
+THETA_CH = 'FZ'                  
+ALPHA_PREF = ['O1', 'O2', 'Pz']  
+ALPHA_FALLBACK = ['C2']          
+FAA_L, FAA_R = 'F3', 'F4'        
 
 
 def ch_index(name):
@@ -128,7 +131,6 @@ def alpha_channels():
 
 
 def band_filter(x, fs, lo, hi):
-    """Pasa-banda (o pasa-bajas si lo<=0) de fase cero. x: (n,) o (n, ch)."""
     hi = min(hi, fs / 2 * 0.95)
     if lo <= 0:
         sos = signal.butter(4, hi, btype="low", fs=fs, output="sos")
@@ -138,13 +140,6 @@ def band_filter(x, fs, lo, hi):
 
 
 def detect_theta_bursts(fz, fs, ratio=2.5, min_dur=0.15, max_dur=3.0, merge_gap=0.1):
-    """Detecta ráfagas fásicas de theta (FM-theta) en Fz.
-
-    Ráfaga = envolvente de theta (4-8 Hz) > ratio x nivel base local (mediana móvil de 10 s),
-    con duración entre min_dur y max_dur. Así el aumento tónico del nivel base NO cuenta
-    como ráfaga (coherente con el scope: fatiga = base alta y ausencia de ráfagas).
-    Devuelve (theta_filtrada, envolvente, base_local, [(t_ini, t_fin, amp_pico), ...]).
-    """
     fz = np.asarray(fz, dtype=float)
     if len(fz) < 100:
         z = np.zeros(len(fz))
@@ -171,7 +166,6 @@ def detect_theta_bursts(fz, fs, ratio=2.5, min_dur=0.15, max_dur=3.0, merge_gap=
 
 
 def _metrics_from_bp(bp):
-    """theta Fz, alfa (canales alfa), FAA a partir de potencias de banda por canal."""
     eps = 1e-12
     th_i = ch_index(THETA_CH)
     a_idx, _ = alpha_channels()
@@ -184,7 +178,6 @@ def _metrics_from_bp(bp):
 
 
 def biomarker_summary(x, fs, bursts, dur):
-    """Resumen de biomarcadores de un segmento. bursts: lista de (ini, fin, amp)."""
     f, P = compute_psd(x, fs)
     bp = band_powers(f, P)
     tot = sum(bp.values())
@@ -203,7 +196,6 @@ def biomarker_summary(x, fs, bursts, dur):
 
 
 def window_biomarkers(x, fs, bursts, win_s, step_s):
-    """Biomarcadores en ventanas deslizantes. bursts con tiempos relativos al inicio de x."""
     n, win, step = len(x), int(win_s * fs), max(1, int(step_s * fs))
     starts = np.arange(0, n - win + 1, step)
     bstart = np.array([b[0] for b in bursts]) if bursts else np.array([])
@@ -237,7 +229,7 @@ def robust_limits(y, robust=True, pad=0.12):
 
 
 # ----------------------------------------------------------------------------
-# Ventana PSD
+# Ventana PSD y Biomarcadores
 # ----------------------------------------------------------------------------
 class PSDWindow(tk.Toplevel):
     def __init__(self, app):
@@ -283,7 +275,7 @@ class PSDWindow(tk.Toplevel):
         self.canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
         NavigationToolbar2Tk(self.canvas, tab1)
 
-        # Pestaña biomarcadores del scope
+        # Pestaña biomarcadores
         self.fig3 = Figure(figsize=(11, 7.5))
         self.canvas3 = FigureCanvasTkAgg(self.fig3, master=tabB)
         self.canvas3.get_tk_widget().pack(fill=tk.BOTH, expand=True)
@@ -300,7 +292,7 @@ class PSDWindow(tk.Toplevel):
         self.canvas2 = FigureCanvasTkAgg(self.fig2, master=tab2)
         self.canvas2.get_tk_widget().pack(fill=tk.BOTH, expand=True)
 
-        # Pestaña comparación de biomarcadores por nivel
+        # Pestaña 3
         bar3 = ttk.Frame(tab3, padding=6)
         bar3.pack(fill=tk.X)
         ttk.Button(bar3, text="Calcular biomarcadores (todos los archivos)",
@@ -313,7 +305,6 @@ class PSDWindow(tk.Toplevel):
 
         self.refresh()
 
-    # -- datos del segmento --
     def _segment(self):
         a = self.app
         if a.data is None:
@@ -334,11 +325,9 @@ class PSDWindow(tk.Toplevel):
         seg, names = res
         fs = self.app.fs
         if len(seg) < int(fs):
-            messagebox.showwarning("Segmento corto",
-                                   "Se necesita al menos 1 s de datos para estimar la PSD.", parent=self)
             return
         f, P = compute_psd(seg, fs)
-        m = (f > 0) & (f <= 30)  # sin el bin de 0 Hz (DC)
+        m = (f > 0) & (f <= 30)
         log = self.scale_var.get().startswith("Log")
 
         ax = self.ax_psd
@@ -360,11 +349,10 @@ class PSDWindow(tk.Toplevel):
         ax.set_xlabel("Frecuencia (Hz)")
         ax.set_ylabel("PSD (dB re 1 µV²/Hz)" if log else "PSD (µV²/Hz)")
         ax.set_title(f"PSD de Welch - {self.app.current_label()} "
-                     f"({len(seg) / fs:.1f} s, ventanas de 2 s, 50% solape)")
+                     f"({len(seg) / fs:.1f} s)")
         ax.grid(True, ls="--", alpha=0.4)
         ax.legend(ncol=min(len(names) + 1, 9), fontsize=8, loc="lower left")
 
-        # Potencia relativa por banda (promedio de canales)
         bp = band_powers(f, P)
         tot = sum(v for v in bp.values())
         rel = {k: float(np.mean(v / tot)) * 100 for k, v in bp.items()}
@@ -378,7 +366,6 @@ class PSDWindow(tk.Toplevel):
         ax.set_ylim(0, max(rel.values()) * 1.2)
         ax.grid(True, axis="y", ls="--", alpha=0.4)
 
-        # Índices
         idx = cognitive_indices(bp)
         ax = self.ax_txt
         ax.clear()
@@ -390,11 +377,7 @@ class PSDWindow(tk.Toplevel):
         if fr:
             lines += ["", f"θ frontal (µV²):  {np.mean(bp['Theta'][fr]):.2f}",
                       f"α (µV²):  {np.mean(bp['Alpha']):.2f}"]
-        lines += ["", "↑ Theta/Alpha, ↑ Beta/Alpha y ↑ θ frontal",
-                  "suelen asociarse a mayor carga/esfuerzo",
-                  "cognitivo; ↓ α indica mayor activación."]
         ax.text(0.0, 1.0, "\n".join(lines), va="top", fontsize=10, family="monospace")
-
         self.fig.tight_layout()
         self.canvas.draw_idle()
 
@@ -413,8 +396,7 @@ class PSDWindow(tk.Toplevel):
         fig = self.fig3
         fig.clear()
         if dur < 4:
-            fig.text(0.5, 0.5, "Se necesitan al menos 4 s de segmento.\nAumenta la ventana o usa 'Registro completo'.",
-                     ha="center", va="center", fontsize=12)
+            fig.text(0.5, 0.5, "Se necesitan al menos 4 s de segmento.", ha="center", va="center", fontsize=12)
             self.canvas3.draw_idle()
             return
         ratio = a.burst_ratio
@@ -424,13 +406,12 @@ class PSDWindow(tk.Toplevel):
         a_idx, a_label = alpha_channels()
 
         gs = fig.add_gridspec(3, 2, height_ratios=[1.1, 1, 1], width_ratios=[1.5, 1])
-        # (1) Theta Fz con ráfagas
         ax0 = fig.add_subplot(gs[0, :])
         t = np.arange(i0, i1) / fs
         ax0.plot(t, a.theta_fz[i0:i1], color=BAND_COLORS["Theta"], lw=0.8, label="Theta Fz (4-8 Hz)")
         ax0.plot(t, a.env_fz[i0:i1], color="k", lw=1.1, label="Envolvente")
         ax0.plot(t, ratio * a.base_fz[i0:i1], "--", color="gray", lw=1.1,
-                 label=f"Umbral ({ratio:g}× base local)")
+                 label=f"Umbral ({ratio:g}× base)")
         for k, b in enumerate(bursts):
             ax0.axvspan(b[0], b[1], color="#d62728", alpha=0.28,
                         label="Ráfaga fásica (FM-theta)" if k == 0 else None)
@@ -439,11 +420,10 @@ class PSDWindow(tk.Toplevel):
         ax0.set_ylim(lo, hi)
         ax0.set_xlabel("Tiempo (s)")
         ax0.set_ylabel("µV")
-        ax0.set_title(f"Theta frontal medial (Fz) - ráfagas fásicas detectadas: {len(bursts)}", fontsize=10)
+        ax0.set_title(f"Theta Fz - Ráfagas detectadas: {len(bursts)}", fontsize=10)
         ax0.grid(True, ls="--", alpha=0.4)
         ax0.legend(ncol=4, fontsize=8, loc="upper right")
 
-        # (2) Evolución temporal
         win_s = float(np.clip(dur / 6, 4, 10))
         step_s = win_s / 2
         enough = dur >= 8
@@ -453,7 +433,7 @@ class PSDWindow(tk.Toplevel):
         ax4 = fig.add_subplot(gs[2, 1])
         for ax in (ax3, ax4):
             ax.axis("off")
-        tr = {}
+        
         if enough:
             wb = window_biomarkers(seg, fs, rel, win_s, step_s)
             unit, ulabel = (60.0, "min") if dur >= 120 else (1.0, "s")
@@ -464,57 +444,32 @@ class PSDWindow(tk.Toplevel):
                 base = np.nanmean(v[:nb_])
                 return v / base if np.isfinite(base) and base > 0 else v * np.nan
             th_n, al_n = norm(wb["theta"]), norm(wb["alpha"])
-            ax1.plot(tc, th_n, color=BAND_COLORS["Theta"], lw=2.2, label="Theta tónico (Fz)")
-            ax1.plot(tc, al_n, color=BAND_COLORS["Alpha"], lw=2.2, label=f"Alfa tónico ({a_label})")
+            ax1.plot(tc, th_n, color=BAND_COLORS["Theta"], lw=2.2, label="Theta tónico")
+            ax1.plot(tc, al_n, color=BAND_COLORS["Alpha"], lw=2.2, label=f"Alfa tónico")
             ax1.axhline(1.0, color="gray", ls=":", lw=1)
-            ax1.axvspan(tc[0], tc[nb_ - 1], color="gray", alpha=0.12, label="Línea base")
-            ax1.set_ylabel("Relativo a línea base")
-            ax1.set_title(f"Evolución de biomarcadores tónicos (ventanas de {win_s:.0f} s)", fontsize=10)
+            ax1.set_ylabel("Relativo a base")
             ax1.legend(fontsize=8, loc="best")
             ax1.grid(True, ls="--", alpha=0.4)
             ax1.tick_params(labelbottom=False)
-            # ráfagas/min y FAA en el mismo eje inferior
-            ax2.bar(tc, wb["rate"], width=step_s / unit * 0.9, color="#d62728", alpha=0.45,
-                    label="Ráfagas theta/min")
+
+            ax2.bar(tc, wb["rate"], width=step_s / unit * 0.9, color="#d62728", alpha=0.45)
             ax2.set_ylabel("Ráfagas/min", color="#d62728")
             ax2b = ax2.twinx()
-            ax2b.plot(tc, wb["faa"], color="#1f77b4", lw=2, marker="o", ms=3, label="FAA")
+            ax2b.plot(tc, wb["faa"], color="#1f77b4", lw=2, marker="o", ms=3)
             ax2b.axhline(0, color="gray", ls=":", lw=1)
-            ax2b.set_ylabel("FAA = ln α(F4) − ln α(F3)", color="#1f77b4")
+            ax2b.set_ylabel("FAA", color="#1f77b4")
             ax2.set_xlabel(f"Tiempo ({ulabel})")
-            ax2.set_title("Theta fásico (ráfagas) y asimetría alfa frontal (FAA > 0: α izq. < α der. = 'enganche')",
-                          fontsize=9)
             ax2.grid(True, ls="--", alpha=0.4)
-            tr = {"theta": slope(t_min, th_n) * 100, "alpha": slope(t_min, al_n) * 100,
-                  "rate": slope(t_min, wb["rate"])}
-        else:
-            for ax in (ax1, ax2):
-                ax.axis("off")
-            ax1.text(0.5, 0.5, "Evolución temporal: se requieren ≥ 8 s de segmento", ha="center")
 
-        # (3) Resumen
         s = biomarker_summary(seg, fs, rel, dur)
         def fmt(v, f="{:.2f}"):
             return f.format(v) if np.isfinite(v) else "n/d"
-        L = [f"Biomarcadores del segmento ({dur:.1f} s)", "",
-             f"θ tónico Fz:      {fmt(s['theta_fz'])} µV²  ({fmt(s['theta_fz_rel'], '{:.1f}')}% de 0-30 Hz)",
+        L = [f"Biomarcadores ({dur:.1f} s post-trim)", "",
+             f"θ tónico Fz:      {fmt(s['theta_fz'])} µV²",
              f"α tónico {a_label}: {fmt(s['alpha'])} µV²",
              f"FAA (F4 vs F3):   {fmt(s['faa'])}",
-             f"Ráfagas θ (Fz):   {s['n_bursts']}  ({fmt(s['burst_rate'], '{:.1f}')}/min)",
-             f"  duración media: {fmt(s['burst_dur'])} s   amp. media: {fmt(s['burst_amp'])} µV", ""]
-        if tr:
-            chk = lambda ok: "✓" if ok else "✗"
-            L += ["Tendencia dentro del segmento:",
-                  f" {chk(tr['theta'] > 0)} θ tónico ↑  ({tr['theta']:+.1f} %/min)",
-                  f" {chk(tr['alpha'] > 0)} α tónico ↑  ({tr['alpha']:+.1f} %/min)",
-                  f" {chk(tr['rate'] < 0)} ráfagas θ ↓  ({tr['rate']:+.2f} ráf/min por min)"]
-            ok = sum([tr['theta'] > 0, tr['alpha'] > 0, tr['rate'] < 0])
-            L += ["", f"Coincidencias con el patrón de fatiga",
-                  f"y colapso inhibitorio del scope: {ok}/3", "(exploratorio; contrastar entre niveles)"]
-        if "proxy" in a_label:
-            L += ["", "Nota: el montaje no tiene O1/O2/Pz;", "el alfa se mide en C2 como proxy."]
-        ax3.text(0.0, 1.0, "\n".join(L), va="top", fontsize=8.5, family="monospace",
-                 transform=ax3.transAxes)
+             f"Ráfagas θ (Fz):   {s['n_bursts']}  ({fmt(s['burst_rate'], '{:.1f}')}/min)"]
+        ax3.text(0.0, 1.0, "\n".join(L), va="top", fontsize=8.5, family="monospace", transform=ax3.transAxes)
         fig.tight_layout()
         self.canvas3.draw_idle()
 
@@ -563,18 +518,16 @@ class PSDWindow(tk.Toplevel):
             ax.grid(True, axis="y", ls="--", alpha=0.4)
             if k == "faa":
                 ax.axhline(0, color="gray", lw=1)
-        n_files = sum(len(r["theta_fz"]) for r in res.values())
         fig.tight_layout()
         self.canvas4.draw_idle()
-        self.bm_status.config(text=f"  Listo ({n_files} archivos). Barras = media ± desv. est.; puntos = archivos.")
+        self.bm_status.config(text="  Listo.")
 
     def compare_levels(self):
         a = self.app
         idx = a.visible_idx()
         self.cmp_status.config(text="  Calculando...")
         self.update_idletasks()
-        results = {}  # nivel -> {indice: [valores por archivo]}
-        rel_bands = {}
+        results, rel_bands = {}, {}
         for level, files in a.levels_dict.items():
             vals, rb = {}, {b: [] for b in BANDS}
             for fn in files:
@@ -613,13 +566,12 @@ class PSDWindow(tk.Toplevel):
         ax.set_xticks(x0 + 0.4 - w / 2)
         ax.set_xticklabels(levels)
         ax.set_ylabel("Potencia relativa (%)")
-        ax.set_title("Potencia relativa por banda y nivel (promedio entre archivos)")
+        ax.set_title("Potencia relativa por banda y nivel (Post-Trim 3s)")
         ax.legend(ncol=5, fontsize=8)
         ax.grid(True, axis="y", ls="--", alpha=0.4)
-        n_files = sum(len(v) for v in a.levels_dict.values())
         self.fig2.tight_layout()
         self.canvas2.draw_idle()
-        self.cmp_status.config(text=f"  Listo ({n_files} archivos; barras = media ± desv. est.)")
+        self.cmp_status.config(text="  Listo.")
 
 
 # ----------------------------------------------------------------------------
@@ -629,7 +581,7 @@ class EEGViewer:
     def __init__(self, root, directory):
         self.root = root
         self.directory = directory
-        self.data = None          # señal preprocesada (n, 8)
+        self.data = None          
         self.fs = DEFAULT_FS
         self.axes, self.lines = [], []
         self.psd_win = None
@@ -650,7 +602,6 @@ class EEGViewer:
         self.level_combobox.set(list(self.levels_dict)[0])
         self.on_level_changed()
 
-    # -- archivos --
     def _scan_directory(self):
         files = [f for f in os.listdir(self.directory) if f.endswith('.txt')]
         self.levels_dict = {
@@ -658,7 +609,6 @@ class EEGViewer:
             for lvl, p in LEVEL_PREFIX.items()
         }
 
-    # -- interfaz --
     def _build_controls(self):
         c = ttk.Frame(self.root, padding=12)
         c.pack(side=tk.LEFT, fill=tk.Y)
@@ -734,7 +684,6 @@ class EEGViewer:
         self.fig = Figure(figsize=(10, 8))
         self.canvas = FigureCanvasTkAgg(self.fig, master=right)
 
-        # Controles de epoch (abajo)
         nav = ttk.Frame(right, padding=(8, 4))
         nav.pack(side=tk.BOTTOM, fill=tk.X)
         ttk.Label(nav, text="Ventana:").pack(side=tk.LEFT)
@@ -757,7 +706,6 @@ class EEGViewer:
         self.root.bind("<Left>", lambda e: self.step(-1))
         self.root.bind("<Right>", lambda e: self.step(1))
 
-    # -- utilidades --
     def notch_value(self):
         s = self.notch_var.get()
         return 50.0 if "50" in s else 60.0 if "60" in s else None
@@ -781,7 +729,6 @@ class EEGViewer:
     def current_label(self):
         return self.file_var.get()
 
-    # -- eventos --
     def on_level_changed(self, event=None):
         files = self.levels_dict.get(self.level_var.get(), [])
         self.file_combobox['values'] = files
@@ -800,8 +747,9 @@ class EEGViewer:
             self.fs = float(self.fs_var.get())
             raw = load_eeg(os.path.join(self.directory, fn))
             if raw.shape[0] < 10 or raw.shape[1] < 8:
-                raise ValueError("El archivo no contiene 8 canales con datos válidos.")
-            self.data = preprocess(raw, self.fs, self.bandpass_var.get(), self.notch_value())
+                raise ValueError("El archivo no contiene 8 canales válidos.")
+            # Aquí se ejecuta automáticamente el Trim de 3s + filtros
+            self.data = preprocess(raw, self.fs, self.bandpass_var.get(), self.notch_value(), trim_seconds=3.0)
             self.band_cache = {}
             self.update_bursts()
         except Exception as e:
@@ -878,7 +826,6 @@ class EEGViewer:
                             self.burst_patches.append(ax.axvspan(max(b0, t[0]), min(b1, t[-1]),
                                                                  color="#d62728", alpha=0.25))
         extra = "" if band.startswith("Cruda") else f" | banda {band} {BANDS[band][0]}-{BANDS[band][1]} Hz"
-        extra += "  (rojo = ráfagas theta Fz)" if band == "Theta" else ""
         self.fig.suptitle(f"Señales EEG - {self.file_var.get()}{extra}", fontsize=11, fontweight="bold")
         self.time_label.config(text=f"{t[0]:.1f} – {t[-1]:.1f} s de {len(self.data) / self.fs:.1f} s")
         self.canvas.draw_idle()
