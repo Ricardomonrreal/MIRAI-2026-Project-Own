@@ -30,7 +30,7 @@ from tkinter import ttk, filedialog, messagebox
 # ----------------------------------------------------------------------------
 # Configuración de canales y biomarcadores
 # ----------------------------------------------------------------------------
-DIRECTORY_PATH = "raw_data/raw_data/Stroop_Data"
+DIRECTORY_PATH = r"C:\Users\ricar\Documents\Repositorios\Datasets\MIRAI\ds007537"
 DEFAULT_FS = 250.0  # Hz
 
 # Electrodos objetivo para las investigaciones
@@ -58,6 +58,11 @@ BAND_COLORS = {
 }
 WINDOW_OPTIONS = ["1 s", "2 s", "5 s", "10 s", "20 s", "30 s", "60 s", "Todo"]
 LEVEL_PREFIX = {"Natural": 'n', "Low level": 'l', "Mid level": 'm', "High level": 'h'}
+
+# Dataset BIDS ds007537 (smartphone, 64 canales): se toma el montaje propuesto para AURA.
+BIDS_CHANNELS = ['F3', 'F4', 'Fz', 'FCz', 'Pz', 'O1', 'O2', 'Fp1']
+BIDS_SEGMENT = (12, 13)  # S12-S13 = 10 min de smartphone; (22, 23) = 5 min de video de naturaleza
+BIDS_APP = {"S": "Video corto", "G": "Juego", "R": "Lectura"}
 
 
 # ----------------------------------------------------------------------------
@@ -167,9 +172,48 @@ def numeric_sort_key(filename):
     return int(m.group(1)) if m else 0
 
 
+def is_bids(directory):
+    return all(os.path.exists(os.path.join(directory, f))
+               for f in ("dataset_description.json", "participants.tsv"))
+
+
+def bids_downloaded(sub_dir):
+    """True si el .eeg es la señal real y no un puntero de git-annex de ~200 bytes."""
+    sub = os.path.basename(os.path.normpath(sub_dir))
+    eeg = os.path.join(sub_dir, "eeg", f"{sub}_task-phoneuse_eeg.eeg")
+    return os.path.exists(eeg) and os.path.getsize(eeg) > 1_000_000
+
+
+def load_bids(sub_dir):
+    """
+    Lee un sujeto de ds007537 (BrainVision, 64 canales, 1000 Hz): recorta la sesión BIDS_SEGMENT,
+    aplica referencia promedio sin canales muertos (Cz es la referencia de registro y vale 0)
+    y remuestrea a DEFAULT_FS. Devuelve (datos en µV, BIDS_CHANNELS).
+    """
+    import mne  # solo hace falta para este dataset
+    sub = os.path.basename(os.path.normpath(sub_dir))
+    eeg_dir = os.path.join(sub_dir, "eeg")
+    ev = pd.read_csv(os.path.join(eeg_dir, f"{sub}_task-phoneuse_events.tsv"), sep="\t")
+    on = ev.loc[ev["value"] == BIDS_SEGMENT[0], "onset"].min()
+    off = ev.loc[ev["value"] == BIDS_SEGMENT[1], "onset"].min()
+    raw = mne.io.read_raw_brainvision(os.path.join(eeg_dir, f"{sub}_task-phoneuse_eeg.vhdr"),
+                                      preload=False, verbose="error")
+    raw.crop(on, off).load_data(verbose="error").pick("eeg")
+    d = np.diff(raw.get_data(), axis=1)  # la diferencia elimina el offset DC del amplificador
+    noise = np.median(np.abs(d - np.median(d, axis=1, keepdims=True)), axis=1)  # MAD: ignora parpadeos
+    med = np.median(noise)
+    raw.info["bads"] = [c for c, s in zip(raw.ch_names, noise)
+                        if c != "Cz" and (s > 5 * med or s < 0.05 * med)]
+    raw.set_eeg_reference("average", verbose="error")  # excluye los canales en bads
+    raw.resample(DEFAULT_FS, verbose="error")
+    # ponytail: sin ICA, los parpadeos solo se reparan por umbral; el análisis de grupo con ICA está en Tests/ds007537
+    return raw.get_data(picks=BIDS_CHANNELS).T * 1e6, list(BIDS_CHANNELS)
+
+
 def load_eeg(path):
     """
     Carga registros EEG adaptándose automáticamente a los canales disponibles en el archivo.
+    Si `path` es una carpeta sub-XX de un dataset BIDS (ds007537) se delega en load_bids.
     
     Estrategia de modulación automática:
     1. Si el archivo posee encabezados con nombres de canales:
@@ -184,6 +228,8 @@ def load_eeg(path):
        
     Devuelve: (data_matrix (n, n_canales), lista_canales_detectados)
     """
+    if os.path.isdir(path):
+        return load_bids(path)
     try:
         # Inspeccionar primeras filas para detectar nombres de columnas
         preview = pd.read_csv(path, nrows=5, comment='%', skipinitialspace=True, sep=r'[,\t]+', engine="python")
@@ -444,6 +490,8 @@ class PSDWindow(tk.Toplevel):
             i0, i1 = a.window_bounds()
             seg = a.data[i0:i1]
         idx = a.visible_idx()
+        if not idx:
+            return None
         return seg[:, idx], [a.channels[i] for i in idx]
 
     def refresh(self):
@@ -641,6 +689,7 @@ class EEGViewer:
         self.directory = directory
         self.data = None          
         self.channels = []  # Lista dinámica de canales presentes en el archivo cargado
+        self.channel_preferences = {ch: True for ch in TARGET_CHANNELS}
         self.fs = DEFAULT_FS
         self.axes, self.lines = [], []
         self.psd_win = None
@@ -658,6 +707,14 @@ class EEGViewer:
             self.on_level_changed()
 
     def _scan_directory(self):
+        if is_bids(self.directory):
+            # ds007537: un "nivel" por tipo de app y un "archivo" por sujeto descargado
+            meta = pd.read_csv(os.path.join(self.directory, "participants.tsv"), sep="\t")
+            app = dict(zip(meta["participant_id"], meta["app_type"]))
+            subs = [s for s in meta["participant_id"] if bids_downloaded(os.path.join(self.directory, s))]
+            self.levels_dict = {lbl: [s for s in subs if app[s] == k] for k, lbl in BIDS_APP.items()}
+            self.levels_dict = {k: v for k, v in self.levels_dict.items() if v}
+            return
         files = [f for f in os.listdir(self.directory) if f.endswith(('.txt', '.csv'))]
         matched = {}
         for lvl, p in LEVEL_PREFIX.items():
@@ -803,8 +860,7 @@ class EEGViewer:
         return 50.0 if "50" in s else 60.0 if "60" in s else None
 
     def visible_idx(self):
-        idx = [i for i, v in enumerate(self.ch_vars) if v.get()]
-        return idx or list(range(len(self.channels)))
+        return [i for i, v in enumerate(self.ch_vars) if v.get()]
 
     def window_seconds(self):
         s = self.win_var.get()
@@ -833,15 +889,31 @@ class EEGViewer:
             self.channels = []
 
     def _update_channel_checkboxes(self):
-        """Reconstruye dinámicamente los checkboxes según los canales detectados en el archivo."""
+        """Reconstruye dinámicamente los checkboxes según los canales del archivo, preservando la selección del usuario."""
+        # Si ya había checkboxes activos, guardar el estado actual para los canales presentes
+        if hasattr(self, 'ch_vars') and hasattr(self, 'channels') and len(self.ch_vars) == len(self.channels):
+            for n, var in zip(self.channels, self.ch_vars):
+                self.channel_preferences[n] = var.get()
+
         for w in self.ch_frame.winfo_children():
             w.destroy()
+
         self.ch_vars = []
         for n in self.channels:
-            v = tk.BooleanVar(value=True)
-            cb = ttk.Checkbutton(self.ch_frame, text=n, variable=v, command=self.rebuild_axes)
+            # Mantener el estado previo del usuario para este canal (True por defecto si nunca se tocó)
+            is_checked = self.channel_preferences.get(n, True)
+            v = tk.BooleanVar(value=is_checked)
+
+            def make_cmd(ch_name, var):
+                return lambda: self._on_channel_toggle(ch_name, var)
+
+            cb = ttk.Checkbutton(self.ch_frame, text=n, variable=v, command=make_cmd(n, v))
             cb.pack(anchor="w")
             self.ch_vars.append(v)
+
+    def _on_channel_toggle(self, ch_name, var):
+        self.channel_preferences[ch_name] = var.get()
+        self.rebuild_axes()
 
     def update_map(self):
         """Actualiza el mapa de electrodos y el texto informativo según los canales del archivo."""
@@ -934,6 +1006,16 @@ class EEGViewer:
             return
             
         idx = self.visible_idx()
+        if not idx:
+            ax = self.fig.add_subplot(1, 1, 1)
+            ax.text(0.5, 0.5, "Ningún canal seleccionado.\nMarca los canales deseados en el panel lateral.",
+                    ha="center", va="center", fontsize=11, color="gray")
+            ax.axis("off")
+            self.axes = []
+            self.lines = []
+            self.canvas.draw_idle()
+            return
+
         self.axes = self.fig.subplots(len(idx), 1, sharex=True, squeeze=False)[:, 0]
         self.lines = []
         for ax, ch in zip(self.axes, idx):
@@ -987,8 +1069,11 @@ class EEGViewer:
             self.psd_win = PSDWindow(self)
 
     def change_dir(self):
-        d = filedialog.askdirectory(title="Selecciona la carpeta con los archivos EEG (.txt o .csv)")
+        d = filedialog.askdirectory(title="Selecciona la carpeta EEG (.txt/.csv) o la raíz de ds007537")
         if d:
+            if hasattr(self, 'ch_vars') and hasattr(self, 'channels') and len(self.ch_vars) == len(self.channels):
+                for n, var in zip(self.channels, self.ch_vars):
+                    self.channel_preferences[n] = var.get()
             self.directory = d
             self._scan_directory()
             self.level_combobox['values'] = list(self.levels_dict)
@@ -998,8 +1083,10 @@ class EEGViewer:
 
 
 def main():
+    import sys
     root = tk.Tk()
-    directory = DIRECTORY_PATH
+    # Uso: python Demo_processing.py [carpeta]   (carpeta Stroop_Data o raíz de ds007537)
+    directory = sys.argv[1] if len(sys.argv) > 1 else DIRECTORY_PATH
     if not os.path.isdir(directory):
         directory = filedialog.askdirectory(title="Selecciona la carpeta de datos EEG")
         if not directory:

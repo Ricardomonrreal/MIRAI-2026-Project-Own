@@ -1,0 +1,127 @@
+H1 · ds007537 · cambio tónico durante 10 min de smartphone
+==================================================================
+Sujetos: 27  (excluidos: sub-22, sub-23, sub-27)
+Pendiente = unidades/min tras normalizar a min 1-2. Tardío = media de min 9-10 vs min 1-2.
+↑k/n = sujetos con valor positivo.
+
+[theta_iaf] Theta tónico Fz/FCz (potencia total) (dB)
+  Todos        pendiente: n=27  media=-0.029  ↑11/27  t=-0.93 p=0.3629  Wilcoxon p=0.5781
+               tardío:    n=27  media=-0.223  ↑11/27  t=-0.92 p=0.3672  Wilcoxon p=0.7140
+  Video corto  pendiente: n=12  media=-0.006  ↑3/12  t=-0.16 p=0.8742  Wilcoxon p=0.4697
+               tardío:    n=12  media=-0.060  ↑5/12  t=-0.23 p=0.8202  Wilcoxon p=0.9697
+  Juego        pendiente: n=13  media=-0.060  ↑6/13  t=-1.08 p=0.2998  Wilcoxon p=0.5417
+               tardío:    n=13  media=-0.457  ↑4/13  t=-1.02 p=0.3269  Wilcoxon p=0.3757
+  Video corto vs Juego (Mann-Whitney): U=83 p=0.8066
+  Spearman pendiente vs SAS: rho=-0.24 p=0.2236 (n=27)
+  Spearman pendiente vs MPPUS: rho=-0.08 p=0.7018 (n=27)
+
+[alpha_iaf] Alfa posterior (potencia total) (dB)
+  Todos        pendiente: n=27  media=+0.024  ↑19/27  t=+1.04 p=0.3098  Wilcoxon p=0.0619
+               tardío:    n=27  media=+0.265  ↑20/27  t=+1.62 p=0.1179  Wilcoxon p=0.0262
+  Video corto  pendiente: n=12  media=-0.008  ↑7/12  t=-0.18 p=0.8611  Wilcoxon p=0.6221
+               tardío:    n=12  media=+0.117  ↑8/12  t=+0.37 p=0.7220  Wilcoxon p=0.3013
+  Juego        pendiente: n=13  media=+0.068  ↑11/13  t=+3.91 p=0.0021  Wilcoxon p=0.0046
+               tardío:    n=13  media=+0.469  ↑11/13  t=+3.24 p=0.0070  Wilcoxon p=0.0134
+  Video corto vs Juego (Mann-Whitney): U=50 p=0.1347
+  Spearman pendiente vs SAS: rho=-0.01 p=0.9626 (n=27)
+  Spearman pendiente vs MPPUS: rho=+0.06 p=0.7588 (n=27)
+
+[theta_per] Theta periódico Fz/FCz (sobre 1/f) (dB)
+  Todos        pendiente: n=27  media=+0.013  ↑18/27  t=+1.08 p=0.2904  Wilcoxon p=0.3126
+               tardío:    n=27  media=+0.110  ↑15/27  t=+1.08 p=0.2894  Wilcoxon p=0.3608
+  Video corto  pendiente: n=12  media=+0.012  ↑7/12  t=+0.62 p=0.5491  Wilcoxon p=0.6221
+               tardío:    n=12  media=+0.184  ↑7/12  t=+1.09 p=0.2979  Wilcoxon p=0.4238
+  Juego        pendiente: n=13  media=+0.012  ↑9/13  t=+0.71 p=0.4918  Wilcoxon p=0.4143
+               tardío:    n=13  media=+0.025  ↑6/13  t=+0.17 p=0.8669  Wilcoxon p=0.8926
+  Video corto vs Juego (Mann-Whitney): U=74 p=0.8490
+  Spearman pendiente vs SAS: rho=+0.15 p=0.4489 (n=27)
+  Spearman pendiente vs MPPUS: rho=+0.22 p=0.2686 (n=27)
+
+[alpha_per] Alfa posterior periódica (sobre 1/f) (dB)
+  Todos        pendiente: n=27  media=+0.019  ↑17/27  t=+1.15 p=0.2591  Wilcoxon p=0.2901
+               tardío:    n=27  media=+0.235  ↑18/27  t=+1.78 p=0.0872  Wilcoxon p=0.0772
+  Video corto  pendiente: n=12  media=+0.043  ↑9/12  t=+1.61 p=0.1347  Wilcoxon p=0.1514
+               tardío:    n=12  media=+0.428  ↑10/12  t=+2.19 p=0.0508  Wilcoxon p=0.0425
+  Juego        pendiente: n=13  media=+0.008  ↑8/13  t=+0.33 p=0.7463  Wilcoxon p=0.6848
+               tardío:    n=13  media=+0.119  ↑8/13  t=+0.60 p=0.5625  Wilcoxon p=0.4973
+  Video corto vs Juego (Mann-Whitney): U=90 p=0.5316
+  Spearman pendiente vs SAS: rho=+0.11 p=0.5747 (n=27)
+  Spearman pendiente vs MPPUS: rho=+0.07 p=0.7267 (n=27)
+
+[exp_post] Exponente aperiódico posterior (u.a.)
+  Todos        pendiente: n=27  media=+0.002  ↑15/27  t=+0.45 p=0.6581  Wilcoxon p=0.7140
+               tardío:    n=27  media=+0.020  ↑14/27  t=+0.61 p=0.5490  Wilcoxon p=0.7317
+  Video corto  pendiente: n=12  media=+0.014  ↑10/12  t=+2.38 p=0.0365  Wilcoxon p=0.0210
+               tardío:    n=12  media=+0.073  ↑8/12  t=+1.55 p=0.1486  Wilcoxon p=0.2334
+  Juego        pendiente: n=13  media=-0.010  ↑4/13  t=-1.59 p=0.1376  Wilcoxon p=0.2163
+               tardío:    n=13  media=-0.030  ↑5/13  t=-0.62 p=0.5463  Wilcoxon p=0.4973
+  Video corto vs Juego (Mann-Whitney): U=121 p=0.0208
+  Spearman pendiente vs SAS: rho=+0.20 p=0.3209 (n=27)
+  Spearman pendiente vs MPPUS: rho=+0.14 p=0.4800 (n=27)
+
+[theta_fix] Theta 4-8 Hz (banda fija) (dB)
+  Todos        pendiente: n=27  media=-0.026  ↑11/27  t=-0.84 p=0.4112  Wilcoxon p=0.8223
+               tardío:    n=27  media=-0.232  ↑12/27  t=-0.96 p=0.3444  Wilcoxon p=0.6964
+  Video corto  pendiente: n=12  media=-0.006  ↑4/12  t=-0.15 p=0.8813  Wilcoxon p=0.6772
+               tardío:    n=12  media=-0.086  ↑5/12  t=-0.34 p=0.7413  Wilcoxon p=0.7910
+  Juego        pendiente: n=13  media=-0.047  ↑6/13  t=-0.87 p=0.4021  Wilcoxon p=1.0000
+               tardío:    n=13  media=-0.382  ↑6/13  t=-0.86 p=0.4087  Wilcoxon p=0.7354
+  Video corto vs Juego (Mann-Whitney): U=79 p=0.9783
+  Spearman pendiente vs SAS: rho=-0.28 p=0.1581 (n=27)
+  Spearman pendiente vs MPPUS: rho=-0.10 p=0.6300 (n=27)
+
+[alpha_fix] Alfa 8-13 Hz (banda fija) (dB)
+  Todos        pendiente: n=27  media=+0.024  ↑18/27  t=+1.07 p=0.2948  Wilcoxon p=0.0655
+               tardío:    n=27  media=+0.266  ↑20/27  t=+1.72 p=0.0966  Wilcoxon p=0.0299
+  Video corto  pendiente: n=12  media=-0.013  ↑7/12  t=-0.33 p=0.7471  Wilcoxon p=0.6221
+               tardío:    n=12  media=+0.080  ↑9/12  t=+0.30 p=0.7703  Wilcoxon p=0.3013
+  Juego        pendiente: n=13  media=+0.073  ↑11/13  t=+3.40 p=0.0052  Wilcoxon p=0.0081
+               tardío:    n=13  media=+0.516  ↑10/13  t=+2.94 p=0.0124  Wilcoxon p=0.0171
+  Video corto vs Juego (Mann-Whitney): U=51 p=0.1495
+  Spearman pendiente vs SAS: rho=-0.03 p=0.8798 (n=27)
+  Spearman pendiente vs MPPUS: rho=+0.15 p=0.4620 (n=27)
+
+[blink_eeg] Parpadeos/min (EEG, Fp1) (/min)
+  Todos        pendiente: n=27  media=+0.063  ↑16/27  t=+0.70 p=0.4899  Wilcoxon p=0.4537
+               tardío:    n=27  media=+1.519  ↑17/27  t=+2.28 p=0.0314  Wilcoxon p=0.0191
+  Video corto  pendiente: n=12  media=-0.004  ↑6/12  t=-0.02 p=0.9813  Wilcoxon p=0.7334
+               tardío:    n=12  media=+0.542  ↑7/12  t=+0.44 p=0.6694  Wilcoxon p=0.6484
+  Juego        pendiente: n=13  media=+0.176  ↑9/13  t=+1.59 p=0.1383  Wilcoxon p=0.1294
+               tardío:    n=13  media=+2.308  ↑9/13  t=+3.31 p=0.0062  Wilcoxon p=0.0068
+  Video corto vs Juego (Mann-Whitney): U=54 p=0.2012
+  Spearman pendiente vs SAS: rho=-0.16 p=0.4111 (n=27)
+  Spearman pendiente vs MPPUS: rho=-0.33 p=0.0963 (n=27)
+
+[blink_et] Parpadeos/min (eye-tracker) (/min)
+  Todos        pendiente: n=25  media=+0.200  ↑14/25  t=+1.51 p=0.1439  Wilcoxon p=0.3810
+               tardío:    n=25  media=+2.040  ↑16/25  t=+1.95 p=0.0634  Wilcoxon p=0.1371
+  Video corto  pendiente: n=10  media=+0.199  ↑6/10  t=+0.83 p=0.4256  Wilcoxon p=0.5566
+               tardío:    n=10  media=+1.700  ↑6/10  t=+0.84 p=0.4248  Wilcoxon p=0.5859
+  Juego        pendiente: n=13  media=+0.258  ↑7/13  t=+1.49 p=0.1632  Wilcoxon p=0.5417
+               tardío:    n=13  media=+2.500  ↑9/13  t=+1.92 p=0.0789  Wilcoxon p=0.1677
+  Video corto vs Juego (Mann-Whitney): U=64 p=0.9753
+  Spearman pendiente vs SAS: rho=-0.22 p=0.2930 (n=25)
+  Spearman pendiente vs MPPUS: rho=-0.20 p=0.3463 (n=25)
+
+[pupil_mm] Diámetro pupilar (mm)
+  Todos        pendiente: n=25  media=-0.002  ↑12/25  t=-0.35 p=0.7319  Wilcoxon p=0.8740
+               tardío:    n=25  media=-0.006  ↑14/25  t=-0.12 p=0.9068  Wilcoxon p=1.0000
+  Video corto  pendiente: n=10  media=-0.011  ↑3/10  t=-1.22 p=0.2533  Wilcoxon p=0.2754
+               tardío:    n=10  media=-0.089  ↑4/10  t=-1.12 p=0.2920  Wilcoxon p=0.3750
+  Juego        pendiente: n=13  media=+0.002  ↑7/13  t=+0.30 p=0.7676  Wilcoxon p=0.7354
+               tardío:    n=13  media=+0.027  ↑8/13  t=+0.44 p=0.6672  Wilcoxon p=0.6848
+  Video corto vs Juego (Mann-Whitney): U=46 p=0.2512
+  Spearman pendiente vs SAS: rho=+0.03 p=0.8824 (n=25)
+  Spearman pendiente vs MPPUS: rho=+0.09 p=0.6821 (n=25)
+
+[Relaciones entre sujetos] (pendientes, Spearman)
+  Validación: parpadeo EEG vs eye-tracker: rho=+0.55 p=0.0043 (n=25)
+  Alfa total vs alfa periódica: rho=+0.34 p=0.0827 (n=27)
+  Alfa total vs exponente 1/f: rho=-0.57 p=0.0018 (n=27)
+  Alfa periódica vs parpadeo EEG: rho=-0.05 p=0.7971 (n=27)
+  Alfa periódica vs pupila: rho=-0.31 p=0.1356 (n=25)
+
+Nota: el video siempre va DESPUÉS del smartphone (orden fijo), así que el contraste
+smartphone vs video está confundido con el tiempo; H1 se evalúa dentro de la sesión.
+La pupila también depende del brillo de la pantalla (contenido variable).
+Se usa como apoyo, no como medida principal.

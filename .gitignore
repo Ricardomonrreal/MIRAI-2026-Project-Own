@@ -8,3 +8,7 @@
 
 # Carpeta raw_data (en cualquier subdirectorio de Tests)
 **/raw_data/
+
+# Cache y Python bytecode
+**/__pycache__/
+*.py[cod]

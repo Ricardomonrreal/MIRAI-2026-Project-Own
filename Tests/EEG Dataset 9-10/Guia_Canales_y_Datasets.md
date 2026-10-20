@@ -12,19 +12,19 @@ El sistema está diseñado para investigar los siguientes **6 electrodos** del s
                (Nariz / Frente)
                      Fz         <- Theta tónico (Control ejecutivo / Fatiga mental)
                F3          F4   <- Asimetría Alfa Frontal: FAA = ln(α_F4) - ln(α_F3)
-            
+
                      Pz         <- Alfa parietal (Atención visoespacial)
                O1          O2   <- Alfa occipital (Desactivación visual / Fatiga sensorial)
 ```
 
-| Electrodo | Color en Visor | Región Cerebral | Rol en la Investigación | Métrica Principal |
-| :--- | :--- | :--- | :--- | :--- |
-| **Fz** | 🟣 Púrpura (`#7c62db`) | Frontal medial | Control cognitivo, esfuerzo atencional y fatiga tónica. | **Theta tónico (4–8 Hz)** |
-| **F3** | 🔵 Azul (`#2a82e4`) | Frontal izquierdo | Corteza prefrontal dorsolateral izquierda (aproximación). | **FAA:** $\ln(\text{Alfa}_{F4}) - \ln(\text{Alfa}_{F3})$ |
-| **F4** | 🔵 Azul (`#2a82e4`) | Frontal derecho | Corteza prefrontal dorsolateral derecha (evitación/alerta).| |
-| **Pz** | 🟢 Verde (`#1ba06f`) | Parietal medial | Atención sostenida y consolidación atencional. | **Alfa posterior (8–13 Hz)** |
-| **O1** | 🟢 Verde (`#1ba06f`) | Occipital izquierdo| Corteza visual primaria y somnolencia / fatiga perceptual.| (Promedio entre Pz, O1 y O2) |
-| **O2** | 🟢 Verde (`#1ba06f`) | Occipital derecho | Procesamiento visual continuo. | |
+| Electrodo | Color en Visor         | Región Cerebral     | Rol en la Investigación                                     | Métrica Principal                                        |
+| :-------- | :--------------------- | :------------------ | :---------------------------------------------------------- | :------------------------------------------------------- |
+| **Fz**    | 🟣 Púrpura (`#7c62db`) | Frontal medial      | Control cognitivo, esfuerzo atencional y fatiga tónica.     | **Theta tónico (4–8 Hz)**                                |
+| **F3**    | 🔵 Azul (`#2a82e4`)    | Frontal izquierdo   | Corteza prefrontal dorsolateral izquierda (aproximación).   | **FAA:** $\ln(\text{Alfa}_{F4}) - \ln(\text{Alfa}_{F3})$ |
+| **F4**    | 🔵 Azul (`#2a82e4`)    | Frontal derecho     | Corteza prefrontal dorsolateral derecha (evitación/alerta). |                                                          |
+| **Pz**    | 🟢 Verde (`#1ba06f`)   | Parietal medial     | Atención sostenida y consolidación atencional.              | **Alfa posterior (8–13 Hz)**                             |
+| **O1**    | 🟢 Verde (`#1ba06f`)   | Occipital izquierdo | Corteza visual primaria y somnolencia / fatiga perceptual.  | (Promedio entre Pz, O1 y O2)                             |
+| **O2**    | 🟢 Verde (`#1ba06f`)   | Occipital derecho   | Procesamiento visual continuo.                              |                                                          |
 
 ---
 
@@ -33,6 +33,7 @@ El sistema está diseñado para investigar los siguientes **6 electrodos** del s
 El cargador de datos `load_eeg` ahora **modula y detecta dinámicamente** qué canales existen en cada archivo sin forzar errores ni mostrar señales erróneas:
 
 ### A. Para los archivos actuales de Stroop (`raw_data/Stroop_Data`):
+
 - Los registros originales de Stroop provienen de un OpenBCI Cyton de 8 canales (`Fp1, Fp2, F7, F3, Fz, F4, F8, C2`).
 - **Detección automática:** El programa identifica la estructura de columnas numéricas de OpenBCI y extrae automáticamente los canales objetivo disponibles: **`F3`** (col 4), **`F4`** (col 6) y **`Fz`** (col 5).
 - **Adaptación:**
@@ -42,6 +43,7 @@ El cargador de datos `load_eeg` ahora **modula y detecta dinámicamente** qué c
   - El alfa posterior se marca limpiamente como `No disponible (requiere Pz, O1 u O2)`.
 
 ### B. Para nuevos datasets limpios (6 canales o con encabezados):
+
 - Si el archivo contiene encabezados (`F3, F4, Fz, Pz, O1, O2`): los lee automáticamente en orden.
 - Si el archivo tiene 6 columnas numéricas (o 7 con columna índice de muestra): asume los 6 canales y los activa todos.
 - Los 6 electrodos se iluminan en el mapa visual y se calculan los 3 biomarcadores simultáneamente.
@@ -50,7 +52,7 @@ El cargador de datos `load_eeg` ahora **modula y detecta dinámicamente** qué c
 
 ## 3. Representación Visual del Montaje 10-20 en la Interfaz
 
-Dentro de `Demo_processing.py`, se integró una pestaña gráfica dedicada: **`🧠 Mapa de Electrodos (10-20)`** (accesible también mediante el botón lateral *"🧠 Ver mapa de electrodos"*):
+Dentro de `Demo_processing.py`, se integró una pestaña gráfica dedicada: **`🧠 Mapa de Electrodos (10-20)`** (accesible también mediante el botón lateral _"🧠 Ver mapa de electrodos"_):
 
 - **Vista superior de la cabeza:** Contorno craneal, nariz orientada al frente y orejas laterales ("Frente", "Izq.", "Der.").
 - **Electrodos activos vs. ausentes:**
@@ -60,19 +62,21 @@ Dentro de `Demo_processing.py`, se integró una pestaña gráfica dedicada: **`�
   - Nombre del archivo y frecuencia de muestreo.
   - Lista de canales activos y ausentes.
   - Diagnóstico de qué biomarcadores pueden calcularse con el registro actual.
-- **Mini-mapa en la ventana PSD:** Al abrir *"Analizar PSD / biomarcadores"*, en la esquina inferior derecha también se renderiza el esquema anatómico activo para contextualizar los resultados numéricos.
+- **Mini-mapa en la ventana PSD:** Al abrir _"Analizar PSD / biomarcadores"_, en la esquina inferior derecha también se renderiza el esquema anatómico activo para contextualizar los resultados numéricos.
 
 ---
 
 ## 4. Cómo Buscar y Limpiar Nuevos Datasets
 
 ### Dónde buscar:
+
 1. **OpenNeuro (Recomendado):**
-   - Dataset destacado: **`ds007537`** (*Mishra et al., 2026*): interacción natural con smartphones (Reels/Shorts vs. descanso), 64 canales incluyendo `F3, F4, Fz, Pz, O1, O2`.
+   - Dataset destacado: **`ds007537`** (_Mishra et al., 2026_): interacción natural con smartphones (Reels/Shorts vs. descanso), 64 canales incluyendo `F3, F4, Fz, Pz, O1, O2`.
 2. **PhysioNet:** Datasets de fatiga cognitiva y atención prolongada.
 3. **Zenodo / Mendeley Data:** Búsquedas tipo `EEG cognitive fatigue 32 channels`.
 
 ### Script para exportar solo los 6 canales listos:
+
 ```python
 import mne
 import pandas as pd
