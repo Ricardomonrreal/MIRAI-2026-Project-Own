@@ -1,32 +1,48 @@
 """
-Visualizador de señales EEG (Stroop) - versión mejorada con Trim de 3s
-=====================================================================
-Mejoras:
-  1. Trim automático de los primeros 3 segundos para eliminar transitorios de encendido y ruido inicial.
-  2. Autoescalado robusto por canal (ignora picos/artefactos para que la señal se vea bien).
-  3. Slider de ventanas temporales (epochs) + duración de ventana configurable.
-  4. Ventana de Densidad Espectral de Potencia (PSD, método de Welch) con bandas
-     Delta/Theta/Alpha/Beta e índices de carga cognitiva.
-  5. Biomarcadores del scope (theta tónico/fásico, alfa tónico, FAA) y comparaciones entre niveles.
+Visualizador de señales EEG (F3, F4, Fz, Pz, O1, O2) con Modulación Automática
+=============================================================================
+Características principales:
+  1. Electrodos objetivo de investigación: F3, F4, Fz, Pz, O1, O2.
+  2. Modulación automática de canales:
+     - Detecta automáticamente si el archivo posee todos los canales o solo un subconjunto.
+     - Compatible con datasets clásicos de 8 canales (ej. Stroop OpenBCI Cyton: detecta y extrae F3, F4 y Fz).
+     - Compatible con archivos limpios de 6 canales (F3, F4, Fz, Pz, O1, O2) o CSVs con encabezado.
+  3. Representación visual integrada del montaje 10-20 (vista superior):
+     - Muestra la cabeza, orientación (Frente, Izq., Der.) y posición anatómica de cada electrodo.
+     - Códigos de color por biomarcador (Theta Fz en púrpura, FAA F3/F4 en azul, Alfa posterior en verde).
+     - Indicadores de estado en tiempo real (activo vs. ausente en el archivo cargado).
+  4. Preprocesamiento: trim automático de 3s, centrado, pasa-banda 1-40 Hz, notch y reparación de artefactos.
+  5. Análisis PSD e índices cognitivos (Theta Fz, Alfa posterior, FAA).
 """
 import os
 import re
 import numpy as np
 import pandas as pd
 import matplotlib
+import matplotlib.patches as patches
+import matplotlib.lines as mlines
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
-from scipy import signal
+from scipy import signal, ndimage
 import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
 
 # ----------------------------------------------------------------------------
-# Configuración
+# Configuración de canales y biomarcadores
 # ----------------------------------------------------------------------------
 DIRECTORY_PATH = "raw_data/raw_data/Stroop_Data"
-DEFAULT_FS = 250.0  # Hz (OpenBCI Cyton)
-CHANNEL_NAMES = ['Fp1', 'Fp2', 'F7', 'F3', 'FZ', 'F4', 'F8', 'C2']
-FRONTAL = ['Fp1', 'Fp2', 'F7', 'F3', 'FZ', 'F4', 'F8']
+DEFAULT_FS = 250.0  # Hz
+
+# Electrodos objetivo para las investigaciones
+TARGET_CHANNELS = ['F3', 'F4', 'Fz', 'Pz', 'O1', 'O2']
+FRONTAL_TARGETS = ['F3', 'F4', 'Fz']
+POSTERIOR_TARGETS = ['Pz', 'O1', 'O2']
+
+# Asignaciones clave de biomarcadores
+THETA_CH = 'Fz'
+ALPHA_CHANNELS = ['Pz', 'O1', 'O2']
+FAA_L, FAA_R = 'F3', 'F4'
+
 BANDS = {
     "Delta": (0, 4),
     "Theta": (4, 8),
@@ -34,40 +50,217 @@ BANDS = {
     "Beta": (13, 30),
 }
 BAND_EDGES = [0, 4, 8, 13, 30]
-BAND_COLORS = {"Delta": "#9e9e9e", "Theta": "#1f77b4", "Alpha": "#2ca02c",
-               "Beta": "#ff7f0e"}
+BAND_COLORS = {
+    "Delta": "#9e9e9e",
+    "Theta": "#1f77b4",
+    "Alpha": "#2ca02c",
+    "Beta": "#ff7f0e"
+}
 WINDOW_OPTIONS = ["1 s", "2 s", "5 s", "10 s", "20 s", "30 s", "60 s", "Todo"]
 LEVEL_PREFIX = {"Natural": 'n', "Low level": 'l', "Mid level": 'm', "High level": 'h'}
 
 
 # ----------------------------------------------------------------------------
-# Procesamiento y Pipeline
+# Representación Gráfica del Montaje de Electrodos (10-20)
+# ----------------------------------------------------------------------------
+def draw_electrode_map(ax, available_channels=None, title="Dónde se mide cada biomarcador (vista superior)", show_legend=True):
+    """
+    Dibuja la vista superior del montaje de electrodos según la imagen de referencia:
+    - Frente (superior), Izq. (izquierda), Der. (derecha).
+    - Círculos de color:
+        * Púrpura (#7c62db): Theta Fz
+        * Azul (#2a82e4): FAA F3 / F4
+        * Verde (#1ba06f): Alfa posterior O1, O2, Pz
+    - Los canales presentes en available_channels se iluminan; los ausentes se muestran atenuados en gris.
+    """
+    if available_channels is None:
+        available_channels = TARGET_CHANNELS
+        
+    avail_upper = set(c.upper() for c in available_channels)
+    
+    ax.clear()
+    ax.set_aspect("equal")
+    ax.axis("off")
+    
+    # 1. Cabeza (círculo principal con relleno beige suave)
+    head_circ = patches.Circle((0, 0), 1.0, facecolor="#f8f7f3", edgecolor="#4a4a4a", lw=2.4, zorder=1)
+    ax.add_patch(head_circ)
+    
+    # 2. Nariz (triángulo arriba)
+    nose = patches.Polygon([(-0.13, 0.98), (0.0, 1.18), (0.13, 0.98)],
+                           facecolor="#f8f7f3", edgecolor="#4a4a4a", lw=2.2, zorder=2)
+    ax.add_patch(nose)
+    
+    # 3. Orejas (elipses)
+    ear_l = patches.Ellipse((-1.01, 0.0), 0.11, 0.30, facecolor="#f8f7f3", edgecolor="#4a4a4a", lw=2.2, zorder=0)
+    ear_r = patches.Ellipse((1.01, 0.0), 0.11, 0.30, facecolor="#f8f7f3", edgecolor="#4a4a4a", lw=2.2, zorder=0)
+    ax.add_patch(ear_l)
+    ax.add_patch(ear_r)
+    
+    # 4. Textos de orientación
+    ax.text(0.0, 1.28, "Frente", ha="center", va="bottom", fontsize=11, color="#555555", fontweight="bold")
+    ax.text(-1.26, 0.0, "Izq.", ha="right", va="center", fontsize=11, color="#555555", fontweight="bold")
+    ax.text(1.26, 0.0, "Der.", ha="left", va="center", fontsize=11, color="#555555", fontweight="bold")
+    
+    # 5. Coordenadas y definición de electrodos
+    # (Nombre, (x, y), color_activo, posición_etiqueta)
+    electrodes = [
+        ("F3", (-0.42, 0.44), "#2a82e4", "top"),
+        ("Fz", (0.0, 0.44), "#7c62db", "top"),
+        ("F4", (0.42, 0.44), "#2a82e4", "top"),
+        ("Pz", (0.0, -0.14), "#1ba06f", "top"),
+        ("O1", (-0.30, -0.68), "#1ba06f", "bottom"),
+        ("O2", (0.30, -0.68), "#1ba06f", "bottom"),
+    ]
+    
+    for name, (x, y), color, txt_pos in electrodes:
+        is_active = name.upper() in avail_upper
+        c_fill = color if is_active else "#eae8e4"
+        c_edge = color if is_active else "#b0aca5"
+        c_txt = color if is_active else "#9e9a93"
+        alpha = 1.0 if is_active else 0.55
+        
+        # Círculo del electrodo
+        dot = patches.Circle((x, y), 0.082, facecolor=c_fill, edgecolor=c_edge,
+                             lw=2.2 if is_active else 1.2, alpha=alpha, zorder=5)
+        ax.add_patch(dot)
+        
+        # Etiqueta
+        ty = y + 0.11 if txt_pos == "top" else y - 0.11
+        status_suffix = "" if is_active else "\n(n/d)"
+        fontweight = "bold" if is_active else "normal"
+        ax.text(x, ty, f"{name}{status_suffix}", ha="center",
+                va="bottom" if txt_pos == "top" else "top",
+                fontsize=10.5, color=c_txt, fontweight=fontweight, zorder=6)
+                
+    # Texto "Parieto-occipital"
+    has_post = any(n.upper() in avail_upper for n in ["PZ", "O1", "O2"])
+    post_color = "#007a50" if has_post else "#9e9a93"
+    ax.text(0.0, -0.92, "Parieto-occipital", ha="center", va="top",
+            fontsize=11.5, fontweight="bold", color=post_color)
+    
+    # Leyenda al pie
+    if show_legend:
+        legend_elements = [
+            mlines.Line2D([0], [0], marker='o', color='w', label='Alfa: O1, O2, Pz',
+                          markerfacecolor='#1ba06f', markersize=10),
+            mlines.Line2D([0], [0], marker='o', color='w', label='Theta: Fz',
+                          markerfacecolor='#7c62db', markersize=10),
+            mlines.Line2D([0], [0], marker='o', color='w', label='FAA: F3 / F4 (referencia)',
+                          markerfacecolor='#2a82e4', markersize=10),
+        ]
+        ax.legend(handles=legend_elements, loc='lower center', bbox_to_anchor=(0.5, -0.17),
+                  ncol=3, frameon=False, fontsize=9.5)
+                  
+    if title:
+        ax.set_title(title, fontsize=13, fontweight="bold", pad=14)
+        
+    ax.set_xlim(-1.45, 1.45)
+    ax.set_ylim(-1.22, 1.38)
+
+
+# ----------------------------------------------------------------------------
+# Procesamiento de Señales y Carga Inteligente
 # ----------------------------------------------------------------------------
 def numeric_sort_key(filename):
-    m = re.search(r'(\d+)\.txt$', filename)
+    m = re.search(r'(\d+)\.(?:txt|csv)$', filename)
     return int(m.group(1)) if m else 0
 
 
 def load_eeg(path):
-    """Lee un .txt (col 0 = índice de muestra, cols 1-8 = canales). Devuelve (n, 8)."""
+    """
+    Carga registros EEG adaptándose automáticamente a los canales disponibles en el archivo.
+    
+    Estrategia de modulación automática:
+    1. Si el archivo posee encabezados con nombres de canales:
+       Detecta cuáles de TARGET_CHANNELS están presentes y extrae exactamente esos.
+    2. Si es un archivo sin encabezados numérico (ej. OpenBCI Cyton Stroop: >= 8 columnas):
+       El montaje estándar OpenBCI Stroop es [Fp1, Fp2, F7, F3, Fz, F4, F8, C2].
+       Extrae los canales objetivo disponibles: F3 (col 4), F4 (col 6) y Fz (col 5).
+    3. Si tiene exactamente 6 o 7 columnas (índice + 6):
+       Mapea directamente a TARGET_CHANNELS = ['F3', 'F4', 'Fz', 'Pz', 'O1', 'O2'].
+    4. Si tiene 3 columnas:
+       Mapea a ['F3', 'F4', 'Fz'].
+       
+    Devuelve: (data_matrix (n, n_canales), lista_canales_detectados)
+    """
+    try:
+        # Inspeccionar primeras filas para detectar nombres de columnas
+        preview = pd.read_csv(path, nrows=5, comment='%', skipinitialspace=True, sep=r'[,\t]+', engine="python")
+        col_map = {str(c).strip().lower(): c for c in preview.columns}
+        
+        # Buscar cuáles de TARGET_CHANNELS están presentes en el encabezado
+        matched = [ch for ch in TARGET_CHANNELS if ch.lower() in col_map]
+        if matched:
+            cols_to_use = [col_map[ch.lower()] for ch in matched]
+            df = pd.read_csv(path, comment='%', skipinitialspace=True, sep=r'[,\t]+',
+                             engine="python", usecols=cols_to_use)
+            df = df[cols_to_use].apply(pd.to_numeric, errors="coerce").dropna()
+            return df.to_numpy(dtype=float), matched
+    except Exception:
+        pass
+
+    # Lectura numérica sin encabezados
     df = pd.read_csv(path, delimiter=",", header=None, comment='%',
                      skipinitialspace=True, engine="python", on_bad_lines="skip")
-    df = df.iloc[:, 1:9].apply(pd.to_numeric, errors="coerce").dropna()
-    return df.to_numpy(dtype=float)
+    df = df.apply(pd.to_numeric, errors="coerce").dropna(how="all")
+    n_cols = df.shape[1]
+    
+    if n_cols >= 8:
+        # Formato OpenBCI Cyton (Stroop Data)
+        # Col 0 = muestra, 1=Fp1, 2=Fp2, 3=F7, 4=F3, 5=Fz, 6=F4, 7=F8, 8=C2
+        # Extraemos F3, F4, Fz (Pz, O1, O2 no existen en este montaje de hardware)
+        df_target = df.iloc[:, [4, 6, 5]].copy()
+        df_target.columns = ['F3', 'F4', 'Fz']
+        df_target = df_target.dropna()
+        return df_target.to_numpy(dtype=float), ['F3', 'F4', 'Fz']
+        
+    elif n_cols == 7:
+        # Columna 0 es índice, columnas 1..6 son los 6 canales objetivo
+        df_target = df.iloc[:, 1:7].dropna()
+        return df_target.to_numpy(dtype=float), list(TARGET_CHANNELS)
+        
+    elif n_cols == 6:
+        # Exactamente 6 canales directos
+        df_target = df.iloc[:, 0:6].dropna()
+        return df_target.to_numpy(dtype=float), list(TARGET_CHANNELS)
+        
+    elif n_cols == 4:
+        # Columna 0 índice + 3 canales frontales
+        df_target = df.iloc[:, 1:4].dropna()
+        return df_target.to_numpy(dtype=float), ['F3', 'F4', 'Fz']
+        
+    elif n_cols == 3:
+        # 3 canales frontales
+        df_target = df.iloc[:, 0:3].dropna()
+        return df_target.to_numpy(dtype=float), ['F3', 'F4', 'Fz']
+        
+    else:
+        raise ValueError(
+            f"El archivo contiene {n_cols} columnas numéricas y no coincide con un formato soportado."
+        )
+
+
+def repair_artifacts(x, fs, thr_uv=150.0, pad_s=0.15, max_frac=0.25):
+    """Reparación de picos e interferencias mediante interpolación local."""
+    x = x.copy()
+    bad = ndimage.binary_dilation(np.abs(x) > thr_uv,
+                                  structure=np.ones((int(pad_s * fs) * 2 + 1, 1)))
+    idx = np.arange(len(x))
+    for ch in range(x.shape[1]):
+        b = bad[:, ch]
+        if b.any() and b.mean() <= max_frac:
+            x[b, ch] = np.interp(idx[b], idx[~b], x[~b, ch])
+    return x
 
 
 def preprocess(x, fs, bandpass=True, notch=None, trim_seconds=3.0):
-    """Pipeline: 
-       1. Recorta los primeros N segundos para eliminar transitorios de encendido.
-       2. Quita offset (DC) y aplica filtros opcionales de fase cero.
-    """
-    # 1. Trim de los primeros 3 segundos
-    trim_samples = int(trim_seconds * fs)
-    if len(x) > trim_samples:
-        x = x[trim_samples:]
-        
-    # 2. Centrado y filtros
-    x = x - x.mean(axis=0)
+    """Pipeline: trim inicial (3s) -> centrado DC -> filtros -> reparar artefactos."""
+    x = x[int(trim_seconds * fs):] if len(x) > int(trim_seconds * fs) else x
+
+    # Centrado para remover offsets de electrodo
+    x = x - np.median(x, axis=0)
+
     nyq = fs / 2
     if bandpass and len(x) > 100:
         sos = signal.butter(4, [1.0, min(40.0, nyq * 0.95)], btype="band", fs=fs, output="sos")
@@ -75,11 +268,12 @@ def preprocess(x, fs, bandpass=True, notch=None, trim_seconds=3.0):
     if notch and notch < nyq and len(x) > 100:
         b, a = signal.iirnotch(notch, Q=30, fs=fs)
         x = signal.filtfilt(b, a, x, axis=0)
-    return x
+
+    return repair_artifacts(x, fs)
 
 
 def compute_psd(x, fs):
-    """PSD de Welch por canal. Devuelve f, P (ch, nf) en unidades^2/Hz."""
+    """PSD de Welch por canal."""
     nperseg = int(min(len(x), 2 * fs))
     f, P = signal.welch(x, fs=fs, nperseg=nperseg, noverlap=nperseg // 2,
                         window="hann", axis=0, detrend="constant")
@@ -87,7 +281,7 @@ def compute_psd(x, fs):
 
 
 def band_powers(f, P):
-    """Potencia absoluta por banda. P: (ch, nf) -> dict banda -> (ch,)."""
+    """Potencia absoluta en µV² para cada banda."""
     df = f[1] - f[0]
     out = {}
     for name, (lo, hi) in BANDS.items():
@@ -97,6 +291,7 @@ def band_powers(f, P):
 
 
 def cognitive_indices(bp):
+    """Cálculo de ratios de carga cognitiva."""
     eps = 1e-12
     th, al, be = bp["Theta"], bp["Alpha"], bp["Beta"]
     return {
@@ -106,31 +301,16 @@ def cognitive_indices(bp):
     }
 
 
-# ----------------------------------------------------------------------------
-# Biomarcadores del scope
-# ----------------------------------------------------------------------------
-THETA_CH = 'FZ'                  
-ALPHA_PREF = ['O1', 'O2', 'Pz']  
-ALPHA_FALLBACK = ['C2']          
-FAA_L, FAA_R = 'F3', 'F4'        
-
-
-def ch_index(name):
-    for i, n in enumerate(CHANNEL_NAMES):
-        if n.upper() == name.upper():
-            return i
-    return None
-
-
-def alpha_channels():
-    pref = [ch_index(n) for n in ALPHA_PREF if ch_index(n) is not None]
-    if pref:
-        return pref, "/".join(ALPHA_PREF)
-    fb = [ch_index(n) for n in ALPHA_FALLBACK if ch_index(n) is not None]
-    return fb, "/".join(ALPHA_FALLBACK) + " (proxy)"
+def alpha_channels(channels):
+    """Encuentra los índices y etiqueta de los canales alfa posteriores disponibles."""
+    ch_map = {n.upper(): i for i, n in enumerate(channels)}
+    idx = [ch_map[n.upper()] for n in ALPHA_CHANNELS if n.upper() in ch_map]
+    label = "/".join([channels[i] for i in idx]) if idx else "N/A"
+    return idx, label
 
 
 def band_filter(x, fs, lo, hi):
+    """Filtro pasa-banda Butterworth."""
     hi = min(hi, fs / 2 * 0.95)
     if lo <= 0:
         sos = signal.butter(4, hi, btype="low", fs=fs, output="sos")
@@ -139,85 +319,58 @@ def band_filter(x, fs, lo, hi):
     return signal.sosfiltfilt(sos, x, axis=0)
 
 
-def detect_theta_bursts(fz, fs, ratio=2.5, min_dur=0.15, max_dur=3.0, merge_gap=0.1):
-    fz = np.asarray(fz, dtype=float)
-    if len(fz) < 100:
-        z = np.zeros(len(fz))
-        return z, z, z + 1e-9, []
-    th = band_filter(fz, fs, *BANDS["Theta"])
-    env = np.abs(signal.hilbert(th))
-    k = max(1, int(0.25 * fs))
-    env = np.convolve(env, np.ones(k) / k, mode="same")
-    w = max(int(10 * fs), 3)
-    base = pd.Series(env).rolling(w, center=True, min_periods=max(1, w // 4)).median().to_numpy()
-    base = np.maximum(base, 1e-9)
-    mask = env > ratio * base
-    d = np.diff(np.r_[0, mask.astype(int), 0])
-    starts, ends = np.where(d == 1)[0], np.where(d == -1)[0]
-    regs = []
-    for s0, e0 in zip(starts, ends):
-        if regs and (s0 - regs[-1][1]) / fs < merge_gap:
-            regs[-1][1] = e0
-        else:
-            regs.append([s0, e0])
-    bursts = [(s0 / fs, e0 / fs, float(env[s0:e0].max()))
-              for s0, e0 in regs if min_dur <= (e0 - s0) / fs <= max_dur]
-    return th, env, base, bursts
-
-
-def _metrics_from_bp(bp):
+def _metrics_from_bp(bp, channels):
+    """Extrae theta Fz, alfa posterior y FAA de forma modular según los canales presentes."""
     eps = 1e-12
-    th_i = ch_index(THETA_CH)
-    a_idx, _ = alpha_channels()
-    l, r = ch_index(FAA_L), ch_index(FAA_R)
+    ch_map = {n.upper(): i for i, n in enumerate(channels)}
+    
+    th_i = ch_map.get(THETA_CH.upper(), None)
+    a_idx, _ = alpha_channels(channels)
+    l = ch_map.get(FAA_L.upper(), None)
+    r = ch_map.get(FAA_R.upper(), None)
+    
     theta = float(bp["Theta"][th_i]) if th_i is not None else np.nan
     alpha = float(np.mean(bp["Alpha"][a_idx])) if a_idx else np.nan
     faa = (float(np.log(bp["Alpha"][r] + eps) - np.log(bp["Alpha"][l] + eps))
-           if l is not None and r is not None else np.nan)
+           if (l is not None and r is not None) else np.nan)
+           
     return theta, alpha, faa
 
 
-def biomarker_summary(x, fs, bursts, dur):
+def biomarker_summary(x, fs, dur, channels):
+    """Resumen de biomarcadores tónicos adaptado a los canales activos."""
     f, P = compute_psd(x, fs)
     bp = band_powers(f, P)
     tot = sum(bp.values())
-    theta, alpha, faa = _metrics_from_bp(bp)
-    th_i = ch_index(THETA_CH)
+    theta, alpha, faa = _metrics_from_bp(bp, channels)
+    ch_map = {n.upper(): i for i, n in enumerate(channels)}
+    th_i = ch_map.get(THETA_CH.upper(), None)
+    
+    rel_theta = (float(bp["Theta"][th_i] / tot[th_i] * 100)
+                 if (th_i is not None and tot[th_i] > 0) else np.nan)
+                 
     return {
         "theta_fz": theta,
-        "theta_fz_rel": float(bp["Theta"][th_i] / tot[th_i] * 100) if th_i is not None else np.nan,
+        "theta_fz_rel": rel_theta,
         "alpha": alpha,
         "faa": faa,
-        "n_bursts": len(bursts),
-        "burst_rate": len(bursts) / (dur / 60.0) if dur > 0 else np.nan,
-        "burst_dur": float(np.mean([b[1] - b[0] for b in bursts])) if bursts else np.nan,
-        "burst_amp": float(np.mean([b[2] for b in bursts])) if bursts else np.nan,
     }
 
 
-def window_biomarkers(x, fs, bursts, win_s, step_s):
+def window_biomarkers(x, fs, win_s, step_s, channels):
+    """Evolución temporal de biomarcadores en ventanas deslizantes."""
     n, win, step = len(x), int(win_s * fs), max(1, int(step_s * fs))
     starts = np.arange(0, n - win + 1, step)
-    bstart = np.array([b[0] for b in bursts]) if bursts else np.array([])
-    out = {"t": [], "theta": [], "alpha": [], "faa": [], "rate": []}
+    out = {"t": [], "theta": [], "alpha": [], "faa": []}
     for s0 in starts:
         f, P = compute_psd(x[s0:s0 + win], fs)
-        theta, alpha, faa = _metrics_from_bp(band_powers(f, P))
+        theta, alpha, faa = _metrics_from_bp(band_powers(f, P), channels)
         t0 = s0 / fs
-        cnt = int(np.sum((bstart >= t0) & (bstart < t0 + win_s))) if len(bstart) else 0
         out["t"].append(t0 + win_s / 2)
         out["theta"].append(theta)
         out["alpha"].append(alpha)
         out["faa"].append(faa)
-        out["rate"].append(cnt / (win_s / 60.0))
     return {k: np.array(v, dtype=float) for k, v in out.items()}
-
-
-def slope(t_min, v):
-    ok = np.isfinite(v) & np.isfinite(t_min)
-    if ok.sum() < 3:
-        return np.nan
-    return float(np.polyfit(t_min[ok], v[ok], 1)[0])
 
 
 def robust_limits(y, robust=True, pad=0.12):
@@ -229,14 +382,14 @@ def robust_limits(y, robust=True, pad=0.12):
 
 
 # ----------------------------------------------------------------------------
-# Ventana PSD y Biomarcadores
+# Ventana Secundaria: PSD y Biomarcadores
 # ----------------------------------------------------------------------------
 class PSDWindow(tk.Toplevel):
     def __init__(self, app):
         super().__init__(app.root)
         self.app = app
-        self.title("Densidad Espectral de Potencia - Carga cognitiva")
-        self.geometry("1250x800")
+        self.title("Densidad Espectral de Potencia & Biomarcadores Cognitivos")
+        self.geometry("1220x820")
 
         top = ttk.Frame(self, padding=8)
         top.pack(side=tk.TOP, fill=tk.X)
@@ -259,13 +412,11 @@ class PSDWindow(tk.Toplevel):
 
         nb = ttk.Notebook(self)
         nb.pack(fill=tk.BOTH, expand=True)
-        tab1, tabB, tab2, tab3 = ttk.Frame(nb), ttk.Frame(nb), ttk.Frame(nb), ttk.Frame(nb)
+        tab1, tabB = ttk.Frame(nb), ttk.Frame(nb)
         nb.add(tab1, text="Espectro del archivo")
         nb.add(tabB, text="Biomarcadores del scope")
-        nb.add(tab2, text="Comparar niveles (bandas)")
-        nb.add(tab3, text="Comparar niveles (biomarcadores)")
 
-        # Pestaña 1
+        # Pestaña 1: Espectro y distribución de potencia
         self.fig = Figure(figsize=(11, 7))
         gs = self.fig.add_gridspec(2, 2, height_ratios=[1.6, 1], width_ratios=[1.6, 1])
         self.ax_psd = self.fig.add_subplot(gs[0, :])
@@ -275,39 +426,17 @@ class PSDWindow(tk.Toplevel):
         self.canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
         NavigationToolbar2Tk(self.canvas, tab1)
 
-        # Pestaña biomarcadores
+        # Pestaña 2: Biomarcadores tónicos y mapa integrado
         self.fig3 = Figure(figsize=(11, 7.5))
         self.canvas3 = FigureCanvasTkAgg(self.fig3, master=tabB)
         self.canvas3.get_tk_widget().pack(fill=tk.BOTH, expand=True)
         NavigationToolbar2Tk(self.canvas3, tabB)
 
-        # Pestaña 2
-        bar = ttk.Frame(tab2, padding=6)
-        bar.pack(fill=tk.X)
-        ttk.Button(bar, text="Calcular comparación (todos los archivos)",
-                   command=self.compare_levels).pack(side=tk.LEFT)
-        self.cmp_status = ttk.Label(bar, text="  Usa los canales visibles y los filtros actuales.")
-        self.cmp_status.pack(side=tk.LEFT)
-        self.fig2 = Figure(figsize=(11, 6))
-        self.canvas2 = FigureCanvasTkAgg(self.fig2, master=tab2)
-        self.canvas2.get_tk_widget().pack(fill=tk.BOTH, expand=True)
-
-        # Pestaña 3
-        bar3 = ttk.Frame(tab3, padding=6)
-        bar3.pack(fill=tk.X)
-        ttk.Button(bar3, text="Calcular biomarcadores (todos los archivos)",
-                   command=self.compare_biomarkers).pack(side=tk.LEFT)
-        self.bm_status = ttk.Label(bar3, text="  Barras = media ± desv. est.; puntos = archivos individuales.")
-        self.bm_status.pack(side=tk.LEFT)
-        self.fig4 = Figure(figsize=(11, 6))
-        self.canvas4 = FigureCanvasTkAgg(self.fig4, master=tab3)
-        self.canvas4.get_tk_widget().pack(fill=tk.BOTH, expand=True)
-
         self.refresh()
 
     def _segment(self):
         a = self.app
-        if a.data is None:
+        if a.data is None or not a.channels:
             return None
         if self.seg_var.get() == "Registro completo":
             seg = a.data
@@ -315,7 +444,7 @@ class PSDWindow(tk.Toplevel):
             i0, i1 = a.window_bounds()
             seg = a.data[i0:i1]
         idx = a.visible_idx()
-        return seg[:, idx], [CHANNEL_NAMES[i] for i in idx]
+        return seg[:, idx], [a.channels[i] for i in idx]
 
     def refresh(self):
         self.refresh_biomarkers()
@@ -348,10 +477,9 @@ class PSDWindow(tk.Toplevel):
         ax.set_xticklabels([str(e) for e in BAND_EDGES])
         ax.set_xlabel("Frecuencia (Hz)")
         ax.set_ylabel("PSD (dB re 1 µV²/Hz)" if log else "PSD (µV²/Hz)")
-        ax.set_title(f"PSD de Welch - {self.app.current_label()} "
-                     f"({len(seg) / fs:.1f} s)")
+        ax.set_title(f"PSD de Welch - {self.app.current_label()} ({len(seg) / fs:.1f} s)")
         ax.grid(True, ls="--", alpha=0.4)
-        ax.legend(ncol=min(len(names) + 1, 9), fontsize=8, loc="lower left")
+        ax.legend(ncol=min(len(names) + 1, 7), fontsize=8, loc="lower left")
 
         bp = band_powers(f, P)
         tot = sum(v for v in bp.values())
@@ -370,20 +498,27 @@ class PSDWindow(tk.Toplevel):
         ax = self.ax_txt
         ax.clear()
         ax.axis("off")
-        lines = ["Índices de carga cognitiva", "(promedio de canales mostrados)", ""]
+        lines = ["Índices de carga cognitiva", "(canales visibles en pantalla)", ""]
         for k, v in idx.items():
             lines.append(f"{k}:  {np.mean(v):.2f}")
-        fr = [i for i, n in enumerate(names) if n in FRONTAL]
+            
+        fr = [i for i, n in enumerate(names) if n in FRONTAL_TARGETS]
         if fr:
-            lines += ["", f"θ frontal (µV²):  {np.mean(bp['Theta'][fr]):.2f}",
-                      f"α (µV²):  {np.mean(bp['Alpha']):.2f}"]
+            lines += ["", f"θ frontal (µV²):  {np.mean(bp['Theta'][fr]):.2f}"]
+            
+        post = [i for i, n in enumerate(names) if n in POSTERIOR_TARGETS]
+        if post:
+            lines += [f"α posterior (µV²):  {np.mean(bp['Alpha'][post]):.2f}"]
+        else:
+            lines += ["α posterior: n/d (requiere Pz, O1 u O2)"]
+            
         ax.text(0.0, 1.0, "\n".join(lines), va="top", fontsize=10, family="monospace")
         self.fig.tight_layout()
         self.canvas.draw_idle()
 
     def refresh_biomarkers(self):
         a = self.app
-        if a.data is None or a.theta_fz is None:
+        if a.data is None or not a.channels:
             return
         fs = a.fs
         n = len(a.data)
@@ -399,30 +534,34 @@ class PSDWindow(tk.Toplevel):
             fig.text(0.5, 0.5, "Se necesitan al menos 4 s de segmento.", ha="center", va="center", fontsize=12)
             self.canvas3.draw_idle()
             return
-        ratio = a.burst_ratio
-        bursts = [b for b in a.bursts if b[0] >= t0 and b[1] <= t1]
-        rel = [(b[0] - t0, b[1] - t0, b[2]) for b in bursts]
+
         seg = a.data[i0:i1]
-        a_idx, a_label = alpha_channels()
+        ch_map = {c.upper(): i for i, c in enumerate(a.channels)}
+        has_fz = THETA_CH.upper() in ch_map
+        has_faa = (FAA_L.upper() in ch_map) and (FAA_R.upper() in ch_map)
+        _, a_label = alpha_channels(a.channels)
+        has_alpha = a_label != "N/A"
 
         gs = fig.add_gridspec(3, 2, height_ratios=[1.1, 1, 1], width_ratios=[1.5, 1])
         ax0 = fig.add_subplot(gs[0, :])
         t = np.arange(i0, i1) / fs
-        ax0.plot(t, a.theta_fz[i0:i1], color=BAND_COLORS["Theta"], lw=0.8, label="Theta Fz (4-8 Hz)")
-        ax0.plot(t, a.env_fz[i0:i1], color="k", lw=1.1, label="Envolvente")
-        ax0.plot(t, ratio * a.base_fz[i0:i1], "--", color="gray", lw=1.1,
-                 label=f"Umbral ({ratio:g}× base)")
-        for k, b in enumerate(bursts):
-            ax0.axvspan(b[0], b[1], color="#d62728", alpha=0.28,
-                        label="Ráfaga fásica (FM-theta)" if k == 0 else None)
+
+        if has_fz:
+            th_sig = band_filter(seg[:, ch_map[THETA_CH.upper()]], fs, *BANDS["Theta"])
+            ax0.plot(t, th_sig, color=BAND_COLORS["Theta"], lw=0.9, label=f"Theta {THETA_CH} (4-8 Hz)")
+            lo, hi = robust_limits(th_sig, False)
+            ax0.set_ylim(lo, hi)
+            ax0.set_title(f"Señal Theta {THETA_CH} filtrada (4-8 Hz) - Control cognitivo / Fatiga", fontsize=10)
+        else:
+            ax0.text(0.5, 0.5, f"Canal {THETA_CH} no disponible en este registro.", ha="center", va="center", fontsize=10, color="gray")
+            ax0.set_title(f"Theta {THETA_CH} (No disponible)", fontsize=10)
+            
         ax0.set_xlim(t0, t1)
-        lo, hi = robust_limits(a.theta_fz[i0:i1], False)
-        ax0.set_ylim(lo, hi)
         ax0.set_xlabel("Tiempo (s)")
         ax0.set_ylabel("µV")
-        ax0.set_title(f"Theta Fz - Ráfagas detectadas: {len(bursts)}", fontsize=10)
         ax0.grid(True, ls="--", alpha=0.4)
-        ax0.legend(ncol=4, fontsize=8, loc="upper right")
+        if has_fz:
+            ax0.legend(loc="upper right", fontsize=8)
 
         win_s = float(np.clip(dur / 6, 4, 10))
         step_s = win_s / 2
@@ -431,207 +570,128 @@ class PSDWindow(tk.Toplevel):
         ax2 = fig.add_subplot(gs[2, 0], sharex=ax1)
         ax3 = fig.add_subplot(gs[1, 1])
         ax4 = fig.add_subplot(gs[2, 1])
-        for ax in (ax3, ax4):
-            ax.axis("off")
-        
+        ax3.axis("off")
+
         if enough:
-            wb = window_biomarkers(seg, fs, rel, win_s, step_s)
+            wb = window_biomarkers(seg, fs, win_s, step_s, a.channels)
             unit, ulabel = (60.0, "min") if dur >= 120 else (1.0, "s")
             tc = (t0 + wb["t"]) / unit
-            t_min = (wb["t"]) / 60.0
             nb_ = max(1, int(round(0.2 * len(tc))))
+
             def norm(v):
                 base = np.nanmean(v[:nb_])
                 return v / base if np.isfinite(base) and base > 0 else v * np.nan
-            th_n, al_n = norm(wb["theta"]), norm(wb["alpha"])
-            ax1.plot(tc, th_n, color=BAND_COLORS["Theta"], lw=2.2, label="Theta tónico")
-            ax1.plot(tc, al_n, color=BAND_COLORS["Alpha"], lw=2.2, label=f"Alfa tónico")
+
+            if has_fz:
+                th_n = norm(wb["theta"])
+                ax1.plot(tc, th_n, color=BAND_COLORS["Theta"], lw=2.2, label=f"Theta tónico ({THETA_CH})")
+            if has_alpha:
+                al_n = norm(wb["alpha"])
+                ax1.plot(tc, al_n, color=BAND_COLORS["Alpha"], lw=2.2, label=f"Alfa tónico ({a_label})")
+                
             ax1.axhline(1.0, color="gray", ls=":", lw=1)
             ax1.set_ylabel("Relativo a base")
-            ax1.legend(fontsize=8, loc="best")
+            if has_fz or has_alpha:
+                ax1.legend(fontsize=8, loc="best")
             ax1.grid(True, ls="--", alpha=0.4)
             ax1.tick_params(labelbottom=False)
 
-            ax2.bar(tc, wb["rate"], width=step_s / unit * 0.9, color="#d62728", alpha=0.45)
-            ax2.set_ylabel("Ráfagas/min", color="#d62728")
-            ax2b = ax2.twinx()
-            ax2b.plot(tc, wb["faa"], color="#1f77b4", lw=2, marker="o", ms=3)
-            ax2b.axhline(0, color="gray", ls=":", lw=1)
-            ax2b.set_ylabel("FAA", color="#1f77b4")
+            if has_faa:
+                ax2.plot(tc, wb["faa"], color="#1f77b4", lw=2, marker="o", ms=3, label=f"FAA (ln α({FAA_R}) − ln α({FAA_L}))")
+                ax2.axhline(0, color="gray", ls=":", lw=1)
+                ax2.set_ylabel("FAA")
+                ax2.legend(fontsize=8, loc="best")
+            else:
+                ax2.text(0.5, 0.5, "FAA no disponible (requiere F3 y F4)", ha="center", va="center", color="gray", fontsize=9)
+                ax2.set_ylabel("FAA (n/d)")
+                
             ax2.set_xlabel(f"Tiempo ({ulabel})")
             ax2.grid(True, ls="--", alpha=0.4)
 
-        s = biomarker_summary(seg, fs, rel, dur)
+        s = biomarker_summary(seg, fs, dur, a.channels)
+
         def fmt(v, f="{:.2f}"):
             return f.format(v) if np.isfinite(v) else "n/d"
-        L = [f"Biomarcadores ({dur:.1f} s post-trim)", "",
-             f"θ tónico Fz:      {fmt(s['theta_fz'])} µV²",
-             f"α tónico {a_label}: {fmt(s['alpha'])} µV²",
-             f"FAA (F4 vs F3):   {fmt(s['faa'])}",
-             f"Ráfagas θ (Fz):   {s['n_bursts']}  ({fmt(s['burst_rate'], '{:.1f}')}/min)"]
-        ax3.text(0.0, 1.0, "\n".join(L), va="top", fontsize=8.5, family="monospace", transform=ax3.transAxes)
+
+        L = [
+            f"Biomarcadores ({dur:.1f} s post-trim)",
+            "",
+            f"Canales presentes: {', '.join(a.channels)}",
+            "",
+            f"θ tónico {THETA_CH}:        {fmt(s['theta_fz'])} µV²  ({fmt(s['theta_fz_rel'], '{:.1f}')}% rel)" if has_fz else f"θ tónico {THETA_CH}:        No disponible",
+            f"α tónico {a_label}: {fmt(s['alpha'])} µV²" if has_alpha else "α posterior:       No disponible (Faltan Pz/O1/O2)",
+            f"FAA ({FAA_R} vs {FAA_L}):   {fmt(s['faa'])}" if has_faa else "FAA:               No disponible (Faltan F3 o F4)",
+        ]
+        ax3.text(0.0, 1.0, "\n".join(L), va="top", fontsize=9, family="monospace", transform=ax3.transAxes)
+        
+        # Mini representación visual del mapa de electrodos en ax4
+        draw_electrode_map(ax4, a.channels, title="", show_legend=False)
+        ax4.set_title("Montaje 10-20 activo", fontsize=9, fontweight="bold", pad=4)
+        
         fig.tight_layout()
         self.canvas3.draw_idle()
 
-    def compare_biomarkers(self):
-        a = self.app
-        self.bm_status.config(text="  Calculando...")
-        self.update_idletasks()
-        ratio = a.ratio_value()
-        keys = ["theta_fz", "alpha", "faa", "burst_rate"]
-        res = {lvl: {k: [] for k in keys} for lvl in a.levels_dict}
-        th_i = ch_index(THETA_CH)
-        for lvl, files in a.levels_dict.items():
-            for fn in files:
-                try:
-                    x = preprocess(load_eeg(os.path.join(a.directory, fn)), a.fs,
-                                   a.bandpass_var.get(), a.notch_value())
-                    dur = len(x) / a.fs
-                    if dur < 4:
-                        continue
-                    _, _, _, bursts = detect_theta_bursts(x[:, th_i], a.fs, ratio)
-                    s = biomarker_summary(x, a.fs, bursts, dur)
-                except Exception:
-                    continue
-                for k in keys:
-                    res[lvl][k].append(s[k])
-        _, a_label = alpha_channels()
-        titles = {"theta_fz": "Theta tónico Fz (µV²)", "alpha": f"Alfa tónico {a_label} (µV²)",
-                  "faa": "FAA = ln α(F4) − ln α(F3)", "burst_rate": "Ráfagas theta fásico (por min)"}
-        fig = self.fig4
-        fig.clear()
-        levels = list(res)
-        colors = ["#7f7f7f", "#2ca02c", "#ff7f0e", "#d62728"]
-        for j, k in enumerate(keys):
-            ax = fig.add_subplot(2, 2, j + 1)
-            for i, l in enumerate(levels):
-                v = np.array([z for z in res[l][k] if np.isfinite(z)])
-                if len(v) == 0:
-                    continue
-                ax.bar(i, v.mean(), yerr=v.std() if len(v) > 1 else 0, capsize=4,
-                       color=colors[i % 4], alpha=0.55)
-                ax.scatter(np.full(len(v), i) + np.linspace(-0.12, 0.12, len(v)), v,
-                           color="k", s=14, zorder=3)
-            ax.set_xticks(range(len(levels)))
-            ax.set_xticklabels(levels, fontsize=8)
-            ax.set_title(titles[k], fontsize=10)
-            ax.grid(True, axis="y", ls="--", alpha=0.4)
-            if k == "faa":
-                ax.axhline(0, color="gray", lw=1)
-        fig.tight_layout()
-        self.canvas4.draw_idle()
-        self.bm_status.config(text="  Listo.")
-
-    def compare_levels(self):
-        a = self.app
-        idx = a.visible_idx()
-        self.cmp_status.config(text="  Calculando...")
-        self.update_idletasks()
-        results, rel_bands = {}, {}
-        for level, files in a.levels_dict.items():
-            vals, rb = {}, {b: [] for b in BANDS}
-            for fn in files:
-                try:
-                    x = preprocess(load_eeg(os.path.join(a.directory, fn)), a.fs,
-                                   a.bandpass_var.get(), a.notch_value())
-                    if len(x) < int(a.fs):
-                        continue
-                    f, P = compute_psd(x[:, idx], a.fs)
-                except Exception:
-                    continue
-                bp = band_powers(f, P)
-                tot = sum(bp.values())
-                for k, v in cognitive_indices(bp).items():
-                    vals.setdefault(k, []).append(float(np.mean(v)))
-                for b in BANDS:
-                    rb[b].append(float(np.mean(bp[b] / tot)) * 100)
-            results[level], rel_bands[level] = vals, rb
-        self.fig2.clear()
-        levels = list(results.keys())
-        keys = ["Theta/Alpha", "Beta/Alpha", "Engagement β/(α+θ)"]
-        for j, k in enumerate(keys):
-            ax = self.fig2.add_subplot(2, 3, j + 1)
-            mu = [np.mean(results[l].get(k, [np.nan])) for l in levels]
-            sd = [np.std(results[l].get(k, [np.nan])) for l in levels]
-            ax.bar(levels, mu, yerr=sd, capsize=4, color="#4c78a8")
-            ax.set_title(k, fontsize=10)
-            ax.tick_params(axis="x", labelsize=8, rotation=20)
-            ax.grid(True, axis="y", ls="--", alpha=0.4)
-        ax = self.fig2.add_subplot(2, 1, 2)
-        w = 0.8 / len(BANDS)
-        x0 = np.arange(len(levels))
-        for i, b in enumerate(BANDS):
-            m = [np.mean(rel_bands[l][b]) if rel_bands[l][b] else np.nan for l in levels]
-            ax.bar(x0 + i * w, m, w, label=b, color=BAND_COLORS[b])
-        ax.set_xticks(x0 + 0.4 - w / 2)
-        ax.set_xticklabels(levels)
-        ax.set_ylabel("Potencia relativa (%)")
-        ax.set_title("Potencia relativa por banda y nivel (Post-Trim 3s)")
-        ax.legend(ncol=5, fontsize=8)
-        ax.grid(True, axis="y", ls="--", alpha=0.4)
-        self.fig2.tight_layout()
-        self.canvas2.draw_idle()
-        self.cmp_status.config(text="  Listo.")
-
 
 # ----------------------------------------------------------------------------
-# Aplicación principal
+# Aplicación Principal: EEGViewer con Pestaña de Mapa Integrada
 # ----------------------------------------------------------------------------
 class EEGViewer:
     def __init__(self, root, directory):
         self.root = root
         self.directory = directory
         self.data = None          
+        self.channels = []  # Lista dinámica de canales presentes en el archivo cargado
         self.fs = DEFAULT_FS
         self.axes, self.lines = [], []
         self.psd_win = None
         self.band_cache = {}
-        self.burst_patches = []
-        self.bursts = []
-        self.theta_fz = self.env_fz = self.base_fz = None
-        self.burst_ratio = 2.5
         self.band_show_var = tk.StringVar(value="Cruda (filtrada)")
-        self.ratio_var = tk.StringVar(value="2.5")
-        self.root.title("Visualizador de Señales EEG")
-        self.root.geometry("1450x880")
+        self.root.title("Visualizador de Señales EEG & Biomarcadores (10-20)")
+        self.root.geometry("1480x880")
 
         self._scan_directory()
         self._build_controls()
         self._build_plot()
 
-        self.level_combobox.set(list(self.levels_dict)[0])
-        self.on_level_changed()
+        if self.levels_dict:
+            self.level_combobox.set(list(self.levels_dict)[0])
+            self.on_level_changed()
 
     def _scan_directory(self):
-        files = [f for f in os.listdir(self.directory) if f.endswith('.txt')]
-        self.levels_dict = {
-            lvl: sorted([f for f in files if f.lower().startswith(p)], key=numeric_sort_key)
-            for lvl, p in LEVEL_PREFIX.items()
-        }
+        files = [f for f in os.listdir(self.directory) if f.endswith(('.txt', '.csv'))]
+        matched = {}
+        for lvl, p in LEVEL_PREFIX.items():
+            sub = sorted([f for f in files if f.lower().startswith(p)], key=numeric_sort_key)
+            if sub:
+                matched[lvl] = sub
+        if matched:
+            self.levels_dict = matched
+        else:
+            self.levels_dict = {"Todos": sorted(files, key=numeric_sort_key)}
 
     def _build_controls(self):
         c = ttk.Frame(self.root, padding=12)
         c.pack(side=tk.LEFT, fill=tk.Y)
         bold = ("Arial", 10, "bold")
 
-        ttk.Label(c, text="Nivel:", font=bold).pack(anchor="w")
+        ttk.Label(c, text="Nivel / Carpeta:", font=bold).pack(anchor="w")
         self.level_var = tk.StringVar()
         self.level_combobox = ttk.Combobox(c, textvariable=self.level_var, state="readonly",
                                            values=list(self.levels_dict), width=28)
-        self.level_combobox.pack(pady=(2, 10))
+        self.level_combobox.pack(pady=(2, 8))
         self.level_combobox.bind("<<ComboboxSelected>>", self.on_level_changed)
 
         ttk.Label(c, text="Archivo:", font=bold).pack(anchor="w")
         self.file_var = tk.StringVar()
         self.file_combobox = ttk.Combobox(c, textvariable=self.file_var, state="readonly", width=28)
-        self.file_combobox.pack(pady=(2, 10))
+        self.file_combobox.pack(pady=(2, 8))
         self.file_combobox.bind("<<ComboboxSelected>>", lambda e: self.load_file())
 
         ttk.Separator(c).pack(fill=tk.X, pady=6)
         ttk.Label(c, text="Frecuencia de muestreo (Hz):", font=bold).pack(anchor="w")
         self.fs_var = tk.StringVar(value=str(int(DEFAULT_FS)))
         fs_e = ttk.Entry(c, textvariable=self.fs_var, width=10)
-        fs_e.pack(anchor="w", pady=(2, 8))
+        fs_e.pack(anchor="w", pady=(2, 6))
         fs_e.bind("<Return>", lambda e: self.load_file())
 
         ttk.Label(c, text="Filtros:", font=bold).pack(anchor="w")
@@ -641,7 +701,7 @@ class EEGViewer:
         self.notch_var = tk.StringVar(value="Sin notch")
         nb = ttk.Combobox(c, textvariable=self.notch_var, state="readonly", width=14,
                           values=["Sin notch", "Notch 50 Hz", "Notch 60 Hz"])
-        nb.pack(anchor="w", pady=(2, 8))
+        nb.pack(anchor="w", pady=(2, 6))
         nb.bind("<<ComboboxSelected>>", lambda e: self.load_file())
 
         ttk.Separator(c).pack(fill=tk.X, pady=6)
@@ -651,40 +711,47 @@ class EEGViewer:
                         command=self.redraw).pack(anchor="w")
         self.robust_var = tk.BooleanVar(value=True)
         ttk.Checkbutton(c, text="Robusta (ignora artefactos)", variable=self.robust_var,
-                        command=self.redraw).pack(anchor="w", pady=(0, 8))
+                        command=self.redraw).pack(anchor="w", pady=(0, 6))
 
         ttk.Label(c, text="Señal mostrada:", font=bold).pack(anchor="w")
         bs = ttk.Combobox(c, textvariable=self.band_show_var, state="readonly", width=18,
                           values=["Cruda (filtrada)"] + list(BANDS))
-        bs.pack(anchor="w", pady=(2, 4))
+        bs.pack(anchor="w", pady=(2, 6))
         bs.bind("<<ComboboxSelected>>", lambda e: self.redraw())
-        ttk.Label(c, text="Umbral ráfaga theta Fz (× base):").pack(anchor="w")
-        sp = ttk.Spinbox(c, from_=1.5, to=6.0, increment=0.5, width=6,
-                         textvariable=self.ratio_var, command=self.on_ratio_changed)
-        sp.pack(anchor="w", pady=(2, 8))
-        sp.bind("<Return>", lambda e: self.on_ratio_changed())
 
-        ttk.Label(c, text="Canales visibles:", font=bold).pack(anchor="w")
+        # Contenedor dinámico de checkboxes según canales detectados
+        ttk.Label(c, text="Canales detectados en archivo:", font=bold).pack(anchor="w", pady=(4, 2))
+        self.ch_frame = ttk.Frame(c)
+        self.ch_frame.pack(anchor="w", fill=tk.X)
         self.ch_vars = []
-        for n in CHANNEL_NAMES:
-            v = tk.BooleanVar(value=True)
-            ttk.Checkbutton(c, text=n, variable=v, command=self.rebuild_axes).pack(anchor="w")
-            self.ch_vars.append(v)
 
         ttk.Separator(c).pack(fill=tk.X, pady=8)
-        ttk.Button(c, text="Analizar PSD / carga cognitiva", command=self.open_psd).pack(fill=tk.X)
-        ttk.Button(c, text="Cambiar carpeta de datos...", command=self.change_dir).pack(fill=tk.X, pady=(6, 0))
-        self.info_label = ttk.Label(c, text="", wraplength=210, justify="left")
-        self.info_label.pack(anchor="w", pady=10)
+        ttk.Button(c, text="🧠 Ver mapa de electrodos",
+                   command=lambda: self.main_notebook.select(1)).pack(fill=tk.X, pady=(2, 4))
+        ttk.Button(c, text="📊 Analizar PSD / biomarcadores", command=self.open_psd).pack(fill=tk.X, pady=2)
+        ttk.Button(c, text="📁 Cambiar carpeta de datos...", command=self.change_dir).pack(fill=tk.X, pady=(4, 0))
+        
+        self.info_label = ttk.Label(c, text="", wraplength=220, justify="left")
+        self.info_label.pack(anchor="w", pady=8)
 
     def _build_plot(self):
         right = ttk.Frame(self.root)
         right.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)
 
-        self.fig = Figure(figsize=(10, 8))
-        self.canvas = FigureCanvasTkAgg(self.fig, master=right)
+        # Notebook principal con dos pestañas: Señales Continuas y Mapa de Electrodos
+        self.main_notebook = ttk.Notebook(right)
+        self.main_notebook.pack(fill=tk.BOTH, expand=True)
 
-        nav = ttk.Frame(right, padding=(8, 4))
+        # ----------------------------------------------------
+        # Pestaña 1: Señales EEG
+        # ----------------------------------------------------
+        tab_signals = ttk.Frame(self.main_notebook)
+        self.main_notebook.add(tab_signals, text="  📈 Señales EEG  ")
+
+        self.fig = Figure(figsize=(10, 8))
+        self.canvas = FigureCanvasTkAgg(self.fig, master=tab_signals)
+
+        nav = ttk.Frame(tab_signals, padding=(8, 4))
         nav.pack(side=tk.BOTTOM, fill=tk.X)
         ttk.Label(nav, text="Ventana:").pack(side=tk.LEFT)
         self.win_var = tk.StringVar(value="10 s")
@@ -701,8 +768,33 @@ class EEGViewer:
         self.time_label = ttk.Label(nav, text="", width=26, anchor="e")
         self.time_label.pack(side=tk.LEFT, padx=(8, 0))
 
-        NavigationToolbar2Tk(self.canvas, right).pack(side=tk.BOTTOM, fill=tk.X)
+        NavigationToolbar2Tk(self.canvas, tab_signals).pack(side=tk.BOTTOM, fill=tk.X)
         self.canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
+
+        # ----------------------------------------------------
+        # Pestaña 2: Representación Visual del Montaje (10-20)
+        # ----------------------------------------------------
+        tab_map = ttk.Frame(self.main_notebook)
+        self.main_notebook.add(tab_map, text="  🧠 Mapa de Electrodos (10-20)  ")
+
+        self.fig_map = Figure(figsize=(7.5, 7.5))
+        self.ax_map = self.fig_map.add_subplot(1, 1, 1)
+        self.canvas_map = FigureCanvasTkAgg(self.fig_map, master=tab_map)
+        self.canvas_map.get_tk_widget().pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+
+        info_map_frame = ttk.Frame(tab_map, padding=16)
+        info_map_frame.pack(side=tk.RIGHT, fill=tk.BOTH, padx=10, expand=False)
+        
+        ttk.Label(info_map_frame, text="Estado del Registro", font=("Arial", 12, "bold")).pack(anchor="w", pady=(0, 8))
+        self.map_status_label = ttk.Label(info_map_frame, text="", wraplength=340, justify="left", font=("Arial", 10))
+        self.map_status_label.pack(anchor="w", pady=4)
+        
+        ttk.Separator(info_map_frame).pack(fill=tk.X, pady=12)
+        ttk.Button(info_map_frame, text="📈 Ver señales continuas",
+                   command=lambda: self.main_notebook.select(0)).pack(fill=tk.X, pady=4)
+        ttk.Button(info_map_frame, text="📊 Analizar PSD / biomarcadores",
+                   command=self.open_psd).pack(fill=tk.X, pady=4)
+
         self.root.bind("<Left>", lambda e: self.step(-1))
         self.root.bind("<Right>", lambda e: self.step(1))
 
@@ -712,7 +804,7 @@ class EEGViewer:
 
     def visible_idx(self):
         idx = [i for i, v in enumerate(self.ch_vars) if v.get()]
-        return idx or list(range(len(CHANNEL_NAMES)))
+        return idx or list(range(len(self.channels)))
 
     def window_seconds(self):
         s = self.win_var.get()
@@ -738,6 +830,54 @@ class EEGViewer:
         else:
             self.file_var.set('')
             self.data = None
+            self.channels = []
+
+    def _update_channel_checkboxes(self):
+        """Reconstruye dinámicamente los checkboxes según los canales detectados en el archivo."""
+        for w in self.ch_frame.winfo_children():
+            w.destroy()
+        self.ch_vars = []
+        for n in self.channels:
+            v = tk.BooleanVar(value=True)
+            cb = ttk.Checkbutton(self.ch_frame, text=n, variable=v, command=self.rebuild_axes)
+            cb.pack(anchor="w")
+            self.ch_vars.append(v)
+
+    def update_map(self):
+        """Actualiza el mapa de electrodos y el texto informativo según los canales del archivo."""
+        draw_electrode_map(self.ax_map, self.channels)
+        self.fig_map.tight_layout()
+        self.canvas_map.draw_idle()
+
+        avail_upper = set(c.upper() for c in self.channels)
+        missing = [c for c in TARGET_CHANNELS if c.upper() not in avail_upper]
+
+        lines = [
+            f"Archivo actual: {self.current_label()}",
+            f"Frecuencia: {self.fs:g} Hz | Muestras: {len(self.data) if self.data is not None else 0}",
+            f"Canales disponibles ({len(self.channels)}): {', '.join(self.channels)}",
+            ""
+        ]
+        if missing:
+            lines += [
+                f"⚠️ Canales ausentes ({len(missing)}): {', '.join(missing)}",
+                "• Este archivo no contiene electrodos parieto-occipitales (Pz, O1, O2).",
+                "• El programa se ha modulado automáticamente para procesar únicamente los canales existentes.",
+                ""
+            ]
+        else:
+            lines += [
+                "✅ Todos los electrodos objetivo (6/6) están presentes en este registro.",
+                ""
+            ]
+
+        lines += [
+            "Disponibilidad de biomarcadores:",
+            f" • Theta Fz: {'✅ DISPONIBLE' if 'FZ' in avail_upper else '❌ NO DISPONIBLE (Falta Fz)'}",
+            f" • FAA (F3 / F4): {'✅ DISPONIBLE' if ('F3' in avail_upper and 'F4' in avail_upper) else '❌ NO DISPONIBLE (Faltan F3 o F4)'}",
+            f" • Alfa posterior (Pz, O1, O2): {'✅ DISPONIBLE' if any(c in avail_upper for c in ['PZ', 'O1', 'O2']) else '❌ NO DISPONIBLE (Faltan Pz/O1/O2)'}",
+        ]
+        self.map_status_label.config(text="\n".join(lines))
 
     def load_file(self):
         fn = self.file_var.get()
@@ -745,20 +885,29 @@ class EEGViewer:
             return
         try:
             self.fs = float(self.fs_var.get())
-            raw = load_eeg(os.path.join(self.directory, fn))
-            if raw.shape[0] < 10 or raw.shape[1] < 8:
-                raise ValueError("El archivo no contiene 8 canales válidos.")
-            # Aquí se ejecuta automáticamente el Trim de 3s + filtros
+            raw, detected_channels = load_eeg(os.path.join(self.directory, fn))
+            if raw.shape[0] < 10 or raw.shape[1] < 1:
+                raise ValueError("El archivo no contiene suficientes muestras o canales legibles.")
+                
+            self.channels = detected_channels
             self.data = preprocess(raw, self.fs, self.bandpass_var.get(), self.notch_value(), trim_seconds=3.0)
             self.band_cache = {}
-            self.update_bursts()
         except Exception as e:
             messagebox.showerror("Error al cargar", f"{fn}\n\n{e}")
             return
+            
         dur = len(self.data) / self.fs
-        self.info_label.config(text=f"{len(self.data)} muestras\n{dur:.1f} s a {self.fs:g} Hz")
+        missing = [c for c in TARGET_CHANNELS if c not in self.channels]
+        status_txt = f"{len(self.channels)} canales ({', '.join(self.channels)})\n{dur:.1f} s a {self.fs:g} Hz"
+        if missing:
+            status_txt += f"\nAusentes: {', '.join(missing)}"
+        self.info_label.config(text=status_txt)
+        
         self.start_var.set(0.0)
+        self._update_channel_checkboxes()
         self.on_window_changed()
+        self.update_map()
+        
         if self.psd_win is not None and self.psd_win.winfo_exists():
             self.psd_win.refresh()
 
@@ -780,14 +929,17 @@ class EEGViewer:
 
     def rebuild_axes(self):
         self.fig.clear()
+        if self.data is None or not self.channels:
+            self.canvas.draw_idle()
+            return
+            
         idx = self.visible_idx()
         self.axes = self.fig.subplots(len(idx), 1, sharex=True, squeeze=False)[:, 0]
         self.lines = []
-        self.burst_patches = []
         for ax, ch in zip(self.axes, idx):
             (ln,) = ax.plot([], [], color="#1f4e9c", lw=0.8)
             self.lines.append((ch, ln))
-            ax.set_ylabel(f"{CHANNEL_NAMES[ch]}\n(µV)", fontsize=8, fontweight="bold")
+            ax.set_ylabel(f"{self.channels[ch]}\n(µV)", fontsize=8, fontweight="bold")
             ax.grid(True, ls="--", alpha=0.5)
             ax.tick_params(labelsize=8)
             if ax is not self.axes[-1]:
@@ -810,21 +962,8 @@ class EEGViewer:
             if self.autoscale_var.get():
                 ax.set_ylim(*robust_limits(y, self.robust_var.get()))
             ax.set_xlim(t[0], t[-1])
-        for p in self.burst_patches:
-            try:
-                p.remove()
-            except Exception:
-                pass
-        self.burst_patches = []
+
         band = self.band_show_var.get()
-        if band == "Theta":
-            fz = ch_index(THETA_CH)
-            for ax, (ch, ln) in zip(self.axes, self.lines):
-                if ch == fz:
-                    for b0, b1, _ in self.bursts:
-                        if b1 > t[0] and b0 < t[-1]:
-                            self.burst_patches.append(ax.axvspan(max(b0, t[0]), min(b1, t[-1]),
-                                                                 color="#d62728", alpha=0.25))
         extra = "" if band.startswith("Cruda") else f" | banda {band} {BANDS[band][0]}-{BANDS[band][1]} Hz"
         self.fig.suptitle(f"Señales EEG - {self.file_var.get()}{extra}", fontsize=11, fontweight="bold")
         self.time_label.config(text=f"{t[0]:.1f} – {t[-1]:.1f} s de {len(self.data) / self.fs:.1f} s")
@@ -838,26 +977,6 @@ class EEGViewer:
             self.band_cache[b] = band_filter(self.data, self.fs, *BANDS[b])
         return self.band_cache[b]
 
-    def ratio_value(self):
-        try:
-            return float(np.clip(float(self.ratio_var.get()), 1.2, 10.0))
-        except ValueError:
-            return 2.5
-
-    def update_bursts(self):
-        self.burst_ratio = self.ratio_value()
-        fz = ch_index(THETA_CH)
-        self.theta_fz, self.env_fz, self.base_fz, self.bursts = detect_theta_bursts(
-            self.data[:, fz], self.fs, self.burst_ratio)
-
-    def on_ratio_changed(self):
-        if self.data is None:
-            return
-        self.update_bursts()
-        self.redraw()
-        if self.psd_win is not None and self.psd_win.winfo_exists():
-            self.psd_win.refresh()
-
     def open_psd(self):
         if self.data is None:
             return
@@ -868,19 +987,21 @@ class EEGViewer:
             self.psd_win = PSDWindow(self)
 
     def change_dir(self):
-        d = filedialog.askdirectory(title="Selecciona la carpeta con los .txt")
+        d = filedialog.askdirectory(title="Selecciona la carpeta con los archivos EEG (.txt o .csv)")
         if d:
             self.directory = d
             self._scan_directory()
             self.level_combobox['values'] = list(self.levels_dict)
-            self.on_level_changed()
+            if self.levels_dict:
+                self.level_combobox.set(list(self.levels_dict)[0])
+                self.on_level_changed()
 
 
 def main():
     root = tk.Tk()
     directory = DIRECTORY_PATH
     if not os.path.isdir(directory):
-        directory = filedialog.askdirectory(title="Selecciona la carpeta Stroop_Data")
+        directory = filedialog.askdirectory(title="Selecciona la carpeta de datos EEG")
         if not directory:
             root.destroy()
             return
