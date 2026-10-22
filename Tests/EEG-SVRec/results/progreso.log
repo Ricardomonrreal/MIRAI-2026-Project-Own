@@ -1,0 +1,45 @@
+13:20 [█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   4.6%    2.9/63.8 GB  ETA   237 min  ·  03: OK (5 sesiones, 59 minutos, 83 videos)
+13:22 [██░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   7.4%    4.7/63.8 GB  ETA   146 min  ·  01: OK (3 sesiones, 46 minutos, 87 videos)
+13:28 [██░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   8.6%    5.5/63.8 GB  ETA   201 min  ·  04: OK (3 sesiones, 23 minutos, 44 videos; sesiones fuera del archivo: [4, 5])
+13:39 [███░░░░░░░░░░░░░░░░░░░░░░░░░░░]  11.7%    7.5/63.8 GB  ETA   235 min  ·  05: ERROR RuntimeError: 
+  File "C:\Users\ricar\AppData\Roaming\Python\Python314\site-packages\mne\io\cnt\_utils.py", line 224, in _compute_robust_sizes
+    raise RuntimeError(
+    ...<3 lines>...
+    )
+
+RuntimeError: Using `data_format='auto' for a CNT file larger than 2Gb is not supported, explicitly pass data_format as 'int16' or 'int32'
+
+WARNING: mne.io.read_raw_cnt supports Neuroscan CNT files only. If this file is an ANT Neuro CNT, please use mne.io.read_raw_ant instead.
+13:49 [███░░░░░░░░░░░░░░░░░░░░░░░░░░░]  12.3%    7.8/63.8 GB  ETA   154 min  ·  06: OK (7 sesiones, 68 minutos, 107 videos)
+13:57 [████░░░░░░░░░░░░░░░░░░░░░░░░░░]  15.5%    9.9/63.8 GB  ETA   186 min  ·  05: ERROR RuntimeError: 
+  File "C:\Users\ricar\AppData\Roaming\Python\Python314\site-packages\mne\channels\layout.py", line 1012, in _topo_to_sphere
+    xs, ys = np.array(pos).T
+    ^^^^^^
+
+ValueError: not enough values to unpack (expected 2, got 0)
+
+WARNING: mne.io.read_raw_cnt supports Neuroscan CNT files only. If this file is an ANT Neuro CNT, please use mne.io.read_raw_ant instead.
+14:02 [█████░░░░░░░░░░░░░░░░░░░░░░░░░]  18.6%   11.9/63.8 GB  ETA   164 min  ·  08: OK (5 sesiones, 67 minutos, 114 videos)
+14:24 [██████░░░░░░░░░░░░░░░░░░░░░░░░]  22.3%   12.6/56.6 GB  ETA   334 min  ·  09: OK (6 sesiones, 81 minutos, 125 videos)
+14:26 [████████░░░░░░░░░░░░░░░░░░░░░░]  28.5%   16.2/56.6 GB  ETA   152 min  ·  10: OK (6 sesiones, 81 minutos, 107 videos)
+14:43 [██████████░░░░░░░░░░░░░░░░░░░░]  33.4%   18.9/56.6 GB  ETA   167 min  ·  11: ERROR de descarga OSError: 11_data.cnt: sha256 no coincide, se descartó
+14:47 [██████████░░░░░░░░░░░░░░░░░░░░]  36.1%   20.4/56.6 GB  ETA   152 min  ·  13: ERROR de descarga OSError: 13_data.cnt: sha256 no coincide, se descartó
+14:49 [████████████░░░░░░░░░░░░░░░░░░]  42.0%   23.8/56.6 GB  ETA   108 min  ·  12: ERROR de descarga OSError: 12_data.cnt: sha256 no coincide, se descartó
+15:21 [██████████░░░░░░░░░░░░░░░░░░░░]  33.4%   18.9/56.6 GB  ETA   382 min  ·  11: OK (4 sesiones, 37 minutos, 65 videos)
+15:24 [██████████░░░░░░░░░░░░░░░░░░░░]  36.1%   20.4/56.6 GB  ETA   261 min  ·  13: OK (5 sesiones, 33 minutos, 65 videos)
+15:31 [████████████░░░░░░░░░░░░░░░░░░]  42.0%   23.8/56.6 GB  ETA   161 min  ·  12: OK (6 sesiones, 73 minutos, 98 videos)
+15:34 [██████████████░░░░░░░░░░░░░░░░]  46.7%   26.4/56.6 GB  ETA   120 min  ·  14: OK (5 sesiones, 59 minutos, 78 videos)
+15:38 [███████████████░░░░░░░░░░░░░░░]  52.1%   29.5/56.6 GB  ETA    91 min  ·  15: OK (6 sesiones, 1 minutos, 9 videos)
+15:40 [████████████████░░░░░░░░░░░░░░]  55.7%   31.6/56.6 GB  ETA    76 min  ·  18: OK (6 sesiones, 34 minutos, 51 videos)
+15:45 [█████████████████░░░░░░░░░░░░░]  59.5%   33.7/56.6 GB  ETA    67 min  ·  19: ERROR RuntimeError: No clean segment found. Please consider updating your rejection thresholds.
+15:47 [██████████████████░░░░░░░░░░░░]  62.6%   35.4/56.6 GB  ETA    60 min  ·  20: OK (5 sesiones, 39 minutos, 58 videos)
+15:55 [███████████████████░░░░░░░░░░░]  66.4%   37.6/56.6 GB  ETA    55 min  ·  21: OK (5 sesiones, 40 minutos, 73 videos)
+16:00 [█████████████████████░░░░░░░░░]  70.9%   40.2/56.6 GB  ETA    46 min  ·  22: OK (5 sesiones, 73 minutos, 116 videos)
+16:05 [██████████████████████░░░░░░░░]  75.3%   42.7/56.6 GB  ETA    38 min  ·  23: OK (5 sesiones, 58 minutos, 73 videos)
+16:08 [███████████████████████░░░░░░░]  79.6%   45.1/56.6 GB  ETA    30 min  ·  24: OK (5 sesiones, 51 minutos, 71 videos)
+16:10 [████████████████████████░░░░░░]  82.3%   46.6/56.6 GB  ETA    25 min  ·  25: OK (4 sesiones, 35 minutos, 61 videos)
+16:12 [█████████████████████████░░░░░]  85.1%   48.2/56.6 GB  ETA    21 min  ·  26: OK (4 sesiones, 52 minutos, 51 videos)
+16:16 [██████████████████████████░░░░]  88.4%   50.1/56.6 GB  ETA    16 min  ·  27: OK (4 sesiones, 48 minutos, 78 videos)
+16:18 [███████████████████████████░░░]  91.5%   51.8/56.6 GB  ETA    11 min  ·  28: OK (4 sesiones, 38 minutos, 59 videos)
+16:23 [████████████████████████████░░]  95.5%   54.1/56.6 GB  ETA     6 min  ·  29: OK (4 sesiones, 27 minutos, 43 videos)
+16:26 [██████████████████████████████] 100.0%   56.6/56.6 GB  ETA     0 min  ·  30: OK (5 sesiones, 73 minutos, 77 videos)

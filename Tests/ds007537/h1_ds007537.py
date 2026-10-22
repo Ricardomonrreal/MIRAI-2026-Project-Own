@@ -94,6 +94,11 @@ def preprocess(vhdr, m):
     raw = mne.io.read_raw_brainvision(vhdr, preload=False)
     raw.set_channel_types({c: "misc" for c in ("GSR", "PPG") if c in raw.ch_names})
     raw.crop(max(0, m["phone_on"] - 5), min(raw.times[-1], m["video_off"] + 5)).load_data()
+    return clean(raw)
+
+
+def clean(raw, skip=("Cz",)):
+    """Preprocesado común (también lo usa EEG-SVRec). `skip`: canales que no se evalúan como rotos."""
     raw.pick("eeg")
     raw.filter(1.0, 40.0, picks="eeg")  # el pasa-bajas a 40 Hz ya elimina la red de 50 Hz
     raw.resample(FS)
@@ -103,7 +108,7 @@ def preprocess(vhdr, m):
     x = raw.get_data()
     sd = np.median(np.abs(x - np.median(x, axis=1, keepdims=True)), axis=1)
     med = np.median(sd)
-    raw.info["bads"] = [c for c, s in zip(raw.ch_names, sd) if c != "Cz" and (s > 5 * med or s < 0.05 * med)]
+    raw.info["bads"] = [c for c, s in zip(raw.ch_names, sd) if c not in skip and (s > 5 * med or s < 0.05 * med)]
     bads = list(raw.info["bads"])
     if bads:
         raw.set_montage("standard_1005", on_missing="ignore")

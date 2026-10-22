@@ -1,0 +1,76 @@
+H1 · EEG-SVRec · scrolling de video corto (Fase C)
+==================================================================
+Excluidos por archivo dañado en el repositorio: 05, 16, 17
+Sujetos con datos: 25  ·  sesiones válidas: 84  (excluidas si < 40% de épocas válidas)
+
+A. DENTRO DE LA SESIÓN · pendiente (unidades/min) tras normalizar a min 1-2; media de sesiones por sujeto
+  [theta_iaf] Theta tónico Fz/FCz (potencia total)
+    todas las sesiones: n=25  media=+0.006  ↑13/25  t=+0.54 p=0.5953  Wilcoxon p=0.3957
+    solo sesión 1:      n=17  media=-0.006  ↑9/17  t=-0.20 p=0.8464  Wilcoxon p=1.0000
+  [alpha_iaf] Alfa posterior (potencia total)
+    todas las sesiones: n=25  media=-0.026  ↑8/25  t=-2.44 p=0.0224  Wilcoxon p=0.0255
+    solo sesión 1:      n=17  media=-0.004  ↑9/17  t=-0.09 p=0.9270  Wilcoxon p=0.9632
+  [theta_per] Theta periódico Fz/FCz (sobre 1/f)   ← PRIMARIA, p Holm = 0.0344
+    todas las sesiones: n=25  media=+0.016  ↑18/25  t=+2.24 p=0.0344  Wilcoxon p=0.0551
+    solo sesión 1:      n=17  media=+0.002  ↑9/17  t=+0.14 p=0.8892  Wilcoxon p=0.8900
+  [alpha_per] Alfa posterior periódica (sobre 1/f)   ← PRIMARIA, p Holm = 0.0060
+    todas las sesiones: n=25  media=-0.021  ↑6/25  t=-3.30 p=0.0030  Wilcoxon p=0.0034
+    solo sesión 1:      n=17  media=-0.015  ↑6/17  t=-0.98 p=0.3434  Wilcoxon p=0.2842
+  [exp_post] Exponente aperiódico posterior
+    todas las sesiones: n=25  media=-0.001  ↑11/25  t=-0.48 p=0.6335  Wilcoxon p=0.6528
+    solo sesión 1:      n=17  media=-0.007  ↑5/17  t=-1.24 p=0.2339  Wilcoxon p=0.0797
+  [theta_fix] Theta 4-8 Hz (banda fija)
+    todas las sesiones: n=25  media=+0.005  ↑14/25  t=+0.44 p=0.6667  Wilcoxon p=0.3810
+    solo sesión 1:      n=17  media=-0.010  ↑9/17  t=-0.38 p=0.7120  Wilcoxon p=0.9265
+  [alpha_fix] Alfa 8-13 Hz (banda fija)
+    todas las sesiones: n=25  media=-0.022  ↑8/25  t=-2.15 p=0.0421  Wilcoxon p=0.0626
+    solo sesión 1:      n=17  media=-0.006  ↑10/17  t=-0.15 p=0.8816  Wilcoxon p=1.0000
+  [blink_eeg] Parpadeos/min (EEG, Fp1)
+    todas las sesiones: n=25  media=+0.066  ↑14/25  t=+0.41 p=0.6841  Wilcoxon p=0.7915
+    solo sesión 1:      n=17  media=-0.137  ↑7/17  t=-0.56 p=0.5840  Wilcoxon p=0.2247
+  [emg_post] EMG posterior 25-40 Hz (control de músculo)
+    todas las sesiones: n=25  media=-0.039  ↑11/25  t=-1.48 p=0.1526  Wilcoxon p=0.1817
+    solo sesión 1:      n=17  media=-0.043  ↑7/17  t=-0.53 p=0.6014  Wilcoxon p=0.5477
+  Control de artefacto (pendientes por sujeto, Spearman):
+  Alfa periódica vs EMG posterior: rho=-0.04 p=0.8409 (n=25)
+  Theta periódico vs EMG posterior: rho=-0.21 p=0.3210 (n=25)
+
+B. ENTRE SESIONES · pendiente del nivel medio de la sesión por número de sesión (sujetos con ≥ 3)
+  [theta_iaf] pendiente: n=22  media=-0.032  ↑11/22  t=-0.51 p=0.6145  Wilcoxon p=1.0000
+              última − primera: n=22  media=-0.077  ↑10/22  t=-0.49 p=0.6315  Wilcoxon p=0.7502
+  [alpha_iaf] pendiente: n=22  media=+0.325  ↑17/22  t=+3.12 p=0.0052  Wilcoxon p=0.0037
+              última − primera: n=22  media=+1.064  ↑16/22  t=+3.25 p=0.0039  Wilcoxon p=0.0037
+  [theta_per] pendiente: n=22  media=+0.006  ↑12/22  t=+0.18 p=0.8574  Wilcoxon p=0.7745
+              última − primera: n=22  media=+0.015  ↑10/22  t=+0.12 p=0.9046  Wilcoxon p=1.0000
+  [alpha_per] pendiente: n=22  media=+0.054  ↑12/22  t=+1.36 p=0.1886  Wilcoxon p=0.5879
+              última − primera: n=22  media=+0.137  ↑11/22  t=+1.06 p=0.3005  Wilcoxon p=0.5661
+  [exp_post] pendiente: n=22  media=-0.053  ↑3/22  t=-3.81 p=0.0010  Wilcoxon p=0.0003
+             última − primera: n=22  media=-0.190  ↑2/22  t=-4.17 p=0.0004  Wilcoxon p=0.0001
+  [theta_fix] pendiente: n=22  media=-0.023  ↑11/22  t=-0.42 p=0.6753  Wilcoxon p=1.0000
+              última − primera: n=22  media=-0.056  ↑10/22  t=-0.37 p=0.7155  Wilcoxon p=0.7990
+  [alpha_fix] pendiente: n=22  media=+0.326  ↑17/22  t=+3.34 p=0.0031  Wilcoxon p=0.0029
+              última − primera: n=22  media=+1.073  ↑17/22  t=+3.46 p=0.0023  Wilcoxon p=0.0022
+  [blink_eeg] pendiente: n=22  media=-0.225  ↑10/22  t=-0.35 p=0.7304  Wilcoxon p=0.6327
+              última − primera: n=22  media=-2.106  ↑11/22  t=-0.69 p=0.4987  Wilcoxon p=0.5028
+  [emg_post] pendiente: n=22  media=+0.628  ↑16/22  t=+3.49 p=0.0022  Wilcoxon p=0.0022
+             última − primera: n=22  media=+2.162  ↑17/22  t=+3.95 p=0.0007  Wilcoxon p=0.0004
+
+C. POR VIDEO · rho de Spearman por sujeto (≥ 10 videos), rho contra 0
+  alpha_per~immersion          n=25  media=-0.108  ↑5/25  t=-3.38 p=0.0025  Wilcoxon p=0.0025
+  alpha_per~arousal            n=25  media=-0.106  ↑7/25  t=-3.61 p=0.0014  Wilcoxon p=0.0016
+  theta_per~immersion          n=25  media=-0.044  ↑7/25  t=-1.67 p=0.1086  Wilcoxon p=0.1073
+  theta_per~arousal            n=25  media=-0.074  ↑5/25  t=-3.24 p=0.0035  Wilcoxon p=0.0018
+  alpha_iaf~immersion          n=25  media=-0.065  ↑9/25  t=-1.72 p=0.0991  Wilcoxon p=0.1336
+  alpha_iaf~arousal            n=25  media=-0.063  ↑8/25  t=-2.17 p=0.0401  Wilcoxon p=0.0451
+  exp_post~immersion           n=25  media=-0.035  ↑10/25  t=-1.12 p=0.2748  Wilcoxon p=0.1730
+  exp_post~arousal             n=25  media=-0.029  ↑12/25  t=-0.98 p=0.3367  Wilcoxon p=0.5077
+  emg_post~immersion           n=25  media=-0.026  ↑13/25  t=-0.66 p=0.5125  Wilcoxon p=0.6721
+  emg_post~arousal             n=25  media=-0.032  ↑12/25  t=-1.03 p=0.3145  Wilcoxon p=0.3123
+  immersion~video_order        n=25  media=-0.012  ↑11/25  t=-0.28 p=0.7845  Wilcoxon p=0.7510
+
+Notas:
+- El modo de sesión no está contrabalanceado (sujetos 1-21: aleatorio → mixto → personalizado;
+  22-30: personalizado → no personalizado), así que B está confundido con el tipo de feed.
+- Entre sesiones hay etiquetado y 5 min de descanso: B mide uso acumulado con pausas, no continuo.
+- Solo se usan épocas dentro de ventanas de video alineadas; los huecos se descartan.
+- Sin condición control: igual que ds007537, no separa fatiga de habituación o efecto del tiempo.

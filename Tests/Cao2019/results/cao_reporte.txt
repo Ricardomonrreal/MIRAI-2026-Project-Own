@@ -1,0 +1,48 @@
+H1b · Cao 2019 · control positivo (conducción sostenida 60-90 min)
+==================================================================
+Sujetos: 27  ·  sesiones válidas: 62  (excluidas si < 40% de épocas válidas)
+Pendiente = unidades por MINUTO tras normalizar a la primera ventana de 5 min; media de sesiones por sujeto.
+
+[theta_per] Theta periódico Fz/FCz (sobre 1/f)   ← PRIMARIA, p Holm = 0.0336
+  n=27  media=+0.007  ↑17/27  t=+2.56 p=0.0168  Wilcoxon p=0.0140
+[alpha_per] Alfa posterior periódica Pz/Oz/O1/O2
+  n=27  media=+0.007  ↑18/27  t=+1.18 p=0.2470  Wilcoxon p=0.0906
+[theta_iaf] Theta tónico Fz/FCz (potencia total)
+  n=27  media=-0.002  ↑9/27  t=-0.35 p=0.7310  Wilcoxon p=0.1551
+[alpha_iaf] Alfa posterior (potencia total)
+  n=27  media=+0.003  ↑15/27  t=+0.68 p=0.5042  Wilcoxon p=0.6446
+[theta_fix] Theta 4-8 Hz (banda fija)
+  n=27  media=-0.002  ↑10/27  t=-0.42 p=0.6802  Wilcoxon p=0.1111
+[alpha_fix] Alfa 8-13 Hz (banda fija)
+  n=27  media=+0.003  ↑15/27  t=+0.70 p=0.4889  Wilcoxon p=0.7317
+[exp_post] Exponente aperiódico posterior
+  n=27  media=-0.001  ↑7/27  t=-2.65 p=0.0135  Wilcoxon p=0.0014
+[blink_eeg] Parpadeos/min (EEG, Fp1)
+  n=27  media=+0.041  ↑16/27  t=+1.31 p=0.2004  Wilcoxon p=0.2386
+[log_rt] log10 tiempo de reacción (fatiga conductual)   ← PRIMARIA, p Holm = 0.8634
+  n=27  media=-0.000  ↑17/27  t=-0.17 p=0.8634  Wilcoxon p=0.9341
+[lapse] Fracción del tiempo con desvío sin corregir (lapsos)
+  n=27  media=+0.000  ↑15/27  t=+0.15 p=0.8789  Wilcoxon p=0.7496
+
+Acople EEG-conducta (rho de Spearman entre ventanas, por sesión → media por sujeto):
+  theta_per~log_rt       n=27  media=+0.105  ↑16/27  t=+1.36 p=0.1863  Wilcoxon p=0.2291
+  theta_per~lapse        n=27  media=+0.191  ↑18/27  t=+2.62 p=0.0146  Wilcoxon p=0.0174
+  theta_iaf~log_rt       n=27  media=+0.498  ↑25/27  t=+8.57 p=0.0000  Wilcoxon p=0.0000
+  theta_iaf~lapse        n=27  media=+0.456  ↑23/27  t=+5.99 p=0.0000  Wilcoxon p=0.0000
+  alpha_per~log_rt       n=27  media=+0.324  ↑24/27  t=+4.85 p=0.0001  Wilcoxon p=0.0000
+  alpha_per~lapse        n=27  media=+0.238  ↑21/27  t=+3.65 p=0.0011  Wilcoxon p=0.0014
+
+Lectura: si log_rt sube (hubo fatiga) y theta_per sube, el pipeline detecta theta de fatiga.
+Si log_rt sube pero theta_per no, el método no capta theta tónico y hay que revisarlo antes de la Fase D.
+
+THETA FÁSICO Fz/FCz al inicio del desvío (exploratorio; ensayos con TR ≥ 0.2 s)
+Sesiones con ≥ 20 ensayos: 62 · ensayos: 26142
+  ¿Hay respuesta fásica? ERSP medio 0.1-0.5 s (dB vs -0.6…-0.1 s): n=27  media=+0.827  ↑24/27  t=+6.40 p=0.0000  Wilcoxon p=0.0000
+  Acople ensayo a ensayo (rho por sesión → media por sujeto):
+    ersp_db ~ log_rt       n=27  media=-0.040  ↑10/27  t=-2.05 p=0.0502  Wilcoxon p=0.0772
+    post_db ~ log_rt       n=27  media=+0.158  ↑21/27  t=+4.89 p=0.0000  Wilcoxon p=0.0001
+    tonic_db ~ log_rt      n=27  media=+0.301  ↑27/27  t=+11.40 p=0.0000  Wilcoxon p=0.0000
+    ersp_db ~ tonic_db     n=27  media=-0.061  ↑4/27  t=-4.80 p=0.0001  Wilcoxon p=0.0001
+    post_db ~ tonic_db     n=27  media=+0.169  ↑24/27  t=+7.29 p=0.0000  Wilcoxon p=0.0000
+  Predicción (fatiga → menos control): ersp/post ~ log_rt < 0 y ~ tonic_db < 0; tonic ~ log_rt > 0.
+  Si ersp~tonic < 0 pero post~tonic no, es artefacto de la línea base inflada, no menos control.

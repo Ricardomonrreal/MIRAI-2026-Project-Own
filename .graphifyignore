@@ -1,0 +1,44 @@
+# === Control de versiones y metadatos de herramientas ===
+.git/
+.claude/
+.github/
+
+# === Salidas de Graphify ===
+graphify-out/
+**/graphify-out/
+
+# === Entornos y proyectos externos / talleres independientes ===
+# Taller independiente de octubre (contiene repositorios externos como FastAPI oficial y Reto-IA)
+Benkyokai-oct/
+
+# Submódulo / binarios externos de hardware
+AURA/
+*.exe
+
+# === Datos masivos / datasets crudos de EEG (no aportan a la arquitectura de código) ===
+**/raw_data/
+**/*.edf
+**/*.bdf
+**/*.fif
+**/*.cnt
+**/*.eeg
+**/*.vhdr
+**/*.vmrk
+**/*.set
+**/*.fdt
+**/*.mat
+**/*.csv
+**/*.parquet
+**/*.pkl
+**/*.pickle
+**/__MACOSX/
+
+# === Python bytecode y caches ===
+**/__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+env/
