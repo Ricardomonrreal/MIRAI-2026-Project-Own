@@ -88,30 +88,6 @@
       "source_location": "L433"
     },
     {
-      "id": "tests_eeg_dataset_9_10_demo_processing_load_bids",
-      "label": "load_bids()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "load_bids",
-      "file_type": "code",
-      "norm_label": "load_bids()",
-      "source_file": "Tests/EEG Dataset 9-10/Demo_processing.py",
-      "source_location": "L187"
-    },
-    {
-      "id": "tests_eeg_dataset_9_10_demo_processing_load_eeg",
-      "label": "load_eeg()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "load_bids",
-      "file_type": "code",
-      "norm_label": "load_eeg()",
-      "source_file": "Tests/EEG Dataset 9-10/Demo_processing.py",
-      "source_location": "L213"
-    },
-    {
       "id": "tests_eeg_dataset_9_10_demo_processing_eegviewer_build_controls",
       "label": "._build_controls()",
       "_callable": true,
@@ -484,6 +460,30 @@
       "source_location": "L175"
     },
     {
+      "id": "tests_eeg_dataset_9_10_demo_processing_load_bids",
+      "label": "load_bids()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 3,
+      "community_name": "Demo_processing.py",
+      "file_type": "code",
+      "norm_label": "load_bids()",
+      "source_file": "Tests/EEG Dataset 9-10/Demo_processing.py",
+      "source_location": "L187"
+    },
+    {
+      "id": "tests_eeg_dataset_9_10_demo_processing_load_eeg",
+      "label": "load_eeg()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 3,
+      "community_name": "Demo_processing.py",
+      "file_type": "code",
+      "norm_label": "load_eeg()",
+      "source_file": "Tests/EEG Dataset 9-10/Demo_processing.py",
+      "source_location": "L213"
+    },
+    {
       "id": "tests_eeg_dataset_9_10_demo_processing_main",
       "label": "main()",
       "_callable": true,
@@ -640,30 +640,6 @@
       "source_location": "L406"
     },
     {
-      "id": "tests_cao2019_h1b_cao2019_phasic",
-      "label": "phasic()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "h1_ds007537.py",
-      "file_type": "code",
-      "norm_label": "phasic()",
-      "source_file": "Tests/Cao2019/h1b_cao2019.py",
-      "source_location": "L97"
-    },
-    {
-      "id": "tests_cao2019_h1b_cao2019_phasic_idx",
-      "label": "idx()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "h1_ds007537.py",
-      "file_type": "code",
-      "norm_label": "idx()",
-      "source_file": "Tests/Cao2019/h1b_cao2019.py",
-      "source_location": "L110"
-    },
-    {
       "id": "tests_ds007537_h1_ds007537_band_db",
       "label": "band_db()",
       "_callable": true,
@@ -808,18 +784,6 @@
       "source_location": "L173"
     },
     {
-      "id": "tests_ds007537_h1_ds007537_plot",
-      "label": "plot()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "h1_ds007537.py",
-      "file_type": "code",
-      "norm_label": "plot()",
-      "source_file": "Tests/ds007537/h1_ds007537.py",
-      "source_location": "L363"
-    },
-    {
       "id": "tests_ds007537_h1_ds007537_preprocess",
       "label": "preprocess()",
       "_callable": true,
@@ -904,54 +868,6 @@
       "source_location": "L308"
     },
     {
-      "id": "tests_eeg_svrec_h1_svrec_across",
-      "label": "across()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "h1_ds007537.py",
-      "file_type": "code",
-      "norm_label": "across()",
-      "source_file": "Tests/EEG-SVRec/h1_svrec.py",
-      "source_location": "L265"
-    },
-    {
-      "id": "tests_eeg_svrec_h1_svrec_main",
-      "label": "main()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "h1_ds007537.py",
-      "file_type": "code",
-      "norm_label": "main()",
-      "source_file": "Tests/EEG-SVRec/h1_svrec.py",
-      "source_location": "L416"
-    },
-    {
-      "id": "tests_eeg_svrec_h1_svrec_per_video",
-      "label": "per_video()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "h1_ds007537.py",
-      "file_type": "code",
-      "norm_label": "per_video()",
-      "source_file": "Tests/EEG-SVRec/h1_svrec.py",
-      "source_location": "L282"
-    },
-    {
-      "id": "tests_eeg_svrec_h1_svrec_within",
-      "label": "within()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "h1_ds007537.py",
-      "file_type": "code",
-      "norm_label": "within()",
-      "source_file": "Tests/EEG-SVRec/h1_svrec.py",
-      "source_location": "L243"
-    },
-    {
       "id": "tests_cao2019_h1b_cao2019_analyse",
       "label": "analyse()",
       "_callable": true,
@@ -997,7 +913,7 @@
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "Tests/Cao2019/h1b_cao2019.py",
-      "source_location": "L301"
+      "source_location": "L324"
     },
     {
       "id": "tests_cao2019_h1b_cao2019_measures",
@@ -1010,6 +926,30 @@
       "norm_label": "measures()",
       "source_file": "Tests/Cao2019/h1b_cao2019.py",
       "source_location": "L187"
+    },
+    {
+      "id": "tests_cao2019_h1b_cao2019_phasic",
+      "label": "phasic()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 7,
+      "community_name": "h1_svrec.py",
+      "file_type": "code",
+      "norm_label": "phasic()",
+      "source_file": "Tests/Cao2019/h1b_cao2019.py",
+      "source_location": "L97"
+    },
+    {
+      "id": "tests_cao2019_h1b_cao2019_phasic_idx",
+      "label": "idx()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 7,
+      "community_name": "h1_svrec.py",
+      "file_type": "code",
+      "norm_label": "idx()",
+      "source_file": "Tests/Cao2019/h1b_cao2019.py",
+      "source_location": "L110"
     },
     {
       "id": "tests_cao2019_h1b_cao2019_phasic_report",
@@ -1033,7 +973,7 @@
       "file_type": "code",
       "norm_label": "plot()",
       "source_file": "Tests/Cao2019/h1b_cao2019.py",
-      "source_location": "L282"
+      "source_location": "L305"
     },
     {
       "id": "tests_cao2019_h1b_cao2019_plot_curve",
@@ -1045,7 +985,7 @@
       "file_type": "code",
       "norm_label": "plot_curve()",
       "source_file": "Tests/Cao2019/h1b_cao2019.py",
-      "source_location": "L263"
+      "source_location": "L269"
     },
     {
       "id": "tests_cao2019_h1b_cao2019_reaction_times",
@@ -1082,6 +1022,30 @@
       "norm_label": "session()",
       "source_file": "Tests/Cao2019/h1b_cao2019.py",
       "source_location": "L130"
+    },
+    {
+      "id": "tests_ds007537_h1_ds007537_plot",
+      "label": "plot()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 7,
+      "community_name": "h1_svrec.py",
+      "file_type": "code",
+      "norm_label": "plot()",
+      "source_file": "Tests/ds007537/h1_ds007537.py",
+      "source_location": "L363"
+    },
+    {
+      "id": "tests_eeg_svrec_h1_svrec_across",
+      "label": "across()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 7,
+      "community_name": "h1_svrec.py",
+      "file_type": "code",
+      "norm_label": "across()",
+      "source_file": "Tests/EEG-SVRec/h1_svrec.py",
+      "source_location": "L265"
     },
     {
       "id": "tests_eeg_svrec_h1_svrec_download",
@@ -1132,6 +1096,18 @@
       "source_location": "L134"
     },
     {
+      "id": "tests_eeg_svrec_h1_svrec_main",
+      "label": "main()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 7,
+      "community_name": "h1_svrec.py",
+      "file_type": "code",
+      "norm_label": "main()",
+      "source_file": "Tests/EEG-SVRec/h1_svrec.py",
+      "source_location": "L416"
+    },
+    {
       "id": "tests_eeg_svrec_h1_svrec_measures",
       "label": "measures()",
       "_callable": true,
@@ -1142,6 +1118,18 @@
       "norm_label": "measures()",
       "source_file": "Tests/EEG-SVRec/h1_svrec.py",
       "source_location": "L156"
+    },
+    {
+      "id": "tests_eeg_svrec_h1_svrec_per_video",
+      "label": "per_video()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 7,
+      "community_name": "h1_svrec.py",
+      "file_type": "code",
+      "norm_label": "per_video()",
+      "source_file": "Tests/EEG-SVRec/h1_svrec.py",
+      "source_location": "L282"
     },
     {
       "id": "tests_eeg_svrec_h1_svrec_plot",
@@ -1228,26 +1216,292 @@
       "source_location": "L123"
     },
     {
-      "id": "tests_eeg_dataset_9_10_demo_processing_rationale_188",
-      "label": "Lee un sujeto de ds007537 (BrainVision, 64 canales, 1000 Hz): recorta la sesi\u00f3n\u2026",
+      "id": "tests_eeg_svrec_h1_svrec_within",
+      "label": "within()",
+      "_callable": true,
       "_origin": "ast",
-      "community": 1,
-      "community_name": "load_bids",
-      "file_type": "rationale",
-      "norm_label": "lee un sujeto de ds007537 (brainvision, 64 canales, 1000 hz): recorta la sesion...",
-      "source_file": "Tests/EEG Dataset 9-10/Demo_processing.py",
-      "source_location": "L188"
+      "community": 7,
+      "community_name": "h1_svrec.py",
+      "file_type": "code",
+      "norm_label": "within()",
+      "source_file": "Tests/EEG-SVRec/h1_svrec.py",
+      "source_location": "L243"
     },
     {
-      "id": "tests_eeg_dataset_9_10_demo_processing_rationale_214",
-      "label": "Carga registros EEG adapt\u00e1ndose autom\u00e1ticamente a los canales disponibles en el\u2026",
+      "id": "tests_eeg_svrec_reporte_h1_svrec",
+      "label": "Reporte_H1_SVRec.md",
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "An\u00e1lisis del scope v2 y gu\u00eda de cambios a la propuesta",
+      "file_type": "document",
+      "node_kind": "page",
+      "norm_label": "reporte_h1_svrec.md",
+      "source_file": "Tests/EEG-SVRec/Reporte_H1_SVRec.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_plan_avances",
+      "label": "Plan_Avances.md",
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "An\u00e1lisis del scope v2 y gu\u00eda de cambios a la propuesta",
+      "file_type": "document",
+      "node_kind": "page",
+      "norm_label": "plan_avances.md",
+      "source_file": "Tests/Plan_Avances.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_revision_literatura_hipotesis",
+      "label": "Revision_Literatura_Hipotesis.md",
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "An\u00e1lisis del scope v2 y gu\u00eda de cambios a la propuesta",
+      "file_type": "document",
+      "node_kind": "page",
+      "norm_label": "revision_literatura_hipotesis.md",
+      "source_file": "Tests/Revision_Literatura_Hipotesis.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_revision_literatura_hipotesis_1_theta_y_alfa_t\u00f3nicos_aumentan_con_el_tiempo_en_tarea_respaldado",
+      "label": "1. Theta y alfa t\u00f3nicos aumentan con el tiempo en tarea \u2192 **respaldado**",
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "An\u00e1lisis del scope v2 y gu\u00eda de cambios a la propuesta",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "1. theta y alfa tonicos aumentan con el tiempo en tarea \u2192 **respaldado**",
+      "source_file": "Tests/Revision_Literatura_Hipotesis.md",
+      "source_location": "L10"
+    },
+    {
+      "id": "tests_revision_literatura_hipotesis_2_theta_f\u00e1sico_con_fatiga_control_inhibitorio_respaldo_moderado_literatura_mixta",
+      "label": "2. Theta f\u00e1sico \u2193 con fatiga (control inhibitorio) \u2192 **respaldo moderado, literatura mixta**",
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "An\u00e1lisis del scope v2 y gu\u00eda de cambios a la propuesta",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2. theta fasico \u2193 con fatiga (control inhibitorio) \u2192 **respaldo moderado, literatura mixta**",
+      "source_file": "Tests/Revision_Literatura_Hipotesis.md",
+      "source_location": "L23"
+    },
+    {
+      "id": "tests_revision_literatura_hipotesis_3_matices_que_explican_tus_resultados_y_que_la_teor\u00eda_ya_predec\u00eda",
+      "label": "3. Matices que explican tus resultados (y que la teor\u00eda ya predec\u00eda)",
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "An\u00e1lisis del scope v2 y gu\u00eda de cambios a la propuesta",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "3. matices que explican tus resultados (y que la teoria ya predecia)",
+      "source_file": "Tests/Revision_Literatura_Hipotesis.md",
+      "source_location": "L38"
+    },
+    {
+      "id": "tests_revision_literatura_hipotesis_4_aplica_al_scrolling_plausible_pero_es_el_hueco_de_la_literatura",
+      "label": "4. \u00bfAplica al scrolling? \u2192 **plausible, pero es el hueco de la literatura**",
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "An\u00e1lisis del scope v2 y gu\u00eda de cambios a la propuesta",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "4. \u00bfaplica al scrolling? \u2192 **plausible, pero es el hueco de la literatura**",
+      "source_file": "Tests/Revision_Literatura_Hipotesis.md",
+      "source_location": "L47"
+    },
+    {
+      "id": "tests_revision_literatura_hipotesis_5_contraste_con_tus_resultados",
+      "label": "5. Contraste con tus resultados",
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "An\u00e1lisis del scope v2 y gu\u00eda de cambios a la propuesta",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "5. contraste con tus resultados",
+      "source_file": "Tests/Revision_Literatura_Hipotesis.md",
+      "source_location": "L59"
+    },
+    {
+      "id": "tests_revision_literatura_hipotesis_6_correcci\u00f3n_a_la_reformulaci\u00f3n_v3",
+      "label": "6. Correcci\u00f3n a la reformulaci\u00f3n v3",
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "An\u00e1lisis del scope v2 y gu\u00eda de cambios a la propuesta",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "6. correccion a la reformulacion v3",
+      "source_file": "Tests/Revision_Literatura_Hipotesis.md",
+      "source_location": "L67"
+    },
+    {
+      "id": "tests_revision_literatura_hipotesis_7_referencias_verificar_p\u00e1ginas_doi_antes_de_citar_en_la_propuesta",
+      "label": "7. Referencias (verificar p\u00e1ginas/DOI antes de citar en la propuesta)",
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "An\u00e1lisis del scope v2 y gu\u00eda de cambios a la propuesta",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "7. referencias (verificar paginas/doi antes de citar en la propuesta)",
+      "source_file": "Tests/Revision_Literatura_Hipotesis.md",
+      "source_location": "L87"
+    },
+    {
+      "id": "tests_revision_literatura_hipotesis_mirai_2026_la_literatura_sostiene_las_hip\u00f3tesis_originales_22_oct_2026",
+      "label": "MIRAI 2026 \u00b7 \u00bfLa literatura sostiene las hip\u00f3tesis originales? (22 oct 2026)",
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "An\u00e1lisis del scope v2 y gu\u00eda de cambios a la propuesta",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "mirai 2026 \u00b7 \u00bfla literatura sostiene las hipotesis originales? (22 oct 2026)",
+      "source_file": "Tests/Revision_Literatura_Hipotesis.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_plan_avances_1_estado_actual",
+      "label": "1. Estado actual",
       "_origin": "ast",
       "community": 1,
-      "community_name": "load_bids",
-      "file_type": "rationale",
-      "norm_label": "carga registros eeg adaptandose automaticamente a los canales disponibles en el...",
-      "source_file": "Tests/EEG Dataset 9-10/Demo_processing.py",
-      "source_location": "L214"
+      "community_name": "4. Pasos a seguir",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "1. estado actual",
+      "source_file": "Tests/Plan_Avances.md",
+      "source_location": "L10"
+    },
+    {
+      "id": "tests_plan_avances_2_narrativa_de_la_presentaci\u00f3n",
+      "label": "2. Narrativa de la presentaci\u00f3n",
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "4. Pasos a seguir",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2. narrativa de la presentacion",
+      "source_file": "Tests/Plan_Avances.md",
+      "source_location": "L29"
+    },
+    {
+      "id": "tests_plan_avances_3_1_separar_las_dos_contribuciones",
+      "label": "3.1 Separar las dos contribuciones",
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "4. Pasos a seguir",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "3.1 separar las dos contribuciones",
+      "source_file": "Tests/Plan_Avances.md",
+      "source_location": "L56"
+    },
+    {
+      "id": "tests_plan_avances_3_2_escenarios_y_qu\u00e9_hacer_en_cada_uno",
+      "label": "3.2 Escenarios y qu\u00e9 hacer en cada uno",
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "4. Pasos a seguir",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "3.2 escenarios y que hacer en cada uno",
+      "source_file": "Tests/Plan_Avances.md",
+      "source_location": "L66"
+    },
+    {
+      "id": "tests_plan_avances_3_3_recomendaciones_para_blindar_el_proyecto",
+      "label": "3.3 Recomendaciones para blindar el proyecto",
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "4. Pasos a seguir",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "3.3 recomendaciones para blindar el proyecto",
+      "source_file": "Tests/Plan_Avances.md",
+      "source_location": "L75"
+    },
+    {
+      "id": "tests_plan_avances_3_qu\u00e9_pasa_si_los_resultados_son_negativos",
+      "label": "3. \u00bfQu\u00e9 pasa si los resultados son negativos?",
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "4. Pasos a seguir",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "3. \u00bfque pasa si los resultados son negativos?",
+      "source_file": "Tests/Plan_Avances.md",
+      "source_location": "L54"
+    },
+    {
+      "id": "tests_plan_avances_4_pasos_a_seguir",
+      "label": "4. Pasos a seguir",
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "4. Pasos a seguir",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "4. pasos a seguir",
+      "source_file": "Tests/Plan_Avances.md",
+      "source_location": "L88"
+    },
+    {
+      "id": "tests_plan_avances_fase_1_cerrar_la_validaci\u00f3n_casi_completa",
+      "label": "Fase 1 \u00b7 Cerrar la validaci\u00f3n \u2705 casi completa",
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "4. Pasos a seguir",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "fase 1 \u00b7 cerrar la validacion \u2705 casi completa",
+      "source_file": "Tests/Plan_Avances.md",
+      "source_location": "L90"
+    },
+    {
+      "id": "tests_plan_avances_fase_2_diapositivas_orden_sugerido_texto_en_ingl\u00e9s",
+      "label": "Fase 2 \u00b7 Diapositivas (orden sugerido, texto en ingl\u00e9s)",
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "4. Pasos a seguir",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "fase 2 \u00b7 diapositivas (orden sugerido, texto en ingles)",
+      "source_file": "Tests/Plan_Avances.md",
+      "source_location": "L95"
+    },
+    {
+      "id": "tests_plan_avances_fase_3_experimento_propio",
+      "label": "Fase 3 \u00b7 Experimento propio",
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "4. Pasos a seguir",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "fase 3 \u00b7 experimento propio",
+      "source_file": "Tests/Plan_Avances.md",
+      "source_location": "L113"
+    },
+    {
+      "id": "tests_plan_avances_fase_4_prototipo_ar_con_retroalimentaci\u00f3n_eeg",
+      "label": "Fase 4 \u00b7 Prototipo AR con retroalimentaci\u00f3n EEG",
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "4. Pasos a seguir",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "fase 4 \u00b7 prototipo ar con retroalimentacion eeg",
+      "source_file": "Tests/Plan_Avances.md",
+      "source_location": "L119"
+    },
+    {
+      "id": "tests_plan_avances_mirai_2026_plan_para_la_presentaci\u00f3n_de_avances_v2_22_oct_2026",
+      "label": "MIRAI 2026 \u00b7 Plan para la presentaci\u00f3n de avances (v2 \u00b7 22 oct 2026)",
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "4. Pasos a seguir",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "mirai 2026 \u00b7 plan para la presentacion de avances (v2 \u00b7 22 oct 2026)",
+      "source_file": "Tests/Plan_Avances.md",
+      "source_location": "L1"
     },
     {
       "id": "tests_eeg_dataset_9_10_demo_processing_rationale_892",
@@ -1303,6 +1557,28 @@
       "norm_label": "true si el .eeg es la senal real y no un puntero de git-annex de ~200 bytes.",
       "source_file": "Tests/EEG Dataset 9-10/Demo_processing.py",
       "source_location": "L181"
+    },
+    {
+      "id": "tests_eeg_dataset_9_10_demo_processing_rationale_188",
+      "label": "Lee un sujeto de ds007537 (BrainVision, 64 canales, 1000 Hz): recorta la sesi\u00f3n\u2026",
+      "_origin": "ast",
+      "community": 3,
+      "community_name": "Demo_processing.py",
+      "file_type": "rationale",
+      "norm_label": "lee un sujeto de ds007537 (brainvision, 64 canales, 1000 hz): recorta la sesion...",
+      "source_file": "Tests/EEG Dataset 9-10/Demo_processing.py",
+      "source_location": "L188"
+    },
+    {
+      "id": "tests_eeg_dataset_9_10_demo_processing_rationale_214",
+      "label": "Carga registros EEG adapt\u00e1ndose autom\u00e1ticamente a los canales disponibles en el\u2026",
+      "_origin": "ast",
+      "community": 3,
+      "community_name": "Demo_processing.py",
+      "file_type": "rationale",
+      "norm_label": "carga registros eeg adaptandose automaticamente a los canales disponibles en el...",
+      "source_file": "Tests/EEG Dataset 9-10/Demo_processing.py",
+      "source_location": "L214"
     },
     {
       "id": "tests_eeg_dataset_9_10_demo_processing_rationale_291",
@@ -1426,18 +1702,6 @@
       "source_location": "L72"
     },
     {
-      "id": "tests_eeg_svrec_reporte_h1_svrec",
-      "label": "Reporte_H1_SVRec.md",
-      "_origin": "ast",
-      "community": 5,
-      "community_name": "Reporte H1 \u00b7 EEG-SVRec (Fase C)",
-      "file_type": "document",
-      "node_kind": "page",
-      "norm_label": "reporte_h1_svrec.md",
-      "source_file": "Tests/EEG-SVRec/Reporte_H1_SVRec.md",
-      "source_location": "L1"
-    },
-    {
       "id": "tests_eeg_svrec_reporte_h1_svrec_1_muestra",
       "label": "1. Muestra",
       "_origin": "ast",
@@ -1557,17 +1821,6 @@
       "source_location": "L1"
     },
     {
-      "id": "tests_cao2019_h1b_cao2019_rationale_98",
-      "label": "Theta F\u00c1SICO Fz/FCz alineado al inicio de cada desv\u00edo (ensayo a ensayo) y su\u2026",
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "h1_ds007537.py",
-      "file_type": "rationale",
-      "norm_label": "theta fasico fz/fcz alineado al inicio de cada desvio (ensayo a ensayo) y su...",
-      "source_file": "Tests/Cao2019/h1b_cao2019.py",
-      "source_location": "L98"
-    },
-    {
       "id": "tests_ds007537_h1_ds007537_rationale_1",
       "label": "Validaci\u00f3n de H1 con OpenNeuro ds007537 (Mishra et al., 2026)\u2026",
       "_origin": "ast",
@@ -1667,39 +1920,6 @@
       "source_location": "L285"
     },
     {
-      "id": "tests_eeg_svrec_h1_svrec_rationale_244",
-      "label": "A. Normaliza cada sesi\u00f3n a sus min 1-2; pendiente por sesi\u00f3n y media por sujeto.",
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "h1_ds007537.py",
-      "file_type": "rationale",
-      "norm_label": "a. normaliza cada sesion a sus min 1-2; pendiente por sesion y media por sujeto.",
-      "source_file": "Tests/EEG-SVRec/h1_svrec.py",
-      "source_location": "L244"
-    },
-    {
-      "id": "tests_eeg_svrec_h1_svrec_rationale_266",
-      "label": "B. Pendiente por sujeto del nivel medio de cada sesi\u00f3n contra el orden de\u2026",
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "h1_ds007537.py",
-      "file_type": "rationale",
-      "norm_label": "b. pendiente por sujeto del nivel medio de cada sesion contra el orden de...",
-      "source_file": "Tests/EEG-SVRec/h1_svrec.py",
-      "source_location": "L266"
-    },
-    {
-      "id": "tests_eeg_svrec_h1_svrec_rationale_283",
-      "label": "C. rho de Spearman por sujeto entre la medida del video y la calificaci\u00f3n (\u2265 10\u2026",
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "h1_ds007537.py",
-      "file_type": "rationale",
-      "norm_label": "c. rho de spearman por sujeto entre la medida del video y la calificacion (\u2265 10...",
-      "source_file": "Tests/EEG-SVRec/h1_svrec.py",
-      "source_location": "L283"
-    },
-    {
       "id": "tests_cao2019_h1b_cao2019",
       "label": "h1b_cao2019.py",
       "_origin": "ast",
@@ -1744,6 +1964,17 @@
       "source_location": "L240"
     },
     {
+      "id": "tests_cao2019_h1b_cao2019_rationale_270",
+      "label": "Izq.: relativo a la base de cada ensayo (oculta diferencias de base). Der.:\u2026",
+      "_origin": "ast",
+      "community": 7,
+      "community_name": "h1_svrec.py",
+      "file_type": "rationale",
+      "norm_label": "izq.: relativo a la base de cada ensayo (oculta diferencias de base). der.:...",
+      "source_file": "Tests/Cao2019/h1b_cao2019.py",
+      "source_location": "L270"
+    },
+    {
       "id": "tests_cao2019_h1b_cao2019_rationale_77",
       "label": "(inicio del desv\u00edo, TR en s): primera respuesta 253 tras cada desv\u00edo y antes\u2026",
       "_origin": "ast",
@@ -1764,6 +1995,17 @@
       "norm_label": "fraccion de [a, b) con un desvio sin corregir. capta episodios de sueno (p. ej....",
       "source_file": "Tests/Cao2019/h1b_cao2019.py",
       "source_location": "L89"
+    },
+    {
+      "id": "tests_cao2019_h1b_cao2019_rationale_98",
+      "label": "Theta F\u00c1SICO Fz/FCz alineado al inicio de cada desv\u00edo (ensayo a ensayo) y su\u2026",
+      "_origin": "ast",
+      "community": 7,
+      "community_name": "h1_svrec.py",
+      "file_type": "rationale",
+      "norm_label": "theta fasico fz/fcz alineado al inicio de cada desvio (ensayo a ensayo) y su...",
+      "source_file": "Tests/Cao2019/h1b_cao2019.py",
+      "source_location": "L98"
     },
     {
       "id": "tests_eeg_svrec_h1_svrec_rationale_1",
@@ -1830,6 +2072,39 @@
       "norm_label": "descarga \u2192 procesa \u2192 borra. devuelve un mensaje de estado (corre en un proceso...",
       "source_file": "Tests/EEG-SVRec/h1_svrec.py",
       "source_location": "L167"
+    },
+    {
+      "id": "tests_eeg_svrec_h1_svrec_rationale_244",
+      "label": "A. Normaliza cada sesi\u00f3n a sus min 1-2; pendiente por sesi\u00f3n y media por sujeto.",
+      "_origin": "ast",
+      "community": 7,
+      "community_name": "h1_svrec.py",
+      "file_type": "rationale",
+      "norm_label": "a. normaliza cada sesion a sus min 1-2; pendiente por sesion y media por sujeto.",
+      "source_file": "Tests/EEG-SVRec/h1_svrec.py",
+      "source_location": "L244"
+    },
+    {
+      "id": "tests_eeg_svrec_h1_svrec_rationale_266",
+      "label": "B. Pendiente por sujeto del nivel medio de cada sesi\u00f3n contra el orden de\u2026",
+      "_origin": "ast",
+      "community": 7,
+      "community_name": "h1_svrec.py",
+      "file_type": "rationale",
+      "norm_label": "b. pendiente por sujeto del nivel medio de cada sesion contra el orden de...",
+      "source_file": "Tests/EEG-SVRec/h1_svrec.py",
+      "source_location": "L266"
+    },
+    {
+      "id": "tests_eeg_svrec_h1_svrec_rationale_283",
+      "label": "C. rho de Spearman por sujeto entre la medida del video y la calificaci\u00f3n (\u2265 10\u2026",
+      "_origin": "ast",
+      "community": 7,
+      "community_name": "h1_svrec.py",
+      "file_type": "rationale",
+      "norm_label": "c. rho de spearman por sujeto entre la medida del video y la calificacion (\u2265 10...",
+      "source_file": "Tests/EEG-SVRec/h1_svrec.py",
+      "source_location": "L283"
     },
     {
       "id": "tests_eeg_svrec_h1_svrec_rationale_363",
@@ -2748,18 +3023,6 @@
       "type": "external"
     },
     {
-      "id": "pandas",
-      "label": "pandas",
-      "_origin": "semantic",
-      "community": 6,
-      "community_name": "h1_ds007537.py",
-      "external": true,
-      "file_type": "concept",
-      "norm_label": "pandas",
-      "source_file": "",
-      "type": "external"
-    },
-    {
       "id": "specparam",
       "label": "specparam",
       "_origin": "semantic",
@@ -2768,18 +3031,6 @@
       "external": true,
       "file_type": "concept",
       "norm_label": "specparam",
-      "source_file": "",
-      "type": "external"
-    },
-    {
-      "id": "sys",
-      "label": "sys",
-      "_origin": "semantic",
-      "community": 6,
-      "community_name": "h1_ds007537.py",
-      "external": true,
-      "file_type": "concept",
-      "norm_label": "sys",
       "source_file": "",
       "type": "external"
     },
@@ -2880,6 +3131,18 @@
       "type": "external"
     },
     {
+      "id": "pandas",
+      "label": "pandas",
+      "_origin": "semantic",
+      "community": 7,
+      "community_name": "h1_svrec.py",
+      "external": true,
+      "file_type": "concept",
+      "norm_label": "pandas",
+      "source_file": "",
+      "type": "external"
+    },
+    {
       "id": "scipy",
       "label": "scipy",
       "_origin": "semantic",
@@ -2888,6 +3151,18 @@
       "external": true,
       "file_type": "concept",
       "norm_label": "scipy",
+      "source_file": "",
+      "type": "external"
+    },
+    {
+      "id": "sys",
+      "label": "sys",
+      "_origin": "semantic",
+      "community": 7,
+      "community_name": "h1_svrec.py",
+      "external": true,
+      "file_type": "concept",
+      "norm_label": "sys",
       "source_file": "",
       "type": "external"
     },
@@ -2998,7 +3273,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/Cao2019/h1b_cao2019.py",
-      "source_location": "L304",
+      "source_location": "L327",
       "weight": 1.0
     },
     {
@@ -3010,7 +3285,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/Cao2019/h1b_cao2019.py",
-      "source_location": "L306",
+      "source_location": "L329",
       "weight": 1.0
     },
     {
@@ -3022,7 +3297,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/Cao2019/h1b_cao2019.py",
-      "source_location": "L310",
+      "source_location": "L333",
       "weight": 1.0
     },
     {
@@ -3034,7 +3309,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/Cao2019/h1b_cao2019.py",
-      "source_location": "L323",
+      "source_location": "L346",
       "weight": 1.0
     },
     {
@@ -3046,7 +3321,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/Cao2019/h1b_cao2019.py",
-      "source_location": "L324",
+      "source_location": "L347",
       "weight": 1.0
     },
     {
@@ -3058,7 +3333,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/Cao2019/h1b_cao2019.py",
-      "source_location": "L325",
+      "source_location": "L348",
       "weight": 1.0
     },
     {
@@ -3070,7 +3345,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/Cao2019/h1b_cao2019.py",
-      "source_location": "L329",
+      "source_location": "L352",
       "weight": 1.0
     },
     {
@@ -3082,7 +3357,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/Cao2019/h1b_cao2019.py",
-      "source_location": "L335",
+      "source_location": "L359",
       "weight": 1.0
     },
     {
@@ -3094,7 +3369,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/Cao2019/h1b_cao2019.py",
-      "source_location": "L345",
+      "source_location": "L369",
       "weight": 1.0
     },
     {
@@ -3130,7 +3405,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/Cao2019/h1b_cao2019.py",
-      "source_location": "L250",
+      "source_location": "L254",
       "weight": 1.0
     },
     {
@@ -3142,7 +3417,19 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/Cao2019/h1b_cao2019.py",
-      "source_location": "L284",
+      "source_location": "L307",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_cao2019_h1b_cao2019_plot_curve",
+      "target": "numpy",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "Tests/Cao2019/h1b_cao2019.py",
+      "source_location": "L278",
       "weight": 1.0
     },
     {
@@ -3154,7 +3441,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/Cao2019/h1b_cao2019.py",
-      "source_location": "L266",
+      "source_location": "L283",
       "weight": 1.0
     },
     {
@@ -5835,7 +6122,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/Cao2019/h1b_cao2019.py",
-      "source_location": "L263",
+      "source_location": "L269",
       "weight": 1.0
     },
     {
@@ -5846,7 +6133,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/Cao2019/h1b_cao2019.py",
-      "source_location": "L282",
+      "source_location": "L305",
       "weight": 1.0
     },
     {
@@ -5857,7 +6144,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/Cao2019/h1b_cao2019.py",
-      "source_location": "L301",
+      "source_location": "L324",
       "weight": 1.0
     },
     {
@@ -6598,6 +6885,226 @@
       "weight": 1.0
     },
     {
+      "source": "tests_plan_avances",
+      "target": "tests_plan_avances_mirai_2026_plan_para_la_presentaci\u00f3n_de_avances_v2_22_oct_2026",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Tests/Plan_Avances.md",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_plan_avances_3_qu\u00e9_pasa_si_los_resultados_son_negativos",
+      "target": "tests_plan_avances_3_1_separar_las_dos_contribuciones",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Tests/Plan_Avances.md",
+      "source_location": "L56",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_plan_avances_3_qu\u00e9_pasa_si_los_resultados_son_negativos",
+      "target": "tests_plan_avances_3_2_escenarios_y_qu\u00e9_hacer_en_cada_uno",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Tests/Plan_Avances.md",
+      "source_location": "L66",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_plan_avances_3_qu\u00e9_pasa_si_los_resultados_son_negativos",
+      "target": "tests_plan_avances_3_3_recomendaciones_para_blindar_el_proyecto",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Tests/Plan_Avances.md",
+      "source_location": "L75",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_plan_avances_4_pasos_a_seguir",
+      "target": "tests_plan_avances_fase_3_experimento_propio",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Tests/Plan_Avances.md",
+      "source_location": "L113",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_plan_avances_4_pasos_a_seguir",
+      "target": "tests_plan_avances_fase_4_prototipo_ar_con_retroalimentaci\u00f3n_eeg",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Tests/Plan_Avances.md",
+      "source_location": "L119",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_plan_avances_4_pasos_a_seguir",
+      "target": "tests_plan_avances_fase_1_cerrar_la_validaci\u00f3n_casi_completa",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Tests/Plan_Avances.md",
+      "source_location": "L90",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_plan_avances_4_pasos_a_seguir",
+      "target": "tests_plan_avances_fase_2_diapositivas_orden_sugerido_texto_en_ingl\u00e9s",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Tests/Plan_Avances.md",
+      "source_location": "L95",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_plan_avances_mirai_2026_plan_para_la_presentaci\u00f3n_de_avances_v2_22_oct_2026",
+      "target": "tests_plan_avances_1_estado_actual",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Tests/Plan_Avances.md",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_plan_avances_mirai_2026_plan_para_la_presentaci\u00f3n_de_avances_v2_22_oct_2026",
+      "target": "tests_plan_avances_2_narrativa_de_la_presentaci\u00f3n",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Tests/Plan_Avances.md",
+      "source_location": "L29",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_plan_avances_mirai_2026_plan_para_la_presentaci\u00f3n_de_avances_v2_22_oct_2026",
+      "target": "tests_plan_avances_3_qu\u00e9_pasa_si_los_resultados_son_negativos",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Tests/Plan_Avances.md",
+      "source_location": "L54",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_plan_avances_mirai_2026_plan_para_la_presentaci\u00f3n_de_avances_v2_22_oct_2026",
+      "target": "tests_plan_avances_4_pasos_a_seguir",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Tests/Plan_Avances.md",
+      "source_location": "L88",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_revision_literatura_hipotesis",
+      "target": "tests_revision_literatura_hipotesis_mirai_2026_la_literatura_sostiene_las_hip\u00f3tesis_originales_22_oct_2026",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Tests/Revision_Literatura_Hipotesis.md",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_revision_literatura_hipotesis_mirai_2026_la_literatura_sostiene_las_hip\u00f3tesis_originales_22_oct_2026",
+      "target": "tests_revision_literatura_hipotesis_1_theta_y_alfa_t\u00f3nicos_aumentan_con_el_tiempo_en_tarea_respaldado",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Tests/Revision_Literatura_Hipotesis.md",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_revision_literatura_hipotesis_mirai_2026_la_literatura_sostiene_las_hip\u00f3tesis_originales_22_oct_2026",
+      "target": "tests_revision_literatura_hipotesis_2_theta_f\u00e1sico_con_fatiga_control_inhibitorio_respaldo_moderado_literatura_mixta",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Tests/Revision_Literatura_Hipotesis.md",
+      "source_location": "L23",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_revision_literatura_hipotesis_mirai_2026_la_literatura_sostiene_las_hip\u00f3tesis_originales_22_oct_2026",
+      "target": "tests_revision_literatura_hipotesis_3_matices_que_explican_tus_resultados_y_que_la_teor\u00eda_ya_predec\u00eda",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Tests/Revision_Literatura_Hipotesis.md",
+      "source_location": "L38",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_revision_literatura_hipotesis_mirai_2026_la_literatura_sostiene_las_hip\u00f3tesis_originales_22_oct_2026",
+      "target": "tests_revision_literatura_hipotesis_4_aplica_al_scrolling_plausible_pero_es_el_hueco_de_la_literatura",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Tests/Revision_Literatura_Hipotesis.md",
+      "source_location": "L47",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_revision_literatura_hipotesis_mirai_2026_la_literatura_sostiene_las_hip\u00f3tesis_originales_22_oct_2026",
+      "target": "tests_revision_literatura_hipotesis_5_contraste_con_tus_resultados",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Tests/Revision_Literatura_Hipotesis.md",
+      "source_location": "L59",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_revision_literatura_hipotesis_mirai_2026_la_literatura_sostiene_las_hip\u00f3tesis_originales_22_oct_2026",
+      "target": "tests_revision_literatura_hipotesis_6_correcci\u00f3n_a_la_reformulaci\u00f3n_v3",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Tests/Revision_Literatura_Hipotesis.md",
+      "source_location": "L67",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_revision_literatura_hipotesis_mirai_2026_la_literatura_sostiene_las_hip\u00f3tesis_originales_22_oct_2026",
+      "target": "tests_revision_literatura_hipotesis_7_referencias_verificar_p\u00e1ginas_doi_antes_de_citar_en_la_propuesta",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Tests/Revision_Literatura_Hipotesis.md",
+      "source_location": "L87",
+      "weight": 1.0
+    },
+    {
       "source": "tests_eeg_dataset_9_10_demo_processing_eegviewer",
       "target": "tests_eeg_dataset_9_10_demo_processing_eegviewer_rebuild_axes",
       "relation": "method",
@@ -6892,6 +7399,17 @@
       "confidence_score": 1.0,
       "source_file": "Tests/Cao2019/h1b_cao2019.py",
       "source_location": "L240",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_cao2019_h1b_cao2019_rationale_270",
+      "target": "tests_cao2019_h1b_cao2019_plot_curve",
+      "relation": "rationale_for",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Tests/Cao2019/h1b_cao2019.py",
+      "source_location": "L270",
       "weight": 1.0
     },
     {
@@ -7335,6 +7853,61 @@
       "weight": 1.0
     },
     {
+      "source": "tests_plan_avances",
+      "target": "tests_analisis_scope_v2",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Tests/Plan_Avances.md",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_plan_avances",
+      "target": "tests_ds007537_reporte_h1_ds007537",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Tests/Plan_Avances.md",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_plan_avances",
+      "target": "tests_eeg_svrec_reporte_h1_svrec",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Tests/Plan_Avances.md",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_plan_avances",
+      "target": "tests_resumen_sesion_21_10",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Tests/Plan_Avances.md",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_plan_avances",
+      "target": "tests_revision_literatura_hipotesis",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Tests/Plan_Avances.md",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
       "source": "tests_resumen_sesion_21_10",
       "target": "tests_ds007537_results_h1_reporte",
       "relation": "references",
@@ -7354,7 +7927,7 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "Tests/Cao2019/h1b_cao2019.py",
-      "source_location": "L313",
+      "source_location": "L336",
       "weight": 1.0
     },
     {
@@ -8267,5 +8840,5 @@
       "source_file": "Tests/ds007537/Reporte_H1_ds007537.md"
     }
   ],
-  "built_at_commit": "54ae03eafc6de33e971d77c297bc6b724cbdb746"
+  "built_at_commit": "fa5fd09b4ad101d5300a38677d4bb2cfe03cdfbd"
 }

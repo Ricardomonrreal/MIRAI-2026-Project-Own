@@ -236,45 +236,68 @@ PH_PAIRS = [("ersp_db", "log_rt"), ("post_db", "log_rt"), ("tonic_db", "log_rt")
             ("ersp_db", "tonic_db"), ("post_db", "tonic_db")]
 
 
-def phasic_report(tr):
-    """Exploratorio: rho de Spearman entre ensayos, por sesión → media por sujeto → contra 0."""
-    tr = tr[tr.keep >= MIN_KEEP]
+def phasic_report(tr, min_rt=MIN_RT):
+    """Exploratorio: rho de Spearman entre ensayos, por sesión → media por sujeto → contra 0.
+    min_rt > 0.5 deja fuera los ensayos cuya respuesta motora (y su preparación) cae en la ventana 0.1-0.5 s."""
+    tr = tr[(tr.keep >= MIN_KEEP) & (tr.rt >= min_rt)]
     rows = []
     for name, d in tr.groupby("session"):
         if len(d) < 20:
             continue
+        slow = d.rt > d.rt.median()
         r = {"sub": d["sub"].iloc[0], "ersp_media": d.ersp_db.mean(), "n": len(d)}
+        for k in ("ersp_db", "post_db", "base_db"):  # versión numérica de la figura (lentos − rápidos)
+            r[f"{k}_lento-rapido"] = d[k][slow].mean() - d[k][~slow].mean()
         for a, b in PH_PAIRS:
             r[f"{a}~{b}"] = stats.spearmanr(d[a], d[b]).statistic
         rows.append(r)
     s = pd.DataFrame(rows)
     sub = s.groupby("sub").mean(numeric_only=True)
     t = h1.test_vs_zero
-    L = ["", "THETA FÁSICO Fz/FCz al inicio del desvío (exploratorio; ensayos con TR ≥ 0.2 s)",
+    L = ["", f"THETA FÁSICO Fz/FCz al inicio del desvío (exploratorio; ensayos con TR ≥ {min_rt} s)",
          f"Sesiones con ≥ 20 ensayos: {len(s)} · ensayos: {int(s.n.sum())}",
          f"  ¿Hay respuesta fásica? ERSP medio 0.1-0.5 s (dB vs -0.6…-0.1 s): {t(sub['ersp_media'])}",
-         "  Acople ensayo a ensayo (rho por sesión → media por sujeto):"]
+         "  Lentos − rápidos (división por la mediana del TR en cada sesión):"]
+    L += [f"    {k:22s} {t(sub[f'{k}_lento-rapido'])}" for k in ("ersp_db", "post_db", "base_db")]
+    L += ["  Acople ensayo a ensayo (rho por sesión → media por sujeto):"]
     L += [f"    {a + ' ~ ' + b:22s} {t(sub[f'{a}~{b}'])}" for a, b in PH_PAIRS]
     L += ["  Predicción (fatiga → menos control): ersp/post ~ log_rt < 0 y ~ tonic_db < 0; tonic ~ log_rt > 0.",
           "  Si ersp~tonic < 0 pero post~tonic no, es artefacto de la línea base inflada, no menos control."]
     return "\n".join(L), s
 
 
-def plot_curve(cur, path):
-    m = cur.groupby("t")[["rapidos", "lentos"]].mean()
-    se = cur.groupby("t")[["rapidos", "lentos"]].sem()
-    fig, ax = plt.subplots(figsize=(7, 4))
-    for c, col, lab in (("rapidos", "#1a9850", "Respuestas rápidas (alerta)"), ("lentos", "#d73027", "Respuestas lentas (fatiga)")):
-        ax.plot(m.index, m[c], color=col, lw=2, label=lab)
-        ax.fill_between(m.index, m[c] - se[c], m[c] + se[c], color=col, alpha=0.18)
-    ax.axvline(0, color="k", lw=1)
-    ax.axvspan(*PH_POST, color="gray", alpha=0.12, label="Ventana fásica 0.1-0.5 s")
-    ax.axhline(0, color="gray", ls=":")
-    ax.set_xlabel("Tiempo desde el inicio del desvío (s)")
-    ax.set_ylabel("Theta Fz/FCz (dB vs -0.6…-0.1 s)")
-    ax.set_title("Theta fásico al desvío: ensayos rápidos vs lentos (media ± EE entre sesiones)", fontsize=9)
-    ax.legend(fontsize=8)
-    ax.grid(ls="--", alpha=0.4)
+def plot_curve(cur, tr, path):
+    """Izq.: relativo a la base de cada ensayo (oculta diferencias de base). Der.: absoluto = relativo + base_db
+    media del mismo grupo de ensayos (exacto en dB). Si los lentos parten más alto, la caída relativa es de base."""
+    # La curva cacheada es 10·log10(potencia instantánea / media lineal de la base): como la media de los dB
+    # queda por debajo del dB de la media (Jensen), la base salía en ≈ −0.85 dB. En el panel relativo se re-centra.
+    cols = ["rapidos", "lentos"]
+    cur = cur.copy()
+    cur["t"] = cur.t.round(2)
+    slow = tr.rt > tr.groupby("session").rt.transform("median")  # misma división que phasic()
+    base = tr.assign(g=np.where(slow, "lentos", "rapidos")).pivot_table("base_db", "session", "g")[cols]
+    absol = cur.copy()
+    absol[cols] += base.loc[cur.session].to_numpy()
+    pre = cur[cur.t.between(*PH_BASE)].groupby("session")[cols].mean()
+    cur[cols] -= pre.loc[cur.session].to_numpy()
+    fig, axes = plt.subplots(1, 2, figsize=(12, 4))
+    for ax, d, ylab in ((axes[0], cur, "Theta Fz/FCz (dB relativo a -0.6…-0.1 s)"),
+                        (axes[1], absol, "Theta Fz/FCz (dB absoluto, µV²)")):
+        m, se = d.groupby("t")[cols].mean(), d.groupby("t")[cols].sem()
+        for c, col, lab in (("rapidos", "#1a9850", "Respuestas rápidas (alerta)"),
+                            ("lentos", "#d73027", "Respuestas lentas (fatiga)")):
+            ax.plot(m.index, m[c], color=col, lw=2, label=lab)
+            ax.fill_between(m.index, m[c] - se[c], m[c] + se[c], color=col, alpha=0.18)
+        ax.axvline(0, color="k", lw=1)
+        ax.axvspan(*PH_POST, color="gray", alpha=0.12, label="Ventana fásica 0.1-0.5 s")
+        ax.set_xlabel("Tiempo desde el inicio del desvío (s)")
+        ax.set_ylabel(ylab)
+        ax.grid(ls="--", alpha=0.4)
+    axes[0].axhline(0, color="gray", ls=":")
+    axes[0].legend(fontsize=8)
+    axes[0].set_title("Relativo: el pico de los lentos parece menor", fontsize=9)
+    axes[1].set_title("Absoluto: los lentos parten de más theta y llegan más alto", fontsize=9)
+    fig.suptitle("Theta fásico al desvío, ensayos rápidos vs lentos (media ± EE entre sesiones)", fontsize=10)
     fig.tight_layout()
     fig.savefig(path, dpi=150)
 
@@ -327,12 +350,13 @@ def main():
     if ph:
         tr = pd.concat(pd.read_csv(os.path.join(CACHE, f)) for f in ph)
         ph_txt, ph_ses = phasic_report(tr)
+        ph_txt += "\n" + phasic_report(tr, min_rt=0.7)[0]  # control: sin respuesta motora en la ventana
         txt += "\n" + ph_txt
         tr.to_csv(os.path.join(OUT, "cao_fasico_ensayos.csv"), index=False)
         ph_ses.to_csv(os.path.join(OUT, "cao_fasico_rho_sesion.csv"), index=False)
         cur = [f for f in files if f.endswith("_curso.csv") and os.path.getsize(os.path.join(CACHE, f)) > 10]
         if cur:
-            plot_curve(pd.concat(pd.read_csv(os.path.join(CACHE, f)) for f in cur),
+            plot_curve(pd.concat(pd.read_csv(os.path.join(CACHE, f)) for f in cur), tr,
                        os.path.join(OUT, "cao_fasico_curso.png"))
     df.to_csv(os.path.join(OUT, "cao_por_ventana.csv"), index=False)
     sl.to_csv(os.path.join(OUT, "cao_pendientes_sesion.csv"), index=False)

@@ -38,11 +38,31 @@ Si log_rt sube pero theta_per no, el método no capta theta tónico y hay que re
 THETA FÁSICO Fz/FCz al inicio del desvío (exploratorio; ensayos con TR ≥ 0.2 s)
 Sesiones con ≥ 20 ensayos: 62 · ensayos: 26142
   ¿Hay respuesta fásica? ERSP medio 0.1-0.5 s (dB vs -0.6…-0.1 s): n=27  media=+0.827  ↑24/27  t=+6.40 p=0.0000  Wilcoxon p=0.0000
+  Lentos − rápidos (división por la mediana del TR en cada sesión):
+    ersp_db                n=27  media=-0.223  ↑12/27  t=-1.74 p=0.0935  Wilcoxon p=0.2109
+    post_db                n=27  media=+0.934  ↑20/27  t=+4.84 p=0.0001  Wilcoxon p=0.0002
+    base_db                n=27  media=+1.157  ↑25/27  t=+6.85 p=0.0000  Wilcoxon p=0.0000
   Acople ensayo a ensayo (rho por sesión → media por sujeto):
     ersp_db ~ log_rt       n=27  media=-0.040  ↑10/27  t=-2.05 p=0.0502  Wilcoxon p=0.0772
     post_db ~ log_rt       n=27  media=+0.158  ↑21/27  t=+4.89 p=0.0000  Wilcoxon p=0.0001
     tonic_db ~ log_rt      n=27  media=+0.301  ↑27/27  t=+11.40 p=0.0000  Wilcoxon p=0.0000
     ersp_db ~ tonic_db     n=27  media=-0.061  ↑4/27  t=-4.80 p=0.0001  Wilcoxon p=0.0001
     post_db ~ tonic_db     n=27  media=+0.169  ↑24/27  t=+7.29 p=0.0000  Wilcoxon p=0.0000
+  Predicción (fatiga → menos control): ersp/post ~ log_rt < 0 y ~ tonic_db < 0; tonic ~ log_rt > 0.
+  Si ersp~tonic < 0 pero post~tonic no, es artefacto de la línea base inflada, no menos control.
+
+THETA FÁSICO Fz/FCz al inicio del desvío (exploratorio; ensayos con TR ≥ 0.7 s)
+Sesiones con ≥ 20 ensayos: 62 · ensayos: 20905
+  ¿Hay respuesta fásica? ERSP medio 0.1-0.5 s (dB vs -0.6…-0.1 s): n=27  media=+0.729  ↑24/27  t=+6.59 p=0.0000  Wilcoxon p=0.0000
+  Lentos − rápidos (división por la mediana del TR en cada sesión):
+    ersp_db                n=27  media=-0.177  ↑12/27  t=-1.44 p=0.1616  Wilcoxon p=0.2687
+    post_db                n=27  media=+1.057  ↑22/27  t=+5.94 p=0.0000  Wilcoxon p=0.0000
+    base_db                n=27  media=+1.234  ↑24/27  t=+6.99 p=0.0000  Wilcoxon p=0.0000
+  Acople ensayo a ensayo (rho por sesión → media por sujeto):
+    ersp_db ~ log_rt       n=27  media=-0.031  ↑9/27  t=-1.74 p=0.0934  Wilcoxon p=0.1286
+    post_db ~ log_rt       n=27  media=+0.179  ↑22/27  t=+5.72 p=0.0000  Wilcoxon p=0.0000
+    tonic_db ~ log_rt      n=27  media=+0.301  ↑27/27  t=+10.58 p=0.0000  Wilcoxon p=0.0000
+    ersp_db ~ tonic_db     n=27  media=-0.049  ↑3/27  t=-3.94 p=0.0005  Wilcoxon p=0.0002
+    post_db ~ tonic_db     n=27  media=+0.176  ↑25/27  t=+7.70 p=0.0000  Wilcoxon p=0.0000
   Predicción (fatiga → menos control): ersp/post ~ log_rt < 0 y ~ tonic_db < 0; tonic ~ log_rt > 0.
   Si ersp~tonic < 0 pero post~tonic no, es artefacto de la línea base inflada, no menos control.

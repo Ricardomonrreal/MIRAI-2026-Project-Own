@@ -114,20 +114,20 @@
     "semantic_hash": ""
   },
   "Tests/Cao2019/h1b_cao2019.py": {
-    "mtime": 1792575373.9459436,
-    "seen": 1792575873.418888,
-    "ast_hash": "c216dcb50185986cdf86097f8e7b71d7",
+    "mtime": 1792653899.8066866,
+    "seen": 1792653964.2347944,
+    "ast_hash": "c276f3c7252c296c021c41ca72f72f09",
     "semantic_hash": ""
   },
   "Tests/Cao2019/results/cao_reporte.txt": {
-    "mtime": 1792575816.2096002,
-    "seen": 1792575873.4189403,
-    "ast_hash": "59ecdb0c387537f1848775506e7ab597",
+    "mtime": 1792653912.731943,
+    "seen": 1792653964.2348495,
+    "ast_hash": "2da06cea9bc545b84535344ef95ab409",
     "semantic_hash": ""
   },
   "Tests/Cao2019/results/cao_trayectorias.png": {
-    "mtime": 1792575817.741759,
-    "seen": 1792575873.4189916,
+    "mtime": 1792653914.1774125,
+    "seen": 1792653964.2349205,
     "ast_hash": "d716316cf00b942dd67642dfb2d26c81",
     "semantic_hash": ""
   },
@@ -153,6 +153,24 @@
     "mtime": 1792575818.4005585,
     "seen": 1792575873.4189987,
     "ast_hash": "d716316cf00b942dd67642dfb2d26c81",
+    "semantic_hash": ""
+  },
+  "Tests/Plan_Avances.md": {
+    "mtime": 1792653945.6649985,
+    "seen": 1792653964.234886,
+    "ast_hash": "3d63d9801942150f616f45030fb1c3cb",
+    "semantic_hash": ""
+  },
+  "Tests/Revision_Literatura_Hipotesis.md": {
+    "mtime": 1792641639.1632674,
+    "seen": 1792653964.234895,
+    "ast_hash": "fde927cb861b579bad0e4f2af7fca6ee",
+    "semantic_hash": ""
+  },
+  "Tests/Cao2019/results/cao_fasico_curso.png": {
+    "mtime": 1792653912.6798751,
+    "seen": 1792653964.2349162,
+    "ast_hash": "5c5e4d64a058c128dc19d952988b2bd1",
     "semantic_hash": ""
   }
 }

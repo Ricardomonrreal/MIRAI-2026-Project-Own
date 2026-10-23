@@ -15,15 +15,14 @@ Antecedentes: [Revision_Literatura_Hipotesis.md](Revision_Literatura_Hipotesis.m
 | **ds007537** (n = 27, 10 min de smartphone) | Video corto: alfa periódica ↑ +0.43 dB (10/12, p = 0.04, frágil). Theta sin cambio | Firma de desenganche/fatiga pasiva. Theta nulo esperado por la corta duración |
 | **EEG-SVRec** (n = 25, sesiones ≤ 15–30 min) | Tendencias temporales frágiles. Alfa_per ↓ con mayor inmersión por video (20/25) | Alfa como marcador de (des)enganche |
 | **Cao 2019, tónico** (n = 27, 62 sesiones, 60–90 min) | Theta total ~ log TR **ρ = +0.50 (25/27)**, ~ lapsos +0.46 (23/27). Alfa_per ~ TR +0.32 (24/27). Theta_per: pendiente +0.007 dB/min (Holm p = 0.034), pero el TR no tiene tendencia lineal | El theta tónico **acompaña al desempeño**. El pipeline lo detecta |
-| **Cao 2019, fásico** (26 142 ensayos) | Hay respuesta theta al desvío: **+0.83 dB, 24/27, p < 0.0001**. El theta tónico pre-ensayo predice un TR más lento: **ρ = +0.30, 27/27**. Respuesta relativa más débil cuanto mayor es el tónico: ρ = −0.06 (solo 4/27 positivos, p = 0.0001). En la figura, **los ensayos lentos tienen el pico fásico más bajo con la misma línea base** (~0.1 vs ~0.5 dB). La potencia absoluta post-estímulo sube con el tónico (+0.17) | **Apoyo parcial y exploratorio a H3:** tónico ↑ → fásico relativo ↓ → peor desempeño. Ver advertencias abajo |
+| **Cao 2019, fásico** (26 142 ensayos; revisado el 22 oct) | Hay respuesta theta al desvío: **+0.83 dB, 24/27, p < 0.0001**. El theta tónico pre-ensayo predice un TR más lento: **ρ = +0.30, 27/27**. Ensayos lentos vs. rápidos: **base +1.16 dB (25/27)**, post absoluto +0.93 dB (20/27), ERSP relativo **−0.22 dB, n.s. (p = 0.09)**. Con TR ≥ 0.7 s (sin respuesta motora en la ventana): igual, ERSP −0.18, p = 0.16 | **El estado de fatiga es theta tónico elevado (robusto). La respuesta fásica se conserva**: parte de más arriba y llega más alto. **H3 (fásico ↓) no se confirma en Cao** (compatible con la compensación de Wascher 2014), pero la tarea no es NoGo |
 | **Hardware** | AURA transmite por LSL (`AURA_Power` en `AURA/AURA_Software/VRehab.py`, que ya trae calibración con `StandardScaler` + `LogisticRegression`) | Base para el lazo en tiempo real |
 
-**Advertencias del fásico de Cao (decirlas en la presentación):**
-- La tarea es **desvío de carril**, no NoGo. Mide la señal de "se necesita control", no inhibición de respuesta.
-- El efecto ensayo a ensayo es pequeño (ersp ~ TR ρ = −0.04, p = 0.05).
-- La caída relativa podría deberse en parte a una línea base inflada, ya que la potencia absoluta post-estímulo no cae.
-- En los ensayos rápidos, la respuesta motora cae dentro de la ventana 0.1–0.5 s.
-- Revisar la etiqueta del eje Y de `cao_fasico_curso.png`: la línea base aparece en ~−0.85 dB y no en 0.
+**Revisión del fásico de Cao (22 oct):**
+- **Figura corregida** (`cao_fasico_curso.png`, dos paneles). El −0.85 dB de la línea base venía de promediar dB de potencia instantánea contra la media lineal de la base (desigualdad de Jensen), no de un error en los datos. El panel relativo ahora está re-centrado en 0.
+- **La lectura anterior era incorrecta:** "misma línea base" era un efecto de normalizar cada ensayo a su propia base. En dB absolutos, **los ensayos lentos tienen ~1.1 dB más theta antes del desvío** y su pico también es más alto. El incremento fásico es apenas menor y no es significativo.
+- **Control de latencia:** solo el 1.9 % de los ensayos tiene TR < 0.5 s (mediana 0.97 s). Con TR ≥ 0.7 s el resultado no cambia, así que la respuesta motora no explica nada.
+- **Lectura para la presentación:** en una tarea de 60–90 min, la fatiga aparece como **theta tónico elevado que predice peor desempeño (27/27)**, mientras la señal fásica de control se mantiene (compensación). La caída fásica de H2/H3 queda **sin probar**, porque Cao no tiene una sonda inhibitoria (NoGo). Esto refuerza la necesidad del experimento propio.
 
 ---
 
@@ -45,7 +44,7 @@ Antecedentes: [Revision_Literatura_Hipotesis.md](Revision_Literatura_Hipotesis.m
 | **Muestra por condición** | n = 12 en video corto | n = 25 | n = 27 |
 
    **Frase:** *"Ningún dataset público combina scrolling de video corto, duración suficiente, una sonda inhibitoria y una condición control."*
-3. **Lo que sí mostraron:** la firma de alfa/desenganche en video corto. El acople theta–desempeño en el control positivo. La respuesta fásica theta, más débil en los ensayos lentos.
+3. **Lo que sí mostraron:** la firma de alfa/desenganche en video corto. El acople theta tónico–desempeño en el control positivo (27/27). La respuesta fásica theta existe y se conserva bajo fatiga en conducción, así que la caída fásica requiere una sonda inhibitoria que ningún dataset tiene.
 4. **La brecha:** no existen estudios ni datasets que prueben la disociación tónico/fásico durante el scrolling de video corto. Lo más cercano es correlacional y de rasgo (Nguyen 2025; Yan 2024). → **Estudio único.**
 5. **Mi estudio:** scrolling vs. documental (control estándar no fatigante, Marcora 2009), 45–60 min, Go/NoGo antes y después, NoGo dentro del feed, KSS/NASA-TLX, montaje AURA.
 6. **El sistema AR no depende de que todo salga positivo** (§3).
@@ -90,25 +89,25 @@ Un resultado nulo en H1–H3 **no invalida el prototipo**: cambia qué señal lo
 
 ### Fase 1 · Cerrar la validación ✅ casi completa
 1. ~~Pasada fásica de Cao~~ ✅ (22 oct).
-2. **Revisar `cao_fasico_curso.png`:** etiqueta del eje Y (línea base en ~−0.85) y, si da tiempo, el control de latencia de respuesta (excluir ensayos con TR < 0.5 s o hacer un análisis ligado a la respuesta).
+2. ~~Revisar `cao_fasico_curso.png` y el control de latencia~~ ✅ (22 oct; ver §1).
 3. **Figura resumen de los 3 datasets** (tabla de §2.2 + resultados de §1).
 
-### Fase 2 · Diapositivas (orden sugerido, texto en inglés)
+### Fase 2 · Diapositivas (orden definitivo, texto en inglés)
 | # | Diapositiva | Contenido | Fuente |
 |---|---|---|---|
 | 1 | Portada | Título con AR | `Analisis_Scope_v2.md` §3 |
-| 2 | Problem | Nguyen 2025 (r = −.41 en control inhibitorio) | Revisión §4 |
+| 2 | **Objectives** | Objetivo general + específicos (científico e ingenieril, §3.1). Motivación: Nguyen 2025 (r = −.41 en control inhibitorio) | `Analisis_Scope_v2.md`, Revisión §4 |
 | 3 | Scope y marco | Tónico (fatiga) vs. fásico (inhibición); no se mide dopamina | `Analisis_Scope_v2.md` slide 3 |
 | 4 | Hypotheses H1–H4 | Versión vigente | Revisión §6 |
 | 5 | **Theoretical validation** | Tabla de la literatura: Tran, Wascher, Benwell, Arnau, Yu, Kato | Revisión §1–2 |
-| 6 | **Datasets explored** | 3 datasets, qué se probó y el resultado | §1 |
+| 6 | **Practical validation** | 3 datasets: qué se probó y el resultado. Control positivo Cao 2019: panel absoluto de `cao_fasico_curso.png` + acople tónico ~ TR (27/27). Mensaje: el tónico marca la fatiga y el fásico se compensa → hace falta una sonda NoGo | §1 |
 | 7 | **Why they could not confirm it** | Tabla de limitantes | §2.2 |
-| 8 | **Positive control: Cao 2019** | `cao_fasico_curso.png` + acople tónico ~ TR | §1 |
-| 9 | **The gap → unique study** | No existe un estudio de la disociación durante scrolling | §2.4 |
-| 10 | Experimental plan | Protocolo de 45–60 min, medidas, modelo mixto, prerregistro | §4 Fase 3 |
-| 11 | System pipeline + AR | Lazo LSL → features → modelo individual → AR | `Analisis_Scope_v2.md` slide 7 y §5.7 |
-| 12 | **Robust to negative results** | Tabla de escenarios §3.2 + frase | §3 |
-| 13 | Gantt / next steps | Actualizado | `Analisis_Scope_v2.md` slide 12 |
+| 8 | **The gap → unique study** | No existe un estudio de la disociación durante scrolling | §2.4 |
+| 9 | Experimental plan | Protocolo de 45–60 min, medidas, modelo mixto, prerregistro. **Simulación:** simulador LSL con datos grabados (ds007537 / Cao) para probar el lazo antes del experimento | §4 Fase 3, Fase 4 paso 8 |
+| 10 | System pipeline + AR | Lazo LSL → features → modelo individual → AR | `Analisis_Scope_v2.md` slide 7 y §5.7 |
+| 11 | **Robust to negative results** | Tabla de escenarios §3.2 + frase | §3 |
+| 12 | Gantt | Actualizado | `Analisis_Scope_v2.md` slide 12 |
+| 13 | Next steps | Fases 3–4 pendientes | §4 |
 | 14 | References | APA | Revisión §7 |
 
 ### Fase 3 · Experimento propio
@@ -125,4 +124,4 @@ Un resultado nulo en H1–H3 **no invalida el prototipo**: cambia qué señal lo
 12. **Puente a la AR** (UDP/WebSocket → estado → escalera de intervención). **Decisión pendiente:** dispositivo y motor (Unity + AR Foundation, Quest en passthrough o WebXR).
 13. **Condiciones de H4** en el mismo código: EEG, temporizador e híbrido.
 
-**Prioridad para la presentación:** 3 → diapositivas 5–9 y 12 (el núcleo nuevo) → resto de diapositivas → 11 (demo) si da tiempo. Las fases 3–4 restantes se presentan como plan.
+**Prioridad para la presentación:** 3 → diapositivas 5–8 y 11 (el núcleo nuevo) → resto de diapositivas → paso 11 de la Fase 4 (demo) si da tiempo. Las fases 3–4 restantes se presentan como plan.
