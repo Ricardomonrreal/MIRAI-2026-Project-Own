@@ -1,14 +1,25 @@
-# === Carpetas excluidas del repositorio ===
-
-# Carpeta AURA
+# === Carpetas y proyectos externos ===
 /AURA/
-
-# Carpeta Benkyokai
 /Benkyokai-oct/
 
-# Carpeta raw_data (en cualquier subdirectorio de Tests)
+# === Datos crudos masivos ===
 **/raw_data/
+**/*.edf
+**/*.bdf
+**/*.cnt
+**/*.mat
 
-# Cache y Python bytecode
+# === Caché de procesamiento intermedio (los agregados finales sí se conservan) ===
+**/results/cache/
+**/results/cache_v2/
+**/results/parcial_n9/
+
+# === Caché interna de Graphify (se conservan graph.json, GRAPH_REPORT.md y graph.html) ===
+graphify-out/cache/
+graphify-out/2026-*/
+
+# === Python bytecode y sistema ===
 **/__pycache__/
 *.py[cod]
+.DS_Store
+Thumbs.db
