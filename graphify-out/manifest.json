@@ -18,10 +18,10 @@
     "semantic_hash": "8a6643a420fdad6bfb583523bc6cef16"
   },
   "README.md": {
-    "mtime": 1791883010.2694182,
-    "seen": 1792551314.1799676,
-    "ast_hash": "404af2e5ca122cee52ec3dc452c4bd96",
-    "semantic_hash": "404af2e5ca122cee52ec3dc452c4bd96"
+    "mtime": 1792724893.6583982,
+    "seen": 1793077661.401162,
+    "ast_hash": "e1caab4af5654a81d1c72bcf66e32957",
+    "semantic_hash": ""
   },
   "Tests/Analisis_Scope_v2.md": {
     "mtime": 1792397667.8765273,
@@ -156,9 +156,9 @@
     "semantic_hash": ""
   },
   "Tests/Plan_Avances.md": {
-    "mtime": 1792653945.6649985,
-    "seen": 1792653964.234886,
-    "ast_hash": "3d63d9801942150f616f45030fb1c3cb",
+    "mtime": 1792654185.2977543,
+    "seen": 1793077661.401201,
+    "ast_hash": "4b79e2cc89f97c93a288283ea3dccb71",
     "semantic_hash": ""
   },
   "Tests/Revision_Literatura_Hipotesis.md": {
@@ -171,6 +171,18 @@
     "mtime": 1792653912.6798751,
     "seen": 1792653964.2349162,
     "ast_hash": "5c5e4d64a058c128dc19d952988b2bd1",
+    "semantic_hash": ""
+  },
+  "Tests/Guia_Exposicion.md": {
+    "mtime": 1792719755.036789,
+    "seen": 1793077661.4011977,
+    "ast_hash": "317d60ab845ee3c8a2d8528c64bbc031",
+    "semantic_hash": ""
+  },
+  "Tests/Progress Report MIRAI Ricardo_Monrreal.pdf": {
+    "mtime": 1792722905.9873517,
+    "seen": 1793077661.401219,
+    "ast_hash": "b1a4d5e936a65722d1010d525bfe61d9",
     "semantic_hash": ""
   }
 }
