@@ -206,7 +206,7 @@ def load_bids(sub_dir):
                         if c != "Cz" and (s > 5 * med or s < 0.05 * med)]
     raw.set_eeg_reference("average", verbose="error")  # excluye los canales en bads
     raw.resample(DEFAULT_FS, verbose="error")
-    # ponytail: sin ICA, los parpadeos solo se reparan por umbral; el análisis de grupo con ICA está en Tests/ds007537
+    # ponytail: sin ICA, los parpadeos solo se reparan por umbral; el análisis de grupo con ICA está en Tests/datasets workflow/ds007537
     return raw.get_data(picks=BIDS_CHANNELS).T * 1e6, list(BIDS_CHANNELS)
 
 

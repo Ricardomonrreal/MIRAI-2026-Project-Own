@@ -12,7 +12,8 @@
 # === Caché de procesamiento intermedio (los agregados finales sí se conservan) ===
 **/results/cache/
 **/results/cache_v2/
-**/results/parcial_n9/
+**/results/parcial_*/
+**/results/tonico_n_final/
 
 # === Caché interna de Graphify (se conservan graph.json, GRAPH_REPORT.md y graph.html) ===
 graphify-out/cache/

@@ -1,7 +1,7 @@
 # MIRAI 2026 · Guía de estudio para la exposición de avances (22 oct 2026)
 
 Presentación: `Project Proposal MIRAI Ricardo_Monrreal (v4).pptx` (en Downloads). 14 diapositivas en inglés.
-Fuentes de este resumen: [Plan_Avances.md](Plan_Avances.md) · [Revision_Literatura_Hipotesis.md](Revision_Literatura_Hipotesis.md) · reportes de [ds007537](ds007537/Reporte_H1_ds007537.md), [EEG-SVRec](EEG-SVRec/Reporte_H1_SVRec.md) y [Cao 2019](Cao2019/results/cao_reporte.txt).
+Fuentes de este resumen: [Plan_Avances.md](Plan_Avances.md) · [Revision_Literatura_Hipotesis.md](Revision_Literatura_Hipotesis.md) · reportes de [ds007537](datasets%20workflow/ds007537/Reporte_H1_ds007537.md), [EEG-SVRec](datasets%20workflow/EEG-SVRec/Reporte_H1_SVRec.md) y [Cao 2019](datasets%20workflow/Cao2019/results/cao_reporte.txt).
 
 ---
 

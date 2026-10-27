@@ -10,12 +10,12 @@
 |---|---|
 | [Analisis_Scope_v2.md](Analisis_Scope_v2.md) | Análisis de `/Tests`; búsqueda de datasets; revisión de la teoría (qué está sustentado y qué corregir); texto por diapositiva para la propuesta v2; pipeline; Gantt de 12 semanas; **§5 Intervención** (JITAI, por qué AR y no VR, escalera de intervención, Estudio 2 / H4); bibliografía APA |
 | [Project Proposal MIRAI Ricardo_Monrreal.pptx](Project%20Proposal%20MIRAI%20Ricardo_Monrreal.pptx) | Propuesta v1 convertida de PDF a **PowerPoint editable** (13 diapositivas, 16:9, fuentes Cambria/Calibri) |
-| [ds007537/Reporte_H1_ds007537.md](ds007537/Reporte_H1_ds007537.md) | **Reporte de validación de H1**: método, control de calidad, resultados y la interpretación de **alfa periódica vs total** |
-| [ds007537/h1_ds007537.py](ds007537/h1_ds007537.py) | Pipeline de análisis de H1 (MNE + specparam + parpadeo + pupila) |
-| [ds007537/results/h1_reporte.txt](ds007537/results/h1_reporte.txt) | Salida estadística completa |
-| [ds007537/results/h1_trayectorias.png](ds007537/results/h1_trayectorias.png) | Figura con las 8 medidas por minuto |
-| [ds007537/results/h1_por_minuto.csv](ds007537/results/h1_por_minuto.csv) · [h1_pendientes.csv](ds007537/results/h1_pendientes.csv) · [h1_calidad.csv](ds007537/results/h1_calidad.csv) | Datos por minuto, por sujeto y control de calidad |
-| [EEG Dataset 9-10/Demo_processing.py](EEG%20Dataset%209-10/Demo_processing.py) | Visor: ahora también abre **ds007537** (montaje AURA, segmento de smartphone) |
+| [Reporte H1 ds007537](datasets%20workflow/ds007537/Reporte_H1_ds007537.md) | **Reporte de validación de H1**: método, control de calidad, resultados y la interpretación de **alfa periódica vs total** |
+| [h1_ds007537.py](datasets%20workflow/ds007537/h1_ds007537.py) | Pipeline de análisis de H1 (MNE + specparam + parpadeo + pupila) |
+| [h1_reporte.txt](datasets%20workflow/ds007537/results/h1_reporte.txt) | Salida estadística completa |
+| [h1_trayectorias.png](datasets%20workflow/ds007537/results/h1_trayectorias.png) | Figura con las 8 medidas por minuto |
+| [h1_por_minuto.csv](datasets%20workflow/ds007537/results/h1_por_minuto.csv) · [h1_pendientes.csv](datasets%20workflow/ds007537/results/h1_pendientes.csv) · [h1_calidad.csv](datasets%20workflow/ds007537/results/h1_calidad.csv) | Datos por minuto, por sujeto y control de calidad |
+| [Demo_processing.py](datasets%20workflow/EEG%20Dataset%209-10/Demo_processing.py) | Visor: ahora también abre **ds007537** (montaje AURA, segmento de smartphone) |
 
 Fuentes originales: [Project Proposal MIRAI Ricardo_Monrreal (1).pdf](Project%20Proposal%20MIRAI%20Ricardo_Monrreal%20(1).pdf) · [Scope_Dopamine_Scrolling.pdf](Scope_Dopamine_Scrolling.pdf)
 

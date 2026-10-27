@@ -66,26 +66,28 @@ Project/
 │       ├── AURA_SDK/                      # SDK y librerías de enlace con la diadema AURA
 │       └── VRehab.py                      # Streaming vía LSL y pipeline de calibración individual
 │
-├── Tests/                                 # Datasets experimentales, pipelines de análisis y reportes
-│   ├── ds007537/                          # Análisis del dataset de smartphone en OpenNeuro
-│   │   ├── h1_ds007537.py                 # Pipeline de extracción espectral, specparam y parpadeo
-│   │   ├── Reporte_H1_ds007537.md         # Reporte técnico detallado de resultados
-│   │   └── results/                       # CSVs de métricas por minuto, figuras y estadísticas
+├── Tests/                                 # Entorno experimental, pipelines, reportes y protocolos
+│   ├── datasets workflow/                 # Experimentaciones con datasets neurofisiológicos
+│   │   ├── ds007537/                      # Dataset de smartphone en OpenNeuro (video corto vs. juegos)
+│   │   │   ├── h1_ds007537.py             # Pipeline de extracción espectral, specparam y parpadeo
+│   │   │   ├── Reporte_H1_ds007537.md     # Reporte técnico detallado de resultados
+│   │   │   └── results/                   # CSVs de métricas por minuto, figuras y estadísticas
+│   │   │
+│   │   ├── EEG-SVRec/                     # Dataset EEG en video corto (SIGIR 2024, 62 canales)
+│   │   │   ├── h1_svrec.py                # Pipeline adaptado a 62 canales con control EMG
+│   │   │   ├── Reporte_H1_SVRec.md        # Reporte de resultados de inmersión y trayectorias
+│   │   │   └── results/                   # Gráficas espectrales y coeficientes de correlación
+│   │   │
+│   │   ├── Cao2019/                       # Control positivo de fatiga sostenida (60–90 min)
+│   │   │   ├── h1b_cao2019.py             # Pipeline de acople tónico-conductual y análisis fásico ERSP
+│   │   │   └── results/                   # Registro estadístico y curvas temporales
+│   │   │
+│   │   └── EEG Dataset 9-10/              # Visor y herramientas interactivas
+│   │       ├── Demo_processing.py         # Visor interactivo EEG con modulación dinámica de canales
+│   │       ├── Guia_Canales_y_Datasets.md # Documentación técnica de canales 10-20 y biomarcadores
+│   │       └── raw_data/                  # Directorio local para almacenamiento de señales brutas
 │   │
-│   ├── EEG-SVRec/                         # Análisis del dataset EEG en video corto (SIGIR 2024)
-│   │   ├── h1_svrec.py                    # Pipeline adaptado a 62 canales con control EMG
-│   │   ├── Reporte_H1_SVRec.md            # Reporte de resultados de inmersión y trayectorias
-│   │   └── results/                       # Gráficas espectrales y coeficientes de correlación
-│   │
-│   ├── Cao2019/                           # Control positivo de fatiga sostenida (60–90 min)
-│   │   ├── h1b_cao2019.py                 # Pipeline de acople tónico-conductual y análisis fásico ERSP
-│   │   └── results/                       # Registro estadístico y curvas temporales
-│   │
-│   ├── EEG Dataset 9-10/                  # Visor y herramientas interactivas
-│   │   ├── Demo_processing.py             # Visor interactivo EEG con modulación dinámica de canales
-│   │   ├── Guia_Canales_y_Datasets.md     # Documentación técnica de canales 10-20 y biomarcadores
-│   │   └── raw_data/                      # Directorio local para almacenamiento de señales brutas
-│   │
+│   ├── Protocolo_Simulacion_Pipeline.md   # Protocolo técnico paso a paso de simulación y pipeline en tiempo real
 │   ├── Analisis_Scope_v2.md               # Análisis exhaustivo del marco científico, pipeline y JITAI
 │   ├── Plan_Avances.md                    # Plan metodológico, contingencia ante resultados nulos y fases
 │   ├── Revision_Literatura_Hipotesis.md   # Justificación teórica y referencias bibliográficas
@@ -146,24 +148,24 @@ pip install numpy scipy pandas matplotlib mne specparam scikit-learn pylsl
 
 * **Análisis de H1 en ds007537:**
   ```bash
-  python "Tests/ds007537/h1_ds007537.py" "RUTA_A_DATASET/ds007537"
+  python "Tests/datasets workflow/ds007537/h1_ds007537.py" "RUTA_A_DATASET/ds007537"
   ```
 * **Análisis de inmersión en EEG-SVRec:**
   ```bash
-  python "Tests/EEG-SVRec/h1_svrec.py"
+  python "Tests/datasets workflow/EEG-SVRec/h1_svrec.py"
   ```
 * **Control positivo y análisis fásico en Cao 2019:**
   ```bash
-  python "Tests/Cao2019/h1b_cao2019.py"
+  python "Tests/datasets workflow/Cao2019/h1b_cao2019.py"
   ```
 
 ### 4. Lanzar el Visor Interactivo de Señales
 El script `Demo_processing.py` incluye una interfaz gráfica para inspeccionar señales EEG, mapa visual del montaje 10-20, detección dinámica de canales y cálculo automático de métricas:
 ```bash
-python "Tests/EEG Dataset 9-10/Demo_processing.py"
+python "Tests/datasets workflow/EEG Dataset 9-10/Demo_processing.py"
 ```
 
-> **Nota sobre los datos crudos (`raw_data`):** Los archivos EEG voluminosos no se incluyen en el repositorio Git. Para replicar los análisis locales, sitúe los registros en las carpetas `raw_data` correspondientes siguiendo las pautas de [Guia_Canales_y_Datasets.md](file:///c:/Users/ricar/Documents/Ucaribe/MIRAI%202026/Project/Tests/EEG%20Dataset%209-10/Guia_Canales_y_Datasets.md).
+> **Nota sobre los datos crudos (`raw_data`):** Los archivos EEG voluminosos no se incluyen en el repositorio Git. Para replicar los análisis locales, sitúe los registros en las carpetas `raw_data` correspondientes siguiendo las pautas de [Guia_Canales_y_Datasets.md](file:///c:/Users/ricar/Documents/Ucaribe/MIRAI%202026/Project/Tests/datasets%20workflow/EEG%20Dataset%209-10/Guia_Canales_y_Datasets.md).
 
 ---
 

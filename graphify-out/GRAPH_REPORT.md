@@ -1,55 +1,56 @@
 # Graph Report - Project  (2026-10-27)
 
 ## Corpus Check
-- 14 files · ~142,593 words
+- 15 files · ~101,232 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 7 file(s) not represented in the graph (top: (none) 2, .bat 2, .log 2)
 
 ## Summary
-- 276 nodes · 512 edges · 11 communities (9 shown, 2 thin omitted)
-- Extraction: 95% EXTRACTED · 5% INFERRED · 0% AMBIGUOUS · INFERRED: 25 edges (avg confidence: 0.81)
+- 302 nodes · 519 edges · 13 communities (10 shown, 3 thin omitted)
+- Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 16 edges (avg confidence: 0.86)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `cf7148f2`
+- Built from commit: `3c10f43f`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
 - Análisis del scope v2 y guía de cambios a la propuesta
 - 4. Pasos a seguir
-- EEGViewer
+- Reporte H1 · Validación en OpenNeuro ds007537
 - Demo_processing.py
-- H1 trajectories figure (ds007537)
-- Reporte H1 · EEG-SVRec (Fase C)
+- EEGViewer
+- load_eeg
 - h1_ds007537.py
 - h1_svrec.py
 - 3. Explicación diapositiva por diapositiva
-- MIRAI 2026 · ¿La literatura sostiene las hipótesis originales? (22 oct 2026)
+- ⚙️ 3. Especificación Técnica Paso a Paso
+- Reporte H1 · EEG-SVRec (Fase C)
 - CLAUDE.md (instrucciones graphify)
 
 ## God Nodes (most connected - your core abstractions)
 1. `EEGViewer` - 23 edges
 2. `3. Explicación diapositiva por diapositiva` - 15 edges
 3. `subject()` - 13 edges
-4. `session()` - 12 edges
-5. `main()` - 11 edges
-6. `subject()` - 11 edges
-7. `main()` - 11 edges
-8. `process_all()` - 10 edges
-9. `main()` - 10 edges
-10. `H1 trajectories figure (ds007537)` - 10 edges
+4. `Reporte H1 · Validación en OpenNeuro ds007537` - 13 edges
+5. `session()` - 12 edges
+6. `main()` - 11 edges
+7. `subject()` - 11 edges
+8. `main()` - 11 edges
+9. `process_all()` - 10 edges
+10. `main()` - 10 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `Montaje AURA de 8 canales (Fz FCz F3 F4 Pz O1 O2 Fp1)` --conceptually_related_to--> `Módulo AURA (hardware y periféricos)`  [INFERRED]
-  Tests/Analisis_Scope_v2.md → README.md
 - `Modelo de costo de oportunidad (Kurzban et al., 2013)` --conceptually_related_to--> `Cascada: interfaz de scrolling a conducta automática`  [INFERRED]
   Tests/Analisis_Scope_v2.md → Tests/Scope_Dopamine_Scrolling.pdf
 - `Modelo de ego depletion (cuestionado por Hagger et al., 2016)` --conceptually_related_to--> `Cascada: interfaz de scrolling a conducta automática`  [INFERRED]
   Tests/Analisis_Scope_v2.md → Tests/Scope_Dopamine_Scrolling.pdf
+- `2. Modulación Automática de Canales` --references--> `load_eeg()`  [INFERRED]
+  Tests/datasets workflow/EEG Dataset 9-10/Guia_Canales_y_Datasets.md → Tests/datasets workflow/EEG Dataset 9-10/Demo_processing.py
+- `Montaje AURA de 8 canales (Fz FCz F3 F4 Pz O1 O2 Fp1)` --conceptually_related_to--> `Módulo AURA (hardware y periféricos)`  [INFERRED]
+  Tests/Analisis_Scope_v2.md → README.md
 - `Alfa posterior tónica (Pz/O1/O2)` --conceptually_related_to--> `Alfa posterior como inhibición funcional`  [INFERRED]
-  Tests/Analisis_Scope_v2.md → Tests/Scope_Dopamine_Scrolling.pdf
-- `Asimetría alfa frontal (FAA, exploratoria)` --conceptually_related_to--> `FAA como índice inferido de búsqueda de recompensa`  [INFERRED]
   Tests/Analisis_Scope_v2.md → Tests/Scope_Dopamine_Scrolling.pdf
 
 ## Import Cycles
@@ -58,70 +59,68 @@
 ## Hyperedges (group relationships)
 - **Biomarcadores tónicos y fásicos del scope v2** — tests_analisis_scope_v2_theta_tonico, tests_analisis_scope_v2_theta_fasico, tests_analisis_scope_v2_alfa_posterior [EXTRACTED 1.00]
 - **Intervención JITAI guiada por estado neural** — tests_analisis_scope_v2_jitai, tests_analisis_scope_v2_h4, tests_analisis_scope_v2_alfa_posterior [INFERRED 0.75]
-- **EEG spectral markers tracked under H1** — tests_ds007537_results_h1_trayectorias_theta_tonico_fz_fcz, tests_ds007537_results_h1_trayectorias_alfa_posterior_total, tests_ds007537_results_h1_trayectorias_theta_periodico_fz_fcz, tests_ds007537_results_h1_trayectorias_alfa_posterior_periodica, tests_ds007537_results_h1_trayectorias_exponente_aperiodico_posterior [INFERRED 0.75]
-- **Cadena de evidencia de H1 en ds007537** — tests_ds007537_reporte_h1_ds007537_alfa_periodica, tests_ds007537_reporte_h1_ds007537_exponente_1f, tests_ds007537_reporte_h1_ds007537_desenganche_cortical, tests_ds007537_reporte_h1_ds007537_parpadeo_eeg [INFERRED 0.85]
 
-## Communities (11 total, 2 thin omitted)
+## Communities (13 total, 3 thin omitted)
 
 ### Community 0 - "Análisis del scope v2 y guía de cambios a la propuesta"
 Cohesion: 0.07
-Nodes (30): README del proyecto MIRAI, Módulo AURA (hardware y periféricos), Demo_processing.py (visor y analizador de señales EEG), Análisis del scope v2 y guía de cambios a la propuesta, Alfa posterior tónica (Pz/O1/O2), Asimetría alfa frontal (FAA, exploratoria), Probe Go/NoGo para medir theta fásico, H4: intervención disparada por EEG vs por temporizador (+22 more)
+Nodes (28): README del proyecto MIRAI, Módulo AURA (hardware y periféricos), Demo_processing.py (visor y analizador de señales EEG), Análisis del scope v2 y guía de cambios a la propuesta, Alfa posterior tónica (Pz/O1/O2), Asimetría alfa frontal (FAA, exploratoria), Probe Go/NoGo para medir theta fásico, H4: intervención disparada por EEG vs por temporizador (+20 more)
 
 ### Community 1 - "4. Pasos a seguir"
 Cohesion: 0.17
 Nodes (12): 1. Estado actual, 2. Narrativa de la presentación, 3.1 Separar las dos contribuciones, 3.2 Escenarios y qué hacer en cada uno, 3.3 Recomendaciones para blindar el proyecto, 3. ¿Qué pasa si los resultados son negativos?, 4. Pasos a seguir, Fase 1 · Cerrar la validación ✅ casi completa (+4 more)
 
+### Community 2 - "Reporte H1 · Validación en OpenNeuro ds007537"
+Cohesion: 0.08
+Nodes (25): 10. Próximos pasos, 11. Archivos, 1. Resumen, 2. Hipótesis evaluada, 3. Dataset, 4.1 Preprocesado (por sujeto), 4.2 Medidas espectrales (por minuto), 4.3 Marcadores de activación (control de somnolencia) (+17 more)
+
 ### Community 3 - "Demo_processing.py"
 Cohesion: 0.07
 Nodes (17): alpha_channels(), band_filter(), band_powers(), bids_downloaded(), biomarker_summary(), cognitive_indices(), compute_psd(), draw_electrode_map() (+9 more)
 
-### Community 4 - "H1 trajectories figure (ds007537)"
-Cohesion: 0.24
-Nodes (11): H1 trajectories figure (ds007537), Periodic posterior alpha (1/f-corrected, dB change), Posterior alpha (total power, dB change), Pupil diameter (mm change), Posterior aperiodic exponent (a.u. change), Game group (n=13), Short video group (n=12), Blink rate (EEG Fp1, per min change) (+3 more)
-
-### Community 5 - "Reporte H1 · EEG-SVRec (Fase C)"
-Cohesion: 0.22
-Nodes (9): 1. Muestra, 2. Resultados, 3. Lectura frente a H1, 4. Implicaciones para MIRAI, 5. Limitaciones, A · Dentro de la sesión (pruebas primarias, Holm), B · Entre sesiones (exploratorio, confundido con el tipo de feed), C · Por video (exploratorio, 11 pruebas) (+1 more)
+### Community 5 - "load_eeg"
+Cohesion: 0.14
+Nodes (11): load_bids(), load_eeg(), 1. Canales Objetivo y su Función Neurocientífica, 2. Modulación Automática de Canales, 3. Representación Visual del Montaje 10-20 en la Interfaz, 4. Cómo Buscar y Limpiar Nuevos Datasets, A. Para los archivos actuales de Stroop (`raw_data/Stroop_Data`):, B. Para nuevos datasets limpios (6 canales o con encabezados): (+3 more)
 
 ### Community 6 - "h1_ds007537.py"
 Cohesion: 0.09
-Nodes (26): band_db(), clean(), detect_blinks(), epoch_psd(), et_window(), eyetrack(), iaf(), is_downloaded() (+18 more)
+Nodes (25): epochs(), phasic(), band_db(), clean(), detect_blinks(), epoch_psd(), et_window(), eyetrack() (+17 more)
 
 ### Community 7 - "h1_svrec.py"
 Cohesion: 0.08
-Nodes (24): analyse(), epochs(), lapse_fraction(), main(), measures(), phasic(), phasic_report(), plot() (+16 more)
+Nodes (23): analyse(), lapse_fraction(), main(), measures(), phasic_report(), plot(), plot_curve(), reaction_times() (+15 more)
 
 ### Community 8 - "3. Explicación diapositiva por diapositiva"
 Cohesion: 0.09
 Nodes (23): 0. La idea en 30 segundos (apréndela de memoria), 10 · System Pipeline, 11 · Robust to Negative Results — **la diapositiva más importante para defender el proyecto**, 12 · Gantt, 13 · Next Steps, 14 · References, 1. Conceptos clave (glosario para no confundirte), 1 · Portada — *Closed-Loop Neuroadaptive AR Platform for Dopamine Scrolling* (+15 more)
 
-### Community 9 - "MIRAI 2026 · ¿La literatura sostiene las hipótesis originales? (22 oct 2026)"
-Cohesion: 0.25
-Nodes (8): 1. Theta y alfa tónicos aumentan con el tiempo en tarea → **respaldado**, 2. Theta fásico ↓ con fatiga (control inhibitorio) → **respaldo moderado, literatura mixta**, 3. Matices que explican tus resultados (y que la teoría ya predecía), 4. ¿Aplica al scrolling? → **plausible, pero es el hueco de la literatura**, 5. Contraste con tus resultados, 6. Corrección a la reformulación v3, 7. Referencias (verificar páginas/DOI antes de citar en la propuesta), MIRAI 2026 · ¿La literatura sostiene las hipótesis originales? (22 oct 2026)
+### Community 9 - "⚙️ 3. Especificación Técnica Paso a Paso"
+Cohesion: 0.14
+Nodes (13): 🏗️ 1. Arquitectura del Entorno de Simulación, 1. Fase de Calibración Basal ($t \le 90\text{ s}$), 2. Fase de Inferencia Continua ($t > 90\text{ s}$), 📅 2. Hoja de Ruta de Implementación para la Semana, ⚙️ 3. Especificación Técnica Paso a Paso, 📂 4. Estructura de Archivos para la Simulación, 🎯 5. Checklist de Verificación para el Fin de Semana, Paso 1 (Día 1) · Emulador de Streaming LSL (`mock_lsl_streamer.py`) (+5 more)
 
-## Ambiguous Edges - Review These
-- `Periodic theta Fz/FCz (1/f-corrected, dB change)` → `H1: smartphone use modulates tonic/activation markers over minutes of use`  [AMBIGUOUS]
-  Tests/ds007537/results/h1_trayectorias.png · relation: rationale_for
+### Community 10 - "Reporte H1 · EEG-SVRec (Fase C)"
+Cohesion: 0.20
+Nodes (9): 1. Muestra, 2. Resultados, 3. Lectura frente a H1, 4. Implicaciones para MIRAI, 5. Limitaciones, A · Dentro de la sesión (pruebas primarias, Holm), B · Entre sesiones (exploratorio, confundido con el tipo de feed), C · Por video (exploratorio, 11 pruebas) (+1 more)
 
 ## Knowledge Gaps
-- **54 isolated node(s):** `1. Muestra`, `A · Dentro de la sesión (pruebas primarias, Holm)`, `B · Entre sesiones (exploratorio, confundido con el tipo de feed)`, `C · Por video (exploratorio, 11 pruebas)`, `3. Lectura frente a H1` (+49 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 110 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
-- **2 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **88 isolated node(s):** `0. La idea en 30 segundos (apréndela de memoria)`, `1. Conceptos clave (glosario para no confundirte)`, `2. Qué pasó en esta sesión (para que no te confundas con versiones viejas)`, `1 · Portada — *Closed-Loop Neuroadaptive AR Platform for Dopamine Scrolling*`, `2 · Objectives` (+83 more)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 147 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **3 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **What is the exact relationship between `Periodic theta Fz/FCz (1/f-corrected, dB change)` and `H1: smartphone use modulates tonic/activation markers over minutes of use`?**
-  _Edge tagged AMBIGUOUS (relation: rationale_for) - confidence is low._
 - **Why does `EEGViewer` connect `EEGViewer` to `Demo_processing.py`?**
-  _High betweenness centrality (0.066) - this node is a cross-community bridge._
-- **What connects `1. Muestra`, `A · Dentro de la sesión (pruebas primarias, Holm)`, `B · Entre sesiones (exploratorio, confundido con el tipo de feed)` to the rest of the system?**
-  _54 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _High betweenness centrality (0.057) - this node is a cross-community bridge._
+- **What connects `0. La idea en 30 segundos (apréndela de memoria)`, `1. Conceptos clave (glosario para no confundirte)`, `2. Qué pasó en esta sesión (para que no te confundas con versiones viejas)` to the rest of the system?**
+  _88 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Análisis del scope v2 y guía de cambios a la propuesta` be split into smaller, more focused modules?**
-  _Cohesion score 0.06666666666666667 - nodes in this community are weakly interconnected._
-- **Why does `MIRAI 2026 · Guía de estudio para la exposición de avances (22 oct 2026)` connect `3. Explicación diapositiva por diapositiva` to `Análisis del scope v2 y guía de cambios a la propuesta`?**
-  _High betweenness centrality (0.047) - this node is a cross-community bridge._
+  _Cohesion score 0.06612685560053981 - nodes in this community are weakly interconnected._
+- **Why does `load_eeg()` connect `load_eeg` to `Demo_processing.py`, `EEGViewer`, `h1_ds007537.py`?**
+  _High betweenness centrality (0.044) - this node is a cross-community bridge._
+- **Should `Reporte H1 · Validación en OpenNeuro ds007537` be split into smaller, more focused modules?**
+  _Cohesion score 0.07692307692307693 - nodes in this community are weakly interconnected._
 - **Should `Demo_processing.py` be split into smaller, more focused modules?**
-  _Cohesion score 0.06666666666666667 - nodes in this community are weakly interconnected._
-- **Should `h1_ds007537.py` be split into smaller, more focused modules?**
-  _Cohesion score 0.09090909090909091 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.06868686868686869 - nodes in this community are weakly interconnected._
+- **Should `load_eeg` be split into smaller, more focused modules?**
+  _Cohesion score 0.14285714285714285 - nodes in this community are weakly interconnected._

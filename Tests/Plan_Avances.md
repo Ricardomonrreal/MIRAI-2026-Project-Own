@@ -1,7 +1,7 @@
 # MIRAI 2026 · Plan para la presentación de avances (v2 · 22 oct 2026)
 
 Documento de contexto: estado del proyecto, narrativa de la presentación, plan ante resultados negativos y pasos para terminar las diapositivas.
-Antecedentes: [Revision_Literatura_Hipotesis.md](Revision_Literatura_Hipotesis.md) (hipótesis vigentes, §6) · [Resumen_Sesion_21_10.md](Resumen_Sesion_21_10.md) · [Analisis_Scope_v2.md](Analisis_Scope_v2.md) · [Reporte H1 ds007537](ds007537/Reporte_H1_ds007537.md) · [Reporte H1 SVRec](EEG-SVRec/Reporte_H1_SVRec.md) · [Reporte Cao](Cao2019/results/cao_reporte.txt)
+Antecedentes: [Revision_Literatura_Hipotesis.md](Revision_Literatura_Hipotesis.md) (hipótesis vigentes, §6) · [Resumen_Sesion_21_10.md](Resumen_Sesion_21_10.md) · [Analisis_Scope_v2.md](Analisis_Scope_v2.md) · [Reporte H1 ds007537](datasets%20workflow/ds007537/Reporte_H1_ds007537.md) · [Reporte H1 SVRec](datasets%20workflow/EEG-SVRec/Reporte_H1_SVRec.md) · [Reporte Cao](datasets%20workflow/Cao2019/results/cao_reporte.txt)
 
 > **Historial:** la versión anterior proponía una reformulación v3 ("fatiga como estado, no como tiempo"). Quedó descartada tras la revisión de literatura por ser una sobrecorrección. Las hipótesis vigentes son las originales, con los ajustes de `Revision_Literatura_Hipotesis.md` §6.
 

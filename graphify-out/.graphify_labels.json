@@ -1,13 +1,15 @@
 {
   "0": "Análisis del scope v2 y guía de cambios a la propuesta",
   "1": "4. Pasos a seguir",
-  "2": "EEGViewer",
+  "2": "Reporte H1 · Validación en OpenNeuro ds007537",
   "3": "Demo_processing.py",
-  "4": "H1 trajectories figure (ds007537)",
-  "5": "Reporte H1 · EEG-SVRec (Fase C)",
+  "4": "EEGViewer",
+  "5": "load_eeg",
   "6": "h1_ds007537.py",
   "7": "h1_svrec.py",
   "8": "3. Explicación diapositiva por diapositiva",
-  "9": "MIRAI 2026 · ¿La literatura sostiene las hipótesis originales? (22 oct 2026)",
-  "11": "CLAUDE.md (instrucciones graphify)"
+  "9": "⚙️ 3. Especificación Técnica Paso a Paso",
+  "10": "Reporte H1 · EEG-SVRec (Fase C)",
+  "11": "CLAUDE.md (instrucciones graphify)",
+  "12": "Decisión: dividir H1 en H1a (alfa) y H1b (theta)"
 }

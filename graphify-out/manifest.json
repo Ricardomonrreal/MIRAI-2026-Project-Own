@@ -1,16 +1,4 @@
 {
-  "Tests/EEG Dataset 9-10/Demo_processing.py": {
-    "mtime": 1792478967.965866,
-    "seen": 1792551314.1799533,
-    "ast_hash": "4521cb104f23ca3b6896c405d86e79c5",
-    "semantic_hash": "4521cb104f23ca3b6896c405d86e79c5"
-  },
-  "Tests/ds007537/h1_ds007537.py": {
-    "mtime": 1792552425.5638697,
-    "seen": 1792552560.0525,
-    "ast_hash": "d96e229b35a6c3dff6f2f6269bf277ea",
-    "semantic_hash": ""
-  },
   "CLAUDE.md": {
     "mtime": 1792550867.2551575,
     "seen": 1792551314.179965,
@@ -18,9 +6,9 @@
     "semantic_hash": "8a6643a420fdad6bfb583523bc6cef16"
   },
   "README.md": {
-    "mtime": 1792724893.6583982,
-    "seen": 1793077661.401162,
-    "ast_hash": "e1caab4af5654a81d1c72bcf66e32957",
+    "mtime": 1793083545.2442982,
+    "seen": 1793083727.2009146,
+    "ast_hash": "45df98dc889bc4a2cb7c88714a9fd8b7",
     "semantic_hash": ""
   },
   "Tests/Analisis_Scope_v2.md": {
@@ -29,29 +17,11 @@
     "ast_hash": "93bae9b71c3c9f372dddad00e9563616",
     "semantic_hash": "93bae9b71c3c9f372dddad00e9563616"
   },
-  "Tests/EEG Dataset 9-10/Guia_Canales_y_Datasets.md": {
-    "mtime": 1792468870.1356778,
-    "seen": 1792551314.1799726,
-    "ast_hash": "bfb3a1015613339f3450c19bc7cc741f",
-    "semantic_hash": "bfb3a1015613339f3450c19bc7cc741f"
-  },
   "Tests/Resumen_Sesion_21_10.md": {
-    "mtime": 1792548893.6894133,
-    "seen": 1792551314.1799748,
-    "ast_hash": "fa4d932bbb27d6d8e3c60c653c99c8f0",
-    "semantic_hash": "fa4d932bbb27d6d8e3c60c653c99c8f0"
-  },
-  "Tests/ds007537/Reporte_H1_ds007537.md": {
-    "mtime": 1792486544.9136295,
-    "seen": 1792551314.1799767,
-    "ast_hash": "7482562a99e68cad6d7e6f22ffcbd37f",
-    "semantic_hash": "7482562a99e68cad6d7e6f22ffcbd37f"
-  },
-  "Tests/ds007537/results/h1_reporte.txt": {
-    "mtime": 1792483264.3657558,
-    "seen": 1792551314.1799788,
-    "ast_hash": "ed011de9d8f46e74a62751d9dcadf2d4",
-    "semantic_hash": "ed011de9d8f46e74a62751d9dcadf2d4"
+    "mtime": 1793083566.0725126,
+    "seen": 1793083727.2009346,
+    "ast_hash": "dafceb92be1f2884a0bed6bcbd5c9abf",
+    "semantic_hash": ""
   },
   "Tests/Project Proposal MIRAI Ricardo_Monrreal (1).pdf": {
     "mtime": 1790911394.259096,
@@ -65,100 +35,10 @@
     "ast_hash": "265bbd05a896c36664f5f15c5a502986",
     "semantic_hash": "265bbd05a896c36664f5f15c5a502986"
   },
-  "Tests/ds007537/results/h1_trayectorias.png": {
-    "mtime": 1792483266.379251,
-    "seen": 1792551314.1799848,
-    "ast_hash": "57f24a09ab4f907c8cf7363653706658",
-    "semantic_hash": "57f24a09ab4f907c8cf7363653706658"
-  },
-  "Tests/EEG-SVRec/h1_svrec.py": {
-    "mtime": 1792563202.2595553,
-    "seen": 1792568569.5488315,
-    "ast_hash": "9466db3790b9a698d925cb8c012ffff7",
-    "semantic_hash": ""
-  },
-  "Tests/EEG-SVRec/results/svrec_reporte.txt": {
-    "mtime": 1792567593.2427297,
-    "seen": 1792568569.548857,
-    "ast_hash": "80caa397bfdbc727282ce03f02f32e3b",
-    "semantic_hash": ""
-  },
-  "Tests/EEG-SVRec/results/piloto_espectros.png": {
-    "mtime": 1792553878.7227745,
-    "seen": 1792554045.435683,
-    "ast_hash": "2e85b713d97e3cf1af5fe839469db60f",
-    "semantic_hash": ""
-  },
-  "Tests/EEG-SVRec/results/svrec_trayectorias.png": {
-    "mtime": 1792567595.2481375,
-    "seen": 1792568569.5488775,
-    "ast_hash": "5fb50f2272d7c1efc9320b8dfe3b84c2",
-    "semantic_hash": ""
-  },
-  "Tests/EEG-SVRec/Reporte_H1_SVRec.md": {
-    "mtime": 1792568563.934555,
-    "seen": 1792568569.5488522,
-    "ast_hash": "d57668f8ca5fdbfcea0de1e4d7dfebe4",
-    "semantic_hash": ""
-  },
-  "Tests/EEG-SVRec/results/parcial_n9/svrec_reporte.txt": {
-    "mtime": 1792563236.812387,
-    "seen": 1792568569.5488546,
-    "ast_hash": "d51bf4ba4578853812533a5fc642badf",
-    "semantic_hash": ""
-  },
-  "Tests/EEG-SVRec/results/parcial_n9/svrec_trayectorias.png": {
-    "mtime": 1792563236.8281395,
-    "seen": 1792568569.548872,
-    "ast_hash": "07f6cf800469aad68e7ab504cf1b1ff8",
-    "semantic_hash": ""
-  },
-  "Tests/Cao2019/h1b_cao2019.py": {
-    "mtime": 1792653899.8066866,
-    "seen": 1792653964.2347944,
-    "ast_hash": "c276f3c7252c296c021c41ca72f72f09",
-    "semantic_hash": ""
-  },
-  "Tests/Cao2019/results/cao_reporte.txt": {
-    "mtime": 1792653912.731943,
-    "seen": 1792653964.2348495,
-    "ast_hash": "2da06cea9bc545b84535344ef95ab409",
-    "semantic_hash": ""
-  },
-  "Tests/Cao2019/results/cao_trayectorias.png": {
-    "mtime": 1792653914.1774125,
-    "seen": 1792653964.2349205,
-    "ast_hash": "d716316cf00b942dd67642dfb2d26c81",
-    "semantic_hash": ""
-  },
-  "Tests/Cao2019/results/parcial_n18/cao_reporte.txt": {
-    "mtime": 1792573876.258749,
-    "seen": 1792575873.4189448,
-    "ast_hash": "b47d0951f41234f08c44dede082825de",
-    "semantic_hash": ""
-  },
-  "Tests/Cao2019/results/tonico_n_final/cao_reporte.txt": {
-    "mtime": 1792575818.3662431,
-    "seen": 1792575873.4189487,
-    "ast_hash": "59ecdb0c387537f1848775506e7ab597",
-    "semantic_hash": ""
-  },
-  "Tests/Cao2019/results/parcial_n18/cao_trayectorias.png": {
-    "mtime": 1792573876.2905147,
-    "seen": 1792575873.4189951,
-    "ast_hash": "c30b2d77fcd2154a949500888202aead",
-    "semantic_hash": ""
-  },
-  "Tests/Cao2019/results/tonico_n_final/cao_trayectorias.png": {
-    "mtime": 1792575818.4005585,
-    "seen": 1792575873.4189987,
-    "ast_hash": "d716316cf00b942dd67642dfb2d26c81",
-    "semantic_hash": ""
-  },
   "Tests/Plan_Avances.md": {
-    "mtime": 1792654185.2977543,
-    "seen": 1793077661.401201,
-    "ast_hash": "4b79e2cc89f97c93a288283ea3dccb71",
+    "mtime": 1793083589.0594869,
+    "seen": 1793083727.200928,
+    "ast_hash": "48375aca8d5c122f9ae6cc58c1b2f210",
     "semantic_hash": ""
   },
   "Tests/Revision_Literatura_Hipotesis.md": {
@@ -167,22 +47,112 @@
     "ast_hash": "fde927cb861b579bad0e4f2af7fca6ee",
     "semantic_hash": ""
   },
-  "Tests/Cao2019/results/cao_fasico_curso.png": {
-    "mtime": 1792653912.6798751,
-    "seen": 1792653964.2349162,
-    "ast_hash": "5c5e4d64a058c128dc19d952988b2bd1",
-    "semantic_hash": ""
-  },
   "Tests/Guia_Exposicion.md": {
-    "mtime": 1792719755.036789,
-    "seen": 1793077661.4011977,
-    "ast_hash": "317d60ab845ee3c8a2d8528c64bbc031",
+    "mtime": 1793083607.555096,
+    "seen": 1793083727.2009244,
+    "ast_hash": "8cc7ee7a25b9fc35088ae2c510c7d550",
     "semantic_hash": ""
   },
   "Tests/Progress Report MIRAI Ricardo_Monrreal.pdf": {
     "mtime": 1792722905.9873517,
     "seen": 1793077661.401219,
     "ast_hash": "b1a4d5e936a65722d1010d525bfe61d9",
+    "semantic_hash": ""
+  },
+  "Tests/datasets workflow/Cao2019/h1b_cao2019.py": {
+    "mtime": 1792653899.8066866,
+    "seen": 1793083727.200882,
+    "ast_hash": "c276f3c7252c296c021c41ca72f72f09",
+    "semantic_hash": ""
+  },
+  "Tests/datasets workflow/EEG Dataset 9-10/Demo_processing.py": {
+    "mtime": 1793083621.8807356,
+    "seen": 1793083727.2008922,
+    "ast_hash": "b209940a438023df61d53be586e3994e",
+    "semantic_hash": ""
+  },
+  "Tests/datasets workflow/EEG-SVRec/h1_svrec.py": {
+    "mtime": 1792563202.2595553,
+    "seen": 1793083727.2008967,
+    "ast_hash": "9466db3790b9a698d925cb8c012ffff7",
+    "semantic_hash": ""
+  },
+  "Tests/datasets workflow/ds007537/h1_ds007537.py": {
+    "mtime": 1792552425.5638697,
+    "seen": 1793083727.2009006,
+    "ast_hash": "d96e229b35a6c3dff6f2f6269bf277ea",
+    "semantic_hash": ""
+  },
+  "Tests/Protocolo_Simulacion_Pipeline.md": {
+    "mtime": 1793083693.3064249,
+    "seen": 1793083727.2009308,
+    "ast_hash": "6e2b8142119921770e32959553a924ab",
+    "semantic_hash": ""
+  },
+  "Tests/datasets workflow/Cao2019/results/cao_reporte.txt": {
+    "mtime": 1792653912.731943,
+    "seen": 1793083727.2009425,
+    "ast_hash": "2da06cea9bc545b84535344ef95ab409",
+    "semantic_hash": ""
+  },
+  "Tests/datasets workflow/EEG Dataset 9-10/Guia_Canales_y_Datasets.md": {
+    "mtime": 1792468870.1356778,
+    "seen": 1793083727.2009454,
+    "ast_hash": "bfb3a1015613339f3450c19bc7cc741f",
+    "semantic_hash": ""
+  },
+  "Tests/datasets workflow/EEG-SVRec/Reporte_H1_SVRec.md": {
+    "mtime": 1792568563.934555,
+    "seen": 1793083727.2009485,
+    "ast_hash": "d57668f8ca5fdbfcea0de1e4d7dfebe4",
+    "semantic_hash": ""
+  },
+  "Tests/datasets workflow/EEG-SVRec/results/svrec_reporte.txt": {
+    "mtime": 1792567593.2427297,
+    "seen": 1793083727.2009513,
+    "ast_hash": "80caa397bfdbc727282ce03f02f32e3b",
+    "semantic_hash": ""
+  },
+  "Tests/datasets workflow/ds007537/Reporte_H1_ds007537.md": {
+    "mtime": 1792486544.9136295,
+    "seen": 1793083727.2009542,
+    "ast_hash": "7482562a99e68cad6d7e6f22ffcbd37f",
+    "semantic_hash": ""
+  },
+  "Tests/datasets workflow/ds007537/results/h1_reporte.txt": {
+    "mtime": 1792483264.3657558,
+    "seen": 1793083727.2009573,
+    "ast_hash": "ed011de9d8f46e74a62751d9dcadf2d4",
+    "semantic_hash": ""
+  },
+  "Tests/datasets workflow/Cao2019/results/cao_fasico_curso.png": {
+    "mtime": 1792653912.6798751,
+    "seen": 1793083727.2009728,
+    "ast_hash": "5c5e4d64a058c128dc19d952988b2bd1",
+    "semantic_hash": ""
+  },
+  "Tests/datasets workflow/Cao2019/results/cao_trayectorias.png": {
+    "mtime": 1792653914.1774125,
+    "seen": 1793083727.2009816,
+    "ast_hash": "d716316cf00b942dd67642dfb2d26c81",
+    "semantic_hash": ""
+  },
+  "Tests/datasets workflow/EEG-SVRec/results/piloto_espectros.png": {
+    "mtime": 1792553878.7227745,
+    "seen": 1793083727.2009845,
+    "ast_hash": "2e85b713d97e3cf1af5fe839469db60f",
+    "semantic_hash": ""
+  },
+  "Tests/datasets workflow/EEG-SVRec/results/svrec_trayectorias.png": {
+    "mtime": 1792567595.2481375,
+    "seen": 1793083727.2009873,
+    "ast_hash": "5fb50f2272d7c1efc9320b8dfe3b84c2",
+    "semantic_hash": ""
+  },
+  "Tests/datasets workflow/ds007537/results/h1_trayectorias.png": {
+    "mtime": 1792483266.379251,
+    "seen": 1793083727.2009907,
+    "ast_hash": "57f24a09ab4f907c8cf7363653706658",
     "semantic_hash": ""
   }
 }
