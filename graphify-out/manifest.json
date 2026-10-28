@@ -60,9 +60,9 @@
     "semantic_hash": ""
   },
   "Tests/Protocolo_Simulacion_Pipeline.md": {
-    "mtime": 1793164489.6261446,
-    "seen": 1793164502.8487043,
-    "ast_hash": "2fb7dce354a15eb8de9065074b3a7187",
+    "mtime": 1793174081.278304,
+    "seen": 1793174097.3973377,
+    "ast_hash": "03275f81e8a6d6662b79697fbe1ed497",
     "semantic_hash": ""
   },
   "Tests/datasets workflow/Cao2019/results/cao_reporte.txt": {
@@ -132,15 +132,15 @@
     "semantic_hash": ""
   },
   "Tests/simulation/check_lsl_stream.py": {
-    "mtime": 1793164148.5263498,
-    "seen": 1793164502.8486536,
-    "ast_hash": "a03b4b20994031c4a6443f93528d134a",
+    "mtime": 1793171996.9592152,
+    "seen": 1793172095.3517938,
+    "ast_hash": "e5a8d8691b9a7cdfda15465f22d6c861",
     "semantic_hash": ""
   },
   "Tests/simulation/mock_lsl_streamer.py": {
-    "mtime": 1793162307.134542,
-    "seen": 1793162456.1961257,
-    "ast_hash": "c3e58f94331b7a84292de7433d45e58e",
+    "mtime": 1793171757.1138275,
+    "seen": 1793172095.3518007,
+    "ast_hash": "d602ff71a207ab25bcc22ba5e103f74b",
     "semantic_hash": ""
   },
   "Documentaci\u00f3n/Analisis_Scope_v2.md": {
@@ -156,9 +156,9 @@
     "semantic_hash": ""
   },
   "Tests/AURA_Configuracion.md": {
-    "mtime": 1793164490.0856683,
-    "seen": 1793164502.848687,
-    "ast_hash": "5b2a6427a0f4f25776b2a193f45b4b38",
+    "mtime": 1793172512.857707,
+    "seen": 1793174097.3973181,
+    "ast_hash": "5bcecd334b63c826accc6867f2ae8eb8",
     "semantic_hash": ""
   },
   "Tests/HANDOFF_Claude_Code.md": {

@@ -39,7 +39,7 @@
       "file_type": "code",
       "norm_label": "channel_meta()",
       "source_file": "Tests/simulation/check_lsl_stream.py",
-      "source_location": "L24"
+      "source_location": "L28"
     },
     {
       "id": "tests_simulation_check_lsl_stream_main",
@@ -51,7 +51,7 @@
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "Tests/simulation/check_lsl_stream.py",
-      "source_location": "L34"
+      "source_location": "L38"
     },
     {
       "id": "tests_simulation_mock_lsl_streamer_add_blink",
@@ -63,7 +63,7 @@
       "file_type": "code",
       "norm_label": "add_blink()",
       "source_file": "Tests/simulation/mock_lsl_streamer.py",
-      "source_location": "L112"
+      "source_location": "L115"
     },
     {
       "id": "tests_simulation_mock_lsl_streamer_inject",
@@ -75,7 +75,7 @@
       "file_type": "code",
       "norm_label": "inject()",
       "source_file": "Tests/simulation/mock_lsl_streamer.py",
-      "source_location": "L222"
+      "source_location": "L225"
     },
     {
       "id": "tests_simulation_mock_lsl_streamer_load_aura_csv",
@@ -87,7 +87,7 @@
       "file_type": "code",
       "norm_label": "load_aura_csv()",
       "source_file": "Tests/simulation/mock_lsl_streamer.py",
-      "source_location": "L181"
+      "source_location": "L184"
     },
     {
       "id": "tests_simulation_mock_lsl_streamer_load_file",
@@ -99,7 +99,7 @@
       "file_type": "code",
       "norm_label": "load_file()",
       "source_file": "Tests/simulation/mock_lsl_streamer.py",
-      "source_location": "L120"
+      "source_location": "L123"
     },
     {
       "id": "tests_simulation_mock_lsl_streamer_main",
@@ -111,7 +111,7 @@
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "Tests/simulation/mock_lsl_streamer.py",
-      "source_location": "L319"
+      "source_location": "L322"
     },
     {
       "id": "tests_simulation_mock_lsl_streamer_make_outlet",
@@ -123,7 +123,7 @@
       "file_type": "code",
       "norm_label": "make_outlet()",
       "source_file": "Tests/simulation/mock_lsl_streamer.py",
-      "source_location": "L249"
+      "source_location": "L252"
     },
     {
       "id": "tests_simulation_mock_lsl_streamer_montage_1005",
@@ -135,7 +135,7 @@
       "file_type": "code",
       "norm_label": "montage_1005()",
       "source_file": "Tests/simulation/mock_lsl_streamer.py",
-      "source_location": "L54"
+      "source_location": "L57"
     },
     {
       "id": "tests_simulation_mock_lsl_streamer_stream",
@@ -147,7 +147,7 @@
       "file_type": "code",
       "norm_label": "stream()",
       "source_file": "Tests/simulation/mock_lsl_streamer.py",
-      "source_location": "L264"
+      "source_location": "L267"
     },
     {
       "id": "tests_simulation_mock_lsl_streamer_synthetic",
@@ -159,7 +159,7 @@
       "file_type": "code",
       "norm_label": "synthetic()",
       "source_file": "Tests/simulation/mock_lsl_streamer.py",
-      "source_location": "L62"
+      "source_location": "L65"
     },
     {
       "id": "tests_simulation_mock_lsl_streamer_synthetic_narrow",
@@ -171,7 +171,7 @@
       "file_type": "code",
       "norm_label": "narrow()",
       "source_file": "Tests/simulation/mock_lsl_streamer.py",
-      "source_location": "L79"
+      "source_location": "L82"
     },
     {
       "id": "tests_simulation_mock_lsl_streamer_synthetic_pink",
@@ -183,7 +183,7 @@
       "file_type": "code",
       "norm_label": "pink()",
       "source_file": "Tests/simulation/mock_lsl_streamer.py",
-      "source_location": "L73"
+      "source_location": "L76"
     },
     {
       "id": "tests_datasets_workflow_eeg_dataset_9_10_demo_processing_alpha_channels",
@@ -2054,7 +2054,7 @@
       "source_location": "L1"
     },
     {
-      "id": "tests_simulation_mock_lsl_streamer_rationale_121",
+      "id": "tests_simulation_mock_lsl_streamer_rationale_124",
       "label": "Lee un registro con MNE y lo deja como lo entregar\u00eda AURA: 8 canales, `fs` Hz,\u2026",
       "_origin": "ast",
       "community": 13,
@@ -2062,10 +2062,10 @@
       "file_type": "rationale",
       "norm_label": "lee un registro con mne y lo deja como lo entregaria aura: 8 canales, `fs` hz,...",
       "source_file": "Tests/simulation/mock_lsl_streamer.py",
-      "source_location": "L121"
+      "source_location": "L124"
     },
     {
-      "id": "tests_simulation_mock_lsl_streamer_rationale_182",
+      "id": "tests_simulation_mock_lsl_streamer_rationale_185",
       "label": "CSV grabado desde la AURA: timestamp, phase, label, channel_0..channel_7 (\u00b5V,\u2026",
       "_origin": "ast",
       "community": 13,
@@ -2073,10 +2073,10 @@
       "file_type": "rationale",
       "norm_label": "csv grabado desde la aura: timestamp, phase, label, channel_0..channel_7 (\u03bcv,...",
       "source_file": "Tests/simulation/mock_lsl_streamer.py",
-      "source_location": "L182"
+      "source_location": "L185"
     },
     {
-      "id": "tests_simulation_mock_lsl_streamer_rationale_223",
+      "id": "tests_simulation_mock_lsl_streamer_rationale_226",
       "label": "Suma eventos con verdad de campo. spec = (tipo, inicio_s, duraci\u00f3n_s,\u2026",
       "_origin": "ast",
       "community": 13,
@@ -2084,10 +2084,10 @@
       "file_type": "rationale",
       "norm_label": "suma eventos con verdad de campo. spec = (tipo, inicio_s, duracion_s,...",
       "source_file": "Tests/simulation/mock_lsl_streamer.py",
-      "source_location": "L223"
+      "source_location": "L226"
     },
     {
-      "id": "tests_simulation_mock_lsl_streamer_rationale_55",
+      "id": "tests_simulation_mock_lsl_streamer_rationale_58",
       "label": "Montaje 10-05 de MNE ('standard_1005' pasa a 'colin27_1005' desde MNE 1.13).",
       "_origin": "ast",
       "community": 13,
@@ -2095,10 +2095,10 @@
       "file_type": "rationale",
       "norm_label": "montaje 10-05 de mne ('standard_1005' pasa a 'colin27_1005' desde mne 1.13).",
       "source_file": "Tests/simulation/mock_lsl_streamer.py",
-      "source_location": "L55"
+      "source_location": "L58"
     },
     {
-      "id": "tests_simulation_mock_lsl_streamer_rationale_63",
+      "id": "tests_simulation_mock_lsl_streamer_rationale_66",
       "label": "EEG sint\u00e9tico plausible en \u00b5V. Devuelve (datos [canales, muestras], eventos\u2026",
       "_origin": "ast",
       "community": 13,
@@ -2106,7 +2106,7 @@
       "file_type": "rationale",
       "norm_label": "eeg sintetico plausible en \u03bcv. devuelve (datos [canales, muestras], eventos...",
       "source_file": "Tests/simulation/mock_lsl_streamer.py",
-      "source_location": "L63"
+      "source_location": "L66"
     },
     {
       "id": "tests_aura_configuracion",
@@ -2154,7 +2154,7 @@
       "node_kind": "heading",
       "norm_label": "3. prueba rapida de calidad: efecto berger (2 min)",
       "source_file": "Tests/AURA_Configuracion.md",
-      "source_location": "L56"
+      "source_location": "L64"
     },
     {
       "id": "tests_aura_configuracion_4_lo_que_muestra_el_csv_de_prueba_enero_2026_configuraci\u00f3n_desconocida",
@@ -2166,7 +2166,7 @@
       "node_kind": "heading",
       "norm_label": "4. lo que muestra el csv de prueba (enero 2026, configuracion desconocida)",
       "source_file": "Tests/AURA_Configuracion.md",
-      "source_location": "L62"
+      "source_location": "L70"
     },
     {
       "id": "tests_aura_configuracion_5_replay_del_csv_con_el_emulador",
@@ -2178,7 +2178,7 @@
       "node_kind": "heading",
       "norm_label": "5. replay del csv con el emulador",
       "source_file": "Tests/AURA_Configuracion.md",
-      "source_location": "L93"
+      "source_location": "L101"
     },
     {
       "id": "tests_aura_configuracion_configuraci\u00f3n_de_la_aura_para_mirai_2026",
@@ -3679,7 +3679,7 @@
       "node_kind": "heading",
       "norm_label": "\ud83d\udcc1 3. estructura de codigo a implementar",
       "source_file": "Tests/Protocolo_Simulacion_Pipeline.md",
-      "source_location": "L202"
+      "source_location": "L205"
     },
     {
       "id": "tests_protocolo_simulacion_pipeline_adaptaci\u00f3n_a_la_diadema_aura",
@@ -3691,7 +3691,7 @@
       "node_kind": "heading",
       "norm_label": "\ud83c\udfa7 adaptacion a la diadema aura",
       "source_file": "Tests/Protocolo_Simulacion_Pipeline.md",
-      "source_location": "L88"
+      "source_location": "L91"
     },
     {
       "id": "tests_protocolo_simulacion_pipeline_paso_2_b\u00fafer_circular_continuo_y_filtrado_causal_realtime_pipeline_py",
@@ -3703,7 +3703,7 @@
       "node_kind": "heading",
       "norm_label": "[ ] paso 2: bufer circular continuo y filtrado causal (`realtime_pipeline.py`)",
       "source_file": "Tests/Protocolo_Simulacion_Pipeline.md",
-      "source_location": "L104"
+      "source_location": "L107"
     },
     {
       "id": "tests_protocolo_simulacion_pipeline_paso_3_veto_de_artefactos_oculares_en_fp1",
@@ -3715,7 +3715,7 @@
       "node_kind": "heading",
       "norm_label": "[ ] paso 3: veto de artefactos oculares en $fp1$",
       "source_file": "Tests/Protocolo_Simulacion_Pipeline.md",
-      "source_location": "L119"
+      "source_location": "L122"
     },
     {
       "id": "tests_protocolo_simulacion_pipeline_paso_4_descomposici\u00f3n_espectral_y_extracci\u00f3n_con_specparam",
@@ -3727,7 +3727,7 @@
       "node_kind": "heading",
       "norm_label": "[ ] paso 4: descomposicion espectral y extraccion con `specparam`",
       "source_file": "Tests/Protocolo_Simulacion_Pipeline.md",
-      "source_location": "L132"
+      "source_location": "L135"
     },
     {
       "id": "tests_protocolo_simulacion_pipeline_paso_5_calibraci\u00f3n_individual_congelada_standardscaler",
@@ -3739,7 +3739,7 @@
       "node_kind": "heading",
       "norm_label": "[ ] paso 5: calibracion individual congelada (`standardscaler`)",
       "source_file": "Tests/Protocolo_Simulacion_Pipeline.md",
-      "source_location": "L150"
+      "source_location": "L153"
     },
     {
       "id": "tests_protocolo_simulacion_pipeline_paso_6_motor_de_decisi\u00f3n_neuroadaptativa_jitai_escalera_de_intervenci\u00f3n",
@@ -3751,7 +3751,7 @@
       "node_kind": "heading",
       "norm_label": "[ ] paso 6: motor de decision neuroadaptativa jitai (escalera de intervencion)",
       "source_file": "Tests/Protocolo_Simulacion_Pipeline.md",
-      "source_location": "L170"
+      "source_location": "L173"
     },
     {
       "id": "tests_protocolo_simulacion_pipeline_paso_7_benchmarking_de_latencia_y_validaci\u00f3n_extremo_a_extremo",
@@ -3763,7 +3763,7 @@
       "node_kind": "heading",
       "norm_label": "[ ] paso 7: benchmarking de latencia y validacion extremo a extremo",
       "source_file": "Tests/Protocolo_Simulacion_Pipeline.md",
-      "source_location": "L189"
+      "source_location": "L192"
     },
     {
       "id": "tests_protocolo_simulacion_pipeline_protocolo_t\u00e9cnico_de_simulaci\u00f3n_y_pipeline_en_tiempo_real_mirai_2026",
@@ -6332,36 +6332,12 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation/check_lsl_stream.py",
-      "source_location": "L35",
+      "source_location": "L39",
       "weight": 1.0
     },
     {
       "source": "tests_simulation_check_lsl_stream_main",
       "target": "time",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "Tests/simulation/check_lsl_stream.py",
-      "source_location": "L46",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_simulation_check_lsl_stream_main",
-      "target": "pylsl",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "Tests/simulation/check_lsl_stream.py",
-      "source_location": "L48",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_simulation_check_lsl_stream_main",
-      "target": "sys",
       "relation": "calls",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -6373,6 +6349,30 @@
     },
     {
       "source": "tests_simulation_check_lsl_stream_main",
+      "target": "pylsl",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "Tests/simulation/check_lsl_stream.py",
+      "source_location": "L53",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_simulation_check_lsl_stream_main",
+      "target": "sys",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "Tests/simulation/check_lsl_stream.py",
+      "source_location": "L58",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_simulation_check_lsl_stream_main",
       "target": "tests_simulation_check_lsl_stream_channel_meta",
       "relation": "calls",
       "_origin": "ast",
@@ -6380,7 +6380,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation/check_lsl_stream.py",
-      "source_location": "L59",
+      "source_location": "L66",
       "weight": 1.0
     },
     {
@@ -6392,7 +6392,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation/check_lsl_stream.py",
-      "source_location": "L81",
+      "source_location": "L88",
       "weight": 1.0
     },
     {
@@ -6404,7 +6404,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation/mock_lsl_streamer.py",
-      "source_location": "L113",
+      "source_location": "L116",
       "weight": 1.0
     },
     {
@@ -6416,7 +6416,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation/mock_lsl_streamer.py",
-      "source_location": "L233",
+      "source_location": "L236",
       "weight": 1.0
     },
     {
@@ -6428,7 +6428,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation/mock_lsl_streamer.py",
-      "source_location": "L238",
+      "source_location": "L241",
       "weight": 1.0
     },
     {
@@ -6440,7 +6440,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation/mock_lsl_streamer.py",
-      "source_location": "L193",
+      "source_location": "L196",
       "weight": 1.0
     },
     {
@@ -6452,24 +6452,12 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation/mock_lsl_streamer.py",
-      "source_location": "L203",
+      "source_location": "L206",
       "weight": 1.0
     },
     {
       "source": "tests_simulation_mock_lsl_streamer_load_file",
       "target": "sys",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "Tests/simulation/mock_lsl_streamer.py",
-      "source_location": "L130",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_simulation_mock_lsl_streamer_load_file",
-      "target": "tests_simulation_mock_lsl_streamer_montage_1005",
       "relation": "calls",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -6481,6 +6469,18 @@
     },
     {
       "source": "tests_simulation_mock_lsl_streamer_load_file",
+      "target": "tests_simulation_mock_lsl_streamer_montage_1005",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "Tests/simulation/mock_lsl_streamer.py",
+      "source_location": "L136",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_simulation_mock_lsl_streamer_load_file",
       "target": "numpy",
       "relation": "calls",
       "_origin": "ast",
@@ -6488,7 +6488,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation/mock_lsl_streamer.py",
-      "source_location": "L154",
+      "source_location": "L157",
       "weight": 1.0
     },
     {
@@ -6500,7 +6500,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation/mock_lsl_streamer.py",
-      "source_location": "L320",
+      "source_location": "L323",
       "weight": 1.0
     },
     {
@@ -6512,7 +6512,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation/mock_lsl_streamer.py",
-      "source_location": "L352",
+      "source_location": "L355",
       "weight": 1.0
     },
     {
@@ -6524,7 +6524,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation/mock_lsl_streamer.py",
-      "source_location": "L355",
+      "source_location": "L358",
       "weight": 1.0
     },
     {
@@ -6536,7 +6536,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation/mock_lsl_streamer.py",
-      "source_location": "L358",
+      "source_location": "L361",
       "weight": 1.0
     },
     {
@@ -6548,7 +6548,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation/mock_lsl_streamer.py",
-      "source_location": "L364",
+      "source_location": "L367",
       "weight": 1.0
     },
     {
@@ -6560,7 +6560,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation/mock_lsl_streamer.py",
-      "source_location": "L369",
+      "source_location": "L372",
       "weight": 1.0
     },
     {
@@ -6572,7 +6572,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation/mock_lsl_streamer.py",
-      "source_location": "L372",
+      "source_location": "L375",
       "weight": 1.0
     },
     {
@@ -6584,7 +6584,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation/mock_lsl_streamer.py",
-      "source_location": "L377",
+      "source_location": "L380",
       "weight": 1.0
     },
     {
@@ -6596,7 +6596,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation/mock_lsl_streamer.py",
-      "source_location": "L250",
+      "source_location": "L253",
       "weight": 1.0
     },
     {
@@ -6608,7 +6608,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation/mock_lsl_streamer.py",
-      "source_location": "L265",
+      "source_location": "L268",
       "weight": 1.0
     },
     {
@@ -6620,7 +6620,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation/mock_lsl_streamer.py",
-      "source_location": "L266",
+      "source_location": "L269",
       "weight": 1.0
     },
     {
@@ -6632,7 +6632,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation/mock_lsl_streamer.py",
-      "source_location": "L278",
+      "source_location": "L281",
       "weight": 1.0
     },
     {
@@ -6644,7 +6644,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation/mock_lsl_streamer.py",
-      "source_location": "L311",
+      "source_location": "L314",
       "weight": 1.0
     },
     {
@@ -6656,7 +6656,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation/mock_lsl_streamer.py",
-      "source_location": "L100",
+      "source_location": "L103",
       "weight": 1.0
     },
     {
@@ -6668,7 +6668,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation/mock_lsl_streamer.py",
-      "source_location": "L71",
+      "source_location": "L74",
       "weight": 1.0
     },
     {
@@ -6728,7 +6728,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation/mock_lsl_streamer.py",
-      "source_location": "L73",
+      "source_location": "L76",
       "weight": 1.0
     },
     {
@@ -6740,7 +6740,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation/mock_lsl_streamer.py",
-      "source_location": "L79",
+      "source_location": "L82",
       "weight": 1.0
     },
     {
@@ -7237,7 +7237,7 @@
     },
     {
       "source": "tests_simulation_check_lsl_stream",
-      "target": "sys",
+      "target": "os",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -7249,7 +7249,7 @@
     },
     {
       "source": "tests_simulation_check_lsl_stream",
-      "target": "time",
+      "target": "sys",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -7261,6 +7261,18 @@
     },
     {
       "source": "tests_simulation_check_lsl_stream",
+      "target": "time",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "Tests/simulation/check_lsl_stream.py",
+      "source_location": "L19",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_simulation_check_lsl_stream",
       "target": "numpy",
       "relation": "imports",
       "_origin": "ast",
@@ -7268,7 +7280,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "Tests/simulation/check_lsl_stream.py",
-      "source_location": "L20",
+      "source_location": "L21",
       "weight": 1.0
     },
     {
@@ -7280,7 +7292,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "Tests/simulation/check_lsl_stream.py",
-      "source_location": "L21",
+      "source_location": "L25",
       "weight": 1.0
     },
     {
@@ -7352,7 +7364,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "Tests/simulation/mock_lsl_streamer.py",
-      "source_location": "L42",
+      "source_location": "L45",
       "weight": 1.0
     },
     {
@@ -7886,6 +7898,17 @@
     },
     {
       "source": "tests_aura_configuracion_configuraci\u00f3n_de_la_aura_para_mirai_2026",
+      "target": "tests_aura_configuracion_5_replay_del_csv_con_el_emulador",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Tests/AURA_Configuracion.md",
+      "source_location": "L101",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_aura_configuracion_configuraci\u00f3n_de_la_aura_para_mirai_2026",
       "target": "tests_aura_configuracion_2_verificaci\u00f3n_del_stream_antes_de_cada_sesi\u00f3n",
       "relation": "contains",
       "_origin": "ast",
@@ -7903,7 +7926,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/AURA_Configuracion.md",
-      "source_location": "L56",
+      "source_location": "L64",
       "weight": 1.0
     },
     {
@@ -7914,18 +7937,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/AURA_Configuracion.md",
-      "source_location": "L62",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_aura_configuracion_configuraci\u00f3n_de_la_aura_para_mirai_2026",
-      "target": "tests_aura_configuracion_5_replay_del_csv_con_el_emulador",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "Tests/AURA_Configuracion.md",
-      "source_location": "L93",
+      "source_location": "L70",
       "weight": 1.0
     },
     {
@@ -9619,7 +9631,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/Protocolo_Simulacion_Pipeline.md",
-      "source_location": "L104",
+      "source_location": "L107",
       "weight": 1.0
     },
     {
@@ -9630,7 +9642,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/Protocolo_Simulacion_Pipeline.md",
-      "source_location": "L119",
+      "source_location": "L122",
       "weight": 1.0
     },
     {
@@ -9641,7 +9653,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/Protocolo_Simulacion_Pipeline.md",
-      "source_location": "L132",
+      "source_location": "L135",
       "weight": 1.0
     },
     {
@@ -9652,7 +9664,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/Protocolo_Simulacion_Pipeline.md",
-      "source_location": "L150",
+      "source_location": "L153",
       "weight": 1.0
     },
     {
@@ -9663,7 +9675,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/Protocolo_Simulacion_Pipeline.md",
-      "source_location": "L170",
+      "source_location": "L173",
       "weight": 1.0
     },
     {
@@ -9674,7 +9686,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/Protocolo_Simulacion_Pipeline.md",
-      "source_location": "L189",
+      "source_location": "L192",
       "weight": 1.0
     },
     {
@@ -9685,7 +9697,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/Protocolo_Simulacion_Pipeline.md",
-      "source_location": "L202",
+      "source_location": "L205",
       "weight": 1.0
     },
     {
@@ -9718,7 +9730,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/Protocolo_Simulacion_Pipeline.md",
-      "source_location": "L88",
+      "source_location": "L91",
       "weight": 1.0
     },
     {
@@ -9817,7 +9829,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation/check_lsl_stream.py",
-      "source_location": "L24",
+      "source_location": "L28",
       "weight": 1.0
     },
     {
@@ -9828,7 +9840,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation/check_lsl_stream.py",
-      "source_location": "L34",
+      "source_location": "L38",
       "weight": 1.0
     },
     {
@@ -9839,7 +9851,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation/mock_lsl_streamer.py",
-      "source_location": "L112",
+      "source_location": "L115",
       "weight": 1.0
     },
     {
@@ -9850,7 +9862,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation/mock_lsl_streamer.py",
-      "source_location": "L120",
+      "source_location": "L123",
       "weight": 1.0
     },
     {
@@ -9861,7 +9873,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation/mock_lsl_streamer.py",
-      "source_location": "L181",
+      "source_location": "L184",
       "weight": 1.0
     },
     {
@@ -9872,7 +9884,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation/mock_lsl_streamer.py",
-      "source_location": "L222",
+      "source_location": "L225",
       "weight": 1.0
     },
     {
@@ -9883,7 +9895,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation/mock_lsl_streamer.py",
-      "source_location": "L249",
+      "source_location": "L252",
       "weight": 1.0
     },
     {
@@ -9894,7 +9906,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation/mock_lsl_streamer.py",
-      "source_location": "L264",
+      "source_location": "L267",
       "weight": 1.0
     },
     {
@@ -9905,7 +9917,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation/mock_lsl_streamer.py",
-      "source_location": "L319",
+      "source_location": "L322",
       "weight": 1.0
     },
     {
@@ -9916,7 +9928,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation/mock_lsl_streamer.py",
-      "source_location": "L54",
+      "source_location": "L57",
       "weight": 1.0
     },
     {
@@ -9927,7 +9939,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation/mock_lsl_streamer.py",
-      "source_location": "L62",
+      "source_location": "L65",
       "weight": 1.0
     },
     {
@@ -10701,58 +10713,58 @@
       "weight": 1.0
     },
     {
-      "source": "tests_simulation_mock_lsl_streamer_rationale_121",
+      "source": "tests_simulation_mock_lsl_streamer_rationale_124",
       "target": "tests_simulation_mock_lsl_streamer_load_file",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation/mock_lsl_streamer.py",
-      "source_location": "L121",
+      "source_location": "L124",
       "weight": 1.0
     },
     {
-      "source": "tests_simulation_mock_lsl_streamer_rationale_182",
+      "source": "tests_simulation_mock_lsl_streamer_rationale_185",
       "target": "tests_simulation_mock_lsl_streamer_load_aura_csv",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation/mock_lsl_streamer.py",
-      "source_location": "L182",
+      "source_location": "L185",
       "weight": 1.0
     },
     {
-      "source": "tests_simulation_mock_lsl_streamer_rationale_223",
+      "source": "tests_simulation_mock_lsl_streamer_rationale_226",
       "target": "tests_simulation_mock_lsl_streamer_inject",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation/mock_lsl_streamer.py",
-      "source_location": "L223",
+      "source_location": "L226",
       "weight": 1.0
     },
     {
-      "source": "tests_simulation_mock_lsl_streamer_rationale_55",
+      "source": "tests_simulation_mock_lsl_streamer_rationale_58",
       "target": "tests_simulation_mock_lsl_streamer_montage_1005",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation/mock_lsl_streamer.py",
-      "source_location": "L55",
+      "source_location": "L58",
       "weight": 1.0
     },
     {
-      "source": "tests_simulation_mock_lsl_streamer_rationale_63",
+      "source": "tests_simulation_mock_lsl_streamer_rationale_66",
       "target": "tests_simulation_mock_lsl_streamer_synthetic",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation/mock_lsl_streamer.py",
-      "source_location": "L63",
+      "source_location": "L66",
       "weight": 1.0
     },
     {
@@ -10872,6 +10884,18 @@
       "weight": 1.0
     },
     {
+      "source": "tests_protocolo_simulacion_pipeline_x_paso_1_emulador_de_hardware_y_transmisi\u00f3n_lsl_mock_lsl_streamer_py_implementado_28_oct_2026",
+      "target": "tests_datasets_workflow_eeg_svrec_h1_svrec_download",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "context": "download()",
+      "source_file": "Tests/Protocolo_Simulacion_Pipeline.md",
+      "source_location": "L86",
+      "weight": 1.0
+    },
+    {
       "source": "tests_handoff_claude_code_3_paso_1_hecho",
       "target": "tests_datasets_workflow_ds007537_h1_ds007537_iaf",
       "relation": "references",
@@ -10979,5 +11003,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "a2fa00971c78aada102100d5f4af60f174074fe0"
+  "built_at_commit": "5eea9feaaba4a05ea2f21f239658813f44497c5b"
 }

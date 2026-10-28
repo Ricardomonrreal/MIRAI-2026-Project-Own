@@ -39,6 +39,9 @@ import time
 
 import numpy as np
 from scipy import signal
+
+# Entorno LSL cerrado a esta PC (ver lsl_api.cfg); debe fijarse antes de importar pylsl.
+os.environ.setdefault("LSLAPICFG", os.path.join(os.path.dirname(os.path.abspath(__file__)), "lsl_api.cfg"))
 import pylsl
 
 # Montaje AURA y orden de canales del stream (fijo: el pipeline indexa por esta lista).

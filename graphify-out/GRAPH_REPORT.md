@@ -1,17 +1,17 @@
 # Graph Report - Project  (2026-10-28)
 
 ## Corpus Check
-- 19 files · ~108,316 words
+- 19 files · ~108,665 words
 - Verdict: corpus is large enough that graph structure adds value.
-- Unclassified: 8 file(s) not represented in the graph (top: (none) 2, .pptx 2, .bat 2)
+- Unclassified: 9 file(s) not represented in the graph (top: (none) 2, .pptx 2, .bat 2)
 
 ## Summary
-- 348 nodes · 595 edges · 15 communities (13 shown, 2 thin omitted)
-- Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 13 edges (avg confidence: 0.9)
+- 348 nodes · 597 edges · 15 communities (13 shown, 2 thin omitted)
+- Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 14 edges (avg confidence: 0.91)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `a2fa0097`
+- Built from commit: `5eea9fea`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -41,10 +41,12 @@
 6. `main()` - 11 edges
 7. `subject()` - 11 edges
 8. `main()` - 11 edges
-9. `process_all()` - 10 edges
-10. `main()` - 10 edges
+9. `download()` - 10 edges
+10. `process_all()` - 10 edges
 
 ## Surprising Connections (you probably didn't know these)
+- `[x] Paso 1: Emulador de Hardware y Transmisión LSL (`mock_lsl_streamer.py`) — implementado 28 oct 2026` --references--> `download()`  [INFERRED]
+  Tests/Protocolo_Simulacion_Pipeline.md → Tests/datasets workflow/EEG-SVRec/h1_svrec.py
 - `[x] Paso 1: Emulador de Hardware y Transmisión LSL (`mock_lsl_streamer.py`) — implementado 28 oct 2026` --references--> `iaf()`  [INFERRED]
   Tests/Protocolo_Simulacion_Pipeline.md → Tests/datasets workflow/ds007537/h1_ds007537.py
 - `1. Contexto del proyecto` --references--> `periodic()`  [INFERRED]
@@ -53,8 +55,6 @@
   Tests/HANDOFF_Claude_Code.md → Tests/datasets workflow/ds007537/h1_ds007537.py
 - `3. Paso 1 — HECHO` --references--> `synthetic()`  [INFERRED]
   Tests/HANDOFF_Claude_Code.md → Tests/simulation/mock_lsl_streamer.py
-- `[x] Paso 1: Emulador de Hardware y Transmisión LSL (`mock_lsl_streamer.py`) — implementado 28 oct 2026` --references--> `synthetic()`  [INFERRED]
-  Tests/Protocolo_Simulacion_Pipeline.md → Tests/simulation/mock_lsl_streamer.py
 
 ## Import Cycles
 - None detected.
@@ -127,8 +127,8 @@ _Questions this graph is uniquely positioned to answer:_
   _117 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Reporte H1 · Validación en OpenNeuro ds007537` be split into smaller, more focused modules?**
   _Cohesion score 0.07692307692307693 - nodes in this community are weakly interconnected._
-- **Why does `[x] Paso 1: Emulador de Hardware y Transmisión LSL (`mock_lsl_streamer.py`) — implementado 28 oct 2026` connect `🎧 Adaptación a la diadema AURA` to `mock_lsl_streamer.py`, `h1_ds007537.py`?**
-  _High betweenness centrality (0.041) - this node is a cross-community bridge._
+- **Why does `[x] Paso 1: Emulador de Hardware y Transmisión LSL (`mock_lsl_streamer.py`) — implementado 28 oct 2026` connect `🎧 Adaptación a la diadema AURA` to `mock_lsl_streamer.py`, `h1_ds007537.py`, `numpy`?**
+  _High betweenness centrality (0.042) - this node is a cross-community bridge._
 - **Should `Demo_processing.py` be split into smaller, more focused modules?**
   _Cohesion score 0.06666666666666667 - nodes in this community are weakly interconnected._
 - **Why does `load_eeg()` connect `load_eeg` to `Demo_processing.py`, `EEGViewer`, `numpy`?**

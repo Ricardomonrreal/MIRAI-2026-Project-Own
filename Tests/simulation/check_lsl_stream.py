@@ -14,10 +14,14 @@ Uso:
   python check_lsl_stream.py --name AURA --seconds 300
 """
 import argparse
+import os
 import sys
 import time
 
 import numpy as np
+
+# Entorno LSL cerrado a esta PC (ver lsl_api.cfg); debe fijarse antes de importar pylsl.
+os.environ.setdefault("LSLAPICFG", os.path.join(os.path.dirname(os.path.abspath(__file__)), "lsl_api.cfg"))
 import pylsl
 
 
@@ -43,10 +47,13 @@ def main():
     # Aura.exe abierto publica su propio 'AURA' (aunque no haya diadema), y otras PCs de la red también:
     # se recogen todos los que coinciden en vez de quedarse con el primero que responda.
     print(f"Buscando stream '{a.name}'...")
-    found, t0 = [], time.time()
-    while not found and time.time() - t0 < a.timeout:
-        found = [s for s in pylsl.resolve_streams(2.0)
-                 if s.name() == a.name and a.source_id in (None, s.source_id())]
+    # Se acumula al menos 4 s: una sola búsqueda corta a veces solo capta uno de los candidatos.
+    found, t0 = {}, time.time()
+    while time.time() - t0 < (4.0 if found else a.timeout):
+        for s in pylsl.resolve_streams(1.0):
+            if s.name() == a.name and a.source_id in (None, s.source_id()):
+                found[s.uid()] = s
+    found = list(found.values())
     if not found:
         sys.exit("No se encontró el stream. ¿Está corriendo mock_lsl_streamer.py?")
     if len(found) > 1:

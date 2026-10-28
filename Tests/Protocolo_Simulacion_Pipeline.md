@@ -70,7 +70,8 @@ Cada paso representa un hito técnico secuencial con entradas, acciones concreta
   python check_lsl_stream.py --seconds 120                      # en otra terminal
   ```
 * **Criterio de Validación (`check_lsl_stream.py`):** tasa = fs nominal ± 0.1 % (marcas y reloj del receptor), 0 huecos, marcas monótonas, deriva acumulada < 5 ms, latencia de entrega p95 < 50 ms + 1 periodo de muestreo (54 ms a 250 Hz, 70 ms a 50 Hz: la marca de una muestra va hasta un periodo por detrás del envío), 8 canales, RMS en 1–200 µV (lista los canales fuera de rango).
-  - ⚠️ **Colisión de nombres:** con **Aura.exe abierto** (aunque no haya diadema conectada) existen streams `AURA`, `AURA_Filtered` y `AURA_Power`, y otras PCs de la red con Aura publican los suyos (visto 28 oct: host `MSI`). Para simular con Aura abierto: `check_lsl_stream.py --source-id mirai-sim-AURA` o emulador con `--name AURA_SIM`. El verificador falla con la lista de candidatos si el nombre es ambiguo; el Paso 2 debe resolver igual (por `source_id`/host, nunca “el primero que responda”).
+  - ⚠️ **Colisión de nombres:** con **Aura.exe abierto** (aunque no haya diadema conectada) existen streams `AURA`, `AURA_Filtered` y `AURA_Power`, y otras PCs de la red con Aura publican los suyos (visto 28 oct: host `MSI`, 192.168.0.187). Para simular con Aura abierto: `check_lsl_stream.py --source-id mirai-sim-AURA` o emulador con `--name AURA_SIM`. El verificador acumula la búsqueda ≥ 4 s y falla con la lista de candidatos si el nombre es ambiguo; el Paso 2 debe resolver igual (por `source_id`, nunca “el primero que responda”).
+  - 🔒 **Entorno LSL cerrado a esta PC:** `Tests/simulation/lsl_api.cfg` (`ResolveScope = machine`), cargado por los scripts vía `LSLAPICFG` antes de importar `pylsl` (el Paso 2 debe hacer lo mismo). Verificado 28 oct: con él solo se descubren los streams locales (Aura.exe propio y emulador) y desaparecen los de MSI; la transmisión sigue pasando. Se espera que nuestros streams tampoco se anuncien a la red (no comprobado desde MSI). Límites: el puerto TCP de datos sigue abierto a quien conozca IP y puerto (para cerrarlo, regla de firewall de Windows, a hacer por el usuario), y si un equipo externo (p. ej. un visor AR) debe leer el stream, apuntar `LSLAPICFG` a otra configuración. Aura.exe no lee este archivo: su `AURA` local sigue visible en la red.
   - **Resultados 28 oct, máquina del proyecto** (Python 3.14, pylsl 1.18.6, 120 s cada uno):
 
     | Fuente | fs | Huecos | Deriva | Latencia p95 | Resultado |
@@ -78,10 +79,12 @@ Cada paso representa un hito técnico secuencial con entradas, acciones concreta
     | Sintético (+ `--inject alpha`) | 250 Hz | 0 | −1.53 ms | 27.5 ms | **PASA** (27 marcadores) |
     | Sintético `--fs 50` | 50 Hz | 0 | −1.04 ms | 54.7 ms | **PASA** |
     | ds007537 `sub-01` (`--start 60`, ref. promedio, 1000→250 Hz) | 250 Hz | 0 | +0.65 ms | 26.5 ms | **PASA** (0 canales rotos) |
+    | EEG-SVRec `01_data.cnt` (`--start 300`, ref. M1/M2, red 50 Hz, 1000→250 Hz) | 250 Hz | 0 | −0.55 ms | 26.9 ms | **PASA** (0 canales rotos; 155 marcadores `file:` del registro) |
     | CSV AURA enero 2026 (EO → EC) | 50 Hz | 0 | −1.89 ms | 54.7 ms | Transporte OK; **amplitud falla en Fp1, Cz, Pz** (calidad real del registro, esperado) |
 
     Antes (sesión Cowork): sintético 180 s con `--loop` y archivo de prueba a 1000 Hz con ref. promedio y M1/M2 → PASA. El lector del CSV reproduce las 8 fases y el Berger (O2 +7.2 dB, O1 +5.8 dB, Fz +4.7 dB).
-  - Pendiente: un `.cnt` de EEG-SVRec (en `Datasets/MIRAI/EEG-SVRec` no hay crudos) y la AURA real con diadema conectada.
+  - `01_data.cnt` (1.67 GB, Hugging Face `hezy18/EEG-SVRec`, sha256 verificado) queda en `Datasets/MIRAI/EEG-SVRec/EEG/` para replays; se puede borrar y volver a bajar con `download()` de `h1_svrec.py`.
+  - Pendiente: la AURA real con diadema conectada (ver `AURA_Configuracion.md` §2–3).
 
 ---
 

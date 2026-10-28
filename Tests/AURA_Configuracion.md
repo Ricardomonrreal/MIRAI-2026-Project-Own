@@ -47,8 +47,16 @@ Requiere `pip install -r Tests/simulation/requirements.txt` (incluye `pylsl`).
 **Lo que publica Aura.exe por LSL** (visto el 28 oct con el software abierto y *sin* diadema): `AURA` (EEG, 8 ch,
 float32, **250 Hz nominal**, sin etiquetas de canal en los metadatos), `AURA_Filtered` (8 ch, 250 Hz; presumiblemente
 con los filtros de la UI) y `AURA_Power` (40 ch, 100 Hz; el que lee `VRehab.py`). El pipeline debe leer **`AURA`**
-(crudo) y asumir el orden CH1–CH8 de *Configure Electrodes*, porque el stream no trae etiquetas. Si otra PC de la red
-tiene Aura abierto aparece un segundo `AURA`: `check_lsl_stream.py` lo detecta y pide `--source-id`.
+(crudo) y asumir el orden CH1–CH8 de *Configure Electrodes*, porque el stream no trae etiquetas. Otra PC de la red con
+Aura abierto (host `MSI`, 192.168.0.187) publica su propio `AURA`; los scripts del proyecto la ignoran porque cargan
+`Tests/simulation/lsl_api.cfg` (descubrimiento solo en esta máquina). Dos límites de ese aislamiento:
+
+- **Aura.exe y el emulador chocan en esta PC:** ambos publican `AURA`. Con Aura abierto, simular con
+  `check_lsl_stream.py --source-id mirai-sim-AURA` (o lanzar el emulador con `--name AURA_SIM`).
+  `check_lsl_stream.py` detecta el conflicto y lista los candidatos.
+- **Un equipo externo no verá el stream** (p. ej. un visor AR que lea el LSL de esta PC). Para esa sesión, apuntar
+  `LSLAPICFG` a otra configuración (o a un archivo vacío para el comportamiento por defecto de LSL) antes de lanzar
+  los scripts, p. ej. en PowerShell: `$env:LSLAPICFG = "C:\ruta\lsl_api_red.cfg"`.
 
 > Que el stream sea de 250 Hz nominales hace pensar que los 50 Hz del CSV de enero vienen del script que lo grabó
 > (diezmado), no del equipo. Confirmarlo con la diadema conectada (tasa efectiva en el reporte).
