@@ -11,8 +11,8 @@ El sistema se compone de dos procesos desacoplados que se comunican exclusivamen
 ```mermaid
 flowchart TD
     subgraph Proceso 1: Emulador de Hardware
-        A["Datasets Grabados\n(ds007537 / EEG-SVRec)"] --> B["mock_lsl_streamer.py\n(Control de tasa de muestreo)"]
-        B -->|Stream LSL: 'AURA_Simulated'| C["LSL Outlet\n(8 canales: Fz, FCz, F3, F4, Pz, O1, O2, Fp1)"]
+        A["Datasets Grabados o fuente sintética\n(ds007537 / EEG-SVRec / CSV AURA / synthetic)"] --> B["mock_lsl_streamer.py\n(Control de tasa de muestreo)"]
+        B -->|"Stream LSL: AURA (EEG crudo, µV) + AURA_Markers"| C["LSL Outlet\n(8 canales: Fp1, F3, Fz, F4, Cz, Pz, O1, O2)"]
     end
 
     subgraph Proceso 2: Pipeline Neuroadaptativo (Python)
@@ -39,19 +39,65 @@ Cada paso representa un hito técnico secuencial con entradas, acciones concreta
 
 ---
 
-### [ ] Paso 1: Emulador de Hardware y Transmisión LSL (`mock_lsl_streamer.py`)
-* **Objetivo:** Leer archivos EEG grabados y reproducirlos muestra a muestra como si provinieran de una diadema AURA física.
-* **Archivos fuente:** `Tests/datasets workflow/ds007537/` (sujeto limpio `sub-01`) o `Tests/datasets workflow/EEG-SVRec/`.
-* **Acciones a completar:**
-  - [ ] Implementar lector de archivos (`.edf` o `.mat`) extrayendo únicamente los **8 electrodos AURA**:
-    - Frontales: `Fz`, `FCz`, `F3`, `F4`, `Fp1`
-    - Posteriores: `Pz`, `O1`, `O2`
-  - [ ] Configurar un `pylsl.StreamOutlet`:
-    - Nombre del Stream: `AURA_Power` (para paridad con `VRehab.py`) o `AURA_Simulated`.
-    - Frecuencia nominal: $fs = 250\text{ Hz}$.
-  - [ ] Implementar el bucle de envío temporizado con `time.perf_counter()` en bloques pequeños (10–20 ms) para garantizar sincronía exacta con el reloj real y evitar desbordamientos de búfer.
-* **Criterio de Validación:**
-  - Ejecutar el script y comprobar con una herramienta de prueba LSL o un simple receptor que se reciben exactamente 250 muestras por segundo sin deriva.
+### [x] Paso 1: Emulador de Hardware y Transmisión LSL (`mock_lsl_streamer.py`) — implementado 28 oct 2026
+* **Objetivo:** Reproducir EEG grabado (o sintético) muestra a muestra como si viniera de una diadema AURA física, de modo que el pipeline no distinga la simulación del hardware.
+* **Archivos:** `Tests/simulation/mock_lsl_streamer.py` (emulador), `Tests/simulation/check_lsl_stream.py` (validador), `Tests/simulation/requirements.txt`.
+* **Fuentes de datos:**
+  - `synthetic` (por defecto): ruido 1/f (χ ≈ 1.5) + alfa posterior en la IAF + theta frontal (IAF − 4) + parpadeos de Poisson (~15/min, 150–300 µV en Fp1) + ruido de red. Permite tener el lazo vivo sin descargar datos.
+  - **ds007537**: BrainVision (`sub-XX/eeg/sub-XX_task-phoneuse_eeg.vhdr`), referido a Cz en el registro.
+  - **EEG-SVRec**: Neuroscan (`EEG/XX_data.cnt`, 62 canales, 1000 Hz, `data_format=int32`).
+  - **CSV de AURA** (`timestamp, phase, label, channel_0..7`, µV, orden CH1–CH8): se transmite a su fs nativa (~50 Hz) o a `--fs`; cada cambio de `phase` sale como marcador `file:<fase>`. Prueba de enero 2026 en `AURA/data/` (ignorado por git).
+  - Cualquier `.edf/.bdf/.set/.fif` legible por MNE.
+  - ⚠️ En el proyecto solo están las cachés de features; hay que descargar los crudos (al menos `sub-01`) y apuntar `--source` a ellos.
+* **Acciones completadas:**
+  - [x] Lector MNE que recorta (`--start`, `--duration`), remuestrea a **250 Hz** con antialiasing y extrae los **8 electrodos AURA** en orden fijo: `Fp1, F3, Fz, F4, Cz, Pz, O1, O2` (orden por defecto CH1–CH8 del software AURA; Cz sustituye a FCz, que AURA no tiene; mapeo insensible a mayúsculas).
+  - [x] `--fs` (250 por defecto) para emular la tasa real de la AURA (50 Hz en el CSV de prueba). En el sintético, la red se omite si cae por encima de Nyquist (se asume antialiasing del equipo).
+  - [x] Re-referencia antes de seleccionar canales (`--ref average | none | M1,M2 | TP9,TP10`); detección MAD de canales rotos (excluidos del promedio e interpolados si son canales AURA).
+  - [x] Conversión **V → µV** (sin ella el veto de 150 µV del Paso 3 nunca se activaría) y verificación de RMS por canal al arrancar.
+  - [x] `pylsl.StreamOutlet` **`AURA`**, tipo `EEG`, 8 ch, `float32`, 250 Hz, con metadatos XDF (etiqueta, `microvolts`, tipo por canal) y `line_freq`, `reference`, `source`, `iaf`. *Nota:* `AURA_Power` de `VRehab.py` es un stream de potencias procesadas, no EEG crudo; el nombre `AURA` es el que publica el software real.
+  - [x] Bucle de envío cada 10–20 ms (`--chunk-ms`) con marcas de tiempo calculadas desde el índice de muestra (`t0 + n/fs`, reloj `pylsl.local_clock`): el jitter de `sleep` en Windows (~15 ms) solo cambia el tamaño del bloque, no la tasa, y no hay deriva.
+  - [x] Stream **`AURA_Markers`** con verdad de campo: parpadeos sintéticos (`blink`), inyecciones (`inject:<tipo>:on/off`) y anotaciones del archivo (`file:<etiqueta>`).
+  - [x] Inyección de eventos (`--inject TIPO INICIO_S DUR_S AMP_µV`, repetible): `alpha` (IAF en Pz/O1/O2; prueba Berger), `theta` (IAF − 4 en Fz/Cz/F3/F4), `blink` (tren a 1 Hz en Fp1). Base para validar los Pasos 3, 6 y 7.
+  - [x] `--line-freq` viaja en los metadatos para que el notch del Paso 2 use 50 Hz (SVRec) o 60 Hz (sintético, AURA en Cancún). `--loop` repite el registro con marcas continuas.
+* **Uso:**
+  ```bash
+  pip install -r requirements.txt
+  python mock_lsl_streamer.py                                   # sintético, 20 min
+  python mock_lsl_streamer.py --inject alpha 120 20 15          # ojos cerrados simulados
+  python mock_lsl_streamer.py --source "<ruta>/sub-01_task-phoneuse_eeg.vhdr" --start 60
+  python mock_lsl_streamer.py --source "<ruta>/01_data.cnt" --ref M1,M2 --line-freq 50
+  python mock_lsl_streamer.py --source ../../AURA/data/eeg_data_20260122_123839.csv   # replay AURA (50 Hz)
+  python check_lsl_stream.py --seconds 120                      # en otra terminal
+  ```
+* **Criterio de Validación (`check_lsl_stream.py`):** tasa = fs nominal ± 0.1 % (marcas y reloj del receptor), 0 huecos, marcas monótonas, deriva acumulada < 5 ms, latencia de entrega p95 < 50 ms + 1 periodo de muestreo (54 ms a 250 Hz, 70 ms a 50 Hz: la marca de una muestra va hasta un periodo por detrás del envío), 8 canales, RMS en 1–200 µV (lista los canales fuera de rango).
+  - ⚠️ **Colisión de nombres:** con **Aura.exe abierto** (aunque no haya diadema conectada) existen streams `AURA`, `AURA_Filtered` y `AURA_Power`, y otras PCs de la red con Aura publican los suyos (visto 28 oct: host `MSI`). Para simular con Aura abierto: `check_lsl_stream.py --source-id mirai-sim-AURA` o emulador con `--name AURA_SIM`. El verificador falla con la lista de candidatos si el nombre es ambiguo; el Paso 2 debe resolver igual (por `source_id`/host, nunca “el primero que responda”).
+  - **Resultados 28 oct, máquina del proyecto** (Python 3.14, pylsl 1.18.6, 120 s cada uno):
+
+    | Fuente | fs | Huecos | Deriva | Latencia p95 | Resultado |
+    |---|---|---|---|---|---|
+    | Sintético (+ `--inject alpha`) | 250 Hz | 0 | −1.53 ms | 27.5 ms | **PASA** (27 marcadores) |
+    | Sintético `--fs 50` | 50 Hz | 0 | −1.04 ms | 54.7 ms | **PASA** |
+    | ds007537 `sub-01` (`--start 60`, ref. promedio, 1000→250 Hz) | 250 Hz | 0 | +0.65 ms | 26.5 ms | **PASA** (0 canales rotos) |
+    | CSV AURA enero 2026 (EO → EC) | 50 Hz | 0 | −1.89 ms | 54.7 ms | Transporte OK; **amplitud falla en Fp1, Cz, Pz** (calidad real del registro, esperado) |
+
+    Antes (sesión Cowork): sintético 180 s con `--loop` y archivo de prueba a 1000 Hz con ref. promedio y M1/M2 → PASA. El lector del CSV reproduce las 8 fases y el Berger (O2 +7.2 dB, O1 +5.8 dB, Fz +4.7 dB).
+  - Pendiente: un `.cnt` de EEG-SVRec (en `Datasets/MIRAI/EEG-SVRec` no hay crudos) y la AURA real con diadema conectada.
+
+---
+
+## 🎧 Adaptación a la diadema AURA
+
+Configuración del equipo y análisis del CSV de prueba: **`Tests/AURA_Configuracion.md`**. Implicaciones para los Pasos 2–7:
+
+| Tema | Situación AURA | Adaptación |
+|---|---|---|
+| **Montaje** | 8 canales, orden por defecto `Fp1, F3, Fz, F4, Cz, Pz, O1, O2`; sin FCz. | Theta frontal-medial = **Fz (+ Cz)**; alfa posterior = **Pz, O1, O2**; veto ocular en **Fp1**. Confirmar en *File → Configure Electrodes*. |
+| **Frecuencia de muestreo** | Desconocida en vivo; el CSV de prueba está a **50 Hz**. | Todo el pipeline parametrizado por `fs = inlet.info().nominal_srate()` (ventanas en segundos, no en muestras). Si fs = 50: specparam hasta **min(40, 0.8·fs/2) = 20 Hz** (2–20 Hz; cubre theta y alfa con la IAF), pasa-banda 1–20 Hz, **sin notch** (60 Hz > Nyquist) y **sin veto EMG** 25–40 Hz. Si fs ≥ 250: parámetros offline (2–40 Hz) y veto EMG. |
+| **Filtros del equipo** | La UI trae bandpass 15–50 Hz (borra theta/alfa); el CSV muestra solo un pasa-altos ~0.7 Hz. | Usar el bandpass más amplio en la UI y verificar si afecta al stream (guía §2.4). El pipeline filtra por su cuenta. |
+| **Marcas de tiempo** | En el CSV, jitter y retrocesos (asignadas al recibir). | Usar las marcas de LSL del inlet (`proc_clocksync`) o el índice de muestra; nunca la columna `timestamp` del CSV. |
+| **Canales rotos** | En la prueba: Fp1 saturado, Cz y Pz muertos, O1 con mal contacto. | Chequeo de calidad al inicio de la calibración (RMS / MAD por canal): un canal malo se excluye de su ROI (alfa = media de los canales posteriores válidos). Si **Fp1** está malo, el veto ocular pasa a F3/F4 con umbral propio. Si no queda ningún canal posterior válido, abortar la sesión. |
+| **Calibración** | El protocolo de la prueba ya trae `baseline_eyes_open` 90 s + `baseline_eyes_closed` 90 s. | μ, σ del escalador sobre **ojos abiertos** (estado comparable a la tarea). Ojos cerrados se usa para estimar la **IAF** y como control de calidad (Berger ≥ 3 dB en O1/O2). |
+| **Validación con datos reales** | CSV de enero 2026 con fases EO/EC/low_load/high_load. | Replay con `mock_lsl_streamer.py --source <csv>`: el Paso 7 comprueba que alfa_per sube en EC frente a EO y compara low_load vs high_load. |
 
 ---
 
@@ -92,7 +138,7 @@ Cada paso representa un hito técnico secuencial con entradas, acciones concreta
     - Límites de ancho de pico: `[1.5, 8.0]`.
     - Altura mínima de pico: `0.1`.
   - [ ] Extraer el vector de características $\mathbf{x}_t$:
-    - **$\theta_{\text{per}}$ (Theta periódico frontal):** Potencia en $Fz / FCz$ sobre el fondo en banda 4–7 Hz (o adaptada a la IAF).
+    - **$\theta_{\text{per}}$ (Theta periódico frontal):** Potencia en $Fz$ (+ $Cz$) sobre el fondo en banda 4–7 Hz (o adaptada a la IAF).
     - **$\alpha_{\text{per}}$ (Alfa periódico posterior):** Potencia en $Pz, O1, O2$ sobre el fondo en banda 8–12 Hz.
     - **Exponente $1/f$ ($\chi$):** Pendiente del fondo espectral aperiódico.
   - [ ] Respaldo de calidad: Si el ajuste produce $R^2 < 0.75$, utilizar la potencia espectral clásica como modo degradado de emergencia.
@@ -160,10 +206,13 @@ Todo el código de la simulación se organizará en la carpeta `Tests/simulation
 ```text
 Tests/
 ├── simulation/
-│   ├── mock_lsl_streamer.py      # Paso 1: Emulador de streaming LSL
+│   ├── mock_lsl_streamer.py      # Paso 1: Emulador de streaming LSL (+ AURA_Markers)
+│   ├── check_lsl_stream.py       # Paso 1: Validador de tasa, huecos, deriva y latencia
+│   ├── requirements.txt
 │   ├── realtime_pipeline.py      # Pasos 2 y 3: Búfer circular, filtros y veto Fp1
 │   ├── spectral_features.py      # Paso 4: Extracción Welch + specparam
 │   ├── jitai_decision.py         # Pasos 5 y 6: Calibración StandardScaler y escalera JITAI
 │   └── run_simulation.py         # Paso 7: Lanzador general y reporte de latencia
+├── AURA_Configuracion.md         # Configuración del equipo y análisis del CSV de prueba
 └── Protocolo_Simulacion_Pipeline.md # Este documento de seguimiento
 ```

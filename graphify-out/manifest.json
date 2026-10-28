@@ -11,30 +11,6 @@
     "ast_hash": "45df98dc889bc4a2cb7c88714a9fd8b7",
     "semantic_hash": ""
   },
-  "Tests/Analisis_Scope_v2.md": {
-    "mtime": 1792397667.8765273,
-    "seen": 1792551314.1799703,
-    "ast_hash": "93bae9b71c3c9f372dddad00e9563616",
-    "semantic_hash": "93bae9b71c3c9f372dddad00e9563616"
-  },
-  "Tests/Resumen_Sesion_21_10.md": {
-    "mtime": 1793083566.0725126,
-    "seen": 1793083727.2009346,
-    "ast_hash": "dafceb92be1f2884a0bed6bcbd5c9abf",
-    "semantic_hash": ""
-  },
-  "Tests/Project Proposal MIRAI Ricardo_Monrreal (1).pdf": {
-    "mtime": 1790911394.259096,
-    "seen": 1792551314.1799808,
-    "ast_hash": "9b8d0b4ac630793537481792fcec8e3d",
-    "semantic_hash": "9b8d0b4ac630793537481792fcec8e3d"
-  },
-  "Tests/Scope_Dopamine_Scrolling.pdf": {
-    "mtime": 1791195007.5596576,
-    "seen": 1792551314.1799827,
-    "ast_hash": "265bbd05a896c36664f5f15c5a502986",
-    "semantic_hash": "265bbd05a896c36664f5f15c5a502986"
-  },
   "Tests/Plan_Avances.md": {
     "mtime": 1793083589.0594869,
     "seen": 1793083727.200928,
@@ -48,8 +24,8 @@
     "semantic_hash": ""
   },
   "Tests/Guia_Exposicion.md": {
-    "mtime": 1793083607.555096,
-    "seen": 1793083727.2009244,
+    "mtime": 1793088097.997611,
+    "seen": 1793162456.1961653,
     "ast_hash": "8cc7ee7a25b9fc35088ae2c510c7d550",
     "semantic_hash": ""
   },
@@ -84,9 +60,9 @@
     "semantic_hash": ""
   },
   "Tests/Protocolo_Simulacion_Pipeline.md": {
-    "mtime": 1793083693.3064249,
-    "seen": 1793083727.2009308,
-    "ast_hash": "6e2b8142119921770e32959553a924ab",
+    "mtime": 1793164489.6261446,
+    "seen": 1793164502.8487043,
+    "ast_hash": "2fb7dce354a15eb8de9065074b3a7187",
     "semantic_hash": ""
   },
   "Tests/datasets workflow/Cao2019/results/cao_reporte.txt": {
@@ -153,6 +129,60 @@
     "mtime": 1792483266.379251,
     "seen": 1793083727.2009907,
     "ast_hash": "57f24a09ab4f907c8cf7363653706658",
+    "semantic_hash": ""
+  },
+  "Tests/simulation/check_lsl_stream.py": {
+    "mtime": 1793164148.5263498,
+    "seen": 1793164502.8486536,
+    "ast_hash": "a03b4b20994031c4a6443f93528d134a",
+    "semantic_hash": ""
+  },
+  "Tests/simulation/mock_lsl_streamer.py": {
+    "mtime": 1793162307.134542,
+    "seen": 1793162456.1961257,
+    "ast_hash": "c3e58f94331b7a84292de7433d45e58e",
+    "semantic_hash": ""
+  },
+  "Documentaci\u00f3n/Analisis_Scope_v2.md": {
+    "mtime": 1792397667.8765273,
+    "seen": 1793162456.1961422,
+    "ast_hash": "93bae9b71c3c9f372dddad00e9563616",
+    "semantic_hash": ""
+  },
+  "Documentaci\u00f3n/Resumen_Sesion_21_10.md": {
+    "mtime": 1793083566.0725126,
+    "seen": 1793162456.196148,
+    "ast_hash": "dafceb92be1f2884a0bed6bcbd5c9abf",
+    "semantic_hash": ""
+  },
+  "Tests/AURA_Configuracion.md": {
+    "mtime": 1793164490.0856683,
+    "seen": 1793164502.848687,
+    "ast_hash": "5b2a6427a0f4f25776b2a193f45b4b38",
+    "semantic_hash": ""
+  },
+  "Tests/HANDOFF_Claude_Code.md": {
+    "mtime": 1793161871.2473142,
+    "seen": 1793162456.1961696,
+    "ast_hash": "2766f8dfb329d2a835e71da5e7e7a13f",
+    "semantic_hash": ""
+  },
+  "Tests/simulation/requirements.txt": {
+    "mtime": 1793157830.1340086,
+    "seen": 1793162456.1962295,
+    "ast_hash": "4653a54250dff2ba7f9382dba52a6438",
+    "semantic_hash": ""
+  },
+  "Documentaci\u00f3n/Project Proposal MIRAI Ricardo_Monrreal (1).pdf": {
+    "mtime": 1790911394.259096,
+    "seen": 1793162456.1962345,
+    "ast_hash": "9b8d0b4ac630793537481792fcec8e3d",
+    "semantic_hash": ""
+  },
+  "Documentaci\u00f3n/Scope_Dopamine_Scrolling.pdf": {
+    "mtime": 1791195007.5596576,
+    "seen": 1793162456.1962397,
+    "ast_hash": "265bbd05a896c36664f5f15c5a502986",
     "semantic_hash": ""
   }
 }
