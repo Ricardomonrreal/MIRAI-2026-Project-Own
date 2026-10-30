@@ -264,7 +264,7 @@ def make_outlet(name, fs, meta):
     return pylsl.StreamOutlet(info, chunk_size=0, max_buffered=360)
 
 
-def stream(data, events, fs, name, chunk_ms, loop, wait, meta):
+def stream(data, events, fs, name, chunk_ms, loop, wait, meta, verbose=False):
     outlet = make_outlet(name, fs, meta)
     mk = pylsl.StreamOutlet(pylsl.StreamInfo(f"{name}_Markers", "Markers", 1, pylsl.IRREGULAR_RATE,
                                              pylsl.cf_string, f"mirai-sim-{name}-markers"))
@@ -290,6 +290,10 @@ def stream(data, events, fs, name, chunk_ms, loop, wait, meta):
             if target > sent:
                 idx = np.arange(sent, target) % n_total
                 outlet.push_chunk(data_t[idx], t0 + (target - 1) / fs)  # ts de la última muestra
+                if verbose:
+                    print(f"  push muestras {sent:>7d}-{target - 1:<7d} ({target - sent:2d})  "
+                          f"t_reg={sent / fs:8.3f}-{(target - 1) / fs:8.3f} s  ts_lsl={t0 + (target - 1) / fs:11.3f}  "
+                          + " ".join(f"{c}={v:7.1f}" for c, v in zip(AURA_CHANNELS, data_t[idx[-1]])))
                 # Marcadores con la marca de tiempo exacta de su muestra.
                 while events:
                     if ev_ptr >= len(events):
@@ -301,6 +305,8 @@ def stream(data, events, fs, name, chunk_ms, loop, wait, meta):
                     if g >= target:
                         break
                     mk.push_sample([label], t0 + g / fs)
+                    if verbose:
+                        print(f"  >> marcador '{label}' en muestra {g} (t_reg={g / fs:.3f} s)")
                     ev_ptr += 1
                 sent = target
             el = pylsl.local_clock() - t0
@@ -340,6 +346,8 @@ def main():
     p.add_argument("--chunk-ms", type=float, default=20.0, help="periodo de envío (10-20 ms)")
     p.add_argument("--loop", action="store_true", help="repetir el registro indefinidamente")
     p.add_argument("--wait", action="store_true", help="no empezar hasta que haya un receptor")
+    p.add_argument("--verbose", action="store_true",
+                   help="imprime cada bloque enviado (muestras, tiempo del registro, ts LSL, valores) y cada marcador")
     p.add_argument("--seed", type=int, default=7)
     a = p.parse_args()
 
@@ -377,7 +385,7 @@ def main():
     if np.median(rms) < 0.01 or np.median(rms) > 500:
         print("[aviso] amplitudes fuera de rango EEG: revisa unidades/referencia")
     print(f"Red: {line:.0f} Hz | eventos/marcadores: {len(events)}")
-    stream(data, events, fs, a.name, a.chunk_ms, a.loop, a.wait, meta)
+    stream(data, events, fs, a.name, a.chunk_ms, a.loop, a.wait, meta, a.verbose)
 
 
 if __name__ == "__main__":

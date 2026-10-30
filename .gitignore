@@ -24,3 +24,7 @@ graphify-out/2026-*/
 *.py[cod]
 .DS_Store
 Thumbs.db
+
+# === Registros de sesiones del pipeline en tiempo real ===
+Tests/simulation/runs/
+Tests/simulation_B/runs/

@@ -15,6 +15,7 @@ Uso:
 """
 import argparse
 import os
+import socket
 import sys
 import time
 
@@ -35,32 +36,59 @@ def channel_meta(info):
     return labels, units
 
 
+def find_stream(name, source_id, timeout=15.0):
+    """El único stream `name` que corre en ESTA PC y cuyo source_id empieza por `source_id`.
+
+    El nombre no identifica la fuente: Aura.exe abierto publica 'AURA' aunque no haya diadema, el
+    emulador también, y otras PCs de la red con Aura igual (si LSLAPICFG no los filtra). Por eso se
+    exige el prefijo del source_id ('mirai-sim-' emulador, 'AuraLSL-' Aura.exe) y el host local; sin
+    prefijo, o si no hay exactamente un candidato, se listan todos y se sale. Se acumula la búsqueda
+    al menos 4 s porque una búsqueda corta a veces solo capta uno de los candidatos.
+    """
+    host = socket.gethostname().lower()
+    print(f"Buscando stream '{name}' en esta PC ({socket.gethostname()}) con source_id '{source_id or '?'}*'...")
+    found, t0 = {}, time.time()
+    while time.time() - t0 < (4.0 if found else timeout):
+        for s in pylsl.resolve_streams(1.0):
+            if s.name() == name:
+                found[s.uid()] = s
+    mine = [s for s in found.values()
+            if source_id and s.hostname().lower() == host and s.source_id().startswith(source_id)]
+    if len(mine) == 1:
+        s = mine[0]
+        print(f"Conectando a source_id={s.source_id()}  host={s.hostname()}  {s.nominal_srate():.0f} Hz")
+        return s
+    for s in found.values():
+        where = "esta PC" if s.hostname().lower() == host else "otra PC, se ignora"
+        print(f"  - source_id={s.source_id()}  host={s.hostname()} ({where})  {s.nominal_srate():.0f} Hz")
+    if not found:
+        sys.exit(f"No hay ningún stream '{name}'. ¿Está corriendo mock_lsl_streamer.py o Aura.exe?")
+    if not source_id:
+        sys.exit("Indica --source-id (prefijo): 'mirai-sim-' para el emulador o 'AuraLSL-' para Aura.exe.")
+    if not mine:
+        sys.exit(f"Ningún stream '{name}' de esta PC tiene un source_id que empiece por '{source_id}'.")
+    sys.exit(f"{len(mine)} streams '{name}' de esta PC empiezan por '{source_id}': usa un prefijo más largo.")
+
+
+def find_markers(info):
+    """Inlet del stream de marcadores del mismo emisor (source_id + '-markers', mismo host) o None."""
+    for s in pylsl.resolve_byprop("source_id", f"{info.source_id()}-markers", timeout=2):
+        if s.hostname() == info.hostname():
+            return pylsl.StreamInlet(s, processing_flags=pylsl.proc_clocksync)
+    return None
+
+
 def main():
     p = argparse.ArgumentParser(description="Validador de stream LSL (Paso 1)")
     p.add_argument("--name", default="AURA")
     p.add_argument("--seconds", type=float, default=60.0)
     p.add_argument("--timeout", type=float, default=15.0, help="segundos para encontrar el stream")
     p.add_argument("--source-id", default=None,
-                   help="desambigua si hay varios streams con el mismo nombre (emulador: mirai-sim-AURA)")
+                   help="prefijo del source_id: 'mirai-sim-' (emulador) o 'AuraLSL-' (Aura.exe); sin él se listan los candidatos")
     a = p.parse_args()
 
-    # Aura.exe abierto publica su propio 'AURA' (aunque no haya diadema), y otras PCs de la red también:
-    # se recogen todos los que coinciden en vez de quedarse con el primero que responda.
-    print(f"Buscando stream '{a.name}'...")
-    # Se acumula al menos 4 s: una sola búsqueda corta a veces solo capta uno de los candidatos.
-    found, t0 = {}, time.time()
-    while time.time() - t0 < (4.0 if found else a.timeout):
-        for s in pylsl.resolve_streams(1.0):
-            if s.name() == a.name and a.source_id in (None, s.source_id()):
-                found[s.uid()] = s
-    found = list(found.values())
-    if not found:
-        sys.exit("No se encontró el stream. ¿Está corriendo mock_lsl_streamer.py?")
-    if len(found) > 1:
-        for s in found:
-            print(f"  - source_id={s.source_id()}  host={s.hostname()}  {s.nominal_srate():.0f} Hz")
-        sys.exit(f"Hay {len(found)} streams '{a.name}'. Elige uno con --source-id.")
-    inlet = pylsl.StreamInlet(found[0], max_buflen=60, processing_flags=pylsl.proc_clocksync)
+    inlet = pylsl.StreamInlet(find_stream(a.name, a.source_id, a.timeout), max_buflen=60,
+                              processing_flags=pylsl.proc_clocksync)
     info = inlet.info()
     fs, nch = info.nominal_srate(), info.channel_count()
     labels, units = channel_meta(info)
@@ -68,10 +96,8 @@ def main():
     print(f"Stream: {info.name()} | tipo {info.type()} | {nch} ch | nominal {fs:.1f} Hz | red {line} Hz")
     print(f"Canales: {labels} | unidades: {set(units) or '?'}")
 
-    mk_inlet = None
-    mk = pylsl.resolve_byprop("name", f"{a.name}_Markers", timeout=2)
-    if mk:
-        mk_inlet = pylsl.StreamInlet(mk[0], processing_flags=pylsl.proc_clocksync)
+    mk_inlet = find_markers(info)
+    if mk_inlet:
         print(f"Marcadores: {a.name}_Markers conectado")
 
     inlet.open_stream()
