@@ -10,7 +10,9 @@ Z = (x̃ − μ) / σ_suav.
     `baseline_eyes_closed`. Sin marcadores: los CAL_S s siguientes al chequeo, que se asumen con ojos abiertos.
   * ≥ MIN_VALID ventanas válidas por feature; si no, se extiende EXTEND_S s (máx. MAX_EXTENSIONS) y luego se aborta.
   * EWMA: λ = 1 − e^(−S/τ), S = 1 s, τ = 60 s para θ (tónico) y 5 s para α (momentáneo); solo con ventanas válidas.
-  * σ_suav = σ_crudo · √(λ / (2 − λ)) · factor (factor = 1 hasta que el Paso 7 lo mida en replays).
+  * σ_Z (30 oct): las ventanas solapadas no son independientes y μ se estima con pocos datos, así que
+    σ_Z = √((σ_suav · f_ac)² + σ_μ²) · factor, con σ_suav = σ_crudo · √(λ / (2 − λ)) (fórmula del protocolo),
+    f_ac = √(1 + 2 Σ ρ_k (1 − λ)^k) y σ_μ = σ_crudo · √((1 + 2 Σ ρ_k) / N); factor = 1 hasta que el Paso 7 lo mida.
 """
 import numpy as np
 
@@ -41,17 +43,16 @@ def iaf_from(psd, f):
     return float(f[m][k]) if 0 < k < m.sum() - 1 else 10.0
 
 
-def ac_factor(x, lam, kmax=10):
-    """√(1 + 2 Σ ρ_k (1 − λ)^k): cuánto subestima σ_suav la fórmula de entradas independientes, por la
-    autocorrelación de las ventanas solapadas. Solo se reporta (el Paso 7 decide el factor)."""
+def rho_sum(x, decay=1.0, kmax=10):
+    """Σ ρ_k · decay^k de la serie de calibración, hasta el primer ρ_k ≤ 0 (las ventanas inválidas se saltan)."""
     x = np.asarray(x, float) - np.mean(x)
     s = 0.0
     for k in range(1, min(kmax, len(x) - 2) + 1):
         r = float(np.dot(x[:-k], x[k:]) / np.dot(x, x))
         if r <= 0:
             break
-        s += r * (1 - lam) ** k
-    return float(np.sqrt(1 + 2 * s))
+        s += r * decay ** k
+    return s
 
 
 class Calibration:
@@ -91,7 +92,7 @@ class Calibration:
             if o.get(f"{n}_ok"):
                 x = band_per(o[f"{n}_flat"], o["f"], *self.params["bandas_hz"][n])
                 self.smooth[n] += self.params[n]["lambda"] * (x - self.smooth[n])
-        return {n: (self.smooth[n] - self.params[n]["mu"]) / self.params[n]["sigma_suav"] for n in ("theta", "alpha")}
+        return {n: (self.smooth[n] - self.params[n]["mu"]) / self.params[n]["sigma_z"] for n in ("theta", "alpha")}
 
     def _maybe_freeze(self, t1):
         if any(p == EYES_OPEN for _, p in self.phases):
@@ -132,9 +133,12 @@ class Calibration:
             x = [band_per(r[f"{n}_flat"], f, *b[n]) for r in base if r[f"{n}_ok"]]
             lam = 1 - np.exp(-STEP_S / TAU_S[n])
             sd = float(np.std(x))
+            s_suav = sd * np.sqrt(lam / (2 - lam))
+            f_ac = float(np.sqrt(1 + 2 * rho_sum(x, 1 - lam)))
+            s_mu = sd * float(np.sqrt((1 + 2 * rho_sum(x, kmax=30)) / len(x)))
             p[n] = {"mu": float(np.mean(x)), "sigma_crudo": sd, "ventanas_validas": len(x), "tau_s": TAU_S[n],
-                    "lambda": float(lam), "sigma_suav": sd * np.sqrt(lam / (2 - lam)) * self.sigma_factor,
-                    "factor_autocorrelacion": ac_factor(x, lam)}
+                    "lambda": float(lam), "sigma_suav": s_suav, "factor_autocorrelacion": f_ac, "sigma_mu": s_mu,
+                    "sigma_z": float(np.hypot(s_suav * f_ac, s_mu)) * self.sigma_factor}
             self.smooth[n] = p[n]["mu"]
         if closed:
             # Berger con potencia clásica de α (IAF ± 2 Hz) en la ROI posterior, ojos cerrados frente a abiertos.

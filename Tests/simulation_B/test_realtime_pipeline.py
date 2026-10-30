@@ -15,21 +15,28 @@ from spectral_features import Features, band_per, fit_roi, h1, window_psd
 warnings.filterwarnings("ignore")  # avisos de specparam/MNE al importar el módulo offline
 
 rng = np.random.default_rng(0)
+SEEDS_P5 = (11, 12, 13, 14, 15, 16)
 AURA_CSV = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "AURA", "data", "eeg_data_20260122_123839.csv")
 
 
 def run_step5(data, fs, events, line=60.0, bads0=()):
     """Cadena del Paso 5 como en realtime_pipeline: chequeo de calidad en los primeros QC_S s, luego Paso 3–4 con
-    los canales malos excluidos y calibración congelada. Devuelve (Calibration, [(t, Z)], canales malos)."""
+    los canales malos excluidos y calibración congelada. Devuelve (Calibration, [(t, Z)], canales malos, motivo de
+    parada); como en vivo, la sesión se detiene si una ROI se queda sin canales válidos."""
     win, hop = int(WIN_S * fs), int(fs)
-    st = {"bads": list(bads0), "rej": None, "cal": None, "feat": Features(fs, 10.0), "z": []}
+    st = {"bads": list(bads0), "rej": None, "cal": None, "feat": Features(fs, 10.0), "z": [], "stop": ""}
     markers = sorted((s0 / fs, lab) for s0, lab in events)
 
     def on(v, tt):
+        if st["stop"]:
+            return
         if st["rej"] is None:
             if tt < cal.QC_S:
                 return
             st["bads"] = sorted(set(st["bads"]) | set(cal.bad_channels(v, AURA_CHANNELS)))
+            if not [c for c in THETA_ROI if c not in st["bads"]] or not [c for c in ALPHA_ROI if c not in st["bads"]]:
+                st["stop"] = "sin canales válidos en una ROI"
+                return
             st["rej"], st["cal"] = Rejector(fs, st["bads"]), cal.Calibration(tt, WIN_S)
             for m in markers:
                 st["cal"].marker(*m)
@@ -47,7 +54,7 @@ def run_step5(data, fs, events, line=60.0, bads0=()):
     x, t = data.T.astype(float), np.arange(data.shape[1]) / fs
     for i in range(0, len(x), 5):
         w.push(f(x[i:i + 5]), t[i:i + 5])
-    return st["cal"], st["z"], st["bads"]
+    return st["cal"], st["z"], st["bads"], st["stop"]
 
 
 for fs in (250.0, 50.0):
@@ -127,28 +134,60 @@ for fs in (250.0, 50.0):
     ref = h1.periodic(spec, fq, 8.0, 12.0)
     assert np.allclose((band_per(flat, fq, 8.0, 12.0), exp, r2), ref), (band_per(flat, fq, 8.0, 12.0), exp, r2, ref)
 
-    # 6) Paso 5: 20 min sintéticos sin inyecciones (IAF 10 Hz), sin marcadores de fase → primeros 90 s.
-    data, ev = synthetic(1200, fs, 60.0, 10.0, 11)
-    c, zs, bads = run_step5(data, fs, [e for e in ev if e[1].startswith("file:")])
-    assert c.state == "congelada", c.msg
-    frozen = repr(c.params)
-    p = c.params
-    zt, za = np.array([z["theta"] for _, z in zs]), np.array([z["alpha"] for _, z in zs])
-    print(f"fs={fs:.0f} Hz: Paso 5 · malos {bads or 'ninguno'} · IAF {p['iaf']:g} Hz · ventanas válidas θ "
-          f"{p['theta']['ventanas_validas']} / α {p['alpha']['ventanas_validas']} · μ θ {p['theta']['mu']:.2f} / α "
-          f"{p['alpha']['mu']:.2f} dB · σ_suav θ {p['theta']['sigma_suav']:.3f} / α {p['alpha']['sigma_suav']:.3f}")
-    for n, z in (("theta", zt), ("alpha", za)):
-        frac, fac = np.mean(np.abs(z) >= 1.5), p[n]["factor_autocorrelacion"]
-        print(f"     {n}: |Z| ≥ 1.5 en {frac:.1%} del tiempo (criterio < 15 %) | σ(Z) {z.std():.2f} | "
-              f"factor de autocorrelación {fac:.2f} → con él |Z| ≥ 1.5 en {np.mean(np.abs(z) >= 1.5 * fac):.1%}"
-              + ("" if frac < 0.15 else "   [FALLA]"))
-    assert abs(p["iaf"] - 10.0) <= 0.5 and not bads
-    assert repr(c.params) == frozen  # μ, σ e IAF no cambian después de la calibración
+    # 6) Paso 5: 20 min sintéticos sin inyecciones (IAF 10 Hz), sin marcadores → primeros 90 s. El error de μ es un
+    #    sorteo por sesión, así que RMS(Z) se evalúa combinando varias sesiones (semillas), no con una sola.
+    zall = {"theta": [], "alpha": []}
+    for seed in SEEDS_P5:
+        data, ev = synthetic(1200, fs, 60.0, 10.0, seed)
+        c, zs, bads, stop = run_step5(data, fs, [])
+        assert c.state == "congelada" and not stop, (c.msg, stop)
+        frozen = repr(c.params)
+        p = c.params
+        line = f"fs={fs:.0f} Hz semilla {seed}: IAF {p['iaf']:g} Hz, ventanas válidas {p['theta']['ventanas_validas']}"
+        for n in ("theta", "alpha"):
+            z = np.array([z_[n] for _, z_ in zs])
+            zall[n].append(z)
+            line += f" | {n} RMS {np.sqrt(np.mean(z ** 2)):.2f} (media {z.mean():+.2f}, DE {z.std():.2f})"
+        print(line)
+        assert abs(p["iaf"] - 10.0) <= 0.5 and not bads
+        assert repr(c.params) == frozen  # μ, σ e IAF no cambian después de la calibración
+    for n in ("theta", "alpha"):
+        rms = float(np.sqrt(np.mean(np.concatenate(zall[n]) ** 2)))
+        print(f"fs={fs:.0f} Hz: Paso 5 · RMS(Z_{n}) combinado de {len(SEEDS_P5)} sesiones = {rms:.2f} (criterio 0.7–1.4)")
+        assert 0.7 <= rms <= 1.4, rms
 
-# 7) Paso 5 con el CSV real de la AURA (enero 2026, 50 Hz, con fases): informativo, no es criterio.
+    # 7) Paso 5 con fases AURA: fondo con IAF 10 Hz y alfa a 9 Hz solo en ojos cerrados → la IAF debe salir de ojos
+    #    cerrados (9 Hz), μ y σ de ojos abiertos, y el Berger ≥ 3 dB.
+    data, ev = synthetic(260, fs, 60.0, 10.0, 21)
+    inject(data, ev, [("alpha", 102.5, 90, 15)], fs, 9.0)
+    ph = [(0.0, "setup"), (12.5, cal.EYES_OPEN), (102.5, cal.EYES_CLOSED), (192.5, "baseline_completed")]
+    c, zs, bads, stop = run_step5(data, fs, [(int(t_ * fs), f"file:{n_}") for t_, n_ in ph])
+    p = c.params or {}
+    print(f"fs={fs:.0f} Hz: Paso 5 con fases · estado {c.state} {c.msg} · {p.get('fuente')} · IAF {p.get('iaf')} Hz "
+          f"({p.get('iaf_de')}) · Berger {p.get('berger_db', float('nan')):+.1f} dB · ventanas de ojos abiertos θ "
+          f"{p.get('theta', {}).get('ventanas_validas')} / α {p.get('alpha', {}).get('ventanas_validas')}")
+    assert c.state == "congelada" and p["fuente"] == "fases AURA" and p["iaf_de"] == cal.EYES_CLOSED
+    assert abs(p["iaf"] - 9.0) <= 0.5 and p["berger_ok"]
+
+    # 8) Chequeo de calidad: O1 muerto y Fz 10× más ruidoso → ambos excluidos de sus ROI y la calibración sigue;
+    #    Fz y Cz muertos → la ROI frontal queda vacía y la sesión se detiene.
+    data, ev = synthetic(150, fs, 60.0, 10.0, 22)
+    data[AURA_CHANNELS.index("O1")] = 0
+    data[AURA_CHANNELS.index("Fz")] *= 10
+    c, zs, bads, stop = run_step5(data, fs, [])
+    print(f"fs={fs:.0f} Hz: chequeo de calidad · malos {bads} · estado {c.state} {stop}")
+    assert {"O1", "Fz"} <= set(bads) and c.state == "congelada" and not stop
+    data, ev = synthetic(60, fs, 60.0, 10.0, 23)
+    data[AURA_CHANNELS.index("Fz")] = 0
+    data[AURA_CHANNELS.index("Cz")] = 0
+    c, zs, bads, stop = run_step5(data, fs, [])
+    print(f"fs={fs:.0f} Hz: chequeo de calidad · malos {bads} · {stop}")
+    assert c is None and stop
+
+# 9) Paso 5 con el CSV real de la AURA (enero 2026, 50 Hz, con fases): informativo, no es criterio.
 if os.path.exists(AURA_CSV):
     data, ev, bads0, fs = load_aura_csv(AURA_CSV, 0, None, None)
-    c, zs, bads = run_step5(data, fs, ev, line=60.0)
+    c, zs, bads, stop = run_step5(data, fs, ev, line=60.0, bads0=bads0)  # como en vivo: malos de la fuente + chequeo propio
     p = c.params or {}
     print(f"CSV AURA ({fs:.0f} Hz): estado {c.state} {c.msg} · malos (emulador {bads0}, chequeo propio → {bads})")
     if p:

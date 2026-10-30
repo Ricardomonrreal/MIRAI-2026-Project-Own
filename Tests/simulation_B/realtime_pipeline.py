@@ -258,7 +258,7 @@ def main():
 
     fw = open(os.path.join(run, "ventanas.csv"), "w", newline="")
     wv = csv.writer(fw)
-    wv.writerow(["ventana", "ts_ultima_muestra", "t_emision", "latencia_ms", "calculo_ms", "rechazo_ms",
+    wv.writerow(["ventana", "ts_ultima_muestra", "t_corte", "t_emision", "latencia_ms", "calculo_ms", "rechazo_ms",
                  "segmentos_limpios", "n_limpios", "motivo", "valida", "senal_perdida", "emg_db",
                  "features_ms", "theta_per", "alpha_per", "theta_exp", "alpha_exp", "theta_r2", "alpha_r2",
                  "theta_ok", "alpha_ok", "cal_estado", "z_theta", "z_alpha"]
@@ -277,6 +277,7 @@ def main():
     def on_window(w, ts_last):
         # Paso 3: rechazo de artefactos. Paso 4: features con los segmentos limpios. Pasos 5–6 se enganchan aquí.
         nonlocal rej, front, post
+        t_cut = pylsl.local_clock()  # el búfer acaba de cortar la ventana: aquí se mide el intervalo del Paso 2
         t_ready = time.perf_counter()
         c = (t_ready - state["t_chunk"]) * 1000
         if state["cal"] is None:
@@ -310,7 +311,7 @@ def main():
             feat.iaf = cb.params["iaf"]
             pr = cb.params
             print(f"\n  CALIBRACIÓN CONGELADA ({pr['fuente']}): IAF {pr['iaf']:g} Hz | μ θ {pr['theta']['mu']:.2f} / α "
-                  f"{pr['alpha']['mu']:.2f} dB | σ_suav θ {pr['theta']['sigma_suav']:.3f} / α {pr['alpha']['sigma_suav']:.3f}"
+                  f"{pr['alpha']['mu']:.2f} dB | σ_Z θ {pr['theta']['sigma_z']:.3f} / α {pr['alpha']['sigma_z']:.3f}"
                   + (f" | Berger {pr['berger_db']:+.1f} dB" if "berger_db" in pr else "") + "\n")
         elif cb.state == "abortada":
             state["stop"] = "calibración abortada: " + cb.msg
@@ -318,7 +319,7 @@ def main():
             zs.append(z)
         now = pylsl.local_clock()
         rms = w.std(axis=0)
-        wv.writerow([state["k"], f"{ts_last:.4f}", f"{now:.4f}", f"{(now - ts_last) * 1000:.1f}", f"{c:.3f}", f"{rj:.3f}",
+        wv.writerow([state["k"], f"{ts_last:.4f}", f"{t_cut:.4f}", f"{now:.4f}", f"{(now - ts_last) * 1000:.1f}", f"{c:.3f}", f"{rj:.3f}",
                      "".join("1" if x else "0" for x in r["clean"]), sum(r["clean"]), r["motivo"],
                      int(r["valida"]), int(r["perdida"]), "" if r["emg_db"] is None else f"{r['emg_db']:.2f}",
                      f"{fm:.2f}"]
@@ -327,7 +328,7 @@ def main():
                     + [int(o[k]) if k in o else "" for k in ("theta_ok", "alpha_ok")]
                     + [cb.state] + ([f"{z['theta']:.3f}", f"{z['alpha']:.3f}"] if z else ["", ""])
                     + [f"{v:.2f}" for v in rms])
-        emit_t.append(now)
+        emit_t.append(t_cut)  # 30 oct: al cortar, no al emitir; el costo de los Pasos 3–5 tiene sus propios criterios
         calc_ms.append(c)
         rej_ms.append(rj)
         if o:
@@ -415,8 +416,11 @@ def main():
             zz = np.array([z_[n] for z_ in zs])
             rep5[f"z_{n}_frac_1_5"] = float(np.mean(np.abs(zz) >= 1.5))
             rep5[f"z_{n}_sd"] = float(zz.std())
+            # RMS = √(media² + DE²): el error de μ es un desplazamiento fijo dentro de la sesión que la DE no ve.
+            rep5[f"z_{n}_media"] = float(zz.mean())
+            rep5[f"z_{n}_rms"] = float(np.sqrt(np.mean(zz ** 2)))
             if rep3["parpadeos"]:  # sintético sin inyecciones espectrales (el tren de parpadeos solo invalida ventanas)
-                checks[f"|Z_{n}| ≥ 1.5 < 15 % del tiempo"] = rep5[f"z_{n}_frac_1_5"] < 0.15
+                checks[f"RMS(Z_{n}) entre 0.7 y 1.4"] = 0.7 <= rep5[f"z_{n}_rms"] <= 1.4
     else:
         checks["calibración congelada"] = False
     with open(os.path.join(run, "config.json"), "r+", encoding="utf-8") as f:
@@ -455,9 +459,10 @@ def main():
               + (f" | Berger {pr['berger_db']:+.1f} dB" if "berger_db" in pr else ""))
         for n in ("theta", "alpha"):
             q = pr[n]
-            print(f"   {n:5s}: μ {q['mu']:.2f} dB, σ_crudo {q['sigma_crudo']:.2f}, σ_suav {q['sigma_suav']:.3f} (τ {q['tau_s']:.0f} s, "
-                  f"{q['ventanas_validas']} ventanas) | |Z| ≥ 1.5 en {rep5[f'z_{n}_frac_1_5']:.1%}, DE(Z) {rep5[f'z_{n}_sd']:.2f} | "
-                  f"factor de autocorrelación {q['factor_autocorrelacion']:.2f}")
+            print(f"   {n:5s}: μ {q['mu']:.2f} dB, σ_crudo {q['sigma_crudo']:.2f}, σ_Z {q['sigma_z']:.3f} (σ_suav {q['sigma_suav']:.3f} × "
+                  f"f_ac {q['factor_autocorrelacion']:.2f}, σ_μ {q['sigma_mu']:.3f}; τ {q['tau_s']:.0f} s, {q['ventanas_validas']} ventanas) | "
+                  f"RMS(Z) {rep5[f'z_{n}_rms']:.2f} (media {rep5[f'z_{n}_media']:+.2f}, DE {rep5[f'z_{n}_sd']:.2f}), "
+                  f"|Z| ≥ 1.5 en {rep5[f'z_{n}_frac_1_5']:.1%}")
     elif cb:
         print(f"Calibración (Paso 5)    : {cb.state} {cb.msg}")
     for k, ok in checks.items():

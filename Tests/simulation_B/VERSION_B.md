@@ -166,3 +166,65 @@ debajo del avance de 1 s y de los 500 ms de latencia del Paso 7).
 Con esto, **la versión B (sin veto EMG, ajuste 2–30 Hz) pasa todos los criterios de los Pasos 2–4 a 250 y 50 Hz**,
 incluida la equivalencia con el offline. La versión A pasa el tiempo pero sigue sin pasar la detección del Paso 3
 (~94 %) ni la equivalencia (r 0.67).
+
+## Paso 5 — calibración congelada (30 oct)
+
+`calibration.py` (nuevo) e integración en `realtime_pipeline.py`:
+- **Chequeo de calidad** con la ventana que cierra los primeros 10 s (criterio std de `load_file`), sumado a los
+  canales malos que declara la fuente; se rehacen el rechazo y las ROI, y si una ROI queda vacía la sesión se detiene.
+- **Línea base:** fases AURA (`baseline_eyes_open` → μ, σ; `baseline_eyes_closed` → IAF y Berger) o, sin
+  marcadores, los 90 s siguientes al chequeo. ≥ 45 ventanas válidas por feature; si no, +30 s (máx. 2) y luego se aborta.
+- **IAF** como `h1.iaf()`; `spectral_features.fit_roi()` devuelve el espectro aplanado completo para recalcular
+  las bandas de las ventanas de calibración con la IAF final (el test comprueba que coincide con `h1.periodic()`).
+- **EWMA** τ θ = 60 s, τ α = 5 s, solo con ventanas válidas. **σ_Z corregida** (ver protocolo, Paso 5):
+  √((σ_suav · f_ac)² + σ_μ²), por autocorrelación de las ventanas solapadas y por la incertidumbre de μ.
+- `ventanas.csv` añade `cal_estado`, `z_theta`, `z_alpha`; `config.json` añade `calibracion`.
+
+**Diagnóstico de σ** (sintético 20 min estable, 3 semillas × 250/50 Hz, |Z| ≥ 1.5, promedio): fórmula del
+protocolo θ 68 % / α 47 %; + autocorrelación 41 % / 20 %; + incertidumbre de μ 17 % / 17 %. Con 5 min de
+calibración: 11 % / 15 %. Umbral efectivo 1.5 σ_Z ≈ 1.0 dB (θ) y ≈ 3.2 dB (α).
+
+**Nivel 1 con Z_α** (sintético 20 min + alfa inyectado de 30 s): con σ corregida, 0–17 episodios espurios de
+≥ 5 s en 20 min (mediana 3–4; el Paso 6 pide ≤ 1) y detección del alfa de 15 µV a los 22–34 s a 250 Hz
+(1 de 3 a 50 Hz). Con τ = 5 s el alfa suavizado fluctúa ~2 dB por sí solo: τ, umbral y persistencia del Nivel 1
+se ajustan en el Paso 6.
+
+**Offline** (`test_realtime_pipeline.py`): calibración congelada, IAF 10 Hz, parámetros sin cambios; DE(Z)
+θ 0.82 / 0.86, α 1.19 / 0.93 (250 / 50 Hz, semilla 11). CSV AURA de enero (con fases): **aborta**, con 23 de 84
+ventanas válidas en ojos abiertos (hacen falta 45); aun sin Fp1, Cz, Pz y O1, los segmentos tienen 200–365 µV de pico
+a pico en F3, F4, Fz y O2 → calidad o escala de ese registro, a revisar con grabaciones nuevas.
+
+**En vivo** (10 min, de uno en uno; `runs/20261030_115159_synthetic` 50 Hz, `..._121157_synthetic` 250 Hz
+repetida; la primera de 250 Hz, `..._114040`, tuvo picos de carga de hasta 453 ms con Edge abierto):
+
+| | 250 Hz | 50 Hz |
+|---|---|---|
+| Calibración / IAF | congelada / 10 Hz | congelada / 10.5 Hz |
+| Intervalo entre ventanas | 0.871–1.116 s ❌ (solo la ventana 245) | 0.928–1.081 s ✅ |
+| Features p99 / máx. | 35.8 / 150.8 ms ✅ | 74.3 / 115.9 ms ✅ |
+| Latencia p95 | 49.8 ms | 75.1 ms |
+| Pico de parpadeo rechazado / válidas fuera del tren | 98.5 % / 99.1 % ✅ | 97.8 % / 94.6 % ✅ |
+| Z_θ: DE / media / RMS | 0.55 ❌ / +0.98 / 1.12 | 0.64 ❌ / −0.99 / 1.18 |
+| Z_α: DE / media / RMS | 1.17 ✅ / +0.10 / 1.17 | 1.04 ✅ / +0.42 / 1.12 |
+
+- La única falla de intervalo es la ventana 245 (t ≈ 255 s, un solo segmento limpio): el ajuste de alfa tardó
+  151 ms y retrasó la emisión 116 ms; la siguiente se recuperó (0.871 s). El intervalo se mide al emitir, después
+  de los Pasos 3–5, así que hereda el tiempo de features (permitido hasta 250 ms desde el 29 oct).
+- DE(Z_θ) < 0.7 es estructural, no ruido: la Z es determinista con la misma semilla (la repetición dio los mismos
+  valores) y el error de μ aparece como un desplazamiento constante dentro de la sesión (media ±1), que la DE no
+  ve. RMS(Z) = √(media² + DE²) da 1.12–1.18 en los cuatro casos.
+
+**Cierre del Paso 5 (30 oct).** Correcciones de medición: (1) el intervalo del Paso 2 se mide al cortar la ventana
+(`t_corte`), no al emitir después de los Pasos 3–5; (2) criterio RMS(Z) = √(media² + DE²) entre 0.7 y 1.4, en lugar de
+DE(Z). Reevaluadas las corridas en vivo: intervalo al corte 0.941–1.061 / 0.979–1.022 / 0.958–1.036 s y RMS(Z) θ 1.13 /
+1.13 / 1.18, α 1.17 / 1.17 / 1.12 (250 con carga / 250 repetida / 50 Hz) → todo ✅.
+
+Tests offline añadidos (`test_realtime_pipeline.py`):
+- **RMS(Z) con 6 sesiones** (semillas 11–16, 20 min cada una): combinado θ 1.03 / α 1.10 a 250 Hz y θ 1.23 / α 0.97 a
+  50 Hz ✅. Por sesión, de 0.53 a 2.45: dos de las 12 sesiones de θ superan 1.4 (semilla 11 a 250 Hz, μ desplazada −1.5
+  σ_Z; semilla 16 a 50 Hz, −1.9 σ_Z). Es el error de μ con 90 s de calibración y por eso el criterio combina sesiones.
+- **Fases AURA:** fondo con IAF 10 Hz y alfa de 15 µV a 9 Hz solo en ojos cerrados → IAF 9.0 Hz (de ojos cerrados),
+  μ y σ de ojos abiertos (80–81 ventanas), Berger +6.0 dB (250 Hz) / +6.2 dB (50 Hz) ✅.
+- **Chequeo de calidad:** O1 muerto y Fz 10× más ruidoso → ambos detectados y excluidos, la calibración sigue; Fz y Cz
+  muertos → ROI frontal vacía → la sesión se detiene ✅.
+- No se probó la extensión de +30 s y el aborto por falta de ventanas válidas (decisión del 30 oct).

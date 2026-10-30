@@ -5,8 +5,15 @@
       "input_tokens": 2500,
       "output_tokens": 1800,
       "files": 12
+    },
+    {
+      "date": "2026-10-30T04:25:57.421098+00:00",
+      "input_tokens": 729283,
+      "output_tokens": 0,
+      "files": 43,
+      "note": "tokens = total por subagente (entrada+salida, sin separar)"
     }
   ],
-  "total_input_tokens": 2500,
+  "total_input_tokens": 731783,
   "total_output_tokens": 1800
 }
