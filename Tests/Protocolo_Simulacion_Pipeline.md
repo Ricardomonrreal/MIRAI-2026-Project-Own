@@ -381,10 +381,11 @@ Configuración del equipo y análisis del CSV de prueba: **`Tests/AURA_Configura
 
 ---
 
-### [ ] Paso 6: Motor de Decisión Neuroadaptativa JITAI (Escalera de Intervención)
+### [x] Paso 6: Motor de Decisión Neuroadaptativa JITAI (Escalera de Intervención) — cerrado 30 oct 2026 con la versión B, con excepciones
 * **Objetivo:** Disparar intervenciones graduales y sin oscilaciones a partir de estados sostenidos, alineadas con los escenarios de `Plan_Avances.md` §3.2.
+> **Cierre con excepciones (30 oct):** implementado en la versión B (`Tests/simulation_B/jitai.py`, integrado en `realtime_pipeline.py`; `behavior_markers.py` para el Nivel 2) con los valores de esta tabla. **Cumple:** lógica del motor (histéresis, persistencia, pérdida de señal, prioridad y desplazamiento, Nivel 2 con salida y refractario), criterio 3 (Z entre 1.0 y 1.5 sin oscilaciones), salidas LSL/UDP/consola/eventos y tiempos en vivo. **Excepciones (no cumplen en sintético):** criterio 1 para el Nivel 1 (se adelanta, se apaga a mitad o se dispara varias veces durante el alfa), criterio 2 cumplido a 50 Hz pero no a 250 Hz, y criterio de espurios (Nivel 1: 0–11 en 20 min; Nivel 3: 0–2). Un Nivel 3 espurio bloquea los niveles inferiores durante su refractario de 300 s. **Se ajusta en el Paso 7 con datos reales:** τ, umbral y persistencia del Nivel 1, tasa de espurios del Nivel 3 y si su refractario debe bloquear a los niveles inferiores. La regla χ + EMG no se probó con EEG. Detalle en “Observaciones (30 oct)” y en `Tests/simulation_B/VERSION_B.md`.
 * **Acciones a completar:**
-  - [ ] **Niveles** (alineados con el Plan: la fricción responde a la pérdida de control inhibitorio y la pausa a la fatiga tónica):
+  - [x] **Niveles** (alineados con el Plan: la fricción responde a la pérdida de control inhibitorio y la pausa a la fatiga tónica):
 
 | Nivel | Condición de entrada | Persistencia | Salida (histéresis) | Refractario | Acción (simulación) |
 |---|---|---|---|---|---|
@@ -393,34 +394,51 @@ Configuración del equipo y análisis del CSV de prueba: **`Tests/AURA_Configura
 | **2 · Fricción** | Señal conductual de pérdida de control: errores o TR anómalos en el NoGo dentro del feed (H2) | 2 eventos en 60 s | Sin errores durante 60 s | 120 s | *“Fricción de interacción”* |
 | **3 · Pausa restaurativa** | $Z_{\theta} \ge +1.5$ (fatiga tónica) | 30 s de ventanas válidas | $Z_{\theta} < 1.0$ | 300 s | *“Pausa de recuperación”* |
 
-  - [ ] **Histéresis:** un nivel se activa con Z ≥ 1.5 y se desactiva cuando Z baja de 1.0; entre 1.0 y 1.5 se mantiene el estado anterior (cubre el hueco que el protocolo original dejaba sin definir).
-  - [ ] **Prioridad:** 3 > 2 > 1. Solo una intervención activa a la vez; un nivel superior desplaza al inferior y el inferior no se emite mientras el superior esté en su refractario.
-  - [ ] **Persistencia en tiempo de ventanas válidas** (Paso 3): las inválidas mantienen el contador; > 5 s seguidos sin ventanas válidas lo reinician.
-  - [ ] **Nivel 2 sin EEG:** su entrada es un stream de marcadores de conducta (`MIRAI_Behavior`, p. ej. `nogo:error`, `nogo:slow`). Hasta que exista la tarea Scroll-NoGo, se prueba con marcadores enviados por un script de prueba. Si H2 no se confirma, el nivel queda desactivado (escenario “H1 ✅ H2 ❌” del Plan).
-  - [ ] **Salida:** stream LSL de marcadores `MIRAI_JITAI` (`nivel:<n>:on/off`, con la marca de tiempo de la ventana que lo decidió), paquete UDP/JSON local para la AR, consola con colores y `eventos.csv`.
-  - [ ] **Calidad con $\chi$** *(movido desde el Paso 4, 30 oct)*: $\chi$ no dispara intervenciones; un aplanamiento brusco de $\chi$ junto con EMG alto (`emg_db`) indica degradación de la señal, como en SVRec, y bloquea las intervenciones EEG mientras dure.
-  - [ ] Todos los umbrales, persistencias y refractarios en `config.json`: son valores iniciales a ajustar con los replays (Paso 7), no constantes.
+  - [x] **Histéresis:** un nivel se activa con Z ≥ 1.5 y se desactiva cuando Z baja de 1.0; entre 1.0 y 1.5 se mantiene el estado anterior (cubre el hueco que el protocolo original dejaba sin definir).
+  - [x] **Prioridad:** 3 > 2 > 1. Solo una intervención activa a la vez; un nivel superior desplaza al inferior y el inferior no se emite mientras el superior esté en su refractario.
+  - [x] **Persistencia en tiempo de ventanas válidas** (Paso 3): las inválidas mantienen el contador; > 5 s seguidos sin ventanas válidas lo reinician.
+  - [x] **Nivel 2 sin EEG:** su entrada es un stream de marcadores de conducta (`MIRAI_Behavior`, p. ej. `nogo:error`, `nogo:slow`). Hasta que exista la tarea Scroll-NoGo, se prueba con marcadores enviados por un script de prueba. Si H2 no se confirma, el nivel queda desactivado (escenario “H1 ✅ H2 ❌” del Plan).
+  - [x] **Salida:** stream LSL de marcadores `MIRAI_JITAI` (`nivel:<n>:on/off`, con la marca de tiempo de la ventana que lo decidió), paquete UDP/JSON local para la AR, consola con colores y `eventos.csv`.
+  - [x] **Calidad con $\chi$** *(movido desde el Paso 4, 30 oct)*: $\chi$ no dispara intervenciones; un aplanamiento brusco de $\chi$ junto con EMG alto (`emg_db`) indica degradación de la señal, como en SVRec, y bloquea las intervenciones EEG mientras dure. *(Implementado: χ posterior < μ_χ − 3σ_χ de la calibración y `emg_db` > umbral EMG (μ + 3σ de los primeros 90 s); a 50 Hz no aplica. Probada la función, no con EEG: el sintético no tiene EMG.)*
+  - [x] Todos los umbrales, persistencias y refractarios en `config.json`: son valores iniciales a ajustar con los replays (Paso 7), no constantes.
 * **Criterio de Validación:**
   - Con `--inject alpha` de ≥ 10 s, el Nivel 1 se dispara una vez y no antes de cumplir la persistencia; con `--inject theta` sostenida ≥ 60 s, el Nivel 3 se dispara una vez y desplaza al Nivel 1 si estaba activo.
   - Sin inyecciones (sintético de 20 min), ≤ 1 disparo espurio de cualquier nivel.
   - Una fluctuación de Z entre 1.0 y 1.5 no genera activaciones y desactivaciones repetidas.
+* **Observaciones (30 oct, versión B):**
+  - *Decisiones de implementación:* el contador de persistencia suma con Z ≥ 1.5, se mantiene entre 1.0 y 1.5 y se reinicia con Z < 1.0; las ventanas inválidas, con R² < 0.75 o bloqueadas por calidad mantienen el contador. El refractario cuenta desde la activación (como máximo una activación por refractario). El JSON del UDP va en ASCII escapado.
+  - *Lógica del motor:* pruebas unitarias con secuencias de Z controladas ✅ (histéresis, persistencia, pérdida de señal, prioridad y desplazamiento, Nivel 2 con salida y refractario, Nivel 2 desactivado, regla χ). Criterio 3 (Z entre 1.0 y 1.5) ✅.
+  - *Salidas en vivo:* prueba de 200 s a 50 Hz con un receptor: `nivel:1:on/off` y `nivel:2:on` llegaron por LSL y por UDP con la marca de tiempo de la ventana ✅.
+  - *Nivel 1 (alfa) con los valores del protocolo:* en sintético de 20 min sin inyecciones da **2–11 disparos espurios** (mediana 4; 6 sesiones por frecuencia) ❌, y con alfa sostenido se apaga y vuelve a encender (Z_α cae bajo 1.0 en plena inyección). Causa: las ráfagas naturales del alfa mueven la α suavizada (τ = 5 s) ~2 dB, del orden del efecto buscado (1.5 σ_Z ≈ 2.5–3 dB). Barrido: alargar τ_α (15–30 s) apenas baja los espurios y deja de detectar un alfa de 30 s; persistencia de 10 s → mediana 1 espurio, detección a los 17–20 s (250 Hz). Ninguna combinación cumple ≤ 1 en todas las sesiones ni la latencia < 10 s del Paso 7. **Decisión (30 oct): se mantienen los valores del protocolo y el ajuste se hace en el Paso 7 con datos reales** (el sintético podría exagerar las ráfagas de alfa).
+  - *Nivel 3 (theta):* con theta sostenido se dispara una vez; 0–2 espurios en 20 min sin inyecciones.
+  - *Pruebas en vivo (10 min, 250 y 50 Hz; conducta, alfa de 30 s, alfa de 180 s + theta de 160 s):* tiempos ✅ en ambas. **50 Hz:** Nivel 2 on/off ✅ (sale tras 60 s sin eventos); Nivel 1 una vez en el alfa largo (21 s) ✅ y desplazado por el Nivel 3 (56 s tras el theta) ✅; en el alfa corto, un Nivel 1 espurio 2 s antes de la inyección ❌. **250 Hz:** un **Nivel 3 espurio** (sin theta inyectado) desplazó al Nivel 2 y, por su refractario de 300 s, **bloqueó el Nivel 1 en las dos pruebas de alfa** ❌; el Nivel 3 volvió a dispararse con el theta al terminar el refractario. La lógica hace lo especificado: el problema es la tasa de espurios combinada con el refractario largo del Nivel 3. Detalle en `Tests/simulation_B/VERSION_B.md`.
+  - *Offline completo* (`test_realtime_pipeline.py`): 50 Hz con alfa + theta → Nivel 1 una vez y desplazado por el Nivel 3 ✅; 250 Hz → Nivel 1 dos veces durante el alfa ❌, Nivel 3 una vez sin desplazamiento (Nivel 1 ya apagado).
+  - *Decisión (30 oct):* se cierra el Paso 6 con las excepciones anteriores; el ajuste de parámetros pasa al Paso 7. Regla χ + EMG sin probar con EEG (decidido no hacerlo por ahora).
 
 ---
 
 ### [ ] Paso 7: Benchmarking de Latencia y Validación Extremo a Extremo (`run_simulation.py`)
 * **Objetivo:** Verificar que el sistema completo cumple las métricas de ingeniería del lazo cerrado y que responde a una señal real garantizada (Berger).
 * **Acciones a completar:**
-  - [ ] **Modo replay sin LSL** (`--offline <fuente>`): reutiliza los lectores del emulador (`synthetic`, `load_file`, `load_aura_csv`) y pasa los datos por el mismo código de los Pasos 2–6 en bloques de 20 ms, tan rápido como sea posible. Sirve para la equivalencia con el offline (Paso 4) y para ajustar umbrales sin esperar en tiempo real.
+  - [x] **Modo replay sin LSL** (`--offline <fuente>`): reutiliza los lectores del emulador (`synthetic`, `load_file`, `load_aura_csv`) y pasa los datos por el mismo código de los Pasos 2–6 en bloques de 20 ms, tan rápido como sea posible. Sirve para la equivalencia con el offline (Paso 4) y para ajustar umbrales sin esperar en tiempo real.
   - [ ] **Dos latencias, objetivos unificados con el Plan:**
     - **Latencia de procesamiento** = $t_{\text{evento emitido}} - t_{\text{última muestra de la ventana}}$ **< 500 ms** (p95).
     - **Latencia total hasta la AR** (incluye transporte y render) **< 2 s**, que es la que fija el Plan (§3.1); se mide cuando exista la app AR.
     - **Latencia de detección** ($t_{\text{evento}} - t_{\texttt{inject:on}}$), dominada por el suavizado y la persistencia: se reporta por nivel. Objetivo para el Nivel 1 con Berger: **< 10 s**.
-  - [ ] Recursos: CPU < 25 % de un núcleo; memoria estable.
-  - [ ] Resistencia: 20 min en tiempo real sin crecimiento de memoria ni deriva respecto al reloj de LSL.
+  - [x] Recursos: CPU < 25 % de un núcleo; memoria estable.
+  - [x] Resistencia: 20 min en tiempo real sin crecimiento de memoria ni deriva respecto al reloj de LSL.
   - [ ] **Berger con datos reales:** replay del CSV de AURA (enero 2026): $\alpha_{\text{per}}$ de la ROI posterior válida (O1/O2; Pz está muerto en ese registro) mayor en `baseline_eyes_closed` que en `baseline_eyes_open`, y el Nivel 1 se dispara durante ojos cerrados. Se reporta además low_load vs. high_load (exploratorio).
   - [ ] **Calibración de σ:** en tramos sin inyecciones, la σ del Z suavizado debe ser ≈ 1 (0.7–1.4); si no, se ajusta el factor del Paso 5 y se registra.
 * **Criterio de Validación:**
   - Reporte final en consola y en `runs/<sesión>/reporte.md` con latencias (media, p95, máx.), CPU, memoria, fracción de ventanas válidas, disparos por nivel y comparación con el offline.
+* **Observaciones (30 oct, versión B — en curso):**
+  - *Implementado:* `realtime_pipeline.py --offline <fuente>` (mismo código de los Pasos 2–6 sin LSL, bloques de 20 ms, ~23× tiempo real; `--sin-fases` para calibrar con los primeros 90 s), métricas de procesamiento, CPU, memoria y deriva, `reporte.md` por sesión y el lanzador `run_simulation.py` (`live` / `offline`).
+  - *Benchmark en vivo, 20 min a 250 Hz:* latencia de procesamiento media 35.3 / p95 48.2 / máx. 66.8 ms ✅ (< 500); CPU **5.5 %** de un núcleo ✅; memoria 184 → 186 MB, pendiente −0.23 MB/min ✅; pendiente de la latencia 0.00 ms/min ✅ (sin deriva frente al reloj de LSL).
+  - *Latencia total hasta la AR (< 2 s):* pendiente de la app AR.
+  - *Latencia de detección del Nivel 1:* 12–36 s en sintético (Paso 6) ❌ frente al objetivo de < 10 s.
+  - *Berger con el CSV de AURA (enero):* **no evaluable** — calibración abortada y 0 ventanas válidas con ojos cerrados. El Berger está en el registro (O2 8–12 Hz +5.5 dB), pero el alfa de ojos cerrados supera 150 µV pico a pico en el 90 % de los segmentos de O2 y F3/F4 (canal ocular, Fp1 saturado) los superan en el 67–99 %. Requiere una grabación nueva de la AURA con configuración documentada.
+  - *Calibración de σ:* en sintético, RMS(Z) combinado de 6 sesiones 0.97–1.23 (Paso 5) → factor 1. En el benchmark de 20 min, RMS(Z_θ) 1.56 en esa sesión (μ desplazada −1.27 σ_Z), coherente con el error de μ por sesión. EEG real (ds007537, informativo): RMS(Z) θ 1.15 / α 1.78 con cambios de condición.
+  - *Ajuste de los parámetros del Paso 6:* sin datos reales del tipo de experimento no se puede hacer aún. Dato informativo (ds007537): la α_per real varía 2–4× menos que en el sintético (σ_crudo 1.03 frente a 2.2–4.4 dB) y da 2 activaciones breves del Nivel 1 en ~15 min y 0 del Nivel 3: el sintético es pesimista. Pendiente: grabaciones propias con la AURA.
 
 ---
 

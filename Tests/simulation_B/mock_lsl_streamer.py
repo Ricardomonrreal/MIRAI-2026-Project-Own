@@ -252,6 +252,33 @@ def inject(data, events, specs, fs, iaf):
         events.append((s0 + n, f"inject:{kind}:off"))
 
 
+def load_source(source, fs, start, duration, ref, line_freq, iaf, seed, specs):
+    """Fuente del emulador (y del replay sin LSL del Paso 7): sintético, CSV de AURA o archivo EEG, con las
+    inyecciones aplicadas. Devuelve (datos [canales, muestras], eventos, fs, red, metadatos)."""
+    requested, fs = fs, fs or FS_OUT  # el CSV sin --fs se transmite a su fs nativa
+    if source == "synthetic":
+        line = line_freq or 60.0
+        data, events = synthetic(duration or 1200.0, fs, line, iaf, seed)
+        meta = {"source": "synthetic", "reference": "n/a", "line_freq": line, "seed": seed}
+    elif not os.path.exists(source):
+        sys.exit(f"No existe: {source}")
+    elif source.lower().endswith(".csv"):
+        print(f"Cargando {source} ...")
+        data, events, bads, fs = load_aura_csv(source, start, duration, requested)
+        line = line_freq or 60.0
+        meta = {"source": os.path.basename(source), "start_s": start, "reference": "device",
+                "line_freq": line, "bad_channels": " ".join(bads) or "none"}
+    else:
+        print(f"Cargando {source} ...")
+        data, events, lf, bads = load_file(source, start, duration, ref, fs)
+        line = line_freq or lf or 50.0
+        meta = {"source": os.path.basename(source), "start_s": start, "reference": ref,
+                "line_freq": line, "bad_channels": " ".join(bads) or "none"}
+    meta["iaf"] = iaf
+    inject(data, events, specs, fs, iaf)
+    return data, events, fs, line, meta
+
+
 # --------------------------------------------------------------------------- LSL
 def make_outlet(name, fs, meta):
     info = pylsl.StreamInfo(name, "EEG", len(AURA_CHANNELS), fs, pylsl.cf_float32, f"mirai-sim-{name}")
@@ -361,27 +388,8 @@ def main():
             p.error(f"tipo de inyección desconocido: {kind}")
         specs.append((kind, float(t0), float(dur), float(amp)))
 
-    fs = a.fs or FS_OUT
-    if a.source == "synthetic":
-        line = a.line_freq or 60.0
-        data, events = synthetic(a.duration or 1200.0, fs, line, a.iaf, a.seed)
-        meta = {"source": "synthetic", "reference": "n/a", "line_freq": line, "seed": a.seed}
-    elif not os.path.exists(a.source):
-        sys.exit(f"No existe: {a.source}")
-    elif a.source.lower().endswith(".csv"):
-        print(f"Cargando {a.source} ...")
-        data, events, bads, fs = load_aura_csv(a.source, a.start, a.duration, a.fs)
-        line = a.line_freq or 60.0
-        meta = {"source": os.path.basename(a.source), "start_s": a.start, "reference": "device",
-                "line_freq": line, "bad_channels": " ".join(bads) or "none"}
-    else:
-        print(f"Cargando {a.source} ...")
-        data, events, lf, bads = load_file(a.source, a.start, a.duration, a.ref, fs)
-        line = a.line_freq or lf or 50.0
-        meta = {"source": os.path.basename(a.source), "start_s": a.start, "reference": a.ref,
-                "line_freq": line, "bad_channels": " ".join(bads) or "none"}
-    meta["iaf"] = a.iaf
-    inject(data, events, specs, fs, a.iaf)
+    data, events, fs, line, meta = load_source(a.source, a.fs, a.start, a.duration, a.ref, a.line_freq, a.iaf,
+                                               a.seed, specs)
 
     # Chequeo de unidades: EEG típico 5-50 µV RMS; < 0.01 sugiere voltios sin convertir.
     rms = np.sqrt(np.mean(np.square(data - data.mean(axis=1, keepdims=True)), axis=1))

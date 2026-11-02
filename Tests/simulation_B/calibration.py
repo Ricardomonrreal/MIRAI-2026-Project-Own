@@ -83,7 +83,8 @@ class Calibration:
         if self.state == "calibrando":
             if o:
                 self.f = o["f"]
-            self.rows.append((t1, {k: o.get(k) for k in ("theta_ok", "alpha_ok", "theta_flat", "alpha_flat", "post_psd")}))
+            self.rows.append((t1, {k: o.get(k) for k in ("theta_ok", "alpha_ok", "theta_flat", "alpha_flat", "post_psd",
+                                                         "alpha_exp")}))
             self._maybe_freeze(t1)
             return None
         if self.state != "congelada":
@@ -140,6 +141,8 @@ class Calibration:
                     "lambda": float(lam), "sigma_suav": s_suav, "factor_autocorrelacion": f_ac, "sigma_mu": s_mu,
                     "sigma_z": float(np.hypot(s_suav * f_ac, s_mu)) * self.sigma_factor}
             self.smooth[n] = p[n]["mu"]
+        chi = [r["alpha_exp"] for r in base if r["alpha_ok"]]
+        p["chi_post"] = {"mu": float(np.mean(chi)), "sd": float(np.std(chi))}  # regla de calidad del Paso 6
         if closed:
             # Berger con potencia clásica de α (IAF ± 2 Hz) en la ROI posterior, ojos cerrados frente a abiertos.
             m = (f >= b["alpha"][0]) & (f < b["alpha"][1])

@@ -228,3 +228,62 @@ Tests offline añadidos (`test_realtime_pipeline.py`):
 - **Chequeo de calidad:** O1 muerto y Fz 10× más ruidoso → ambos detectados y excluidos, la calibración sigue; Fz y Cz
   muertos → ROI frontal vacía → la sesión se detiene ✅.
 - No se probó la extensión de +30 s y el aborto por falta de ventanas válidas (decisión del 30 oct).
+
+## Paso 6 — motor JITAI (30 oct, cerrado con excepciones)
+
+`jitai.py` (nuevo), integración en `realtime_pipeline.py` (LSL `MIRAI_JITAI`, UDP/JSON 127.0.0.1:5005, consola,
+`eventos.csv`, entrada `MIRAI_Behavior`) y `behavior_markers.py` (marcadores de conducta de prueba). La calibración
+guarda además μ y σ de χ posterior para la regla de calidad. **Valores del protocolo sin cambios** (decisión del
+30 oct: el ajuste se hace en el Paso 7 con datos reales).
+
+**Offline** (`test_realtime_pipeline.py`):
+- Lógica del motor con secuencias de Z controladas: ✅ (histéresis, persistencia, pérdida de señal, prioridad y
+  desplazamiento, Nivel 2 con salida y refractario, Nivel 2 desactivado, regla χ).
+- 20 min sin inyecciones (6 sesiones): N1 = 2, 4, 11, 4, 3, 5 (250 Hz) y 3, 6, 0, 2, 9, 4 (50 Hz); N3 = 0–2 ❌ (≤ 1).
+- Alfa 300–420 s + theta 330–480 s (15 µV): 250 Hz → N1 dos veces durante el alfa, N3 una vez (a los 84 s), sin
+  desplazamiento (N1 ya apagado); 50 Hz → N1 una vez (33 s), N3 una vez (48 s) y desplaza a N1 ✅.
+- Barrido del Nivel 1 (τ_α 5/15/30 s × persistencia 5/10 s): ver protocolo, Paso 6, observaciones.
+
+**En vivo** (10 min, de uno en uno; conducta a 115 y 125 s, alfa corto 250–280 s, alfa largo 340–520 s y theta
+360–520 s, 25/25/15 µV; `runs/20261030_144203_synthetic` 250 Hz y `..._145332_synthetic` 50 Hz). Tiempos del
+registro relativos al primer evento:
+
+| | 250 Hz | 50 Hz |
+|---|---|---|
+| Intervalo / features p99, máx. / latencia p95 | 0.976–1.024 s / 40.8, 65.1 ms / 51.7 ms ✅ | 0.976–1.023 s / 36.6, 50.1 ms / 65.1 ms ✅ |
+| Nivel 2 (conducta) | on a 121.7 s ✅; off a 173.7 s **desplazado por un N3 espurio** | on a 123.1 s, off a 184.0 s (60 s sin eventos) ✅ |
+| N3 sin theta inyectado | **on a 173.7 s (espurio)**, off a 305.7 s | — |
+| Alfa corto (30 s) | N1 no se activa: **bloqueado por el refractario de N3 (300 s)** ❌ | N1 on a 246.0 s, **2 s antes** del alfa (espurio), off a 293.0 s ❌ |
+| Alfa largo (180 s) + theta | N1 no se activa (refractario de N3) ❌; N3 on a 473.7 s (fin del refractario, 117 s tras el theta) | N1 on a los 21 s del alfa ✅; N3 on a los 56 s del theta y **desplaza a N1** ✅; N3 off a 562.0 s |
+
+Observación clave: con la prioridad del protocolo, **un N3 espurio bloquea N1 durante 300 s** (refractario de N3)
+y corta el N2 activo. A 250 Hz eso anuló las dos pruebas de alfa. La lógica hace lo especificado; el problema es la
+tasa de espurios combinada con el refractario largo de N3.
+
+## Paso 7 — benchmark y validación extremo a extremo (30 oct, en curso)
+
+- **Replay sin LSL** (`realtime_pipeline.py --offline <fuente>`): `OfflineInlet` / `OfflineMarkers` sustituyen al
+  inlet de LSL y entregan bloques de 20 ms sin esperar; el resto es el mismo código de los Pasos 2–6. Fuente con
+  `mock_lsl_streamer.load_source()` (nuevo, también lo usa el emulador). 300 s de sintético en ~13 s (~23× tiempo
+  real). En offline no se publica nada por LSL/UDP. `--sin-fases`: la calibración ignora los marcadores de fase.
+- **Métricas nuevas** por sesión: procesamiento por ventana (bloque → decisión), latencia (media, p95, máx.), CPU del
+  proceso (`time.process_time`), memoria (working set vía `ctypes`, sin dependencias), deriva (pendiente de la
+  latencia), detección del Nivel 1 por inyección, α_per/θ_per por fase del archivo; `runs/<sesión>/reporte.md`.
+- **`run_simulation.py`**: lanzador `live` (emulador + conducta opcional + pipeline) y `offline`.
+
+**Benchmark en vivo, 20 min a 250 Hz** (`runs/20261030_151946_synthetic`): procesamiento por ventana 18.2 / 26.9 /
+55.5 ms (media / p95 / máx.); latencia 35.3 / 48.2 / 66.8 ms ✅ (< 500); **CPU 5.5 % de un núcleo** ✅ (< 25);
+memoria 184 → 186 MB, pendiente −0.23 MB/min ✅; pendiente de la latencia 0.00 ms/min ✅ (la "deriva ppm" sale 0
+por el dejitter de LSL, que regulariza las marcas; la medida útil es la pendiente de la latencia); intervalo,
+parpadeos, features y calibración ✅. RMS(Z_θ) 1.56 en esta sesión (μ desplazada −1.27 σ_Z; el criterio del Paso 5
+combina sesiones) y 5 activaciones breves del Nivel 1 (2–5 s), sin inyecciones.
+
+**Berger con el CSV de AURA (enero)**: no evaluable. Con fases → calibración abortada (23 ventanas válidas en ojos
+abiertos); con `--sin-fases` → abortada tras 2 extensiones. Ojos cerrados: **0 ventanas válidas**. El Berger sí está
+en el registro (potencia 8–12 Hz en O2: 10.4 → 15.9 dB, +5.5 dB), pero el propio alfa empuja O2 sobre 150 µV pico a
+pico (51 % → 90 % de segmentos) y F3/F4 (canal ocular, Fp1 saturado) superan 150 µV en el 67–99 % de los segmentos.
+Escala/calidad de ese registro frente al umbral fijo.
+
+**EEG real, informativo** (ds007537 sub-01, 16 min, offline): σ_crudo de α_per 1.03 dB frente a 2.2–4.4 dB en el
+sintético (2–4× menos variable); σ_Z α 0.71 dB; Nivel 1: 2 activaciones breves en ~15 min; Nivel 3: 0. El sintético
+es pesimista para el Nivel 1. RMS(Z) θ 1.15 / α 1.78 (el registro cambia de condición: teléfono y video).

@@ -1,5 +1,5 @@
 """
-realtime_pipeline.py — Pasos 2 a 5 del Protocolo de Simulación (MIRAI 2026) · VERSIÓN B
+realtime_pipeline.py — Pasos 2 a 7 del Protocolo de Simulación (MIRAI 2026) · VERSIÓN B
 
 Versión B: (1) el Paso 3 se evalúa sobre los segmentos que contienen el pico de un parpadeo supraumbral
 (blink_report); (2) sin veto EMG: la potencia 25–40 Hz se mide y se registra (emg_db) pero no descarta
@@ -8,7 +8,10 @@ segmentos; (3) specparam ajusta en 2–30 Hz (spectral_features.py), lo que deja
 Recibe el EEG por LSL (emulador o AURA real), lo filtra en línea, entrega una ventana cada 1 s, marca qué
 segmentos de 2 s están libres de artefactos (Fp1/ROI > 150 µV, EMG) y calcula theta_per / alfa_per con esos
 segmentos (spectral_features.py). Paso 5 (calibration.py): chequeo de calidad en los primeros 10 s, calibración
-congelada (μ, σ, IAF) y Z por ventana. El Paso 6 se engancha en `on_window()`.
+congelada (μ, σ, IAF) y Z por ventana. Paso 6 (jitai.py): escalera de intervención; salida por LSL `MIRAI_JITAI`,
+UDP/JSON local para la AR, consola y eventos.csv; el Nivel 2 escucha el stream de conducta `MIRAI_Behavior`.
+Paso 7: `--offline <fuente>` pasa un archivo por el mismo código sin LSL (bloques de 20 ms, sin esperar); el reporte
+añade CPU, memoria y deriva, y se guarda también en runs/<sesión>/reporte.md.
 
   * Stream elegido por nombre + source_id con el entorno LSL cerrado a esta PC (lsl_api.cfg).
   * Todo en segundos: fs y red se leen del stream (250 Hz emulador, 250/50 Hz AURA).
@@ -19,11 +22,14 @@ congelada (μ, σ, IAF) y Z por ventana. El Paso 6 se engancha en `on_window()`.
 Uso:
   python realtime_pipeline.py --name AURA --source-id mirai-sim- --seconds 600   # emulador
   python realtime_pipeline.py --name AURA --source-id AuraLSL-                   # AURA real (Aura.exe de esta PC)
+  python realtime_pipeline.py --offline synthetic --duration 600 --inject alpha 300 30 25   # replay sin LSL
+  python realtime_pipeline.py --offline ../../AURA/data/eeg_data_20260122_123839.csv --sin-fases
 """
 import argparse
 import csv
 import json
 import os
+import socket
 import sys
 import time
 
@@ -31,8 +37,9 @@ import numpy as np
 from scipy import signal
 
 from check_lsl_stream import channel_meta, find_markers, find_stream  # fija LSLAPICFG antes de importar pylsl
-from mock_lsl_streamer import AURA_CHANNELS
+from mock_lsl_streamer import AURA_CHANNELS, load_source
 import calibration as cal
+import jitai
 from spectral_features import Features, window_psd
 import pylsl
 
@@ -207,8 +214,102 @@ def open_run(source, cfg):
     return d
 
 
+def write_report_md(run, cfg, rep, rep3, rep4, rep5, rep6, rep7, checks):
+    """Paso 7: reporte final de la sesión en runs/<sesión>/reporte.md."""
+    f = lambda v, n=1: "—" if v is None else f"{v:.{n}f}"  # noqa: E731
+    L = [f"# Reporte de sesión — {os.path.basename(run)}", "",
+         f"- Modo: **{rep7['modo']}** · fuente `{cfg['source_id']}` · {cfg['fs']:.0f} Hz · red {cfg['line_freq']:.0f} Hz",
+         f"- Ventanas: {rep['ventanas']} · válidas {rep3['validas']:.1%} (fuera de trenes inyectados "
+         f"{rep3['validas_fuera_de_trenes']:.1%}) · señal perdida en {rep3['ventanas_senal_perdida']} ventanas", "",
+         "## Tiempos y recursos", "", "| Métrica | Media | p95 | Máx. |", "|---|---|---|---|",
+         f"| Procesamiento por ventana (ms) | {f(rep7['procesamiento_ms_media'])} | {f(rep7['procesamiento_ms_p95'])} | "
+         f"{f(rep7['procesamiento_ms_max'])} |",
+         f"| Welch + specparam (ms) | — | {f(rep4.get('features_ms_p95'))} | {f(rep4.get('features_ms_max'))} |"]
+    if "latencia_ms_p95" in rep7:
+        L.append(f"| Latencia emisión − última muestra (ms) | {f(rep7['latencia_ms_media'])} | {f(rep7['latencia_ms_p95'])} | "
+                 f"{f(rep7['latencia_ms_max'])} |")
+    L += ["", f"- CPU: {f(rep7.get('cpu_pct_nucleo'))} % de un núcleo · memoria {f(rep7.get('memoria_mb_inicio'), 0)} → "
+          f"{f(rep7.get('memoria_mb_fin'), 0)} MB (pendiente 2.ª mitad {f(rep7.get('memoria_pendiente_mb_min'), 2)} MB/min)"
+          + (f" · deriva {f(rep7.get('deriva_ppm'), 0)} ppm, latencia {f(rep7.get('latencia_pendiente_ms_min'), 2)} ms/min"
+             if rep7["modo"] == "en vivo" else ""), ""]
+    pr = rep5.get("parametros") or {}
+    L += ["## Calibración (Paso 5)", "", f"- Estado: {rep5['estado']} {rep5['motivo']} · canales malos: "
+          f"{', '.join(rep5['canales_malos']) or 'ninguno'}"]
+    if pr:
+        L.append(f"- {pr['fuente']} · IAF {pr['iaf']:g} Hz ({pr['iaf_de']})"
+                 + (f" · Berger (potencia clásica) {pr['berger_db']:+.1f} dB" if "berger_db" in pr else ""))
+        for n in ("theta", "alpha"):
+            L.append(f"- {n}: μ {pr[n]['mu']:.2f} dB · σ_Z {pr[n]['sigma_z']:.3f} · RMS(Z) {f(rep5.get(f'z_{n}_rms'), 2)} "
+                     f"(media {f(rep5.get(f'z_{n}_media'), 2)}, DE {f(rep5.get(f'z_{n}_sd'), 2)})")
+    L += ["", "## JITAI (Paso 6)", "", f"- Activaciones: N1 {rep6['activaciones'][1]}, N2 {rep6['activaciones'][2]}, "
+          f"N3 {rep6['activaciones'][3]}", "", "| t (s) | Nivel | Estado | Motivo |", "|---|---|---|---|"]
+    t0 = rep6["eventos"][0]["ts"] if rep6["eventos"] else 0.0
+    L += [f"| {e['ts']:.1f} | {e['nivel']} | {e['estado']} | {e['motivo']} |" for e in rep6["eventos"]]
+    if rep7.get("fases"):
+        L += ["", "## Fases del archivo", "", "| Fase | Inicio (s) | Ventanas | α_per (dB) | θ_per (dB) | N1 on (s) |",
+              "|---|---|---|---|---|---|"]
+        L += [f"| {x['fase']} | {x['inicio_s']:.1f} | {x['ventanas_con_features']} | {f(x['alpha_per_media'], 2)} | "
+              f"{f(x['theta_per_media'], 2)} | {', '.join(f'{v:.1f}' for v in x['nivel1_on_s']) or '—'} |" for x in rep7["fases"]]
+    L += ["", "## Criterios", ""] + [f"- [{'x' if ok else ' '}] {k}" for k, ok in checks.items()]
+    L += ["", f"**Resultado: {'PASA' if all(checks.values()) else 'NO PASA'}**", ""]
+    with open(os.path.join(run, "reporte.md"), "w", encoding="utf-8") as fh:
+        fh.write("\n".join(L))
+
+
+class OfflineInlet:
+    """Sustituye al inlet de LSL en el replay sin LSL (Paso 7): entrega bloques de 20 ms tan rápido como se pidan,
+    con la marca de tiempo de cada muestra (s desde el inicio del registro)."""
+
+    def __init__(self, data, fs, block_s=0.02):
+        self.x = np.ascontiguousarray(data.T, dtype=np.float64)
+        self.fs, self.blk, self.ptr = fs, max(1, int(round(block_s * fs))), 0
+
+    @property
+    def done(self):
+        return self.ptr >= len(self.x)
+
+    def pull_chunk(self, timeout=0.0, max_samples=None):
+        i, self.ptr = self.ptr, min(len(self.x), self.ptr + self.blk)
+        return self.x[i:self.ptr], list(np.arange(i, self.ptr) / self.fs)
+
+
+class OfflineMarkers:
+    """Marcadores del archivo, entregados cuando el replay pasa por su muestra."""
+
+    def __init__(self, events, fs, inlet):
+        self.ev, self.fs, self.inlet, self.i = sorted(events), fs, inlet, 0
+
+    def pull_sample(self, timeout=0.0):
+        if self.i < len(self.ev) and self.ev[self.i][0] < self.inlet.ptr:
+            s_, lab = self.ev[self.i]
+            self.i += 1
+            return [lab], s_ / self.fs
+        return None, None
+
+
+def mem_mb():
+    """Working set del proceso en MB (Windows, sin dependencias externas); None en otros sistemas."""
+    if os.name != "nt":
+        return None
+    import ctypes
+    from ctypes import wintypes
+
+    class PMC(ctypes.Structure):
+        _fields_ = [("cb", wintypes.DWORD), ("PageFaultCount", wintypes.DWORD)] + [
+            (n, ctypes.c_size_t) for n in ("PeakWorkingSetSize", "WorkingSetSize", "QuotaPeakPagedPoolUsage",
+                                           "QuotaPagedPoolUsage", "QuotaPeakNonPagedPoolUsage",
+                                           "QuotaNonPagedPoolUsage", "PagefileUsage", "PeakPagefileUsage")]
+    k32, psapi = ctypes.windll.kernel32, ctypes.windll.psapi
+    k32.GetCurrentProcess.restype = wintypes.HANDLE
+    psapi.GetProcessMemoryInfo.argtypes = [wintypes.HANDLE, ctypes.POINTER(PMC), wintypes.DWORD]
+    c = PMC()
+    c.cb = ctypes.sizeof(c)
+    psapi.GetProcessMemoryInfo(k32.GetCurrentProcess(), ctypes.byref(c), c.cb)
+    return c.WorkingSetSize / 2 ** 20
+
+
 def main():
-    p = argparse.ArgumentParser(description="Pipeline en tiempo real MIRAI (Pasos 2–5)")
+    p = argparse.ArgumentParser(description="Pipeline en tiempo real MIRAI (Pasos 2–6)")
     p.add_argument("--name", default="AURA")
     p.add_argument("--source-id", default=None,
                    help="prefijo del source_id: 'mirai-sim-' (emulador) o 'AuraLSL-' (Aura.exe); sin él se listan los candidatos")
@@ -216,31 +317,62 @@ def main():
     p.add_argument("--timeout", type=float, default=15.0)
     p.add_argument("--iaf", type=float, default=10.0, help="IAF provisional hasta que la calibración (Paso 5) la fije")
     p.add_argument("--sigma-factor", type=float, default=1.0, help="factor de σ_suav (Paso 5; lo mide el Paso 7)")
+    p.add_argument("--udp-port", type=int, default=5005, help="puerto UDP local de la AR (Paso 6)")
+    p.add_argument("--sin-nivel2", action="store_true", help="desactiva el Nivel 2 (escenario H1 ✅ H2 ❌)")
+    g = p.add_argument_group("replay sin LSL (Paso 7)")
+    g.add_argument("--offline", default=None, help="'synthetic', CSV de AURA o archivo EEG: se procesa sin LSL")
+    g.add_argument("--fs", type=float, default=None)
+    g.add_argument("--start", type=float, default=0.0)
+    g.add_argument("--duration", type=float, default=None)
+    g.add_argument("--ref", default="average")
+    g.add_argument("--line-freq", type=float, default=None)
+    g.add_argument("--seed", type=int, default=7)
+    g.add_argument("--inject", nargs=4, action="append", default=[], metavar=("TIPO", "INICIO_S", "DUR_S", "AMP_UV"))
+    g.add_argument("--sin-fases", action="store_true",
+                   help="la calibración ignora los marcadores de fase (usa los primeros 90 s, Berger del Paso 7)")
     a = p.parse_args()
 
-    inlet = pylsl.StreamInlet(find_stream(a.name, a.source_id, a.timeout), max_buflen=60,
-                              processing_flags=pylsl.proc_clocksync | pylsl.proc_dejitter)
-    info = inlet.info()
-    fs, nch = info.nominal_srate(), info.channel_count()
+    offline = a.offline is not None
+    if offline:
+        specs = [(k_, float(t_), float(d_), float(v_)) for k_, t_, d_, v_ in a.inject]
+        data, events, fs, line, meta = load_source(a.offline, a.fs, a.start, a.duration, a.ref, a.line_freq, a.iaf,
+                                                   a.seed, specs)
+        inlet = OfflineInlet(data, fs)
+        mk_inlet = OfflineMarkers(events, fs, inlet)
+        nch, labels = data.shape[0], list(AURA_CHANNELS)
+        src = {"stream": "offline", "source_id": meta["source"], "host": socket.gethostname(), "source": meta["source"],
+               "bad_channels": meta.get("bad_channels", "")}
+    else:
+        inlet = pylsl.StreamInlet(find_stream(a.name, a.source_id, a.timeout), max_buflen=60,
+                                  processing_flags=pylsl.proc_clocksync | pylsl.proc_dejitter)
+        info = inlet.info()
+        fs, nch = info.nominal_srate(), info.channel_count()
+        labels, _ = channel_meta(info)
+        line = float(info.desc().child_value("line_freq") or 60.0)  # Aura.exe no la publica: red de México
+        src = {"stream": info.name(), "source_id": info.source_id(), "host": info.hostname(),
+               "source": info.desc().child_value("source") or info.source_id(),
+               "bad_channels": info.desc().child_value("bad_channels") or ""}
     if fs <= 0 or nch != len(AURA_CHANNELS):
         sys.exit(f"Se esperaba EEG regular de {len(AURA_CHANNELS)} canales; llegó {nch} ch a {fs} Hz")
-    labels, _ = channel_meta(info)
     if labels and [l.upper() for l in labels] != [c.upper() for c in AURA_CHANNELS]:
         print(f"[aviso] etiquetas del stream {labels} ≠ orden AURA {AURA_CHANNELS}; se usa el orden AURA")
-    line = float(info.desc().child_value("line_freq") or 60.0)  # Aura.exe no la publica: red de México
 
     filt = CausalFilter(fs, line, nch)
     win, hop = int(round(WIN_S * fs)), int(round(HOP_S * fs))
     # Canales malos declarados por la fuente (el emulador los publica); el chequeo propio del Paso 5 se suma en
     # los primeros QC_S s y entonces se rehacen el rechazo y las ROI.
-    bads = [c for c in (info.desc().child_value("bad_channels") or "").split() if c in AURA_CHANNELS]
+    bads = [c for c in src["bad_channels"].split() if c in AURA_CHANNELS]
     src_bads = list(bads)
     rej = Rejector(fs, bads)
     feat = Features(fs, a.iaf)
     idx = {c: i for i, c in enumerate(AURA_CHANNELS)}
     front = [idx[c] for c in THETA_ROI if c not in bads]
     post = [idx[c] for c in ALPHA_ROI if c not in bads]
-    cfg = {"paso": 5, "stream": info.name(), "source_id": info.source_id(), "host": info.hostname(),
+    jcfg = jitai.CONFIG if not a.sin_nivel2 else {**jitai.CONFIG, "niveles": {**jitai.CONFIG["niveles"],
+                                                    2: {**jitai.CONFIG["niveles"][2], "activo": False}}}
+    jt = jitai.Jitai(jcfg, HOP_S)
+    cfg = {"paso": 7, "modo": "offline" if offline else "en vivo", "stream": src["stream"],
+           "source_id": src["source_id"], "host": src["host"],
            "fs": fs, "line_freq": line, "channels": AURA_CHANNELS, "labels_stream": labels,
            "window_s": WIN_S, "hop_s": HOP_S, "bandpass_hz": filt.band, "bandpass_order": 4,
            "notch": filt.notch, "lsl_api_cfg": os.environ.get("LSLAPICFG"),
@@ -251,10 +383,31 @@ def main():
            "features": {"iaf": a.iaf, "theta_hz": [a.iaf - 6, a.iaf - 2], "alpha_hz": [a.iaf - 2, a.iaf + 2],
                         "roi_theta": [AURA_CHANNELS[i] for i in front], "roi_alpha": [AURA_CHANNELS[i] for i in post],
                         "fit_range_hz": feat.fit_range, "r2_min": 0.75, "psd": "periodograma Hamming por segmento limpio"},
+           "jitai": jcfg, "udp": f"127.0.0.1:{a.udp_port}",
            "started": time.strftime("%Y-%m-%d %H:%M:%S")}
-    run = open_run(info.desc().child_value("source") or info.source_id(), cfg)
+    if offline:
+        cfg["offline"] = {"fuente": a.offline, "inyecciones": a.inject, "seed": a.seed, "sin_fases": a.sin_fases}
+    run = open_run(("offline_" if offline else "") + src["source"], cfg)
 
-    mk_inlet = find_markers(info)
+    if not offline:
+        mk_inlet = find_markers(info)
+
+    # Paso 6: salidas (LSL de marcadores con la marca de tiempo de la ventana que decidió, UDP/JSON local) y
+    # entrada de conducta del Nivel 2 (stream MIRAI_Behavior de esta PC, si existe).
+    # En el replay sin LSL no se publica nada (no debe llegar a la AR) ni se escucha conducta.
+    jitai_out = udp = beh_inlet = None
+    if not offline:
+        jitai_out = pylsl.StreamOutlet(pylsl.StreamInfo("MIRAI_JITAI", "Markers", 1, pylsl.IRREGULAR_RATE,
+                                                        pylsl.cf_string, "mirai-jitai"))
+        udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        beh = [s_ for s_ in pylsl.resolve_byprop("name", "MIRAI_Behavior", timeout=2.0)
+               if s_.hostname() == socket.gethostname()]
+        beh_inlet = pylsl.StreamInlet(beh[0]) if beh else None
+        print(f"Paso 6: salida LSL 'MIRAI_JITAI' + UDP 127.0.0.1:{a.udp_port} | conducta (Nivel 2): "
+              + (f"'MIRAI_Behavior' ({beh[0].source_id()})" if beh else "sin stream MIRAI_Behavior")
+              + (" | Nivel 2 desactivado" if a.sin_nivel2 else ""))
+    os.system("")  # activa los colores ANSI en la consola de Windows
+    color = {1: "\033[93m", 2: "\033[95m", 3: "\033[91m"}
 
     fw = open(os.path.join(run, "ventanas.csv"), "w", newline="")
     wv = csv.writer(fw)
@@ -263,7 +416,7 @@ def main():
                  "features_ms", "theta_per", "alpha_per", "theta_exp", "alpha_exp", "theta_r2", "alpha_r2",
                  "theta_ok", "alpha_ok", "cal_estado", "z_theta", "z_alpha"]
                 + [f"rms_{c}" for c in AURA_CHANNELS])
-    fe = open(os.path.join(run, "eventos.csv"), "w", newline="")
+    fe = open(os.path.join(run, "eventos.csv"), "w", newline="", encoding="utf-8")
     we = csv.writer(fe)
     we.writerow(["ts", "fuente", "evento"])
 
@@ -271,7 +424,22 @@ def main():
     # está lista (filtrar ese bloque + cortarla). rechazo_ms = Paso 3, medido aparte. CPU total: Paso 7.
     state = {"k": 0, "t_chunk": 0.0, "t0": None, "cal": None, "stop": "", "frozen": None}
     zs = []
+    jev = []  # eventos del Paso 6
+
+    def emit_jitai(events):
+        for t_, lvl, est, why in events:
+            msg = f"nivel:{lvl}:{est}"
+            if jitai_out:
+                jitai_out.push_sample([msg], t_)
+                udp.sendto(json.dumps({"ts": t_, "nivel": lvl, "estado": est, "motivo": why,
+                                       "accion": jcfg["niveles"][lvl]["nombre"]}).encode(),  # ASCII escapado
+                           ("127.0.0.1", a.udp_port))
+            we.writerow([f"{t_:.4f}", "jitai", f"{msg} ({why})"])
+            jev.append((t_, lvl, est, why))
+            print(f"  {color[lvl]}>>> NIVEL {lvl} {est.upper()} · {jcfg['niveles'][lvl]['nombre']} · {why}\033[0m")
     emit_t, calc_ms, rej_ms, feat_ms, lat_ms, wins, feats, markers = [], [], [], [], [], [], [], []
+    proc_ms, feat_ts = [], []  # Paso 7: procesamiento por ventana (bloque → decisión) y ts de cada feature
+    res = []  # Paso 7: (reloj, CPU del proceso, memoria MB) cada 10 ventanas
     seg, step = int(round(SEG_S * fs)), int(round(SEG_STEP_S * fs))
 
     def on_window(w, ts_last):
@@ -295,7 +463,8 @@ def main():
                 return
             state["cal"] = cal.Calibration(ts_last, WIN_S, a.sigma_factor)
             for m in markers:
-                state["cal"].marker(*m)
+                if not (a.sin_fases and m[1].startswith("file:")):
+                    state["cal"].marker(*m)
         r = rej(w)
         t_rej = time.perf_counter()
         rj = (t_rej - t_ready) * 1000
@@ -317,7 +486,15 @@ def main():
             state["stop"] = "calibración abortada: " + cb.msg
         if z is not None:
             zs.append(z)
+        if cb.state == "congelada":
+            pr = cb.params
+            block = bool(o and jitai.chi_flat(o["alpha_exp"], pr["chi_post"]["mu"], pr["chi_post"]["sd"], r["emg_db"],
+                                              rej.emg_lim, jcfg["calidad_chi_sigmas"]))
+            emit_jitai(jt.window(ts_last, z, {n: bool(o.get(f"{n}_ok")) for n in ("theta", "alpha")}, block))
         now = pylsl.local_clock()
+        proc_ms.append((time.perf_counter() - state["t_chunk"]) * 1000)
+        if state["k"] % 10 == 0:
+            res.append((time.perf_counter(), time.process_time(), mem_mb()))
         rms = w.std(axis=0)
         wv.writerow([state["k"], f"{ts_last:.4f}", f"{t_cut:.4f}", f"{now:.4f}", f"{(now - ts_last) * 1000:.1f}", f"{c:.3f}", f"{rj:.3f}",
                      "".join("1" if x else "0" for x in r["clean"]), sum(r["clean"]), r["motivo"],
@@ -332,6 +509,7 @@ def main():
         calc_ms.append(c)
         rej_ms.append(rj)
         if o:
+            feat_ts.append(ts_last)
             feat_ms.append(fm)
             feats.append({k: v for k, v in o.items() if not isinstance(v, np.ndarray) and v is not None})
         lat_ms.append((now - ts_last) * 1000)
@@ -340,29 +518,33 @@ def main():
         if state["k"] % 10 == 0:
             fw.flush()
             ok = np.mean([x["valida"] for _, x in wins[-10:]])
-            print(f"  ventana {state['k']:5d}  ts={ts_last:11.3f}  latencia={lat_ms[-1]:5.1f} ms  "
+            print(f"  ventana {state['k']:5d}  ts={ts_last:11.3f}  "
+                  + (f"proc={proc_ms[-1]:5.1f} ms  " if offline else f"latencia={lat_ms[-1]:5.1f} ms  ") +
                   f"cálculo={c:5.2f} ms  limpios={''.join('1' if x else '0' for x in r['clean'])}  "
                   f"válidas(últ. 10)={ok:.0%}{'  SEÑAL PERDIDA' if r['perdida'] else ''}"
                   + (f"  θ_per={o['theta_per']:5.2f}  α_per={o['alpha_per']:5.2f} dB  features={fm:4.1f} ms" if o else "")
                   + (f"  Zθ={z['theta']:+5.2f}  Zα={z['alpha']:+5.2f}" if z else f"  [{cb.state}]"))
 
     wnd = Windower(win, hop, nch, on_window)
-    print(f"Pipeline: {info.name()} ({info.source_id()}) | {fs:.0f} Hz | red {line:.0f} Hz | "
+    print(f"Pipeline{' (replay sin LSL)' if offline else ''}: {src['stream']} ({src['source_id']}) | {fs:.0f} Hz | red {line:.0f} Hz | "
           f"pasa-banda {filt.band[0]:.0f}–{filt.band[1]:.0f} Hz | notch {'sí' if filt.notch else 'no'} | "
           f"ventana {WIN_S:.0f} s / avance {HOP_S:.0f} s")
     print(f"Registro: {run}\nCtrl+C para detener.\n")
 
     t_start = pylsl.local_clock()
     try:
-        while (a.seconds is None or pylsl.local_clock() - t_start < a.seconds) and not state["stop"]:
+        while ((a.seconds is None or pylsl.local_clock() - t_start < a.seconds) and not state["stop"]
+               and not (offline and inlet.done)):
             # timeout=0: solo lo ya disponible. Con timeout > 0, pull_chunk espera a llenar max_samples
             # y entrega tandas de ese tamaño (con 0.2 s la latencia llegaba a ~200 ms).
             x, ts = inlet.pull_chunk(timeout=0.0, max_samples=int(fs))
             if ts:
                 state["t_chunk"] = time.perf_counter()
                 state["t0"] = ts[0] if state["t0"] is None else state["t0"]
+                state["n"] = state.get("n", 0) + len(ts)
+                state["ts_end"] = ts[-1]
                 wnd.push(filt(np.asarray(x, dtype=np.float64)), ts)
-            else:
+            elif not offline:
                 time.sleep(0.005)
             if mk_inlet:
                 while True:
@@ -371,8 +553,16 @@ def main():
                         break
                     we.writerow([f"{mts:.4f}", "marcador", m[0]])
                     markers.append((mts, m[0]))
-                    if state["cal"]:
+                    if state["cal"] and not (a.sin_fases and m[0].startswith("file:")):
                         state["cal"].marker(mts, m[0])
+            if beh_inlet:
+                while True:
+                    m, mts = beh_inlet.pull_sample(timeout=0.0)
+                    if m is None:
+                        break
+                    we.writerow([f"{mts:.4f}", "conducta", m[0]])
+                    if state["cal"] and state["cal"].state == "congelada":
+                        emit_jitai(jt.behavior(mts, m[0]))
     except KeyboardInterrupt:
         print("\nDetenido por el usuario.")
     fw.close()
@@ -391,6 +581,8 @@ def main():
     # y cálculo < 10 ms.
     checks = {"ventana cada 1.0 s ± 1 bloque": bool(abs(d.mean() - HOP_S) < 0.01 and np.abs(d - HOP_S).max() < 0.1),
               "cálculo búfer + filtros < 10 ms (máx.)": bool(rep["calculo_ms_max"] < 10)}
+    if offline:  # sin tiempo real, el intervalo entre ventanas y la latencia no significan nada
+        del checks["ventana cada 1.0 s ± 1 bloque"]
     rep3 = blink_report(wins, markers, blink_gain(fs, line))
     if rep3["parpadeos"]:  # solo hay verdad de campo con el emulador
         checks["segmentos con el pico de un parpadeo supraumbral rechazados ≥ 95 %"] = rep3["rechazo_con_parpadeo"] >= 0.95
@@ -419,25 +611,104 @@ def main():
             # RMS = √(media² + DE²): el error de μ es un desplazamiento fijo dentro de la sesión que la DE no ve.
             rep5[f"z_{n}_media"] = float(zz.mean())
             rep5[f"z_{n}_rms"] = float(np.sqrt(np.mean(zz ** 2)))
-            if rep3["parpadeos"]:  # sintético sin inyecciones espectrales (el tren de parpadeos solo invalida ventanas)
+            espectral = any(m_.startswith(("inject:alpha", "inject:theta")) for _, m_ in markers)
+            if rep3["parpadeos"] and not espectral:  # sintético sin inyecciones espectrales (los parpadeos solo invalidan)
                 checks[f"RMS(Z_{n}) entre 0.7 y 1.4"] = 0.7 <= rep5[f"z_{n}_rms"] <= 1.4
     else:
         checks["calibración congelada"] = False
+    # Paso 6: disparos frente a la verdad de campo (inyecciones del emulador).
+    inj = {}
+    for t_, m_ in markers:
+        if m_.startswith("inject:") and m_.split(":")[1] in ("alpha", "theta"):
+            k_ = m_.split(":")[1]
+            inj.setdefault(k_, []).append(t_)
+    rep6 = {"eventos": [{"ts": t_, "nivel": l_, "estado": e_, "motivo": w_} for t_, l_, e_, w_ in jev],
+            "activaciones": {l_: sum(1 for e in jev if e[1] == l_ and e[2] == "on") for l_ in (1, 2, 3)}}
+    for k_, lvl in (("alpha", 1), ("theta", 3)):
+        pares = list(zip(inj.get(k_, [])[::2], inj.get(k_, [])[1::2]))  # cada inyección por separado
+        for i_, (t0_, t1_) in enumerate(pares, 1):
+            on_ = [e[0] - t0_ for e in jev if e[1] == lvl and e[2] == "on" and t0_ <= e[0] <= t1_ + WIN_S]
+            rep6[f"nivel{lvl}_inyeccion{i_}_s"] = on_
+            checks[f"nivel {lvl} una vez durante la inyección {i_} de {k_} ({t1_ - t0_:.0f} s, tras la persistencia)"] = (
+                len(on_) == 1 and on_[0] >= jcfg["niveles"][lvl]["persistencia_s"])
+    rep6["nivel1_desplazado_por_nivel3"] = any(e[1] == 1 and e[2] == "off" and "nivel 3" in e[3] for e in jev)
+    rep6["nivel2_apagado"] = any(e[1] == 2 and e[2] == "off" and "sin eventos" in e[3] for e in jev)
+
+    # Paso 7: procesamiento, latencias, recursos, deriva, detección y fases (Berger).
+    pm = np.array(proc_ms)
+    rep7 = {"modo": "offline" if offline else "en vivo", "procesamiento_ms_media": float(pm.mean()),
+            "procesamiento_ms_p95": float(np.percentile(pm, 95)), "procesamiento_ms_max": float(pm.max())}
+    if not offline:
+        la = np.array(lat_ms)
+        rep7.update({"latencia_ms_media": float(la.mean()), "latencia_ms_p95": float(np.percentile(la, 95)),
+                     "latencia_ms_max": float(la.max())})
+        checks["latencia de procesamiento < 500 ms (p95)"] = rep7["latencia_ms_p95"] < 500
+        dur_min = (emit_t[-1] - emit_t[0]) / 60
+        if state.get("ts_end") and state["ts_end"] > state["t0"]:
+            fs_eff = (state["n"] - 1) / (state["ts_end"] - state["t0"])
+            rep7["fs_efectiva"] = float(fs_eff)
+            rep7["deriva_ppm"] = float((fs_eff / fs - 1) * 1e6)
+        if dur_min >= 5:  # deriva frente al reloj de LSL: tendencia de la latencia a lo largo de la sesión
+            rep7["latencia_pendiente_ms_min"] = float(np.polyfit((np.array(emit_t) - emit_t[0]) / 60, la, 1)[0])
+            checks["sin deriva: pendiente de la latencia < 1 ms/min"] = abs(rep7["latencia_pendiente_ms_min"]) < 1
+    if len(res) >= 4:
+        r0 = res[1]  # tras el arranque (importaciones, primeras ventanas)
+        rep7["cpu_pct_nucleo"] = float(100 * (res[-1][1] - r0[1]) / (res[-1][0] - r0[0]))
+        mem = np.array([(t_, m_) for t_, _, m_ in res if m_ is not None])
+        if len(mem):
+            rep7.update({"memoria_mb_inicio": float(mem[1, 1]), "memoria_mb_fin": float(mem[-1, 1]),
+                         "memoria_mb_max": float(mem[:, 1].max())})
+            half = mem[len(mem) // 2:]
+            if len(half) >= 3:
+                rep7["memoria_pendiente_mb_min"] = float(np.polyfit((half[:, 0] - half[0, 0]) / 60, half[:, 1], 1)[0])
+        if not offline:
+            checks["CPU < 25 % de un núcleo"] = rep7["cpu_pct_nucleo"] < 25
+            if not offline and (emit_t[-1] - emit_t[0]) / 60 >= 5 and "memoria_pendiente_mb_min" in rep7:
+                checks["memoria estable: pendiente (2.ª mitad) < 1 MB/min"] = abs(rep7["memoria_pendiente_mb_min"]) < 1
+    for i_, on_ in ((k_.split("inyeccion")[1].split("_")[0], v_) for k_, v_ in rep6.items()
+                    if k_.startswith("nivel1_inyeccion")):
+        rep7[f"deteccion_n1_inyeccion{i_}_s"] = on_[0] if on_ else None
+        checks[f"Nivel 1 detecta la inyección {i_} de alfa en < 10 s"] = bool(on_) and on_[0] < 10
+    # Fases del archivo (CSV de AURA): α_per y θ_per por fase y Nivel 1 en ojos cerrados (Berger).
+    fases = [(t_, m_[5:]) for t_, m_ in markers if m_.startswith("file:")]
+    if fases:
+        fr = []
+        for i_, (t0_, nm) in enumerate(fases):
+            t1_ = fases[i_ + 1][0] if i_ + 1 < len(fases) else np.inf
+            sel = [x for t_, x in zip(feat_ts, feats) if t0_ + WIN_S <= t_ <= t1_]
+            al = [x["alpha_per"] for x in sel if x["alpha_ok"]]
+            th = [x["theta_per"] for x in sel if x["theta_ok"]]
+            on1 = [e[0] - t0_ for e in jev if e[1] == 1 and e[2] == "on" and t0_ <= e[0] <= t1_ + WIN_S]
+            fr.append({"fase": nm, "inicio_s": float(t0_ - fases[0][0]), "dur_s": float(min(t1_, state.get("ts_end", t0_)) - t0_),
+                       "ventanas_con_features": len(sel), "alpha_per_media": float(np.mean(al)) if al else None,
+                       "theta_per_media": float(np.mean(th)) if th else None, "nivel1_on_s": on1})
+        rep7["fases"] = fr
+        fo = next((f_ for f_ in fr if f_["fase"] == cal.EYES_OPEN), None)
+        fc = next((f_ for f_ in fr if f_["fase"] == cal.EYES_CLOSED), None)
+        if fo and fc:
+            ok_b = fo["alpha_per_media"] is not None and fc["alpha_per_media"] is not None
+            rep7["berger_alpha_per_db"] = fc["alpha_per_media"] - fo["alpha_per_media"] if ok_b else None
+            checks["Berger: α_per mayor con ojos cerrados que abiertos"] = bool(ok_b and rep7["berger_alpha_per_db"] > 0)
+            checks["Berger: el Nivel 1 se dispara con ojos cerrados"] = bool(fc["nivel1_on_s"])
     with open(os.path.join(run, "config.json"), "r+", encoding="utf-8") as f:
         c = json.load(f)
         c["calibracion"] = rep5
+        c["jitai_reporte"] = rep6
+        c["paso7"] = rep7
         c["reporte"] = {**rep, **rep3, **rep4, "emg_umbral_db": rej.emg_lim, "checks": checks}
         f.seek(0)
         json.dump(c, f, indent=2, ensure_ascii=False)
         f.truncate()
 
-    print("\n============== REPORTE PASOS 2–5 ==============")
+    print(f"\n============== REPORTE PASOS 2–7 ({rep7['modo']}) ==============")
     print(f"Ventanas                : {rep['ventanas']}")
-    print(f"Intervalo entre ventanas: media {rep['intervalo_s_media']:.4f} s | "
-          f"mín {rep['intervalo_s_min']:.3f} | máx {rep['intervalo_s_max']:.3f}")
+    if not offline:
+        print(f"Intervalo entre ventanas: media {rep['intervalo_s_media']:.4f} s | "
+              f"mín {rep['intervalo_s_min']:.3f} | máx {rep['intervalo_s_max']:.3f}")
     print(f"Cálculo búfer + filtros : p95 {rep['calculo_ms_p95']:.3f} ms | máx {rep['calculo_ms_max']:.3f} ms")
     print(f"Rechazo (Paso 3)        : p95 {rep['rechazo_ms_p95']:.3f} ms | máx {rep['rechazo_ms_max']:.3f} ms")
-    print(f"Latencia (emisión − última muestra): p95 {rep['latencia_ms_p95']:.1f} ms")
+    if not offline:
+        print(f"Latencia (emisión − última muestra): p95 {rep['latencia_ms_p95']:.1f} ms")
     print(f"Ventanas válidas        : {rep3['validas']:.1%} (fuera de trenes inyectados: "
           f"{rep3['validas_fuera_de_trenes']:.1%}) | señal perdida en {rep3['ventanas_senal_perdida']} ventanas")
     if rep3["parpadeos"]:
@@ -465,9 +736,37 @@ def main():
                   f"|Z| ≥ 1.5 en {rep5[f'z_{n}_frac_1_5']:.1%}")
     elif cb:
         print(f"Calibración (Paso 5)    : {cb.state} {cb.msg}")
+    print(f"JITAI (Paso 6)          : activaciones N1 {rep6['activaciones'][1]}, N2 {rep6['activaciones'][2]}, "
+          f"N3 {rep6['activaciones'][3]} | N1 desplazado por N3: {'sí' if rep6['nivel1_desplazado_por_nivel3'] else 'no'}"
+          f" | N2 apagado por falta de eventos: {'sí' if rep6['nivel2_apagado'] else 'no'}")
+    t_ini = state["t0"] or 0.0  # inicio del registro
+    for k_, lvl in (("alpha", 1), ("theta", 3)):
+        for i_, (t0_, t1_) in enumerate(zip(inj.get(k_, [])[::2], inj.get(k_, [])[1::2]), 1):
+            secs = [round(x, 1) for x in rep6[f"nivel{lvl}_inyeccion{i_}_s"]]
+            print(f"   inyección {k_} {i_}: {t0_ - t_ini:6.1f}–{t1_ - t_ini:6.1f} s del registro | "
+                  f"activaciones del nivel {lvl} a los {secs} s del inicio")
+    for t_, l_, e_, w_ in jev:
+        print(f"   {t_:11.3f}  nivel {l_} {e_:3s}  {w_}")
+    print(f"Paso 7                  : procesamiento por ventana media {rep7['procesamiento_ms_media']:.1f} ms, p95 "
+          f"{rep7['procesamiento_ms_p95']:.1f}, máx {rep7['procesamiento_ms_max']:.1f}"
+          + (f" | latencia media {rep7['latencia_ms_media']:.1f} / p95 {rep7['latencia_ms_p95']:.1f} / máx "
+             f"{rep7['latencia_ms_max']:.1f} ms" if "latencia_ms_p95" in rep7 else ""))
+    if "cpu_pct_nucleo" in rep7:
+        print(f"                          CPU {rep7['cpu_pct_nucleo']:.1f} % de un núcleo | memoria "
+              f"{rep7.get('memoria_mb_inicio', float('nan')):.0f} → {rep7.get('memoria_mb_fin', float('nan')):.0f} MB "
+              f"(máx {rep7.get('memoria_mb_max', float('nan')):.0f}; pendiente 2.ª mitad "
+              f"{rep7.get('memoria_pendiente_mb_min', float('nan')):+.2f} MB/min)"
+              + (f" | deriva {rep7['deriva_ppm']:+.0f} ppm" if "deriva_ppm" in rep7 else "")
+              + (f", latencia {rep7['latencia_pendiente_ms_min']:+.2f} ms/min" if "latencia_pendiente_ms_min" in rep7 else ""))
+    for f_ in rep7.get("fases", []):
+        print(f"   fase {f_['fase']:22s} {f_['inicio_s']:6.1f} s ({f_['dur_s']:5.1f} s): {f_['ventanas_con_features']:3d} ventanas | "
+              f"α_per {f_['alpha_per_media'] if f_['alpha_per_media'] is None else round(f_['alpha_per_media'], 2)} dB | "
+              f"θ_per {f_['theta_per_media'] if f_['theta_per_media'] is None else round(f_['theta_per_media'], 2)} dB | "
+              f"N1 on a los {[round(x, 1) for x in f_['nivel1_on_s']]} s")
     for k, ok in checks.items():
         print(f"  [{'OK' if ok else 'FALLA'}] {k}")
     print(f"\nRESULTADO: {'PASA' if all(checks.values()) else 'NO PASA'}  (registro en {run})")
+    write_report_md(run, cfg, rep, rep3, rep4, rep5, rep6, rep7, checks)
     sys.exit(0 if all(checks.values()) else 1)
 
 

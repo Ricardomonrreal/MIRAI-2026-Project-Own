@@ -60,10 +60,10 @@
     "semantic_hash": "d96e229b35a6c3dff6f2f6269bf277ea"
   },
   "Tests/Protocolo_Simulacion_Pipeline.md": {
-    "mtime": 1793333067.1927202,
-    "seen": 1793334293.1855984,
-    "ast_hash": "2acbcec1790759509db3e01c6f14a124",
-    "semantic_hash": "2acbcec1790759509db3e01c6f14a124"
+    "mtime": 1793342437.936553,
+    "seen": 1793342445.48396,
+    "ast_hash": "aec71fb2f4c0934b9926e664655483b7",
+    "semantic_hash": ""
   },
   "Tests/datasets workflow/Cao2019/results/cao_reporte.txt": {
     "mtime": 1792653912.731943,
@@ -216,16 +216,16 @@
     "semantic_hash": "62b0a1d71da9f4077ed1874e2cb1272c"
   },
   "Tests/simulation_B/mock_lsl_streamer.py": {
-    "mtime": 1793248618.643076,
-    "seen": 1793334293.185569,
-    "ast_hash": "662f84f404c1eae0d3cfa421d45f0f7f",
-    "semantic_hash": "662f84f404c1eae0d3cfa421d45f0f7f"
+    "mtime": 1793340809.8017092,
+    "seen": 1793342445.4839208,
+    "ast_hash": "5b5eb859cfb656c39d31a0ca3ad55cf7",
+    "semantic_hash": ""
   },
   "Tests/simulation_B/realtime_pipeline.py": {
-    "mtime": 1793331370.1995072,
-    "seen": 1793334293.1855714,
-    "ast_hash": "75b0123941ee23aba124e169d608fef3",
-    "semantic_hash": "75b0123941ee23aba124e169d608fef3"
+    "mtime": 1793341014.2651477,
+    "seen": 1793342445.483924,
+    "ast_hash": "1865637b6801c028e23f02d9e5ddc18b",
+    "semantic_hash": ""
   },
   "Tests/simulation_B/replay_offline.py": {
     "mtime": 1793257759.4283743,
@@ -234,16 +234,16 @@
     "semantic_hash": "41a6fcf799b5a55aedc696d53873329b"
   },
   "Tests/simulation_B/test_realtime_pipeline.py": {
-    "mtime": 1793332667.838956,
-    "seen": 1793334293.1855786,
-    "ast_hash": "2ab086ea31a298a69348bbd21c21aac6",
-    "semantic_hash": "2ab086ea31a298a69348bbd21c21aac6"
+    "mtime": 1793338432.2869084,
+    "seen": 1793340300.9074368,
+    "ast_hash": "3f1c8d7852926191acd0a41a72f9a234",
+    "semantic_hash": ""
   },
   "Tests/simulation_B/VERSION_B.md": {
-    "mtime": 1793333067.3104534,
-    "seen": 1793334293.1856184,
-    "ast_hash": "27102705dc5d9f0551ec567b2a6e1bb9",
-    "semantic_hash": "27102705dc5d9f0551ec567b2a6e1bb9"
+    "mtime": 1793342437.8294535,
+    "seen": 1793342445.4839828,
+    "ast_hash": "d07fa0f7bbd53e668dd604751768e4a0",
+    "semantic_hash": ""
   },
   "Tests/simulation_B/requirements.txt": {
     "mtime": 1793157830.1340086,
@@ -258,9 +258,27 @@
     "semantic_hash": "8c781bbf5e9279c372eeb9c01e928aa1"
   },
   "Tests/simulation_B/calibration.py": {
-    "mtime": 1793327745.4929328,
-    "seen": 1793334293.185564,
-    "ast_hash": "9b92611fe237036bae9899b448bdbd1b",
-    "semantic_hash": "9b92611fe237036bae9899b448bdbd1b"
+    "mtime": 1793334887.4652624,
+    "seen": 1793340300.9074173,
+    "ast_hash": "4e8cc643152c05fb50fb901656882b15",
+    "semantic_hash": ""
+  },
+  "Tests/simulation_B/behavior_markers.py": {
+    "mtime": 1793335373.9446554,
+    "seen": 1793340300.9074137,
+    "ast_hash": "b1ab2428f509c5fdc53a871ba6243ba7",
+    "semantic_hash": ""
+  },
+  "Tests/simulation_B/jitai.py": {
+    "mtime": 1793334877.4271274,
+    "seen": 1793340300.907423,
+    "ast_hash": "21c08c814595dc37c2059c58798b0884",
+    "semantic_hash": ""
+  },
+  "Tests/simulation_B/run_simulation.py": {
+    "mtime": 1793341093.1655831,
+    "seen": 1793342445.483929,
+    "ast_hash": "b5a92085bc3b057e7a69e921d517fdf4",
+    "semantic_hash": ""
   }
 }
