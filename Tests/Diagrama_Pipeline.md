@@ -1,6 +1,7 @@
 # Diagrama de flujo del pipeline (versión B, 2 nov 2026)
 
-Estado del código en `Tests/simulation_B/` tras los Pasos 1–7 del protocolo. Línea discontinua = pendiente;
+Estado del código en `Tests/simulation_B/` tras los Pasos 1–7 del protocolo, más el contador de parpadeos en Fp1
+(2 nov). Línea discontinua = pendiente o condicional;
 borde rojo = la sesión se detiene. Fuera del lazo quedan `test_realtime_pipeline.py` (chequeos offline) y
 `replay_offline.py --equivalencia` (comparación con `results/h1_por_minuto.csv`).
 
@@ -69,11 +70,17 @@ flowchart TD
     N2 --> PRI
   end
 
-  BEH["behavior_markers.py<br/>LSL MIRAI_Behavior"]
+  subgraph SB["Contador de parpadeos · BlinkCounter"]
+    BLK["Fp1 crudo en búfer → 1–10 Hz sin desfase<br/>picos 40–500 ms, separados ≥ 0.3 s,<br/>prominencia ≥ umbral"]
+    UMB["Umbral móvil: máx(3 MAD, ½ mediana de las 20 mayores)<br/>cada 7 min con ese período → conteo definitivo<br/>en vivo: umbral del período anterior"]
+    BLK --> UMB
+  end
+
+  BEH["behavior_markers.py · LSL MIRAI_Behavior<br/>nogo → N2 · bloque:reposo / scroll → parpadeo"]
   NOGO["Tarea Scroll-NoGo<br/>pendiente"]
 
-  OUT["Salidas: LSL MIRAI_JITAI · UDP/JSON 127.0.0.1:5005<br/>consola · runs/sesión/ ventanas.csv, eventos.csv"]
-  REP["Paso 7 · reporte al cerrar<br/>latencia, CPU, memoria, rechazo, RMS de Z,<br/>disparos, Berger → reporte.md PASA / NO PASA"]
+  OUT["Salidas: LSL MIRAI_JITAI · UDP/JSON 127.0.0.1:5005<br/>consola · runs/sesión/ ventanas.csv (+ parpadeos_min), eventos.csv"]
+  REP["Paso 7 · reporte al cerrar<br/>latencia, CPU, memoria, rechazo, RMS de Z, disparos,<br/>Berger, parpadeos por bloque → reporte.md PASA / NO PASA"]
   AR["App AR · pendiente<br/>latencia total bajo 2 s"]
 
   STOP1(["Sale: 0 o más de 1 candidato"])
@@ -99,6 +106,10 @@ flowchart TD
   EW --> QB
   BEH --> N2
   NOGO -.-> N2
+  PULL --> BLK
+  QC -.->|"Fp1 malo: sin conteo"| BLK
+  UMB --> OUT
+  BEH -->|"bloques"| REP
   PRI --> OUT --> REP
   OUT -.-> AR
 

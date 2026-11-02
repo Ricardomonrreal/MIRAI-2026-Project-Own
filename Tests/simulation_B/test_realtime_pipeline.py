@@ -8,9 +8,9 @@ from scipy import signal
 
 import calibration as cal
 from jitai import CONFIG, Jitai, chi_flat
-from mock_lsl_streamer import AURA_CHANNELS, inject, load_aura_csv, synthetic
-from realtime_pipeline import (ALPHA_ROI, SEG_S, SEG_STEP_S, THETA_ROI, VALID_MIN, WIN_S, CausalFilter, Rejector,
-                               Windower, blink_gain, blink_report)
+from mock_lsl_streamer import AURA_CHANNELS, add_blink, inject, load_aura_csv, synthetic
+from realtime_pipeline import (ALPHA_ROI, BLINK_PERIOD_S, SEG_S, SEG_STEP_S, THETA_ROI, VALID_MIN, WIN_S, BlinkCounter,
+                               CausalFilter, Rejector, Windower, blink_blocks, blink_gain, blink_match, blink_report)
 from spectral_features import Features, band_per, fit_roi, h1, window_psd
 
 warnings.filterwarnings("ignore")  # avisos de specparam/MNE al importar el módulo offline
@@ -110,6 +110,36 @@ for fs in (250.0, 50.0):
     if r["validas_fuera_de_trenes"] < VALID_MIN:
         print(f"  [FALLA] ventanas válidas < {VALID_MIN:.0%} (criterio del protocolo)")
 
+    # 3b) Contador de parpadeos (2 nov): 14 min sintéticos (+ DC del equipo). En el 2.º período de 7 min ("scroll")
+    #     quedan 1 de cada 3 parpadeos y al 40 % de amplitud (como al mirar el teléfono): el conteo definitivo, con el
+    #     umbral de cada período, debe verlos todos y la comparación por bloques, la caída de la tasa.
+    data, ev = synthetic(840, fs, 60.0, 10.0, 7)
+    ich = {c: i for i, c in enumerate(AURA_CHANNELS)}
+    truth = []
+    for k, (s, lab) in enumerate(e for e in ev if e[1].startswith("blink:")):
+        amp = float(lab.split(":")[1])
+        if s / fs >= BLINK_PERIOD_S:
+            add_blink(data, s, fs, -amp if k % 3 else -0.6 * amp, ich)
+        if s / fs < BLINK_PERIOD_S or not k % 3:
+            truth.append(s / fs)
+    truth = np.array(truth)
+    bc = BlinkCounter(fs)
+    x, t = data[ich["Fp1"]].astype(float) + 3000.0, np.arange(data.shape[1]) / fs
+    for i in range(0, len(x), 5):
+        bc.push(x[i:i + 5], t[i:i + 5])
+    bc.finish()
+    det = np.array([b_[0] for b_ in bc.blinks])
+    rec = [blink_match(det[(det >= a_) & (det < a_ + BLINK_PERIOD_S)], truth[(truth >= a_) & (truth < a_ + BLINK_PERIOD_S)])
+           for a_ in (0.0, BLINK_PERIOD_S)]
+    bl = blink_blocks(bc.blinks, [(0.0, "reposo"), (BLINK_PERIOD_S, "scroll")], bc.t0, bc.periods[-1]["fin"])
+    print(f"fs={fs:.0f} Hz: parpadeos definitivos recall/precisión reposo {rec[0][0]:.1%}/{rec[0][1]:.1%}, scroll "
+          f"{rec[1][0]:.1%}/{rec[1][1]:.1%} | umbral {bc.periods[0]['umbral_uv']:.0f} → {bc.periods[1]['umbral_uv']:.0f} µV | "
+          f"tasa {bl['reposo']['tasa_min']:.1f} → {bl['scroll']['tasa_min']:.1f}/min (×{bl['scroll']['razon']:.2f}, "
+          f"Mann-Whitney p = {bl['scroll']['p_mann_whitney']:.4f})")
+    assert all(r_ >= 0.95 and p_ >= 0.95 for r_, p_ in rec), rec
+    assert len(bc.periods) == 2 and bc.periods[1]["umbral_uv"] < 0.6 * bc.periods[0]["umbral_uv"]  # el umbral se movió
+    assert 0.2 < bl["scroll"]["razon"] < 0.5 and bl["scroll"]["p_mann_whitney"] < 0.01
+
     # 4) Paso 4: 180 s sintéticos (alfa en IAF 10 Hz, theta en 6 Hz) con alfa inyectado (ojos cerrados) en 90–120 s.
     data, ev = synthetic(180, fs, 60.0, 10.0, 3)
     inject(data, ev, [("alpha", 90, 30, 15)], fs, 10.0)
@@ -135,10 +165,12 @@ for fs in (250.0, 50.0):
     assert eyes > base + 1 and ok > 0.9 and ms <= 250  # máx. ≤ 250 ms (criterio del 29 oct)
 
     # 5) fit_roi() + band_per() == h1.periodic() (mismo ajuste que el offline) en la última ventana.
-    h1.FIT_RANGE = feat.fit_range
+    assert h1.FIT_RANGE == [2, 40]  # Features ya no reescribe la global del offline
+    h1.FIT_RANGE = feat.fit_range  # solo para la referencia h1.periodic(), que la lee
     spec, fq = rows[-1][1]["post_psd"], rows[-1][1]["f"]
-    flat, exp, r2 = fit_roi(spec, fq)
+    flat, exp, r2 = fit_roi(spec, fq, feat.fit_range)
     ref = h1.periodic(spec, fq, 8.0, 12.0)
+    h1.FIT_RANGE = [2, 40]
     assert np.allclose((band_per(flat, fq, 8.0, 12.0), exp, r2), ref), (band_per(flat, fq, 8.0, 12.0), exp, r2, ref)
 
     # 6) Paso 5: 20 min sintéticos sin inyecciones (IAF 10 Hz), sin marcadores → primeros 90 s. El error de μ es un

@@ -287,3 +287,24 @@ Escala/calidad de ese registro frente al umbral fijo.
 **EEG real, informativo** (ds007537 sub-01, 16 min, offline): σ_crudo de α_per 1.03 dB frente a 2.2–4.4 dB en el
 sintético (2–4× menos variable); σ_Z α 0.71 dB; Nivel 1: 2 activaciones breves en ~15 min; Nivel 3: 0. El sintético
 es pesimista para el Nivel 1. RMS(Z) θ 1.15 / α 1.78 (el registro cambia de condición: teléfono y video).
+
+## Contador de parpadeos en Fp1 (2 nov)
+
+`BlinkCounter` en `realtime_pipeline.py`: la lógica de `h1_ds007537.detect_blinks` (`blink_peaks()`: 1–10 Hz, picos de
+40–500 ms separados ≥ 0.3 s, prominencia ≥ máx(3 MAD, ½ mediana de las 20 mayores)) sobre Fp1 crudo, con **umbral
+móvil**: cada 7 min (`--parpadeo-periodo`) el período que cierra se cuenta con su propio umbral (conteo definitivo:
+eventos.csv y reporte); entre cierres, el conteo en vivo (`parpadeos_min` en ventanas.csv) usa el umbral anterior.
+Cada tramo se filtra **sin desfase** (`sosfiltfilt` sobre el búfer): con el filtro causal el lóbulo negativo superaba
+al pico y el recall caía al 14 %. Si el chequeo de calidad marca Fp1, no hay conteo. Bloques para comparar tasas:
+marcadores `bloque:<nombre>` del stream de conducta (`behavior_markers.py 0 bloque:reposo 420 bloque:scroll ...`) o
+fases del CSV de AURA; el reporte da la tasa por bloque y cada bloque frente al primero con ≥ 2 min (razón y
+Mann-Whitney sobre los minutos completos). `replay_offline.eeg_blinks` usa la misma `blink_peaks()` (salida idéntica).
+
+- **Sintético** (test, 250 y 50 Hz, 14 min; en los 7 min de "scroll" quedan 1 de cada 3 parpadeos al 40 % de
+  amplitud): recall y precisión 100 % en los dos períodos; umbral 139 → 48 µV; tasa 14.6 → 4.7/min (×0.32, p = 0.002).
+  El conteo en vivo no ve los parpadeos pequeños hasta el siguiente cierre (usa el umbral anterior).
+- **ds007537** (n = 27; teléfono 10 min → video de naturaleza 5 min): con umbral propio por bloque, video corto
+  **8.0 → 18.0/min**, menor con el teléfono en 11/12 (Wilcoxon p = 0.002); juego 9.6 → 18.9 (12/13, p = 0.002).
+  Con el umbral cada 7 min (como en vivo) 9.0 → 19.4 (10/12, p = 0.005). Frente al eye-tracker ρ = 0.74 (48 bloques).
+  El umbral sale menor con el teléfono (79 frente a 88 µV, 19/27): parpadeos más pequeños al mirar abajo, que un
+  umbral único por registro subcuenta (H1: 5.0 → 19.4). Confusión: el video siempre va después y en monitor.

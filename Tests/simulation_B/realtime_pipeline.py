@@ -12,6 +12,9 @@ congelada (μ, σ, IAF) y Z por ventana. Paso 6 (jitai.py): escalera de interven
 UDP/JSON local para la AR, consola y eventos.csv; el Nivel 2 escucha el stream de conducta `MIRAI_Behavior`.
 Paso 7: `--offline <fuente>` pasa un archivo por el mismo código sin LSL (bloques de 20 ms, sin esperar); el reporte
 añade CPU, memoria y deriva, y se guarda también en runs/<sesión>/reporte.md.
+Contador de parpadeos (2 nov): Fp1 crudo a 1–10 Hz, umbral móvil recalculado cada 7 min (BlinkCounter); tasa en vivo en
+ventanas.csv (parpadeos_min), parpadeos y umbrales en eventos.csv y, en el reporte, la tasa por bloque: marcadores
+`bloque:<nombre>` del stream de conducta (p. ej. reposo / scroll) o fases del CSV de AURA.
 
   * Stream elegido por nombre + source_id con el entorno LSL cerrado a esta PC (lsl_api.cfg).
   * Todo en segundos: fs y red se leen del stream (250 Hz emulador, 250/50 Hz AURA).
@@ -22,10 +25,12 @@ añade CPU, memoria y deriva, y se guarda también en runs/<sesión>/reporte.md.
 Uso:
   python realtime_pipeline.py --name AURA --source-id mirai-sim- --seconds 600   # emulador
   python realtime_pipeline.py --name AURA --source-id AuraLSL-                   # AURA real (Aura.exe de esta PC)
+  python behavior_markers.py 0 bloque:reposo 420 bloque:scroll 840 bloque:reposo # antes: bloques de parpadeo (7 min)
   python realtime_pipeline.py --offline synthetic --duration 600 --inject alpha 300 30 25   # replay sin LSL
   python realtime_pipeline.py --offline ../../AURA/data/eeg_data_20260122_123839.csv --sin-fases
 """
 import argparse
+import bisect
 import csv
 import json
 import os
@@ -34,7 +39,7 @@ import sys
 import time
 
 import numpy as np
-from scipy import signal
+from scipy import signal, stats
 
 from check_lsl_stream import channel_meta, find_markers, find_stream  # fija LSLAPICFG antes de importar pylsl
 from mock_lsl_streamer import AURA_CHANNELS, load_source
@@ -55,7 +60,11 @@ CAL_S = 90.0  # calibración (Paso 5); aquí fija la línea base EMG
 EMG_VETO = False  # versión B: el EMG solo se mide (emg_db); la versión A descarta segmentos > μ + 3σ
 LOST_S = 5.0  # más segundos seguidos sin ventanas válidas = señal perdida
 VALID_MIN = 0.90  # criterio del Paso 3: fracción de ventanas válidas con ~15 parpadeos/min
-HERE = os.path.dirname(os.path.abspath(__file__))
+BLINK_BAND = (1.0, 10.0)  # contador de parpadeos en Fp1: banda de h1_ds007537.detect_blinks
+BLINK_PERIOD_S = 420.0  # umbral móvil (2 nov): cada 7 min se recalcula con los datos de esos 7 min
+BLINK_EDGE_S = 2.0  # espera tras un tramo: su último pico (≤ 0.5 s) completo y lejos del borde del filtro sin desfase
+BLINK_CTX_S = 5.0  # Fp1 que se conserva antes de cada tramo (contexto del filtro y de find_peaks)
+HERE =os.path.dirname(os.path.abspath(__file__))
 
 
 class CausalFilter:
@@ -206,6 +215,130 @@ def blink_report(wins, markers, gain):
             "ventanas_senal_perdida": int(sum(r["perdida"] for _, r in wins))}
 
 
+def blink_peaks(y, fs, thr=None):
+    """Parpadeos en Fp1 ya filtrado a 1–10 Hz, con la lógica de h1_ds007537.detect_blinks: picos de 40–500 ms de
+    ancho, separados ≥ 0.3 s, con prominencia ≥ umbral. Sin `thr`, el umbral sale del propio tramo:
+    máx(3 MAD, ½ mediana de las 20 prominencias mayores). Devuelve (índices, prominencias en µV, umbral)."""
+    mad = np.median(np.abs(y - np.median(y))) * 1.4826
+    pk, pr = signal.find_peaks(y, prominence=3 * mad if thr is None else thr, distance=max(1, int(0.3 * fs)),
+                               width=(int(0.04 * fs), int(0.5 * fs)))
+    p = pr["prominences"]
+    if thr is None:
+        thr = max(3 * mad, 0.5 * float(np.median(np.sort(p)[-20:]))) if len(p) else 3 * mad
+    return pk[p >= thr], p[p >= thr], float(thr)
+
+
+class BlinkCounter:
+    """Contador de parpadeos en Fp1 (2 nov): blink_peaks() con umbral móvil sobre Fp1 crudo guardado en un búfer. Cada
+    tramo se filtra a 1–10 Hz SIN desfase (sosfiltfilt) al analizarlo: el filtro causal deformaba el parpadeo (su
+    lóbulo negativo superaba al pico) y la prominencia dejaba de servir (recall 14 % en el sintético).
+
+      * Definitivo: cada `period_s` s (7 min) el período que acaba de cerrar se cuenta con su PROPIO umbral, calculado
+        solo con ese período, igual que replay_offline.eeg_blinks sobre ese tramo. Va a eventos.csv y al reporte; es
+        el que sirve para comparar bloques.
+      * En vivo (provisional, consola y ventanas.csv): cada segundo, con el umbral del período anterior; el primero
+        sale de los primeros `init_s` s. Si dentro del período cambia la amplitud (p. ej. mirar el teléfono), se desvía.
+    """
+
+    def __init__(self, fs, period_s=None, init_s=None):
+        self.sos = signal.butter(4, BLINK_BAND, btype="band", fs=fs, output="sos")
+        self.fs, self.period, self.init = fs, period_s or BLINK_PERIOD_S, init_s or CAL_S
+        cap = int((self.period + BLINK_CTX_S + BLINK_EDGE_S + 3) * fs)  # período + contexto + espera + un bloque ≤ 1 s
+        self.x, self.t, self.n = np.empty(cap), np.empty(cap), 0
+        self.t0 = self.thr = self.live_cut = None
+        self.live, self.blinks, self.periods = [], [], []  # t en vivo; (t, prominencia) definitivos; resumen por período
+
+    def _detect(self, lo, thr=None, t_lo=-np.inf, t_hi=np.inf):
+        """Parpadeos (t, prominencia) en [t_lo, t_hi) del búfer desde `lo`, filtrado entero (el resto es contexto para
+        el filtro y find_peaks). Sin `thr`, el umbral sale de [t_lo, t_hi). Devuelve (parpadeos, umbral)."""
+        y, t = signal.sosfiltfilt(self.sos, self.x[lo:self.n]), self.t[lo:self.n]
+        if thr is None:
+            thr = blink_peaks(y[(t >= t_lo) & (t < t_hi)], self.fs)[2]
+        pk, pr, _ = blink_peaks(y, self.fs, thr)
+        return [(float(a), float(b)) for a, b in zip(t[pk], pr) if t_lo <= a < t_hi], thr
+
+    def push(self, x, ts):
+        """x: Fp1 crudo (µV) del bloque; ts: sus marcas de tiempo. Devuelve los parpadeos definitivos del período
+        que se cierra con este bloque, o None si no se cerró ninguno."""
+        self.t0 = ts[0] if self.t0 is None else self.t0
+        self.x[self.n:self.n + len(x)], self.t[self.n:self.n + len(x)] = x, ts
+        self.n += len(x)
+        new, start = None, self.t0 + len(self.periods) * self.period
+        if ts[-1] >= start + self.period + BLINK_EDGE_S:
+            new = self._close(start, start + self.period, own=True)
+        if self.thr is None and ts[-1] - self.t0 >= self.init:
+            self.thr = self._detect(0)[1]
+        cut = ts[-1] - BLINK_EDGE_S
+        if self.thr is not None and (self.live_cut is None or cut - self.live_cut >= HOP_S):
+            # 1.ª vez desde el inicio; después, el último tramo con contexto a ambos lados.
+            lo = 0 if self.live_cut is None else max(0, self.n - int((BLINK_CTX_S + BLINK_EDGE_S + HOP_S) * self.fs))
+            for tp, _ in self._detect(lo, self.thr)[0]:
+                if (self.live_cut is None or tp > self.live_cut) and tp <= cut and (not self.live or tp - self.live[-1] >= 0.3):
+                    self.live.append(tp)
+            self.live_cut = cut
+        return new
+
+    def _close(self, start, end, own):
+        new, thr = self._detect(0, None if own or self.thr is None else self.thr, start, end)
+        self.blinks += new
+        self.periods.append({"inicio": float(start), "fin": float(end), "umbral_uv": thr, "parpadeos": len(new),
+                             "umbral_propio": bool(own or self.thr is None)})
+        self.thr = thr  # el conteo en vivo del período siguiente usa este umbral
+        keep = self.t[:self.n] >= end - BLINK_CTX_S  # contexto del período siguiente
+        m = int(keep.sum())
+        self.x[:m], self.t[:m] = self.x[:self.n][keep], self.t[:self.n][keep]
+        self.n = m
+        return new
+
+    def finish(self):
+        """Cierra el último período: con su propio umbral si dura ≥ init_s; si no, con el del período anterior."""
+        if not self.n or self.t0 is None:
+            return None
+        start, end = self.t0 + len(self.periods) * self.period, self.t[self.n - 1] + 1 / self.fs
+        return self._close(start, end, own=end - start >= self.init) if end > start else None
+
+    def rate(self, t):
+        """Parpadeos en vivo de los últimos 60 s (provisional); None hasta tener umbral y 60 s de registro."""
+        if self.live_cut is None or t - self.t0 < 60:
+            return None
+        return bisect.bisect_right(self.live, t) - bisect.bisect_right(self.live, t - 60)
+
+
+def blink_match(det, true, lag=0.15, tol=0.25):
+    """(recall, precisión) de los parpadeos detectados frente a la verdad de campo del emulador: el marcador va al
+    inicio del parpadeo y el pico llega `lag` s después."""
+    det, true = np.asarray(det, float), np.asarray(true, float) + lag
+    if not len(det) or not len(true):
+        return float("nan"), float("nan")
+    d = np.abs(true[:, None] - det[None, :])
+    return float((d.min(axis=1) <= tol).mean()), float((d.min(axis=0) <= tol).mean())
+
+
+def blink_blocks(blinks, blocks, t_ini, t_fin):
+    """Tasa de parpadeo por bloque (marcadores `bloque:<nombre>` o fases del CSV de AURA), uniendo los tramos del mismo
+    nombre. Referencia: el primer bloque con ≥ 2 minutos completos; cada otro bloque se compara con ella por la razón
+    de tasas y con Mann-Whitney sobre los conteos de cada minuto completo."""
+    tb = np.array([t for t, _ in blinks], float)
+    out = {}
+    for i, (t0, nm) in enumerate(blocks):
+        t0, t1 = max(t0, t_ini), min(blocks[i + 1][0] if i + 1 < len(blocks) else t_fin, t_fin)
+        if t1 <= t0:
+            continue
+        d = out.setdefault(nm, {"dur_s": 0.0, "parpadeos": 0, "por_minuto": []})
+        d["dur_s"] += float(t1 - t0)
+        d["parpadeos"] += int(((tb >= t0) & (tb < t1)).sum())
+        d["por_minuto"] += [int(((tb >= s) & (tb < s + 60)).sum()) for s in np.arange(t0, t1 - 60 + 1e-9, 60)]
+    for d in out.values():
+        d["tasa_min"] = d["parpadeos"] / (d["dur_s"] / 60)
+    base = next((nm for nm, d in out.items() if len(d["por_minuto"]) >= 2), None)
+    for nm, d in out.items():
+        if base and nm != base and len(d["por_minuto"]) >= 2:
+            b = out[base]
+            d.update({"frente_a": base, "razon": d["tasa_min"] / b["tasa_min"] if b["tasa_min"] else None,
+                      "p_mann_whitney": float(stats.mannwhitneyu(d["por_minuto"], b["por_minuto"]).pvalue)})
+    return out
+
+
 def open_run(source, cfg):
     d = os.path.join(HERE, "runs", time.strftime("%Y%m%d_%H%M%S") + "_" + source.replace(":", "-").replace(" ", "_"))
     os.makedirs(d)
@@ -214,7 +347,7 @@ def open_run(source, cfg):
     return d
 
 
-def write_report_md(run, cfg, rep, rep3, rep4, rep5, rep6, rep7, checks):
+def write_report_md(run, cfg, rep, rep3, rep4, rep5, rep6, rep7, checks, repb=None):
     """Paso 7: reporte final de la sesión en runs/<sesión>/reporte.md."""
     f = lambda v, n=1: "—" if v is None else f"{v:.{n}f}"  # noqa: E731
     L = [f"# Reporte de sesión — {os.path.basename(run)}", "",
@@ -250,6 +383,20 @@ def write_report_md(run, cfg, rep, rep3, rep4, rep5, rep6, rep7, checks):
               "|---|---|---|---|---|---|"]
         L += [f"| {x['fase']} | {x['inicio_s']:.1f} | {x['ventanas_con_features']} | {f(x['alpha_per_media'], 2)} | "
               f"{f(x['theta_per_media'], 2)} | {', '.join(f'{v:.1f}' for v in x['nivel1_on_s']) or '—'} |" for x in rep7["fases"]]
+    if repb:
+        t0b = repb["periodos"][0]["inicio"]
+        L += ["", "## Parpadeos (Fp1)", "", f"- {repb['parpadeos']} parpadeos en {repb['minutos']:.1f} min "
+              f"({repb['tasa_min']:.1f}/min) · umbral recalculado cada {cfg['parpadeos']['periodo_umbral_s'] / 60:g} min"
+              + (f" · frente al emulador: recall {repb['recall']:.1%}, precisión {repb['precision']:.1%}" if "recall" in repb else ""),
+              "", "| Período (min) | Umbral (µV) | Parpadeos | /min |", "|---|---|---|---|"]
+        L += [f"| {(p_['inicio'] - t0b) / 60:.1f}–{(p_['fin'] - t0b) / 60:.1f} | {p_['umbral_uv']:.0f}"
+              f"{'' if p_['umbral_propio'] else ' (anterior)'} | {p_['parpadeos']} | "
+              f"{p_['parpadeos'] / ((p_['fin'] - p_['inicio']) / 60):.1f} |" for p_ in repb["periodos"]]
+        if repb["bloques"]:
+            L += ["", "| Bloque | Min | Parpadeos | /min | Frente a la referencia (minutos completos) |", "|---|---|---|---|---|"]
+            L += [f"| {nm} | {d['dur_s'] / 60:.1f} | {d['parpadeos']} | {d['tasa_min']:.1f} | "
+                  + (f"×{d['razon']:.2f} vs {d['frente_a']}, Mann-Whitney p = {d['p_mann_whitney']:.3f}"
+                     if d.get("razon") is not None else "—") + " |" for nm, d in repb["bloques"].items()]
     L += ["", "## Criterios", ""] + [f"- [{'x' if ok else ' '}] {k}" for k, ok in checks.items()]
     L += ["", f"**Resultado: {'PASA' if all(checks.values()) else 'NO PASA'}**", ""]
     with open(os.path.join(run, "reporte.md"), "w", encoding="utf-8") as fh:
@@ -319,6 +466,8 @@ def main():
     p.add_argument("--sigma-factor", type=float, default=1.0, help="factor de σ_suav (Paso 5; lo mide el Paso 7)")
     p.add_argument("--udp-port", type=int, default=5005, help="puerto UDP local de la AR (Paso 6)")
     p.add_argument("--sin-nivel2", action="store_true", help="desactiva el Nivel 2 (escenario H1 ✅ H2 ❌)")
+    p.add_argument("--parpadeo-periodo", type=float, default=BLINK_PERIOD_S,
+                   help="s entre recalibraciones del umbral de parpadeo (umbral móvil; 420 = 7 min)")
     g = p.add_argument_group("replay sin LSL (Paso 7)")
     g.add_argument("--offline", default=None, help="'synthetic', CSV de AURA o archivo EEG: se procesa sin LSL")
     g.add_argument("--fs", type=float, default=None)
@@ -371,6 +520,7 @@ def main():
     jcfg = jitai.CONFIG if not a.sin_nivel2 else {**jitai.CONFIG, "niveles": {**jitai.CONFIG["niveles"],
                                                     2: {**jitai.CONFIG["niveles"][2], "activo": False}}}
     jt = jitai.Jitai(jcfg, HOP_S)
+    blk = BlinkCounter(fs, a.parpadeo_periodo) if "Fp1" not in bads else None
     cfg = {"paso": 7, "modo": "offline" if offline else "en vivo", "stream": src["stream"],
            "source_id": src["source_id"], "host": src["host"],
            "fs": fs, "line_freq": line, "channels": AURA_CHANNELS, "labels_stream": labels,
@@ -384,6 +534,9 @@ def main():
                         "roi_theta": [AURA_CHANNELS[i] for i in front], "roi_alpha": [AURA_CHANNELS[i] for i in post],
                         "fit_range_hz": feat.fit_range, "r2_min": 0.75, "psd": "periodograma Hamming por segmento limpio"},
            "jitai": jcfg, "udp": f"127.0.0.1:{a.udp_port}",
+           "parpadeos": {"canal": "Fp1", "banda_hz": BLINK_BAND, "periodo_umbral_s": a.parpadeo_periodo,
+                         "umbral": "máx(3 MAD, ½ mediana de las 20 prominencias mayores) de cada período",
+                         "ancho_ms": [40, 500], "separacion_s": 0.3} if blk else "sin conteo: Fp1 malo",
            "started": time.strftime("%Y-%m-%d %H:%M:%S")}
     if offline:
         cfg["offline"] = {"fuente": a.offline, "inyecciones": a.inject, "seed": a.seed, "sin_fases": a.sin_fases}
@@ -415,10 +568,22 @@ def main():
                  "segmentos_limpios", "n_limpios", "motivo", "valida", "senal_perdida", "emg_db",
                  "features_ms", "theta_per", "alpha_per", "theta_exp", "alpha_exp", "theta_r2", "alpha_r2",
                  "theta_ok", "alpha_ok", "cal_estado", "z_theta", "z_alpha"]
-                + [f"rms_{c}" for c in AURA_CHANNELS])
+                + [f"rms_{c}" for c in AURA_CHANNELS] + ["parpadeos_min"])
     fe = open(os.path.join(run, "eventos.csv"), "w", newline="", encoding="utf-8")
     we = csv.writer(fe)
     we.writerow(["ts", "fuente", "evento"])
+    bloques = []  # (ts, nombre) de los bloques para la tasa de parpadeo
+
+    def log_blinks(new):
+        """Período de parpadeo cerrado: cada parpadeo definitivo y el resumen con su umbral, en eventos.csv y consola."""
+        pe = blk.periods[-1]
+        for tp, pr_ in new:
+            we.writerow([f"{tp:.4f}", "parpadeo", f"prominencia {pr_:.0f} µV"])
+        msg = (f"{(pe['inicio'] - blk.t0) / 60:.1f}–{(pe['fin'] - blk.t0) / 60:.1f} min: {pe['parpadeos']} parpadeos "
+               f"({pe['parpadeos'] / ((pe['fin'] - pe['inicio']) / 60):.1f}/min), umbral {pe['umbral_uv']:.0f} µV"
+               + ("" if pe["umbral_propio"] else " (el del período anterior)"))
+        we.writerow([f"{pe['fin']:.4f}", "parpadeo", msg])
+        print(f"  PARPADEOS {msg}")
 
     # calculo_ms (criterio del Paso 2) = desde que llega el bloque que cierra la ventana hasta que la ventana
     # está lista (filtrar ese bloque + cortarla). rechazo_ms = Paso 3, medido aparte. CPU total: Paso 7.
@@ -444,7 +609,7 @@ def main():
 
     def on_window(w, ts_last):
         # Paso 3: rechazo de artefactos. Paso 4: features con los segmentos limpios. Pasos 5–6 se enganchan aquí.
-        nonlocal rej, front, post
+        nonlocal rej, front, post, blk
         t_cut = pylsl.local_clock()  # el búfer acaba de cortar la ventana: aquí se mide el intervalo del Paso 2
         t_ready = time.perf_counter()
         c = (t_ready - state["t_chunk"]) * 1000
@@ -458,6 +623,9 @@ def main():
             post = [idx[c_] for c_ in ALPHA_ROI if c_ not in bads]
             print(f"Chequeo de calidad ({cal.QC_S:.0f} s): canales malos {bads or 'ninguno'} | ROI θ "
                   f"{[AURA_CHANNELS[i] for i in front]} | ROI α {[AURA_CHANNELS[i] for i in post]}")
+            if blk and "Fp1" in bads:
+                blk = None
+                print("Fp1 malo: sin conteo de parpadeos")
             if not front or not post:
                 state["stop"] = "sin canales válidos en la ROI " + ("frontal" if not front else "posterior")
                 return
@@ -496,6 +664,7 @@ def main():
         if state["k"] % 10 == 0:
             res.append((time.perf_counter(), time.process_time(), mem_mb()))
         rms = w.std(axis=0)
+        br = blk.rate(ts_last) if blk else None  # parpadeos en vivo de los últimos 60 s
         wv.writerow([state["k"], f"{ts_last:.4f}", f"{t_cut:.4f}", f"{now:.4f}", f"{(now - ts_last) * 1000:.1f}", f"{c:.3f}", f"{rj:.3f}",
                      "".join("1" if x else "0" for x in r["clean"]), sum(r["clean"]), r["motivo"],
                      int(r["valida"]), int(r["perdida"]), "" if r["emg_db"] is None else f"{r['emg_db']:.2f}",
@@ -504,7 +673,7 @@ def main():
                        ("theta_per", "alpha_per", "theta_exp", "alpha_exp", "theta_r2", "alpha_r2")]
                     + [int(o[k]) if k in o else "" for k in ("theta_ok", "alpha_ok")]
                     + [cb.state] + ([f"{z['theta']:.3f}", f"{z['alpha']:.3f}"] if z else ["", ""])
-                    + [f"{v:.2f}" for v in rms])
+                    + [f"{v:.2f}" for v in rms] + ["" if br is None else br])
         emit_t.append(t_cut)  # 30 oct: al cortar, no al emitir; el costo de los Pasos 3–5 tiene sus propios criterios
         calc_ms.append(c)
         rej_ms.append(rj)
@@ -523,7 +692,8 @@ def main():
                   f"cálculo={c:5.2f} ms  limpios={''.join('1' if x else '0' for x in r['clean'])}  "
                   f"válidas(últ. 10)={ok:.0%}{'  SEÑAL PERDIDA' if r['perdida'] else ''}"
                   + (f"  θ_per={o['theta_per']:5.2f}  α_per={o['alpha_per']:5.2f} dB  features={fm:4.1f} ms" if o else "")
-                  + (f"  Zθ={z['theta']:+5.2f}  Zα={z['alpha']:+5.2f}" if z else f"  [{cb.state}]"))
+                  + (f"  Zθ={z['theta']:+5.2f}  Zα={z['alpha']:+5.2f}" if z else f"  [{cb.state}]")
+                  + (f"  parpadeos={br}/min" if br is not None else ""))
 
     wnd = Windower(win, hop, nch, on_window)
     print(f"Pipeline{' (replay sin LSL)' if offline else ''}: {src['stream']} ({src['source_id']}) | {fs:.0f} Hz | red {line:.0f} Hz | "
@@ -543,7 +713,10 @@ def main():
                 state["t0"] = ts[0] if state["t0"] is None else state["t0"]
                 state["n"] = state.get("n", 0) + len(ts)
                 state["ts_end"] = ts[-1]
-                wnd.push(filt(np.asarray(x, dtype=np.float64)), ts)
+                x = np.asarray(x, dtype=np.float64)
+                if blk and (new := blk.push(x[:, idx["Fp1"]], ts)) is not None:
+                    log_blinks(new)
+                wnd.push(filt(x), ts)
             elif not offline:
                 time.sleep(0.005)
             if mk_inlet:
@@ -553,6 +726,9 @@ def main():
                         break
                     we.writerow([f"{mts:.4f}", "marcador", m[0]])
                     markers.append((mts, m[0]))
+                    # Fases del CSV de AURA como bloques; los TTL de BrainVision ('file:Stimulus/S 11') no.
+                    if m[0].startswith("bloque:") or (m[0].startswith("file:") and "/" not in m[0]):
+                        bloques.append((mts, m[0].split(":", 1)[1]))
                     if state["cal"] and not (a.sin_fases and m[0].startswith("file:")):
                         state["cal"].marker(mts, m[0])
             if beh_inlet:
@@ -561,10 +737,14 @@ def main():
                     if m is None:
                         break
                     we.writerow([f"{mts:.4f}", "conducta", m[0]])
+                    if m[0].startswith("bloque:"):
+                        bloques.append((mts, m[0].split(":", 1)[1]))
                     if state["cal"] and state["cal"].state == "congelada":
                         emit_jitai(jt.behavior(mts, m[0]))
     except KeyboardInterrupt:
         print("\nDetenido por el usuario.")
+    if blk and (new := blk.finish()) is not None:
+        log_blinks(new)
     fw.close()
     fe.close()
     if state["stop"]:
@@ -690,8 +870,19 @@ def main():
             rep7["berger_alpha_per_db"] = fc["alpha_per_media"] - fo["alpha_per_media"] if ok_b else None
             checks["Berger: α_per mayor con ojos cerrados que abiertos"] = bool(ok_b and rep7["berger_alpha_per_db"] > 0)
             checks["Berger: el Nivel 1 se dispara con ojos cerrados"] = bool(fc["nivel1_on_s"])
+    # Parpadeos (conteo definitivo): por período de umbral y por bloque; con el emulador, frente a su verdad de campo.
+    repb = None
+    if blk and blk.periods:
+        t_fin = blk.periods[-1]["fin"]
+        mins = (t_fin - blk.t0) / 60
+        repb = {"parpadeos": len(blk.blinks), "minutos": mins, "tasa_min": len(blk.blinks) / mins,
+                "periodos": blk.periods, "bloques": blink_blocks(blk.blinks, bloques, blk.t0, t_fin)}
+        truth = [t_ for t_, m_ in markers if m_ == "blink" or m_.startswith("blink:")]
+        if truth:
+            repb["recall"], repb["precision"] = blink_match([t_ for t_, _ in blk.blinks], truth)
     with open(os.path.join(run, "config.json"), "r+", encoding="utf-8") as f:
         c = json.load(f)
+        c["parpadeos_reporte"] = repb
         c["calibracion"] = rep5
         c["jitai_reporte"] = rep6
         c["paso7"] = rep7
@@ -763,10 +954,21 @@ def main():
               f"α_per {f_['alpha_per_media'] if f_['alpha_per_media'] is None else round(f_['alpha_per_media'], 2)} dB | "
               f"θ_per {f_['theta_per_media'] if f_['theta_per_media'] is None else round(f_['theta_per_media'], 2)} dB | "
               f"N1 on a los {[round(x, 1) for x in f_['nivel1_on_s']]} s")
+    if repb:
+        umb = ", ".join(f"{p_['umbral_uv']:.0f}" for p_ in repb["periodos"])
+        print(f"Parpadeos (Fp1)         : {repb['parpadeos']} en {repb['minutos']:.1f} min ({repb['tasa_min']:.1f}/min) | "
+              f"umbral por período {umb} µV"
+              + (f" | frente al emulador: recall {repb['recall']:.1%}, precisión {repb['precision']:.1%}" if "recall" in repb else ""))
+        for nm, d in repb["bloques"].items():
+            print(f"   bloque {nm:22s} {d['dur_s'] / 60:5.1f} min: {d['parpadeos']:4d} parpadeos, {d['tasa_min']:5.1f}/min"
+                  + (f" | ×{d['razon']:.2f} frente a {d['frente_a']}, Mann-Whitney p = {d['p_mann_whitney']:.3f}"
+                     if d.get("razon") is not None else ""))
+    elif not blk:
+        print("Parpadeos (Fp1)         : sin conteo (Fp1 malo)")
     for k, ok in checks.items():
         print(f"  [{'OK' if ok else 'FALLA'}] {k}")
     print(f"\nRESULTADO: {'PASA' if all(checks.values()) else 'NO PASA'}  (registro en {run})")
-    write_report_md(run, cfg, rep, rep3, rep4, rep5, rep6, rep7, checks)
+    write_report_md(run, cfg, rep, rep3, rep4, rep5, rep6, rep7, checks, repb)
     sys.exit(0 if all(checks.values()) else 1)
 
 

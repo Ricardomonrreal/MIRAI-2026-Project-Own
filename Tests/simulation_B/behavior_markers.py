@@ -2,10 +2,12 @@
 behavior_markers.py — marcadores de conducta de prueba para el Nivel 2 del Paso 6 (MIRAI 2026) · VERSIÓN B
 
 Publica el stream LSL `MIRAI_Behavior` (sustituto de la tarea Scroll-NoGo mientras no exista) y envía cada marcador
-a los segundos indicados, contados desde que se conecta el primer receptor (el pipeline).
+a los segundos indicados, contados desde que se conecta el primer receptor (el pipeline). Los marcadores
+`bloque:<nombre>` no van al Nivel 2: delimitan los bloques de la tasa de parpadeo del reporte (2 nov).
 
 Uso (antes de lanzar el pipeline):
   python behavior_markers.py 200 nogo:error 220 nogo:slow
+  python behavior_markers.py 0 bloque:reposo 420 bloque:scroll 840 bloque:reposo
 """
 import argparse
 import os

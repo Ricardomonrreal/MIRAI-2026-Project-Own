@@ -22,21 +22,17 @@ import numpy as np
 from scipy import signal
 
 from mock_lsl_streamer import AURA_CHANNELS, FS_OUT, load_aura_csv, load_file
-from realtime_pipeline import (ALPHA_ROI, HERE, PTP_UV, SEG_S, SEG_STEP_S, THETA_ROI, WIN_S, CausalFilter, Rejector,
-                               Windower)
+from realtime_pipeline import (ALPHA_ROI, BLINK_BAND, HERE, PTP_UV, SEG_S, SEG_STEP_S, THETA_ROI, WIN_S, CausalFilter,
+                               Rejector, Windower, blink_peaks)
 
 ET_MAX_MISSING = 0.20  # como h1_ds007537: con más pérdida de pupila el sujeto mira el teléfono
 
 
 def eeg_blinks(fp1, fs):
-    """Picos de parpadeo en Fp1 (1–10 Hz, prominencia > ½ mediana de los 20 mayores y > 3 MAD, ancho 40–500 ms).
-    Misma lógica que h1_ds007537.detect_blinks, que promedia Fp1/Fp2; AURA solo tiene Fp1."""
-    v = signal.sosfiltfilt(signal.butter(4, [1, 10], btype="band", fs=fs, output="sos"), fp1)
-    mad = np.median(np.abs(v - np.median(v))) * 1.4826
-    pk, pr = signal.find_peaks(v, prominence=3 * mad, distance=int(0.3 * fs), width=(int(0.04 * fs), int(0.5 * fs)))
-    if not len(pk):
-        return np.array([])
-    return pk[pr["prominences"] > 0.5 * np.median(np.sort(pr["prominences"])[-20:])] / fs
+    """Picos de parpadeo en Fp1 (s): blink_peaks() sobre el registro entero filtrado sin desfase a 1–10 Hz, con un solo
+    umbral. Misma lógica que h1_ds007537.detect_blinks, que promedia Fp1/Fp2; AURA solo tiene Fp1."""
+    v = signal.sosfiltfilt(signal.butter(4, BLINK_BAND, btype="band", fs=fs, output="sos"), fp1)
+    return blink_peaks(v, fs)[0] / fs
 
 
 def et_blinks(vhdr):

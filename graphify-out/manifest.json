@@ -222,21 +222,21 @@
     "semantic_hash": ""
   },
   "Tests/simulation_B/realtime_pipeline.py": {
-    "mtime": 1793341014.2651477,
-    "seen": 1793342445.483924,
-    "ast_hash": "1865637b6801c028e23f02d9e5ddc18b",
+    "mtime": 1793597642.749782,
+    "seen": 1793598170.4250002,
+    "ast_hash": "8ee8cb8fe3378bb78ee764b98c14d98a",
     "semantic_hash": ""
   },
   "Tests/simulation_B/replay_offline.py": {
-    "mtime": 1793257759.4283743,
-    "seen": 1793334293.1855738,
-    "ast_hash": "41a6fcf799b5a55aedc696d53873329b",
-    "semantic_hash": "41a6fcf799b5a55aedc696d53873329b"
+    "mtime": 1793597527.25638,
+    "seen": 1793598170.4250062,
+    "ast_hash": "1f7c4631ab9aeb44c75368a56e9b6153",
+    "semantic_hash": ""
   },
   "Tests/simulation_B/test_realtime_pipeline.py": {
-    "mtime": 1793338432.2869084,
-    "seen": 1793340300.9074368,
-    "ast_hash": "3f1c8d7852926191acd0a41a72f9a234",
+    "mtime": 1793597715.1348813,
+    "seen": 1793598170.425024,
+    "ast_hash": "4dcdf7e8abe947b84a2b75131142e6f0",
     "semantic_hash": ""
   },
   "Tests/simulation_B/VERSION_B.md": {
@@ -252,10 +252,10 @@
     "semantic_hash": "4653a54250dff2ba7f9382dba52a6438"
   },
   "Tests/simulation_B/spectral_features.py": {
-    "mtime": 1793262070.7939422,
-    "seen": 1793334293.185576,
-    "ast_hash": "8c781bbf5e9279c372eeb9c01e928aa1",
-    "semantic_hash": "8c781bbf5e9279c372eeb9c01e928aa1"
+    "mtime": 1793595947.2878559,
+    "seen": 1793596028.021437,
+    "ast_hash": "456c0d3b58209778cb47c58f41c4ce95",
+    "semantic_hash": ""
   },
   "Tests/simulation_B/calibration.py": {
     "mtime": 1793334887.4652624,
@@ -264,9 +264,9 @@
     "semantic_hash": ""
   },
   "Tests/simulation_B/behavior_markers.py": {
-    "mtime": 1793335373.9446554,
-    "seen": 1793340300.9074137,
-    "ast_hash": "b1ab2428f509c5fdc53a871ba6243ba7",
+    "mtime": 1793597527.590785,
+    "seen": 1793598170.4249659,
+    "ast_hash": "ff6987b0021b5846acdc7603f26f978b",
     "semantic_hash": ""
   },
   "Tests/simulation_B/jitai.py": {
@@ -279,6 +279,12 @@
     "mtime": 1793341093.1655831,
     "seen": 1793342445.483929,
     "ast_hash": "b5a92085bc3b057e7a69e921d517fdf4",
+    "semantic_hash": ""
+  },
+  "Tests/Diagrama_Pipeline.md": {
+    "mtime": 1793597780.9186964,
+    "seen": 1793598170.4250667,
+    "ast_hash": "87e4cb7f2d64c8bce6cb16c6ee63f59c",
     "semantic_hash": ""
   }
 }

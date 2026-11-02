@@ -14,7 +14,7 @@ import numpy as np
 from scipy import signal
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "datasets workflow", "ds007537"))
-import h1_ds007537 as h1  # noqa: E402  (periodic, FIT_RANGE)
+import h1_ds007537 as h1  # noqa: E402  (SpectralModel)
 
 R2_MIN = 0.75
 
@@ -27,11 +27,12 @@ def window_psd(w, clean, fs, seg, step):
     return f, p.mean(axis=0)
 
 
-def fit_roi(spec, f):
+def fit_roi(spec, f, fit_range):
     """El mismo ajuste que h1.periodic() (test_realtime_pipeline lo comprueba), pero devuelve el espectro aplanado
-    completo (log10 PSD − fondo aperiódico) para poder recalcular las bandas cuando el Paso 5 fije la IAF."""
+    completo (log10 PSD − fondo aperiódico) para poder recalcular las bandas cuando el Paso 5 fije la IAF.
+    El rango llega como argumento: no toca la global h1.FIT_RANGE del módulo offline."""
     fm = h1.SpectralModel(peak_width_limits=[1, 8], max_n_peaks=6, aperiodic_mode="fixed", verbose=False)
-    fm.fit(f, spec, h1.FIT_RANGE)
+    fm.fit(f, spec, fit_range)
     off, exp = fm.get_params("aperiodic")
     with np.errstate(divide="ignore"):  # f = 0 → −inf; ninguna banda lo incluye
         flat = np.log10(spec) - (off - exp * np.log10(f))
@@ -58,14 +59,13 @@ class Features:
         self.iaf = iaf  # la fija la calibración (Paso 5); hasta entonces, --iaf
 
     def __call__(self, f, psd, front, post):
-        h1.FIT_RANGE = self.fit_range  # fit_roi() lee el rango de esta global del módulo offline, como periodic()
-        out = {"f": f, "post_psd": psd[post].mean(axis=0) if post else None}
+        out ={"f": f, "post_psd": psd[post].mean(axis=0) if post else None}
         for name, chs in (("theta", front), ("alpha", post)):
             if not chs:
                 out.update({f"{name}_per": np.nan, f"{name}_exp": np.nan, f"{name}_r2": np.nan, f"{name}_ok": False,
                             f"{name}_flat": None})
                 continue
-            flat, exp, r2 = fit_roi(psd[chs].mean(axis=0), f)
+            flat, exp, r2 = fit_roi(psd[chs].mean(axis=0), f, self.fit_range)
             out.update({f"{name}_per": band_per(flat, f, *bands(self.iaf)[name]), f"{name}_exp": exp, f"{name}_r2": r2,
                         f"{name}_ok": bool(r2 >= R2_MIN), f"{name}_flat": flat})
         return out
