@@ -308,3 +308,8 @@ Mann-Whitney sobre los minutos completos). `replay_offline.eeg_blinks` usa la mi
   Con el umbral cada 7 min (como en vivo) 9.0 → 19.4 (10/12, p = 0.005). Frente al eye-tracker ρ = 0.74 (48 bloques).
   El umbral sale menor con el teléfono (79 frente a 88 µV, 19/27): parpadeos más pequeños al mirar abajo, que un
   umbral único por registro subcuenta (H1: 5.0 → 19.4). Confusión: el video siempre va después y en monitor.
+- **Signo de Fp1 en la AURA (4 nov):** en la diadema real el parpadeo sale **negativo** (CSV RAW 17:43, REF con gel:
+  ~−200 µV, ~140 ms, 17–22/min, ruido 1–10 Hz ~20 µV). `blink_peaks` busca picos positivos, así que el pipeline
+  invierte Fp1 antes del contador cuando el `source_id` empieza por `AuraLSL-` (`signo_fp1` en config.json). Con el
+  signo correcto el contador da los 13 parpadeos de esos 37 s; con el original contaba los rebotes positivos (~50 µV).
+  Solo afecta al contador: el rechazo PTP y las features no dependen del signo. Los CSV RAW de Aura graban a 250 Hz.

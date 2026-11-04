@@ -521,6 +521,9 @@ def main():
                                                     2: {**jitai.CONFIG["niveles"][2], "activo": False}}}
     jt = jitai.Jitai(jcfg, HOP_S)
     blk = BlinkCounter(fs, a.parpadeo_periodo) if "Fp1" not in bads else None
+    # 4 nov: en la AURA real el parpadeo sale NEGATIVO en Fp1 (CSV RAW 17:43: ~−200 µV, 140 ms); blink_peaks busca picos
+    # positivos, así que se invierte. Emulador, ds007537 y SVRec van con la convención (positivo).
+    fp1_sign = -1.0 if src["source_id"].startswith("AuraLSL-") else 1.0
     cfg = {"paso": 7, "modo": "offline" if offline else "en vivo", "stream": src["stream"],
            "source_id": src["source_id"], "host": src["host"],
            "fs": fs, "line_freq": line, "channels": AURA_CHANNELS, "labels_stream": labels,
@@ -536,7 +539,7 @@ def main():
            "jitai": jcfg, "udp": f"127.0.0.1:{a.udp_port}",
            "parpadeos": {"canal": "Fp1", "banda_hz": BLINK_BAND, "periodo_umbral_s": a.parpadeo_periodo,
                          "umbral": "máx(3 MAD, ½ mediana de las 20 prominencias mayores) de cada período",
-                         "ancho_ms": [40, 500], "separacion_s": 0.3} if blk else "sin conteo: Fp1 malo",
+                         "ancho_ms": [40, 500], "separacion_s": 0.3, "signo_fp1": fp1_sign} if blk else "sin conteo: Fp1 malo",
            "started": time.strftime("%Y-%m-%d %H:%M:%S")}
     if offline:
         cfg["offline"] = {"fuente": a.offline, "inyecciones": a.inject, "seed": a.seed, "sin_fases": a.sin_fases}
@@ -714,7 +717,7 @@ def main():
                 state["n"] = state.get("n", 0) + len(ts)
                 state["ts_end"] = ts[-1]
                 x = np.asarray(x, dtype=np.float64)
-                if blk and (new := blk.push(x[:, idx["Fp1"]], ts)) is not None:
+                if blk and (new := blk.push(fp1_sign * x[:, idx["Fp1"]], ts)) is not None:
                     log_blinks(new)
                 wnd.push(filt(x), ts)
             elif not offline:

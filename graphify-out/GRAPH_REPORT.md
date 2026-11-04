@@ -1,7 +1,7 @@
-# Graph Report - Project  (2026-11-02)
+# Graph Report - Project  (2026-11-04)
 
 ## Corpus Check
-- 35 files · ~142,693 words
+- 35 files · ~143,177 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 10 file(s) not represented in the graph (top: (none) 2, .pptx 2, .bat 2)
 
@@ -11,7 +11,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `1a03921d`
+- Built from commit: `714c017f`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -84,8 +84,8 @@
 6. `main()` - 17 edges
 7. `Reporte H1 ds007537` - 15 edges
 8. `3. Explicación diapositiva por diapositiva` - 15 edges
-9. `Resumen de sesión MIRAI 2026 (19-21 oct)` - 15 edges
-10. `H1: Tonic Theta/Alpha Rise More with Scrolling than Documentary` - 15 edges
+9. `H1: Tonic Theta/Alpha Rise More with Scrolling than Documentary` - 15 edges
+10. `Resumen de sesión MIRAI 2026 (19-21 oct)` - 15 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `Closed-loop AR JITAI neuroadaptive platform` --semantically_similar_to--> `Closed-loop neuroadaptive VR platform (v1 general objective)`  [INFERRED] [semantically similar]
