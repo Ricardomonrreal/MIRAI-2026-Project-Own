@@ -34,6 +34,7 @@ import bisect
 import csv
 import json
 import os
+import signal as os_signal
 import socket
 import sys
 import time
@@ -480,6 +481,8 @@ def main():
     g.add_argument("--sin-fases", action="store_true",
                    help="la calibración ignora los marcadores de fase (usa los primeros 90 s, Berger del Paso 7)")
     a = p.parse_args()
+    if hasattr(os_signal, "SIGBREAK"):  # sesion_aura.py detiene con Ctrl+Break: que cierre como Ctrl+C, con reporte
+        os_signal.signal(os_signal.SIGBREAK, os_signal.default_int_handler)
 
     offline = a.offline is not None
     if offline:

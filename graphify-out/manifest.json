@@ -222,9 +222,9 @@
     "semantic_hash": ""
   },
   "Tests/simulation_B/realtime_pipeline.py": {
-    "mtime": 1793782206.190915,
-    "seen": 1793783147.3370907,
-    "ast_hash": "7c9f4a0f23855a3b4e7d382c28e1bbae",
+    "mtime": 1793785219.503039,
+    "seen": 1793785872.1464717,
+    "ast_hash": "a87e95577a54b954148c51de253b9945",
     "semantic_hash": ""
   },
   "Tests/simulation_B/replay_offline.py": {
@@ -240,9 +240,9 @@
     "semantic_hash": ""
   },
   "Tests/simulation_B/VERSION_B.md": {
-    "mtime": 1793783138.17715,
-    "seen": 1793783147.3371518,
-    "ast_hash": "4fa8874eadbd9144d215faafe77399f5",
+    "mtime": 1793785862.7908127,
+    "seen": 1793785872.146576,
+    "ast_hash": "44ed5f89ffbf6b161b01796f23a32036",
     "semantic_hash": ""
   },
   "Tests/simulation_B/requirements.txt": {
@@ -285,6 +285,12 @@
     "mtime": 1793597780.9186964,
     "seen": 1793598170.4250667,
     "ast_hash": "87e4cb7f2d64c8bce6cb16c6ee63f59c",
+    "semantic_hash": ""
+  },
+  "Tests/simulation_B/sesion_aura.py": {
+    "mtime": 1793863757.3644571,
+    "seen": 1793863950.942133,
+    "ast_hash": "9c74359cb8f540731a9df7df64796916",
     "semantic_hash": ""
   }
 }

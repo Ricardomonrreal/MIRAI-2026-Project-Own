@@ -313,3 +313,9 @@ Mann-Whitney sobre los minutos completos). `replay_offline.eeg_blinks` usa la mi
   invierte Fp1 antes del contador cuando el `source_id` empieza por `AuraLSL-` (`signo_fp1` en config.json). Con el
   signo correcto el contador da los 13 parpadeos de esos 37 s; con el original contaba los rebotes positivos (~50 µV).
   Solo afecta al contador: el rechazo PTP y las features no dependen del signo. Los CSV RAW de Aura graban a 250 Hz.
+- **Interfaz de sesión `sesion_aura.py` (4 nov):** ventana tkinter que lanza los módulos en orden sin fusionarlos:
+  lista de preparación manual → `check_lsl_stream.py` (el usuario la da por buena) → `behavior_markers.py` y, 1.5 s
+  después, `realtime_pipeline.py`. Muestra cronómetro, bloque actual, próxima acción manual (barra espaciadora en Aura,
+  empezar el scroll) con aviso sonoro, y el estado que imprime el pipeline (calidad, calibración, válidas, parpadeos,
+  intervención). *Detener* manda Ctrl+Break; el pipeline lo trata como Ctrl+C (SIGBREAK → KeyboardInterrupt) y deja
+  su reporte. Probada con el emulador (`--name AURA`, prefijo `mirai-sim-`): verificación, sesión, detener y reporte.
