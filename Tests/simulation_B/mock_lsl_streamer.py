@@ -186,21 +186,44 @@ def load_file(path, start, duration, ref, fs):
 
 
 def load_aura_csv(path, start, duration, fs):
-    """CSV grabado desde la AURA: timestamp, phase, label, channel_0..channel_7 (µV, orden CH1..CH8).
+    """CSV de la AURA en uno de dos formatos (µV, orden CH1..CH8 = AURA_CHANNELS):
 
-    Las marcas de tiempo del CSV tienen jitter y retrocesos (asignadas al recibir), así que se usa
-    el índice de muestra; fs nativa = muestras / duración (≈ 50 Hz en la prueba de enero 2026).
-    Cada cambio de `phase` se emite como marcador `file:<fase>`.
+    * Script de enero 2026: timestamp, phase, label, channel_0..channel_7. Las marcas de tiempo tienen jitter y
+      retrocesos (asignadas al recibir), así que se usa el índice de muestra; fs nativa ≈ 50 Hz. Cada cambio de
+      `phase` se emite como marcador `file:<fase>`.
+    * Grabación de Aura.exe (Tests/Recordings/<fecha>/AURA_RAW___<fecha>.csv): 'Time and date', Fp1..O2, IMU,
+      batería, Event; 2.ª fila de unidades; 250 Hz. Sin nombres de fase: cada pulsación de la barra espaciadora
+      (flanco de subida de Event) abre un tramo `file:espacio_<k>` (el primero es `file:inicio`).
     """
     import csv
     with open(path, newline="") as fh:
-        rows = list(csv.reader(fh))
-    hdr, rows = rows[0], rows[1:]
-    cols = [hdr.index(f"channel_{i}") for i in range(len(AURA_CHANNELS))]
-    t = np.array([float(r[0]) for r in rows])
-    data = np.array([[float(r[c]) for c in cols] for r in rows]).T
-    phase = [r[hdr.index("phase")] for r in rows] if "phase" in hdr else []
-    fs_in = float(round((len(t) - 1) / (t[-1] - t[0])))
+        rd = csv.reader(fh, quotechar="'")
+        hdr = next(rd)
+        if "channel_0" in hdr:
+            rows = list(rd)
+            cols = [hdr.index(f"channel_{i}") for i in range(len(AURA_CHANNELS))]
+            t = np.array([float(r[0]) for r in rows])
+            data = np.array([[float(r[c]) for c in cols] for r in rows]).T
+            phase = [r[hdr.index("phase")] for r in rows] if "phase" in hdr else []
+            span = t[-1] - t[0]
+        else:
+            if missing := [c for c in AURA_CHANNELS + ["Event"] if c not in hdr]:
+                sys.exit(f"{os.path.basename(path)}: faltan columnas {missing}. De cada grabación de Aura usa "
+                         f"AURA_RAW___<fecha>.csv (Filtered y FFT no traen el EEG por canal).")
+            cols, e = [hdr.index(c) for c in AURA_CHANNELS], hdr.index("Event")
+            next(rd)  # unidades
+            x, ev, stamps = [], [], []
+            for r in rd:
+                x.append([float(r[c]) for c in cols])
+                ev.append(float(r[e]) != 0)
+                stamps.append(r[0])
+            from datetime import datetime
+            ts = [datetime.strptime(s.strip("[]"), "%H:%M:%S.%f %d/%m/%Y").timestamp() for s in (stamps[0], stamps[-1])]
+            t, span, data = stamps, ts[1] - ts[0], np.array(x).T
+            ev = np.array(ev)
+            seg = np.cumsum(ev & ~np.r_[False, ev[:-1]])
+            phase = ["inicio" if k == 0 else f"espacio_{k}" for k in seg]
+    fs_in = float(round((len(t) - 1) / span))
     fs = fs or fs_in  # sin --fs se transmite a la fs nativa
     print(f"CSV AURA: {len(t)} muestras, fs nativa ≈ {fs_in:.0f} Hz → stream a {fs:.0f} Hz")
 

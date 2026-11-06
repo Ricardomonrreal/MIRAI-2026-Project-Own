@@ -60,9 +60,9 @@
     "semantic_hash": "d96e229b35a6c3dff6f2f6269bf277ea"
   },
   "Tests/Protocolo_Simulacion_Pipeline.md": {
-    "mtime": 1793342437.936553,
-    "seen": 1793342445.48396,
-    "ast_hash": "aec71fb2f4c0934b9926e664655483b7",
+    "mtime": 1793948223.10401,
+    "seen": 1793948239.6084316,
+    "ast_hash": "7254e124b47218aa8eae771e6579693f",
     "semantic_hash": ""
   },
   "Tests/datasets workflow/Cao2019/results/cao_reporte.txt": {
@@ -156,10 +156,10 @@
     "semantic_hash": "dafceb92be1f2884a0bed6bcbd5c9abf"
   },
   "Tests/AURA_Configuracion.md": {
-    "mtime": 1793176614.1113262,
-    "seen": 1793334293.18559,
-    "ast_hash": "8710adaf48d5de6b7257e53f0b6c674e",
-    "semantic_hash": "8710adaf48d5de6b7257e53f0b6c674e"
+    "mtime": 1793937552.1919167,
+    "seen": 1793937569.5383372,
+    "ast_hash": "5a42de1c65872a7d5941608d4f21e050",
+    "semantic_hash": ""
   },
   "Tests/HANDOFF_Claude_Code.md": {
     "mtime": 1793161871.2473142,
@@ -216,15 +216,15 @@
     "semantic_hash": "62b0a1d71da9f4077ed1874e2cb1272c"
   },
   "Tests/simulation_B/mock_lsl_streamer.py": {
-    "mtime": 1793340809.8017092,
-    "seen": 1793342445.4839208,
-    "ast_hash": "5b5eb859cfb656c39d31a0ca3ad55cf7",
+    "mtime": 1793936318.3096,
+    "seen": 1793937569.5382698,
+    "ast_hash": "690609e2c1383ea59c58a732db8b9afa",
     "semantic_hash": ""
   },
   "Tests/simulation_B/realtime_pipeline.py": {
-    "mtime": 1793785219.503039,
-    "seen": 1793785872.1464717,
-    "ast_hash": "a87e95577a54b954148c51de253b9945",
+    "mtime": 1793948205.4739249,
+    "seen": 1793948239.6083384,
+    "ast_hash": "c070e3f75ab38e191f7d5e6880552cf1",
     "semantic_hash": ""
   },
   "Tests/simulation_B/replay_offline.py": {
@@ -240,9 +240,9 @@
     "semantic_hash": ""
   },
   "Tests/simulation_B/VERSION_B.md": {
-    "mtime": 1793785862.7908127,
-    "seen": 1793785872.146576,
-    "ast_hash": "44ed5f89ffbf6b161b01796f23a32036",
+    "mtime": 1793948223.3485637,
+    "seen": 1793948239.60848,
+    "ast_hash": "ca088eac3555ae6abb328e7941f208b1",
     "semantic_hash": ""
   },
   "Tests/simulation_B/requirements.txt": {
@@ -288,9 +288,9 @@
     "semantic_hash": ""
   },
   "Tests/simulation_B/sesion_aura.py": {
-    "mtime": 1793863757.3644571,
-    "seen": 1793863950.942133,
-    "ast_hash": "9c74359cb8f540731a9df7df64796916",
+    "mtime": 1793948089.9348814,
+    "seen": 1793948239.6083512,
+    "ast_hash": "82330f792c584c103f96851859b538db",
     "semantic_hash": ""
   }
 }

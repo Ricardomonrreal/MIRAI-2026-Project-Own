@@ -285,7 +285,7 @@
       "file_type": "code",
       "norm_label": "blinkcounter",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L232"
+      "source_location": "L236"
     },
     {
       "id": "tests_simulation_b_jitai_jitai",
@@ -311,7 +311,7 @@
       "file_type": "code",
       "norm_label": "causalfilter",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L71"
+      "source_location": "L73"
     },
     {
       "id": "tests_simulation_realtime_pipeline_causalfilter",
@@ -363,7 +363,7 @@
       "file_type": "code",
       "norm_label": "rejector",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L111"
+      "source_location": "L113"
     },
     {
       "id": "tests_datasets_workflow_eeg_dataset_9_10_demo_processing_psdwindow",
@@ -389,7 +389,7 @@
       "file_type": "code",
       "norm_label": "offlineinlet",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L407"
+      "source_location": "L411"
     },
     {
       "id": "tests_simulation_b_realtime_pipeline_offlinemarkers",
@@ -402,7 +402,7 @@
       "file_type": "code",
       "norm_label": "offlinemarkers",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L424"
+      "source_location": "L428"
     },
     {
       "id": "tests_simulation_b_realtime_pipeline_windower",
@@ -415,7 +415,7 @@
       "file_type": "code",
       "norm_label": "windower",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L89"
+      "source_location": "L91"
     },
     {
       "id": "tests_datasets_workflow_eeg_dataset_9_10_demo_processing_eegviewer_build_controls",
@@ -1075,7 +1075,7 @@
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "Tests/simulation_B/sesion_aura.py",
-      "source_location": "L374"
+      "source_location": "L382"
     },
     {
       "id": "tests_simulation_b_sesion_aura_sessionapp_abort_all",
@@ -1087,7 +1087,7 @@
       "file_type": "code",
       "norm_label": ".abort_all()",
       "source_file": "Tests/simulation_B/sesion_aura.py",
-      "source_location": "L264"
+      "source_location": "L272"
     },
     {
       "id": "tests_simulation_b_sesion_aura_sessionapp_build_controls",
@@ -1135,7 +1135,7 @@
       "file_type": "code",
       "norm_label": ".check_ok()",
       "source_file": "Tests/simulation_B/sesion_aura.py",
-      "source_location": "L304"
+      "source_location": "L312"
     },
     {
       "id": "tests_simulation_b_sesion_aura_sessionapp_init",
@@ -1159,7 +1159,7 @@
       "file_type": "code",
       "norm_label": ".launch()",
       "source_file": "Tests/simulation_B/sesion_aura.py",
-      "source_location": "L177"
+      "source_location": "L178"
     },
     {
       "id": "tests_simulation_b_sesion_aura_sessionapp_on_close",
@@ -1171,7 +1171,7 @@
       "file_type": "code",
       "norm_label": ".on_close()",
       "source_file": "Tests/simulation_B/sesion_aura.py",
-      "source_location": "L365"
+      "source_location": "L373"
     },
     {
       "id": "tests_simulation_b_sesion_aura_sessionapp_on_exit",
@@ -1183,7 +1183,7 @@
       "file_type": "code",
       "norm_label": ".on_exit()",
       "source_file": "Tests/simulation_B/sesion_aura.py",
-      "source_location": "L233"
+      "source_location": "L241"
     },
     {
       "id": "tests_simulation_b_sesion_aura_sessionapp_on_line",
@@ -1195,7 +1195,7 @@
       "file_type": "code",
       "norm_label": ".on_line()",
       "source_file": "Tests/simulation_B/sesion_aura.py",
-      "source_location": "L204"
+      "source_location": "L205"
     },
     {
       "id": "tests_simulation_b_sesion_aura_sessionapp_open_report",
@@ -1207,7 +1207,7 @@
       "file_type": "code",
       "norm_label": ".open_report()",
       "source_file": "Tests/simulation_B/sesion_aura.py",
-      "source_location": "L340"
+      "source_location": "L348"
     },
     {
       "id": "tests_simulation_b_sesion_aura_sessionapp_poll",
@@ -1219,7 +1219,7 @@
       "file_type": "code",
       "norm_label": ".poll()",
       "source_file": "Tests/simulation_B/sesion_aura.py",
-      "source_location": "L191"
+      "source_location": "L192"
     },
     {
       "id": "tests_simulation_b_sesion_aura_sessionapp_read",
@@ -1231,7 +1231,7 @@
       "file_type": "code",
       "norm_label": "._read()",
       "source_file": "Tests/simulation_B/sesion_aura.py",
-      "source_location": "L185"
+      "source_location": "L186"
     },
     {
       "id": "tests_simulation_b_sesion_aura_sessionapp_set_status",
@@ -1243,7 +1243,7 @@
       "file_type": "code",
       "norm_label": ".set_status()",
       "source_file": "Tests/simulation_B/sesion_aura.py",
-      "source_location": "L173"
+      "source_location": "L174"
     },
     {
       "id": "tests_simulation_b_sesion_aura_sessionapp_start_check",
@@ -1255,7 +1255,7 @@
       "file_type": "code",
       "norm_label": ".start_check()",
       "source_file": "Tests/simulation_B/sesion_aura.py",
-      "source_location": "L290"
+      "source_location": "L298"
     },
     {
       "id": "tests_simulation_b_sesion_aura_sessionapp_start_session",
@@ -1267,7 +1267,7 @@
       "file_type": "code",
       "norm_label": ".start_session()",
       "source_file": "Tests/simulation_B/sesion_aura.py",
-      "source_location": "L308"
+      "source_location": "L316"
     },
     {
       "id": "tests_simulation_b_sesion_aura_sessionapp_stop_proc",
@@ -1279,7 +1279,7 @@
       "file_type": "code",
       "norm_label": ".stop_proc()",
       "source_file": "Tests/simulation_B/sesion_aura.py",
-      "source_location": "L256"
+      "source_location": "L264"
     },
     {
       "id": "tests_simulation_b_sesion_aura_sessionapp_stop_session",
@@ -1291,7 +1291,7 @@
       "file_type": "code",
       "norm_label": ".stop_session()",
       "source_file": "Tests/simulation_B/sesion_aura.py",
-      "source_location": "L335"
+      "source_location": "L343"
     },
     {
       "id": "tests_simulation_b_sesion_aura_sessionapp_tick",
@@ -1303,7 +1303,7 @@
       "file_type": "code",
       "norm_label": ".tick()",
       "source_file": "Tests/simulation_B/sesion_aura.py",
-      "source_location": "L343"
+      "source_location": "L351"
     },
     {
       "id": "tests_datasets_workflow_cao2019_h1b_cao2019_analyse",
@@ -1483,7 +1483,7 @@
       "file_type": "code",
       "norm_label": "inject()",
       "source_file": "Tests/simulation_B/mock_lsl_streamer.py",
-      "source_location": "L229"
+      "source_location": "L252"
     },
     {
       "id": "tests_simulation_b_mock_lsl_streamer_load_aura_csv",
@@ -1519,7 +1519,7 @@
       "file_type": "code",
       "norm_label": "load_source()",
       "source_file": "Tests/simulation_B/mock_lsl_streamer.py",
-      "source_location": "L255"
+      "source_location": "L278"
     },
     {
       "id": "tests_simulation_b_mock_lsl_streamer_main",
@@ -1531,7 +1531,7 @@
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "Tests/simulation_B/mock_lsl_streamer.py",
-      "source_location": "L359"
+      "source_location": "L382"
     },
     {
       "id": "tests_simulation_b_mock_lsl_streamer_make_outlet",
@@ -1543,7 +1543,7 @@
       "file_type": "code",
       "norm_label": "make_outlet()",
       "source_file": "Tests/simulation_B/mock_lsl_streamer.py",
-      "source_location": "L283"
+      "source_location": "L306"
     },
     {
       "id": "tests_simulation_b_mock_lsl_streamer_montage_1005",
@@ -1567,7 +1567,7 @@
       "file_type": "code",
       "norm_label": "stream()",
       "source_file": "Tests/simulation_B/mock_lsl_streamer.py",
-      "source_location": "L298"
+      "source_location": "L321"
     },
     {
       "id": "tests_simulation_b_mock_lsl_streamer_synthetic",
@@ -1879,7 +1879,7 @@
       "file_type": "code",
       "norm_label": "blink_peaks()",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L219"
+      "source_location": "L223"
     },
     {
       "id": "tests_simulation_b_realtime_pipeline_blinkcounter_close",
@@ -1891,7 +1891,7 @@
       "file_type": "code",
       "norm_label": "._close()",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L282"
+      "source_location": "L286"
     },
     {
       "id": "tests_simulation_b_realtime_pipeline_blinkcounter_detect",
@@ -1903,7 +1903,7 @@
       "file_type": "code",
       "norm_label": "._detect()",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L252"
+      "source_location": "L256"
     },
     {
       "id": "tests_simulation_b_realtime_pipeline_blinkcounter_finish",
@@ -1915,7 +1915,7 @@
       "file_type": "code",
       "norm_label": ".finish()",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L294"
+      "source_location": "L298"
     },
     {
       "id": "tests_simulation_b_realtime_pipeline_blinkcounter_init",
@@ -1927,7 +1927,7 @@
       "file_type": "code",
       "norm_label": ".__init__()",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L244"
+      "source_location": "L248"
     },
     {
       "id": "tests_simulation_b_realtime_pipeline_blinkcounter_push",
@@ -1939,7 +1939,7 @@
       "file_type": "code",
       "norm_label": ".push()",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L261"
+      "source_location": "L265"
     },
     {
       "id": "tests_simulation_b_realtime_pipeline_blinkcounter_rate",
@@ -1951,7 +1951,7 @@
       "file_type": "code",
       "norm_label": ".rate()",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L301"
+      "source_location": "L305"
     },
     {
       "id": "tests_simulation_b_replay_offline_eeg_blinks",
@@ -2383,7 +2383,7 @@
       "file_type": "code",
       "norm_label": "blink_gain()",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L163"
+      "source_location": "L167"
     },
     {
       "id": "tests_simulation_b_realtime_pipeline_causalfilter_call",
@@ -2395,7 +2395,7 @@
       "file_type": "code",
       "norm_label": ".__call__()",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L83"
+      "source_location": "L85"
     },
     {
       "id": "tests_simulation_b_realtime_pipeline_causalfilter_init",
@@ -2407,7 +2407,7 @@
       "file_type": "code",
       "norm_label": ".__init__()",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L74"
+      "source_location": "L76"
     },
     {
       "id": "tests_simulation_realtime_pipeline_blink_report",
@@ -2527,7 +2527,7 @@
       "file_type": "code",
       "norm_label": "emit_jitai()",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L600"
+      "source_location": "L612"
     },
     {
       "id": "tests_simulation_b_realtime_pipeline_main_on_window",
@@ -2539,7 +2539,7 @@
       "file_type": "code",
       "norm_label": "on_window()",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L616"
+      "source_location": "L628"
     },
     {
       "id": "tests_simulation_b_realtime_pipeline_mem_mb",
@@ -2551,7 +2551,7 @@
       "file_type": "code",
       "norm_label": "mem_mb()",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L438"
+      "source_location": "L442"
     },
     {
       "id": "tests_simulation_b_realtime_pipeline_rejector_call",
@@ -2563,7 +2563,7 @@
       "file_type": "code",
       "norm_label": ".__call__()",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L132"
+      "source_location": "L134"
     },
     {
       "id": "tests_simulation_b_realtime_pipeline_rejector_init",
@@ -2575,7 +2575,7 @@
       "file_type": "code",
       "norm_label": ".__init__()",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L120"
+      "source_location": "L122"
     },
     {
       "id": "tests_datasets_workflow_ds007537_h1_ds007537_band_db",
@@ -2899,7 +2899,7 @@
       "file_type": "code",
       "norm_label": ".done()",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L416"
+      "source_location": "L420"
     },
     {
       "id": "tests_simulation_b_realtime_pipeline_offlineinlet_init",
@@ -2911,7 +2911,7 @@
       "file_type": "code",
       "norm_label": ".__init__()",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L411"
+      "source_location": "L415"
     },
     {
       "id": "tests_simulation_b_realtime_pipeline_offlineinlet_pull_chunk",
@@ -2923,7 +2923,7 @@
       "file_type": "code",
       "norm_label": ".pull_chunk()",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L419"
+      "source_location": "L423"
     },
     {
       "id": "tests_simulation_b_realtime_pipeline_offlinemarkers_init",
@@ -2935,7 +2935,7 @@
       "file_type": "code",
       "norm_label": ".__init__()",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L427"
+      "source_location": "L431"
     },
     {
       "id": "tests_simulation_b_realtime_pipeline_offlinemarkers_pull_sample",
@@ -2947,7 +2947,7 @@
       "file_type": "code",
       "norm_label": ".pull_sample()",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L430"
+      "source_location": "L434"
     },
     {
       "id": "tests_simulation_b_realtime_pipeline_windower_init",
@@ -2959,7 +2959,7 @@
       "file_type": "code",
       "norm_label": ".__init__()",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L92"
+      "source_location": "L94"
     },
     {
       "id": "tests_simulation_b_realtime_pipeline_windower_push",
@@ -2971,7 +2971,7 @@
       "file_type": "code",
       "norm_label": ".push()",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L97"
+      "source_location": "L99"
     },
     {
       "id": "tests_simulation_b_realtime_pipeline_blink_blocks",
@@ -2983,7 +2983,7 @@
       "file_type": "code",
       "norm_label": "blink_blocks()",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L318"
+      "source_location": "L322"
     },
     {
       "id": "tests_simulation_b_realtime_pipeline_blink_match",
@@ -2995,7 +2995,7 @@
       "file_type": "code",
       "norm_label": "blink_match()",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L308"
+      "source_location": "L312"
     },
     {
       "id": "tests_simulation_b_realtime_pipeline_blink_report",
@@ -3007,7 +3007,7 @@
       "file_type": "code",
       "norm_label": "blink_report()",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L171"
+      "source_location": "L175"
     },
     {
       "id": "tests_simulation_b_realtime_pipeline_main",
@@ -3019,7 +3019,7 @@
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L459"
+      "source_location": "L463"
     },
     {
       "id": "tests_simulation_b_realtime_pipeline_main_log_blinks",
@@ -3031,7 +3031,7 @@
       "file_type": "code",
       "norm_label": "log_blinks()",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L583"
+      "source_location": "L595"
     },
     {
       "id": "tests_simulation_b_realtime_pipeline_open_run",
@@ -3043,7 +3043,7 @@
       "file_type": "code",
       "norm_label": "open_run()",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L343"
+      "source_location": "L347"
     },
     {
       "id": "tests_simulation_b_realtime_pipeline_write_report_md",
@@ -3055,7 +3055,7 @@
       "file_type": "code",
       "norm_label": "write_report_md()",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L351"
+      "source_location": "L355"
     },
     {
       "id": "tests_simulation_b_check_lsl_stream_channel_meta",
@@ -3994,7 +3994,7 @@
       "source_location": "L1"
     },
     {
-      "id": "tests_simulation_b_sesion_aura_rationale_344",
+      "id": "tests_simulation_b_sesion_aura_rationale_352",
       "label": "Cron\u00f3metro de la sesi\u00f3n: bloque actual y pr\u00f3xima acci\u00f3n manual (con aviso\u2026",
       "_origin": "ast",
       "community": 14,
@@ -4002,7 +4002,7 @@
       "file_type": "rationale",
       "norm_label": "cronometro de la sesion: bloque actual y proxima accion manual (con aviso...",
       "source_file": "Tests/simulation_B/sesion_aura.py",
-      "source_location": "L344"
+      "source_location": "L352"
     },
     {
       "id": "tests_datasets_workflow_cao2019_h1b_cao2019",
@@ -4127,17 +4127,17 @@
     },
     {
       "id": "tests_simulation_b_mock_lsl_streamer_rationale_189",
-      "label": "CSV grabado desde la AURA: timestamp, phase, label, channel_0..channel_7 (\u00b5V,\u2026",
+      "label": "CSV de la AURA en uno de dos formatos (\u00b5V, orden CH1..CH8 = AURA_CHANNELS): *\u2026",
       "_origin": "ast",
       "community": 16,
       "community_name": "simulation_B/mock_lsl_streamer.py",
       "file_type": "rationale",
-      "norm_label": "csv grabado desde la aura: timestamp, phase, label, channel_0..channel_7 (\u03bcv,...",
+      "norm_label": "csv de la aura en uno de dos formatos (\u03bcv, orden ch1..ch8 = aura_channels): *...",
       "source_file": "Tests/simulation_B/mock_lsl_streamer.py",
       "source_location": "L189"
     },
     {
-      "id": "tests_simulation_b_mock_lsl_streamer_rationale_230",
+      "id": "tests_simulation_b_mock_lsl_streamer_rationale_253",
       "label": "Suma eventos con verdad de campo. spec = (tipo, inicio_s, duraci\u00f3n_s,\u2026",
       "_origin": "ast",
       "community": 16,
@@ -4145,10 +4145,10 @@
       "file_type": "rationale",
       "norm_label": "suma eventos con verdad de campo. spec = (tipo, inicio_s, duracion_s,...",
       "source_file": "Tests/simulation_B/mock_lsl_streamer.py",
-      "source_location": "L230"
+      "source_location": "L253"
     },
     {
-      "id": "tests_simulation_b_mock_lsl_streamer_rationale_256",
+      "id": "tests_simulation_b_mock_lsl_streamer_rationale_279",
       "label": "Fuente del emulador (y del replay sin LSL del Paso 7): sint\u00e9tico, CSV de AURA o\u2026",
       "_origin": "ast",
       "community": 16,
@@ -4156,7 +4156,7 @@
       "file_type": "rationale",
       "norm_label": "fuente del emulador (y del replay sin lsl del paso 7): sintetico, csv de aura o...",
       "source_file": "Tests/simulation_B/mock_lsl_streamer.py",
-      "source_location": "L256"
+      "source_location": "L279"
     },
     {
       "id": "tests_simulation_b_mock_lsl_streamer_rationale_61",
@@ -4557,7 +4557,7 @@
       "source_location": "L1"
     },
     {
-      "id": "tests_simulation_b_realtime_pipeline_rationale_220",
+      "id": "tests_simulation_b_realtime_pipeline_rationale_224",
       "label": "Parpadeos en Fp1 ya filtrado a 1\u201310 Hz, con la l\u00f3gica de\u2026",
       "_origin": "ast",
       "community": 26,
@@ -4565,10 +4565,10 @@
       "file_type": "rationale",
       "norm_label": "parpadeos en fp1 ya filtrado a 1\u201310 hz, con la logica de...",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L220"
+      "source_location": "L224"
     },
     {
-      "id": "tests_simulation_b_realtime_pipeline_rationale_233",
+      "id": "tests_simulation_b_realtime_pipeline_rationale_237",
       "label": "Contador de parpadeos en Fp1 (2 nov): blink_peaks() con umbral m\u00f3vil sobre Fp1\u2026",
       "_origin": "ast",
       "community": 26,
@@ -4576,10 +4576,10 @@
       "file_type": "rationale",
       "norm_label": "contador de parpadeos en fp1 (2 nov): blink_peaks() con umbral movil sobre fp1...",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L233"
+      "source_location": "L237"
     },
     {
-      "id": "tests_simulation_b_realtime_pipeline_rationale_253",
+      "id": "tests_simulation_b_realtime_pipeline_rationale_257",
       "label": "Parpadeos (t, prominencia) en [t_lo, t_hi) del b\u00fafer desde `lo`, filtrado\u2026",
       "_origin": "ast",
       "community": 26,
@@ -4587,10 +4587,10 @@
       "file_type": "rationale",
       "norm_label": "parpadeos (t, prominencia) en [t_lo, t_hi) del bufer desde `lo`, filtrado...",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L253"
+      "source_location": "L257"
     },
     {
-      "id": "tests_simulation_b_realtime_pipeline_rationale_262",
+      "id": "tests_simulation_b_realtime_pipeline_rationale_266",
       "label": "x: Fp1 crudo (\u00b5V) del bloque; ts: sus marcas de tiempo. Devuelve los parpadeos\u2026",
       "_origin": "ast",
       "community": 26,
@@ -4598,10 +4598,10 @@
       "file_type": "rationale",
       "norm_label": "x: fp1 crudo (\u03bcv) del bloque; ts: sus marcas de tiempo. devuelve los parpadeos...",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L262"
+      "source_location": "L266"
     },
     {
-      "id": "tests_simulation_b_realtime_pipeline_rationale_295",
+      "id": "tests_simulation_b_realtime_pipeline_rationale_299",
       "label": "Cierra el \u00faltimo per\u00edodo: con su propio umbral si dura \u2265 init_s; si no, con el\u2026",
       "_origin": "ast",
       "community": 26,
@@ -4609,10 +4609,10 @@
       "file_type": "rationale",
       "norm_label": "cierra el ultimo periodo: con su propio umbral si dura \u2265 init_s; si no, con el...",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L295"
+      "source_location": "L299"
     },
     {
-      "id": "tests_simulation_b_realtime_pipeline_rationale_302",
+      "id": "tests_simulation_b_realtime_pipeline_rationale_306",
       "label": "Parpadeos en vivo de los \u00faltimos 60 s (provisional); None hasta tener umbral y\u2026",
       "_origin": "ast",
       "community": 26,
@@ -4620,7 +4620,7 @@
       "file_type": "rationale",
       "norm_label": "parpadeos en vivo de los ultimos 60 s (provisional); none hasta tener umbral y...",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L302"
+      "source_location": "L306"
     },
     {
       "id": "tests_simulation_b_replay_offline",
@@ -5623,7 +5623,7 @@
       "source_location": "L6"
     },
     {
-      "id": "tests_simulation_b_realtime_pipeline_rationale_164",
+      "id": "tests_simulation_b_realtime_pipeline_rationale_168",
       "label": "Ganancia pico a pico del filtro sobre el parpadeo sint\u00e9tico (pico gaussiano de\u2026",
       "_origin": "ast",
       "community": 47,
@@ -5631,10 +5631,10 @@
       "file_type": "rationale",
       "norm_label": "ganancia pico a pico del filtro sobre el parpadeo sintetico (pico gaussiano de...",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L164"
+      "source_location": "L168"
     },
     {
-      "id": "tests_simulation_b_realtime_pipeline_rationale_72",
+      "id": "tests_simulation_b_realtime_pipeline_rationale_74",
       "label": "Pasa-banda Butterworth (orden 4: 2 por flanco) + notch, con estado conservado\u2026",
       "_origin": "ast",
       "community": 47,
@@ -5642,10 +5642,10 @@
       "file_type": "rationale",
       "norm_label": "pasa-banda butterworth (orden 4: 2 por flanco) + notch, con estado conservado...",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L72"
+      "source_location": "L74"
     },
     {
-      "id": "tests_simulation_b_realtime_pipeline_rationale_84",
+      "id": "tests_simulation_b_realtime_pipeline_rationale_86",
       "label": "x: (muestras, canales) \u2192 mismo tama\u00f1o, continuando el estado del bloque\u2026",
       "_origin": "ast",
       "community": 47,
@@ -5653,7 +5653,7 @@
       "file_type": "rationale",
       "norm_label": "x: (muestras, canales) \u2192 mismo tamano, continuando el estado del bloque...",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L84"
+      "source_location": "L86"
     },
     {
       "id": "tests_simulation_realtime_pipeline",
@@ -5733,7 +5733,7 @@
       "source_location": "L88"
     },
     {
-      "id": "tests_simulation_b_realtime_pipeline_rationale_112",
+      "id": "tests_simulation_b_realtime_pipeline_rationale_114",
       "label": "Paso 3: decide qu\u00e9 segmentos de 2 s de la ventana (paso de 0.5 s \u2192 9 por\u2026",
       "_origin": "ast",
       "community": 50,
@@ -5741,10 +5741,10 @@
       "file_type": "rationale",
       "norm_label": "paso 3: decide que segmentos de 2 s de la ventana (paso de 0.5 s \u2192 9 por...",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L112"
+      "source_location": "L114"
     },
     {
-      "id": "tests_simulation_b_realtime_pipeline_rationale_439",
+      "id": "tests_simulation_b_realtime_pipeline_rationale_443",
       "label": "Working set del proceso en MB (Windows, sin dependencias externas); None en\u2026",
       "_origin": "ast",
       "community": 50,
@@ -5752,7 +5752,7 @@
       "file_type": "rationale",
       "norm_label": "working set del proceso en mb (windows, sin dependencias externas); none en...",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L439"
+      "source_location": "L443"
     },
     {
       "id": "claude",
@@ -5856,7 +5856,7 @@
       "source_location": "L359"
     },
     {
-      "id": "tests_simulation_b_realtime_pipeline_rationale_408",
+      "id": "tests_simulation_b_realtime_pipeline_rationale_412",
       "label": "Sustituye al inlet de LSL en el replay sin LSL (Paso 7): entrega bloques de 20\u2026",
       "_origin": "ast",
       "community": 65,
@@ -5864,10 +5864,10 @@
       "file_type": "rationale",
       "norm_label": "sustituye al inlet de lsl en el replay sin lsl (paso 7): entrega bloques de 20...",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L408"
+      "source_location": "L412"
     },
     {
-      "id": "tests_simulation_b_realtime_pipeline_rationale_425",
+      "id": "tests_simulation_b_realtime_pipeline_rationale_429",
       "label": "Marcadores del archivo, entregados cuando el replay pasa por su muestra.",
       "_origin": "ast",
       "community": 68,
@@ -5875,7 +5875,7 @@
       "file_type": "rationale",
       "norm_label": "marcadores del archivo, entregados cuando el replay pasa por su muestra.",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L425"
+      "source_location": "L429"
     },
     {
       "id": "tests_datasets_workflow_ds007537_reporte_h1_ds007537_10_pr\u00f3ximos_pasos",
@@ -6202,7 +6202,7 @@
       "source_location": "L1"
     },
     {
-      "id": "tests_simulation_b_realtime_pipeline_rationale_90",
+      "id": "tests_simulation_b_realtime_pipeline_rationale_92",
       "label": "B\u00fafer circular: acumula muestras filtradas y llama a `emit(ventana, ts_\u00faltima)`\u2026",
       "_origin": "ast",
       "community": 76,
@@ -6210,7 +6210,7 @@
       "file_type": "rationale",
       "norm_label": "bufer circular: acumula muestras filtradas y llama a `emit(ventana, ts_ultima)`...",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L90"
+      "source_location": "L92"
     },
     {
       "id": "tests_simulation_b_realtime_pipeline",
@@ -6235,7 +6235,7 @@
       "source_location": "L1"
     },
     {
-      "id": "tests_simulation_b_realtime_pipeline_rationale_172",
+      "id": "tests_simulation_b_realtime_pipeline_rationale_176",
       "label": "Versi\u00f3n B: compara el rechazo con la verdad de campo del emulador B\u2026",
       "_origin": "ast",
       "community": 8,
@@ -6243,10 +6243,10 @@
       "file_type": "rationale",
       "norm_label": "version b: compara el rechazo con la verdad de campo del emulador b...",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L172"
+      "source_location": "L176"
     },
     {
-      "id": "tests_simulation_b_realtime_pipeline_rationale_309",
+      "id": "tests_simulation_b_realtime_pipeline_rationale_313",
       "label": "(recall, precisi\u00f3n) de los parpadeos detectados frente a la verdad de campo del\u2026",
       "_origin": "ast",
       "community": 8,
@@ -6254,10 +6254,10 @@
       "file_type": "rationale",
       "norm_label": "(recall, precision) de los parpadeos detectados frente a la verdad de campo del...",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L309"
+      "source_location": "L313"
     },
     {
-      "id": "tests_simulation_b_realtime_pipeline_rationale_319",
+      "id": "tests_simulation_b_realtime_pipeline_rationale_323",
       "label": "Tasa de parpadeo por bloque (marcadores `bloque:<nombre>` o fases del CSV de\u2026",
       "_origin": "ast",
       "community": 8,
@@ -6265,10 +6265,10 @@
       "file_type": "rationale",
       "norm_label": "tasa de parpadeo por bloque (marcadores `bloque:<nombre>` o fases del csv de...",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L319"
+      "source_location": "L323"
     },
     {
-      "id": "tests_simulation_b_realtime_pipeline_rationale_352",
+      "id": "tests_simulation_b_realtime_pipeline_rationale_356",
       "label": "Paso 7: reporte final de la sesi\u00f3n en runs/<sesi\u00f3n>/reporte.md.",
       "_origin": "ast",
       "community": 8,
@@ -6276,7 +6276,7 @@
       "file_type": "rationale",
       "norm_label": "paso 7: reporte final de la sesion en runs/<sesion>/reporte.md.",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L352"
+      "source_location": "L356"
     },
     {
       "id": "tests_aura_configuracion_1_ajustes_de_la_interfaz_de_arriba_a_abajo",
@@ -12704,38 +12704,38 @@
       "type": "external"
     },
     {
-      "id": "ambiguous_python_import_50e1e50db5a6",
-      "label": "ambiguous_python_import_50e1e50db5a6",
+      "id": "ambiguous_python_import_cb140d31358f",
+      "label": "ambiguous_python_import_cb140d31358f",
       "_origin": "semantic",
       "community": 8,
       "community_name": "simulation_B/realtime_pipeline.py",
       "external": true,
       "file_type": "concept",
-      "norm_label": "ambiguous_python_import_50e1e50db5a6",
+      "norm_label": "ambiguous_python_import_cb140d31358f",
       "source_file": "",
       "type": "external"
     },
     {
-      "id": "ambiguous_python_import_65ab10242f8e",
-      "label": "ambiguous_python_import_65ab10242f8e",
+      "id": "ambiguous_python_import_ec9b12de694c",
+      "label": "ambiguous_python_import_ec9b12de694c",
       "_origin": "semantic",
       "community": 8,
       "community_name": "simulation_B/realtime_pipeline.py",
       "external": true,
       "file_type": "concept",
-      "norm_label": "ambiguous_python_import_65ab10242f8e",
+      "norm_label": "ambiguous_python_import_ec9b12de694c",
       "source_file": "",
       "type": "external"
     },
     {
-      "id": "ambiguous_python_import_efff176869f6",
-      "label": "ambiguous_python_import_efff176869f6",
+      "id": "ambiguous_python_import_fe4a07be6fd0",
+      "label": "ambiguous_python_import_fe4a07be6fd0",
       "_origin": "semantic",
       "community": 8,
       "community_name": "simulation_B/realtime_pipeline.py",
       "external": true,
       "file_type": "concept",
-      "norm_label": "ambiguous_python_import_efff176869f6",
+      "norm_label": "ambiguous_python_import_fe4a07be6fd0",
       "source_file": "",
       "type": "external"
     },
@@ -12820,6 +12820,42 @@
       "external": true,
       "file_type": "concept",
       "norm_label": "ambiguous_python_import_e94f74c4bdcb",
+      "source_file": "",
+      "type": "external"
+    },
+    {
+      "id": "ambiguous_python_import_50e1e50db5a6",
+      "label": "ambiguous_python_import_50e1e50db5a6",
+      "_origin": "semantic",
+      "community": 89,
+      "community_name": "ambiguous_python_import_50e1e50db5a6",
+      "external": true,
+      "file_type": "concept",
+      "norm_label": "ambiguous_python_import_50e1e50db5a6",
+      "source_file": "",
+      "type": "external"
+    },
+    {
+      "id": "ambiguous_python_import_65ab10242f8e",
+      "label": "ambiguous_python_import_65ab10242f8e",
+      "_origin": "semantic",
+      "community": 90,
+      "community_name": "ambiguous_python_import_65ab10242f8e",
+      "external": true,
+      "file_type": "concept",
+      "norm_label": "ambiguous_python_import_65ab10242f8e",
+      "source_file": "",
+      "type": "external"
+    },
+    {
+      "id": "ambiguous_python_import_efff176869f6",
+      "label": "ambiguous_python_import_efff176869f6",
+      "_origin": "semantic",
+      "community": 91,
+      "community_name": "ambiguous_python_import_efff176869f6",
+      "external": true,
+      "file_type": "concept",
+      "norm_label": "ambiguous_python_import_efff176869f6",
       "source_file": "",
       "type": "external"
     }
@@ -15390,7 +15426,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/mock_lsl_streamer.py",
-      "source_location": "L240",
+      "source_location": "L263",
       "weight": 1.0
     },
     {
@@ -15402,7 +15438,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/mock_lsl_streamer.py",
-      "source_location": "L245",
+      "source_location": "L268",
       "weight": 1.0
     },
     {
@@ -15414,7 +15450,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/mock_lsl_streamer.py",
-      "source_location": "L200",
+      "source_location": "L205",
       "weight": 1.0
     },
     {
@@ -15426,7 +15462,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/mock_lsl_streamer.py",
-      "source_location": "L210",
+      "source_location": "L211",
       "weight": 1.0
     },
     {
@@ -15474,7 +15510,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/mock_lsl_streamer.py",
-      "source_location": "L261",
+      "source_location": "L284",
       "weight": 1.0
     },
     {
@@ -15486,7 +15522,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/mock_lsl_streamer.py",
-      "source_location": "L264",
+      "source_location": "L287",
       "weight": 1.0
     },
     {
@@ -15498,7 +15534,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/mock_lsl_streamer.py",
-      "source_location": "L267",
+      "source_location": "L290",
       "weight": 1.0
     },
     {
@@ -15510,7 +15546,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/mock_lsl_streamer.py",
-      "source_location": "L273",
+      "source_location": "L296",
       "weight": 1.0
     },
     {
@@ -15522,7 +15558,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/mock_lsl_streamer.py",
-      "source_location": "L278",
+      "source_location": "L301",
       "weight": 1.0
     },
     {
@@ -15534,7 +15570,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/mock_lsl_streamer.py",
-      "source_location": "L360",
+      "source_location": "L383",
       "weight": 1.0
     },
     {
@@ -15546,7 +15582,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/mock_lsl_streamer.py",
-      "source_location": "L391",
+      "source_location": "L414",
       "weight": 1.0
     },
     {
@@ -15558,7 +15594,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/mock_lsl_streamer.py",
-      "source_location": "L395",
+      "source_location": "L418",
       "weight": 1.0
     },
     {
@@ -15570,7 +15606,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/mock_lsl_streamer.py",
-      "source_location": "L400",
+      "source_location": "L423",
       "weight": 1.0
     },
     {
@@ -15582,7 +15618,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/mock_lsl_streamer.py",
-      "source_location": "L284",
+      "source_location": "L307",
       "weight": 1.0
     },
     {
@@ -15594,7 +15630,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/mock_lsl_streamer.py",
-      "source_location": "L299",
+      "source_location": "L322",
       "weight": 1.0
     },
     {
@@ -15606,7 +15642,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/mock_lsl_streamer.py",
-      "source_location": "L300",
+      "source_location": "L323",
       "weight": 1.0
     },
     {
@@ -15618,7 +15654,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/mock_lsl_streamer.py",
-      "source_location": "L312",
+      "source_location": "L335",
       "weight": 1.0
     },
     {
@@ -15630,7 +15666,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/mock_lsl_streamer.py",
-      "source_location": "L351",
+      "source_location": "L374",
       "weight": 1.0
     },
     {
@@ -15666,7 +15702,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L168",
+      "source_location": "L172",
       "weight": 1.0
     },
     {
@@ -15678,7 +15714,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L283",
+      "source_location": "L287",
       "weight": 1.0
     },
     {
@@ -15690,7 +15726,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L257",
+      "source_location": "L261",
       "weight": 1.0
     },
     {
@@ -15702,7 +15738,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L299",
+      "source_location": "L303",
       "weight": 1.0
     },
     {
@@ -15714,7 +15750,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L269",
+      "source_location": "L273",
       "weight": 1.0
     },
     {
@@ -15726,151 +15762,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L271",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_simulation_b_realtime_pipeline_main",
-      "target": "tests_simulation_b_realtime_pipeline_offlineinlet",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L492",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_simulation_b_realtime_pipeline_main",
-      "target": "tests_simulation_b_realtime_pipeline_offlinemarkers",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L493",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_simulation_b_realtime_pipeline_main",
-      "target": "tests_simulation_b_realtime_pipeline_causalfilter",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L512",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_simulation_b_realtime_pipeline_main",
-      "target": "tests_simulation_b_realtime_pipeline_rejector",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L518",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_simulation_b_realtime_pipeline_main",
-      "target": "tests_simulation_b_jitai_jitai",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L525",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_simulation_b_realtime_pipeline_main",
-      "target": "tests_simulation_b_realtime_pipeline_blinkcounter",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L526",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_simulation_b_realtime_pipeline_main",
-      "target": "tests_simulation_b_realtime_pipeline_open_run",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L549",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_simulation_b_realtime_pipeline_main",
-      "target": "tests_simulation_b_realtime_pipeline_windower",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L704",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_simulation_b_realtime_pipeline_main",
-      "target": "tests_simulation_b_realtime_pipeline_blink_gain",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L772",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_simulation_b_realtime_pipeline_main",
-      "target": "tests_simulation_b_realtime_pipeline_blink_report",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L772",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_simulation_b_realtime_pipeline_main",
-      "target": "tests_simulation_b_realtime_pipeline_blink_blocks",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L885",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_simulation_b_realtime_pipeline_main",
-      "target": "tests_simulation_b_realtime_pipeline_blink_match",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L888",
+      "source_location": "L275",
       "weight": 1.0
     },
     {
@@ -15882,7 +15774,151 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L977",
+      "source_location": "L1005",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_simulation_b_realtime_pipeline_main",
+      "target": "tests_simulation_b_realtime_pipeline_offlineinlet",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "Tests/simulation_B/realtime_pipeline.py",
+      "source_location": "L496",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_simulation_b_realtime_pipeline_main",
+      "target": "tests_simulation_b_realtime_pipeline_offlinemarkers",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "Tests/simulation_B/realtime_pipeline.py",
+      "source_location": "L497",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_simulation_b_realtime_pipeline_main",
+      "target": "tests_simulation_b_realtime_pipeline_causalfilter",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "Tests/simulation_B/realtime_pipeline.py",
+      "source_location": "L516",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_simulation_b_realtime_pipeline_main",
+      "target": "tests_simulation_b_realtime_pipeline_rejector",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "Tests/simulation_B/realtime_pipeline.py",
+      "source_location": "L522",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_simulation_b_realtime_pipeline_main",
+      "target": "tests_simulation_b_jitai_jitai",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "Tests/simulation_B/realtime_pipeline.py",
+      "source_location": "L529",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_simulation_b_realtime_pipeline_main",
+      "target": "tests_simulation_b_realtime_pipeline_blinkcounter",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "Tests/simulation_B/realtime_pipeline.py",
+      "source_location": "L530",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_simulation_b_realtime_pipeline_main",
+      "target": "tests_simulation_b_realtime_pipeline_open_run",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "Tests/simulation_B/realtime_pipeline.py",
+      "source_location": "L561",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_simulation_b_realtime_pipeline_main",
+      "target": "tests_simulation_b_realtime_pipeline_windower",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "Tests/simulation_B/realtime_pipeline.py",
+      "source_location": "L731",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_simulation_b_realtime_pipeline_main",
+      "target": "tests_simulation_b_realtime_pipeline_blink_gain",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "Tests/simulation_B/realtime_pipeline.py",
+      "source_location": "L800",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_simulation_b_realtime_pipeline_main",
+      "target": "tests_simulation_b_realtime_pipeline_blink_report",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "Tests/simulation_B/realtime_pipeline.py",
+      "source_location": "L800",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_simulation_b_realtime_pipeline_main",
+      "target": "tests_simulation_b_realtime_pipeline_blink_blocks",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "Tests/simulation_B/realtime_pipeline.py",
+      "source_location": "L913",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_simulation_b_realtime_pipeline_main",
+      "target": "tests_simulation_b_realtime_pipeline_blink_match",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "Tests/simulation_B/realtime_pipeline.py",
+      "source_location": "L916",
       "weight": 1.0
     },
     {
@@ -15894,7 +15930,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L627",
+      "source_location": "L639",
       "weight": 1.0
     },
     {
@@ -15906,7 +15942,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L667",
+      "source_location": "L681",
       "weight": 1.0
     },
     {
@@ -15918,7 +15954,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L671",
+      "source_location": "L685",
       "weight": 1.0
     },
     {
@@ -16170,7 +16206,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura.py",
-      "source_location": "L375",
+      "source_location": "L383",
       "weight": 1.0
     },
     {
@@ -16182,7 +16218,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura.py",
-      "source_location": "L376",
+      "source_location": "L384",
       "weight": 1.0
     },
     {
@@ -16194,7 +16230,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura.py",
-      "source_location": "L276",
+      "source_location": "L284",
       "weight": 1.0
     },
     {
@@ -16230,7 +16266,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura.py",
-      "source_location": "L370",
+      "source_location": "L378",
       "weight": 1.0
     },
     {
@@ -16242,7 +16278,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura.py",
-      "source_location": "L247",
+      "source_location": "L255",
       "weight": 1.0
     },
     {
@@ -16254,7 +16290,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura.py",
-      "source_location": "L214",
+      "source_location": "L216",
       "weight": 1.0
     },
     {
@@ -16266,7 +16302,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura.py",
-      "source_location": "L196",
+      "source_location": "L197",
       "weight": 1.0
     },
     {
@@ -16278,7 +16314,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura.py",
-      "source_location": "L198",
+      "source_location": "L199",
       "weight": 1.0
     },
     {
@@ -16290,7 +16326,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura.py",
-      "source_location": "L201",
+      "source_location": "L202",
       "weight": 1.0
     },
     {
@@ -16302,7 +16338,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura.py",
-      "source_location": "L301",
+      "source_location": "L309",
       "weight": 1.0
     },
     {
@@ -16314,7 +16350,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura.py",
-      "source_location": "L328",
+      "source_location": "L336",
       "weight": 1.0
     },
     {
@@ -16326,7 +16362,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura.py",
-      "source_location": "L329",
+      "source_location": "L337",
       "weight": 1.0
     },
     {
@@ -16338,7 +16374,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura.py",
-      "source_location": "L348",
+      "source_location": "L356",
       "weight": 1.0
     },
     {
@@ -17358,7 +17394,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L583",
+      "source_location": "L595",
       "weight": 1.0
     },
     {
@@ -17370,7 +17406,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L600",
+      "source_location": "L612",
       "weight": 1.0
     },
     {
@@ -18138,7 +18174,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L32",
+      "source_location": "L33",
       "weight": 1.0
     },
     {
@@ -18150,7 +18186,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L33",
+      "source_location": "L34",
       "weight": 1.0
     },
     {
@@ -18162,7 +18198,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L34",
+      "source_location": "L35",
       "weight": 1.0
     },
     {
@@ -18174,7 +18210,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L35",
+      "source_location": "L36",
       "weight": 1.0
     },
     {
@@ -18186,7 +18222,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L36",
+      "source_location": "L37",
       "weight": 1.0
     },
     {
@@ -18198,7 +18234,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L37",
+      "source_location": "L38",
       "weight": 1.0
     },
     {
@@ -18210,7 +18246,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L38",
+      "source_location": "L39",
       "weight": 1.0
     },
     {
@@ -18222,7 +18258,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L39",
+      "source_location": "L40",
       "weight": 1.0
     },
     {
@@ -18234,7 +18270,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L40",
+      "source_location": "L41",
       "weight": 1.0
     },
     {
@@ -18246,7 +18282,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L42",
+      "source_location": "L43",
       "weight": 1.0
     },
     {
@@ -18258,7 +18294,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L47",
+      "source_location": "L48",
       "weight": 1.0
     },
     {
@@ -18270,7 +18306,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L48",
+      "source_location": "L49",
       "weight": 1.0
     },
     {
@@ -18282,7 +18318,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L50",
+      "source_location": "L51",
       "weight": 1.0
     },
     {
@@ -19230,24 +19266,12 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L43",
+      "source_location": "L44",
       "weight": 1.0
     },
     {
       "source": "tests_simulation_b_realtime_pipeline",
-      "target": "ambiguous_python_import_efff176869f6",
-      "relation": "imports_from",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "import",
-      "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L45",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_simulation_b_realtime_pipeline",
-      "target": "ambiguous_python_import_65ab10242f8e",
+      "target": "ambiguous_python_import_ec9b12de694c",
       "relation": "imports_from",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -19259,14 +19283,26 @@
     },
     {
       "source": "tests_simulation_b_realtime_pipeline",
-      "target": "ambiguous_python_import_50e1e50db5a6",
+      "target": "ambiguous_python_import_fe4a07be6fd0",
       "relation": "imports_from",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L49",
+      "source_location": "L47",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_simulation_b_realtime_pipeline",
+      "target": "ambiguous_python_import_cb140d31358f",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "Tests/simulation_B/realtime_pipeline.py",
+      "source_location": "L50",
       "weight": 1.0
     },
     {
@@ -22237,7 +22273,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/mock_lsl_streamer.py",
-      "source_location": "L229",
+      "source_location": "L252",
       "weight": 1.0
     },
     {
@@ -22248,7 +22284,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/mock_lsl_streamer.py",
-      "source_location": "L255",
+      "source_location": "L278",
       "weight": 1.0
     },
     {
@@ -22259,7 +22295,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/mock_lsl_streamer.py",
-      "source_location": "L283",
+      "source_location": "L306",
       "weight": 1.0
     },
     {
@@ -22270,7 +22306,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/mock_lsl_streamer.py",
-      "source_location": "L298",
+      "source_location": "L321",
       "weight": 1.0
     },
     {
@@ -22281,7 +22317,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/mock_lsl_streamer.py",
-      "source_location": "L359",
+      "source_location": "L382",
       "weight": 1.0
     },
     {
@@ -22314,7 +22350,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L111",
+      "source_location": "L113",
       "weight": 1.0
     },
     {
@@ -22325,7 +22361,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L163",
+      "source_location": "L167",
       "weight": 1.0
     },
     {
@@ -22336,7 +22372,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L171",
+      "source_location": "L175",
       "weight": 1.0
     },
     {
@@ -22347,7 +22383,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L219",
+      "source_location": "L223",
       "weight": 1.0
     },
     {
@@ -22358,7 +22394,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L232",
+      "source_location": "L236",
       "weight": 1.0
     },
     {
@@ -22369,7 +22405,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L308",
+      "source_location": "L312",
       "weight": 1.0
     },
     {
@@ -22380,7 +22416,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L318",
+      "source_location": "L322",
       "weight": 1.0
     },
     {
@@ -22391,7 +22427,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L343",
+      "source_location": "L347",
       "weight": 1.0
     },
     {
@@ -22402,7 +22438,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L351",
+      "source_location": "L355",
       "weight": 1.0
     },
     {
@@ -22413,7 +22449,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L407",
+      "source_location": "L411",
       "weight": 1.0
     },
     {
@@ -22424,7 +22460,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L424",
+      "source_location": "L428",
       "weight": 1.0
     },
     {
@@ -22435,7 +22471,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L438",
+      "source_location": "L442",
       "weight": 1.0
     },
     {
@@ -22446,7 +22482,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L459",
+      "source_location": "L463",
       "weight": 1.0
     },
     {
@@ -22457,7 +22493,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L71",
+      "source_location": "L73",
       "weight": 1.0
     },
     {
@@ -22468,7 +22504,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L89",
+      "source_location": "L91",
       "weight": 1.0
     },
     {
@@ -22556,7 +22592,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura.py",
-      "source_location": "L374",
+      "source_location": "L382",
       "weight": 1.0
     },
     {
@@ -23502,7 +23538,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L244",
+      "source_location": "L248",
       "weight": 1.0
     },
     {
@@ -23513,7 +23549,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L252",
+      "source_location": "L256",
       "weight": 1.0
     },
     {
@@ -23524,7 +23560,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L261",
+      "source_location": "L265",
       "weight": 1.0
     },
     {
@@ -23535,7 +23571,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L282",
+      "source_location": "L286",
       "weight": 1.0
     },
     {
@@ -23546,7 +23582,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L294",
+      "source_location": "L298",
       "weight": 1.0
     },
     {
@@ -23557,7 +23593,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L301",
+      "source_location": "L305",
       "weight": 1.0
     },
     {
@@ -23568,7 +23604,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L74",
+      "source_location": "L76",
       "weight": 1.0
     },
     {
@@ -23579,7 +23615,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L83",
+      "source_location": "L85",
       "weight": 1.0
     },
     {
@@ -23590,7 +23626,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L411",
+      "source_location": "L415",
       "weight": 1.0
     },
     {
@@ -23601,7 +23637,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L416",
+      "source_location": "L420",
       "weight": 1.0
     },
     {
@@ -23612,7 +23648,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L419",
+      "source_location": "L423",
       "weight": 1.0
     },
     {
@@ -23623,7 +23659,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L427",
+      "source_location": "L431",
       "weight": 1.0
     },
     {
@@ -23634,7 +23670,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L430",
+      "source_location": "L434",
       "weight": 1.0
     },
     {
@@ -23645,7 +23681,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L120",
+      "source_location": "L122",
       "weight": 1.0
     },
     {
@@ -23656,7 +23692,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L132",
+      "source_location": "L134",
       "weight": 1.0
     },
     {
@@ -23667,7 +23703,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L92",
+      "source_location": "L94",
       "weight": 1.0
     },
     {
@@ -23678,7 +23714,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L97",
+      "source_location": "L99",
       "weight": 1.0
     },
     {
@@ -23700,7 +23736,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura.py",
-      "source_location": "L173",
+      "source_location": "L174",
       "weight": 1.0
     },
     {
@@ -23711,7 +23747,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura.py",
-      "source_location": "L177",
+      "source_location": "L178",
       "weight": 1.0
     },
     {
@@ -23722,7 +23758,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura.py",
-      "source_location": "L185",
+      "source_location": "L186",
       "weight": 1.0
     },
     {
@@ -23733,7 +23769,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura.py",
-      "source_location": "L191",
+      "source_location": "L192",
       "weight": 1.0
     },
     {
@@ -23744,7 +23780,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura.py",
-      "source_location": "L204",
+      "source_location": "L205",
       "weight": 1.0
     },
     {
@@ -23755,7 +23791,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura.py",
-      "source_location": "L233",
+      "source_location": "L241",
       "weight": 1.0
     },
     {
@@ -23766,7 +23802,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura.py",
-      "source_location": "L256",
+      "source_location": "L264",
       "weight": 1.0
     },
     {
@@ -23777,7 +23813,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura.py",
-      "source_location": "L264",
+      "source_location": "L272",
       "weight": 1.0
     },
     {
@@ -23788,7 +23824,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura.py",
-      "source_location": "L290",
+      "source_location": "L298",
       "weight": 1.0
     },
     {
@@ -23799,7 +23835,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura.py",
-      "source_location": "L304",
+      "source_location": "L312",
       "weight": 1.0
     },
     {
@@ -23810,7 +23846,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura.py",
-      "source_location": "L308",
+      "source_location": "L316",
       "weight": 1.0
     },
     {
@@ -23821,7 +23857,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura.py",
-      "source_location": "L335",
+      "source_location": "L343",
       "weight": 1.0
     },
     {
@@ -23832,7 +23868,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura.py",
-      "source_location": "L340",
+      "source_location": "L348",
       "weight": 1.0
     },
     {
@@ -23843,7 +23879,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura.py",
-      "source_location": "L343",
+      "source_location": "L351",
       "weight": 1.0
     },
     {
@@ -23854,7 +23890,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura.py",
-      "source_location": "L365",
+      "source_location": "L373",
       "weight": 1.0
     },
     {
@@ -24672,25 +24708,25 @@
       "weight": 1.0
     },
     {
-      "source": "tests_simulation_b_mock_lsl_streamer_rationale_230",
+      "source": "tests_simulation_b_mock_lsl_streamer_rationale_253",
       "target": "tests_simulation_b_mock_lsl_streamer_inject",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/mock_lsl_streamer.py",
-      "source_location": "L230",
+      "source_location": "L253",
       "weight": 1.0
     },
     {
-      "source": "tests_simulation_b_mock_lsl_streamer_rationale_256",
+      "source": "tests_simulation_b_mock_lsl_streamer_rationale_279",
       "target": "tests_simulation_b_mock_lsl_streamer_load_source",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/mock_lsl_streamer.py",
-      "source_location": "L256",
+      "source_location": "L279",
       "weight": 1.0
     },
     {
@@ -24727,201 +24763,201 @@
       "weight": 1.0
     },
     {
-      "source": "tests_simulation_b_realtime_pipeline_rationale_112",
+      "source": "tests_simulation_b_realtime_pipeline_rationale_114",
       "target": "tests_simulation_b_realtime_pipeline_rejector",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L112",
+      "source_location": "L114",
       "weight": 1.0
     },
     {
-      "source": "tests_simulation_b_realtime_pipeline_rationale_164",
+      "source": "tests_simulation_b_realtime_pipeline_rationale_168",
       "target": "tests_simulation_b_realtime_pipeline_blink_gain",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L164",
+      "source_location": "L168",
       "weight": 1.0
     },
     {
-      "source": "tests_simulation_b_realtime_pipeline_rationale_172",
+      "source": "tests_simulation_b_realtime_pipeline_rationale_176",
       "target": "tests_simulation_b_realtime_pipeline_blink_report",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L172",
+      "source_location": "L176",
       "weight": 1.0
     },
     {
-      "source": "tests_simulation_b_realtime_pipeline_rationale_220",
+      "source": "tests_simulation_b_realtime_pipeline_rationale_224",
       "target": "tests_simulation_b_realtime_pipeline_blink_peaks",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L220",
+      "source_location": "L224",
       "weight": 1.0
     },
     {
-      "source": "tests_simulation_b_realtime_pipeline_rationale_233",
+      "source": "tests_simulation_b_realtime_pipeline_rationale_237",
       "target": "tests_simulation_b_realtime_pipeline_blinkcounter",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L233",
+      "source_location": "L237",
       "weight": 1.0
     },
     {
-      "source": "tests_simulation_b_realtime_pipeline_rationale_253",
+      "source": "tests_simulation_b_realtime_pipeline_rationale_257",
       "target": "tests_simulation_b_realtime_pipeline_blinkcounter_detect",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L253",
+      "source_location": "L257",
       "weight": 1.0
     },
     {
-      "source": "tests_simulation_b_realtime_pipeline_rationale_262",
+      "source": "tests_simulation_b_realtime_pipeline_rationale_266",
       "target": "tests_simulation_b_realtime_pipeline_blinkcounter_push",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L262",
+      "source_location": "L266",
       "weight": 1.0
     },
     {
-      "source": "tests_simulation_b_realtime_pipeline_rationale_295",
+      "source": "tests_simulation_b_realtime_pipeline_rationale_299",
       "target": "tests_simulation_b_realtime_pipeline_blinkcounter_finish",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L295",
+      "source_location": "L299",
       "weight": 1.0
     },
     {
-      "source": "tests_simulation_b_realtime_pipeline_rationale_302",
+      "source": "tests_simulation_b_realtime_pipeline_rationale_306",
       "target": "tests_simulation_b_realtime_pipeline_blinkcounter_rate",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L302",
+      "source_location": "L306",
       "weight": 1.0
     },
     {
-      "source": "tests_simulation_b_realtime_pipeline_rationale_309",
+      "source": "tests_simulation_b_realtime_pipeline_rationale_313",
       "target": "tests_simulation_b_realtime_pipeline_blink_match",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L309",
+      "source_location": "L313",
       "weight": 1.0
     },
     {
-      "source": "tests_simulation_b_realtime_pipeline_rationale_319",
+      "source": "tests_simulation_b_realtime_pipeline_rationale_323",
       "target": "tests_simulation_b_realtime_pipeline_blink_blocks",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L319",
+      "source_location": "L323",
       "weight": 1.0
     },
     {
-      "source": "tests_simulation_b_realtime_pipeline_rationale_352",
+      "source": "tests_simulation_b_realtime_pipeline_rationale_356",
       "target": "tests_simulation_b_realtime_pipeline_write_report_md",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L352",
+      "source_location": "L356",
       "weight": 1.0
     },
     {
-      "source": "tests_simulation_b_realtime_pipeline_rationale_408",
+      "source": "tests_simulation_b_realtime_pipeline_rationale_412",
       "target": "tests_simulation_b_realtime_pipeline_offlineinlet",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L408",
+      "source_location": "L412",
       "weight": 1.0
     },
     {
-      "source": "tests_simulation_b_realtime_pipeline_rationale_425",
+      "source": "tests_simulation_b_realtime_pipeline_rationale_429",
       "target": "tests_simulation_b_realtime_pipeline_offlinemarkers",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L425",
+      "source_location": "L429",
       "weight": 1.0
     },
     {
-      "source": "tests_simulation_b_realtime_pipeline_rationale_439",
+      "source": "tests_simulation_b_realtime_pipeline_rationale_443",
       "target": "tests_simulation_b_realtime_pipeline_mem_mb",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L439",
+      "source_location": "L443",
       "weight": 1.0
     },
     {
-      "source": "tests_simulation_b_realtime_pipeline_rationale_72",
+      "source": "tests_simulation_b_realtime_pipeline_rationale_74",
       "target": "tests_simulation_b_realtime_pipeline_causalfilter",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L72",
+      "source_location": "L74",
       "weight": 1.0
     },
     {
-      "source": "tests_simulation_b_realtime_pipeline_rationale_84",
+      "source": "tests_simulation_b_realtime_pipeline_rationale_86",
       "target": "tests_simulation_b_realtime_pipeline_causalfilter_call",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L84",
+      "source_location": "L86",
       "weight": 1.0
     },
     {
-      "source": "tests_simulation_b_realtime_pipeline_rationale_90",
+      "source": "tests_simulation_b_realtime_pipeline_rationale_92",
       "target": "tests_simulation_b_realtime_pipeline_windower",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L90",
+      "source_location": "L92",
       "weight": 1.0
     },
     {
@@ -25002,14 +25038,14 @@
       "weight": 1.0
     },
     {
-      "source": "tests_simulation_b_sesion_aura_rationale_344",
+      "source": "tests_simulation_b_sesion_aura_rationale_352",
       "target": "tests_simulation_b_sesion_aura_sessionapp_tick",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura.py",
-      "source_location": "L344",
+      "source_location": "L352",
       "weight": 1.0
     },
     {
@@ -25465,7 +25501,7 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L704",
+      "source_location": "L731",
       "weight": 1.0
     },
     {
@@ -25477,7 +25513,7 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L647",
+      "source_location": "L661",
       "weight": 1.0
     },
     {
@@ -31980,5 +32016,5 @@
       "source_file": "Tests/datasets workflow/EEG-SVRec/results/svrec_trayectorias.png"
     }
   ],
-  "built_at_commit": "e3f2a0c967524a41db3b043c5a827c7955fe9943"
+  "built_at_commit": "97c877925264d06de0eeba5135fc32ec729a33a0"
 }

@@ -8,6 +8,7 @@
 **/*.bdf
 **/*.cnt
 **/*.mat
+Tests/Recordings/
 
 # === Caché de procesamiento intermedio (los agregados finales sí se conservan) ===
 **/results/cache/

@@ -28,6 +28,7 @@ Uso:
   python behavior_markers.py 0 bloque:reposo 420 bloque:scroll 840 bloque:reposo # antes: bloques de parpadeo (7 min)
   python realtime_pipeline.py --offline synthetic --duration 600 --inject alpha 300 30 25   # replay sin LSL
   python realtime_pipeline.py --offline ../../AURA/data/eeg_data_20260122_123839.csv --sin-fases
+  python realtime_pipeline.py --offline "../Recordings/<fecha>/AURA_RAW___<fecha>.csv"  # grabación de Aura (ref. promedio, Fp1 invertido)
 """
 import argparse
 import bisect
@@ -61,6 +62,7 @@ CAL_S = 90.0  # calibración (Paso 5); aquí fija la línea base EMG
 EMG_VETO = False  # versión B: el EMG solo se mide (emg_db); la versión A descarta segmentos > μ + 3σ
 LOST_S = 5.0  # más segundos seguidos sin ventanas válidas = señal perdida
 VALID_MIN = 0.90  # criterio del Paso 3: fracción de ventanas válidas con ~15 parpadeos/min
+RUIDO_FRAC = 0.5  # aviso de ruido por canal: ≥ 50 % de sus segmentos de 2 s > PTP_UV en las últimas 10 ventanas
 BLINK_BAND = (1.0, 10.0)  # contador de parpadeos en Fp1: banda de h1_ds007537.detect_blinks
 BLINK_PERIOD_S = 420.0  # umbral móvil (2 nov): cada 7 min se recalcula con los datos de esos 7 min
 BLINK_EDGE_S = 2.0  # espera tras un tramo: su último pico (≤ 0.5 s) completo y lejos del borde del filtro sin desfase
@@ -157,7 +159,9 @@ class Rejector:
         valid = any(clean)
         self.invalid_run = 0 if valid else self.invalid_run + 1
         return {"clean": clean, "motivo": "+".join(sorted(set(why))), "valida": valid,
-                "perdida": self.invalid_run > LOST_S / HOP_S, "emg_db": float(np.nanmean(emg)) if self.emg else None}
+                "perdida": self.invalid_run > LOST_S / HOP_S, "emg_db": float(np.nanmean(emg)) if self.emg else None,
+                # Aviso de ruido (sesion_aura.py): fracción de segmentos de cada canal que superan el mismo PTP_UV
+                "ptp_alto": (ptp > PTP_UV).mean(axis=0)}
 
 
 def blink_gain(fs, line):
@@ -526,12 +530,20 @@ def main():
     blk = BlinkCounter(fs, a.parpadeo_periodo) if "Fp1" not in bads else None
     # 4 nov: en la AURA real el parpadeo sale NEGATIVO en Fp1 (CSV RAW 17:43: ~−200 µV, 140 ms); blink_peaks busca picos
     # positivos, así que se invierte. Emulador, ds007537 y SVRec van con la convención (positivo).
-    fp1_sign = -1.0 if src["source_id"].startswith("AuraLSL-") else 1.0
+    aura_real = src["source_id"].startswith(("AuraLSL-", "AURA_RAW___"))  # en vivo o replay de Tests/Recordings
+    fp1_sign = -1.0 if aura_real else 1.0
+    # 5 nov: la AURA real trae ~12 mV de 60 Hz idénticos en los 8 canales (modo común por REF/sin bias); la red está en
+    # 59.97 Hz y el notch deja ~100 µV → 99 % de ventanas rechazadas. Re-referencia promedio por ventana (sin Fp1, para
+    # no repartir el parpadeo, ni canales malos): 96–100 % válidas en los min 0–24 del CSV RAW del 5 nov. Solo con
+    # AURA real: el emulador ya entrega datos con referencia promedio y los Pasos 2–6 se cerraron así.
+    car = aura_real
     cfg = {"paso": 7, "modo": "offline" if offline else "en vivo", "stream": src["stream"],
            "source_id": src["source_id"], "host": src["host"],
            "fs": fs, "line_freq": line, "channels": AURA_CHANNELS, "labels_stream": labels,
            "window_s": WIN_S, "hop_s": HOP_S, "bandpass_hz": filt.band, "bandpass_order": 4,
-           "notch": filt.notch, "lsl_api_cfg": os.environ.get("LSLAPICFG"),
+           "notch": filt.notch,
+           "referencia": "promedio por ventana sin Fp1 ni canales malos" if car else "la de la fuente",
+           "lsl_api_cfg": os.environ.get("LSLAPICFG"),
            "rechazo": {"segmento_s": SEG_S, "paso_segmento_s": SEG_STEP_S, "ptp_uv": PTP_UV,
                        "canales_oculares": rej.ocular_chs, "canales_malos": bads,
                        "emg": f"{EMG_BAND[0]:.0f}-{EMG_BAND[1]:.0f} Hz, " + (f"veto mu+3sigma de los primeros {CAL_S:.0f} s" if EMG_VETO else "solo medido (sin veto)")
@@ -639,6 +651,8 @@ def main():
             for m in markers:
                 if not (a.sin_fases and m[1].startswith("file:")):
                     state["cal"].marker(*m)
+        if car:  # después del chequeo de calidad: un canal en el riel se ve muerto antes de re-referenciar, no después
+            w = w - w[:, [i for i, c_ in enumerate(AURA_CHANNELS) if c_ != "Fp1" and c_ not in bads]].mean(1, keepdims=True)
         r = rej(w)
         t_rej = time.perf_counter()
         rj = (t_rej - t_ready) * 1000
@@ -700,10 +714,24 @@ def main():
                   + (f"  θ_per={o['theta_per']:5.2f}  α_per={o['alpha_per']:5.2f} dB  features={fm:4.1f} ms" if o else "")
                   + (f"  Zθ={z['theta']:+5.2f}  Zα={z['alpha']:+5.2f}" if z else f"  [{cb.state}]")
                   + (f"  parpadeos={br}/min" if br is not None else ""))
+            # Aviso de ruido por canal para la depuración visual (sesion_aura.py lo resalta). Mismo umbral que el
+            # rechazo (PTP_UV en segmentos de 2 s); se avisa si el canal lo supera en ≥ RUIDO_FRAC de los segmentos
+            # de las últimas 10 ventanas. "invalida" = en alguna de ellas el canal no dejó ni un segmento limpio, es
+            # decir, él solo ya bastaría para invalidar la ventana. Se excluyen los canales malos del chequeo y Fp1:
+            # sus parpadeos (~200 µV en la AURA) superan el umbral en el 52–80 % de los segmentos aun con buen
+            # contacto (replay 5 nov), así que avisaría siempre; su estado lo dan el contador de parpadeos y las válidas.
+            alto = [x["ptp_alto"] for _, x in wins[-10:]]
+            frac = np.mean(alto, axis=0)
+            ruido = [f"{AURA_CHANNELS[i]} {frac[i]:.0%}" + (" invalida" if any(v[i] == 1 for v in alto) else "")
+                     for i in np.argsort(-frac)
+                     if frac[i] >= RUIDO_FRAC and AURA_CHANNELS[i] not in bads and AURA_CHANNELS[i] != "Fp1"]
+            if ruido:
+                print(f"  AVISO RUIDO (> {PTP_UV:.0f} µV pico a pico, últ. 10 ventanas): {' · '.join(ruido)}")
 
     wnd = Windower(win, hop, nch, on_window)
     print(f"Pipeline{' (replay sin LSL)' if offline else ''}: {src['stream']} ({src['source_id']}) | {fs:.0f} Hz | red {line:.0f} Hz | "
           f"pasa-banda {filt.band[0]:.0f}–{filt.band[1]:.0f} Hz | notch {'sí' if filt.notch else 'no'} | "
+          + ("ref. promedio | " if car else "") +
           f"ventana {WIN_S:.0f} s / avance {HOP_S:.0f} s")
     print(f"Registro: {run}\nCtrl+C para detener.\n")
 

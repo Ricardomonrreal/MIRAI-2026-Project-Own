@@ -1,17 +1,17 @@
-# Graph Report - Project  (2026-11-05)
+# Graph Report - Project  (2026-11-06)
 
 ## Corpus Check
-- 36 files · ~144,889 words
+- 36 files · ~146,066 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 10 file(s) not represented in the graph (top: (none) 2, .pptx 2, .bat 2)
 
 ## Summary
-- 975 nodes · 1669 edges · 89 communities (58 shown, 31 thin omitted)
+- 978 nodes · 1669 edges · 92 communities (58 shown, 34 thin omitted)
 - Extraction: 93% EXTRACTED · 7% INFERRED · 0% AMBIGUOUS · INFERRED: 120 edges (avg confidence: 0.86)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `e3f2a0c9`
+- Built from commit: `97c87792`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -124,7 +124,7 @@
 - **Tonic theta up, phasic theta preserved under fatigue** — tests_datasets_workflow_cao2019_results_cao_fasico_curso_phasic_theta, tests_datasets_workflow_cao2019_results_cao_fasico_curso_tonic_theta, tests_datasets_workflow_cao2019_results_cao_fasico_curso_fast_vs_slow_trials, tests_datasets_workflow_cao2019_results_cao_fasico_curso_baseline_normalization_artifact [INFERRED 0.85]
 - **Spectral parametrization: periodic alpha, periodic theta, aperiodic exponent** — tests_datasets_workflow_eeg_svrec_results_svrec_trayectorias_periodic_alpha, tests_datasets_workflow_eeg_svrec_results_svrec_trayectorias_periodic_theta, tests_datasets_workflow_eeg_svrec_results_svrec_trayectorias_aperiodic_exponent [INFERRED 0.85]
 
-## Communities (89 total, 31 thin omitted)
+## Communities (92 total, 34 thin omitted)
 
 ### Community 0 - "EEGViewer"
 Cohesion: 0.18
@@ -366,8 +366,8 @@ Nodes (6): 10-20 electrode map tab in Demo_processing, Frontal Alpha Asymmetry F
 
 ## Knowledge Gaps
 - **205 isolated node(s):** `graphify`, `Diagrama de flujo del pipeline (versión B, 2 nov 2026)`, `0. Estado actual de `/Tests``, `1. Objetivo central 1: datasets EEG de scrolling / video corto`, `2.1 Veredicto general` (+200 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 427 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
-- **31 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 430 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **34 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_

@@ -20,7 +20,7 @@ Guía para que la diadema AURA (software v1.2.x / instalador 2.0.1) entregue EEG
 | Scale | Autoscale | Indiferente | Solo afecta la visualización. |
 | **LSL Stream Out** | **desmarcado** | **marcado** | Publica el stream LSL `AURA` (EEG crudo). Sin esto el pipeline no recibe nada. |
 | FFT (Log, Smoothness) | — | Indiferente | Útil para ver el pico alfa con ojos cerrados (§3). |
-| Grabación (botón rojo) | — | **Grabar siempre** como respaldo | CSV en `Documents\Aura EEG Records` (o la carpeta elegida con el icono de guardar). |
+| Grabación (botón rojo) | — | **Grabar siempre** como respaldo | Carpeta fijada en **`Tests\Recordings`** (icono de guardar; Aura la recuerda en `%USERPROFILE%\AppData\LocalLow\Mirai\Aura\RecLocations.csv`). Cada grabación crea `AAAA-MM-DD___HH;MM;SS\` con `AURA_RAW___….csv` (+`.mat`), `AURA_Filtered___….csv` y `AURA_FFT___….csv`. Fuera de git (pesan ~150 MB por 40 min). Replay: `python Tests/simulation_B/realtime_pipeline.py --offline "Tests/Recordings/<fecha>/AURA_RAW___<fecha>.csv"` (también `mock_lsl_streamer.py --source` y `replay_offline.py --source`); Filtered y FFT no sirven para el pipeline (Filtered trae marcas de tiempo y nombres de canal erróneos). |
 | **Event** (barra espaciadora) | — | Marcar inicio/fin de cada fase | Queda en el CSV; permite alinear fases si falla el stream. |
 
 > El manual dice que *LSL Stream Out* envía “raw signals”, así que probablemente los filtros de la interfaz **no**

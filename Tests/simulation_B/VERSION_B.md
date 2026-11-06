@@ -319,3 +319,17 @@ Mann-Whitney sobre los minutos completos). `replay_offline.eeg_blinks` usa la mi
   empezar el scroll) con aviso sonoro, y el estado que imprime el pipeline (calidad, calibración, válidas, parpadeos,
   intervención). *Detener* manda Ctrl+Break; el pipeline lo trata como Ctrl+C (SIGBREAK → KeyboardInterrupt) y deja
   su reporte. Probada con el emulador (`--name AURA`, prefijo `mirai-sim-`): verificación, sesión, detener y reporte.
+- **Re-referencia promedio con la AURA real (5 nov):** primera sesión en vivo (CSV RAW 17:50, 40 min) abortó la
+  calibración dos veces: ~12 mV de 60 Hz idénticos en los 8 canales (corr. 0.98–1.00, modo común por REF/sin bias), red
+  en 59.97 Hz → el notch (Q 30) deja ~100 µV y el 99 % de las ventanas supera 150 µV. Con `source_id` `AuraLSL-` el
+  pipeline resta a cada ventana filtrada la media de los canales sin Fp1 (no reparte el parpadeo) ni canales malos,
+  después del chequeo de calidad (que sigue sobre la señal sin re-referenciar). Replay por LSL de los min 0–5: 96.9 %
+  válidas y calibración congelada (antes 1–3 %); offline, min 0–24 al 93–100 %. Desde el min ~25 Pz y F4 pierden
+  contacto y ni así pasan: es de gel/postura. El emulador no cambia (ya entrega referencia promedio).
+- **Aviso de ruido por canal (6 nov):** para ver en la sesión qué electrodo se degrada (en la del 5 nov el RMS subió
+  poco a poco desde ~18:03 y las válidas cayeron a ~0 desde ~18:16), el pipeline imprime cada 10 ventanas
+  `AVISO RUIDO` con los canales que superan 150 µV pico a pico (el mismo `PTP_UV` del rechazo) en ≥ 50 % de sus
+  segmentos de 2 s (`RUIDO_FRAC`), y marca `invalida` si en alguna ventana el canal no dejó ningún segmento limpio.
+  Fp1 queda fuera (sus parpadeos superan el umbral en el 52–80 % de los segmentos con buen contacto).
+  `sesion_aura.py` colorea la línea y la muestra en el estado *Ruido*. No cambia el rechazo. En el replay del 5 nov:
+  sin avisos hasta 18:08; F4 desde 18:09 (~7 min antes de perder las válidas), Pz 18:15, todos desde 18:20.

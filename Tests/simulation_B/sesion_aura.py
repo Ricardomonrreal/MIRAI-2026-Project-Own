@@ -133,8 +133,8 @@ class SessionApp:
         self.next_lbl.pack(anchor="w", fill=tk.X, pady=(2, 8))
         self.next_fg = self.next_lbl.cget("fg")
         self.status = {k: ttk.Label(c, text=f"{k}: —") for k in
-                       ("Calidad", "Calibración", "Ventanas válidas", "Parpadeos", "Umbral parpadeo", "Intervención",
-                        "Registro")}
+                       ("Calidad", "Calibración", "Ventanas válidas", "Ruido", "Parpadeos", "Umbral parpadeo",
+                        "Intervención", "Registro")}
         for lbl in self.status.values():
             lbl.pack(anchor="w", fill=tk.X)
 
@@ -169,6 +169,7 @@ class SessionApp:
         self.log.pack(fill=tk.BOTH, expand=True)
         self.log.tag_config("err", foreground="#A32D2D")
         self.log.tag_config("ok", foreground="#0F6E56")
+        self.log.tag_config("warn", foreground="#B5590B")  # AVISO RUIDO del pipeline
 
     def set_status(self, k, txt, color=None):
         self.status[k].config(text=f"{k}: {txt}", foreground=color or "")
@@ -203,7 +204,8 @@ class SessionApp:
 
     def on_line(self, tag, line):
         bad = any(k in line for k in ("FALLA", "SESIÓN DETENIDA", "Traceback", "Error", "abortada"))
-        self.log.insert(tk.END, f"[{tag}] {line}\n", "err" if bad else ("ok" if "PASA" in line else ""))
+        warn = "AVISO RUIDO" in line
+        self.log.insert(tk.END, f"[{tag}] {line}\n", "err" if bad else "warn" if warn else ("ok" if "PASA" in line else ""))
         self.log.see(tk.END)
         if tag != "pipeline":
             return
@@ -223,6 +225,12 @@ class SessionApp:
             self.set_status("Intervención", line.split(">>>", 1)[1].strip())
         if m := re.search(r"válidas\(últ\. 10\)=(\d+%)", line):
             self.set_status("Ventanas válidas", m.group(1) + " de las últimas 10")
+            self.set_status("Ruido", "sin aviso")  # el pipeline imprime AVISO RUIDO justo después, si lo hay
+        if warn:
+            # Canales con ≥ 50 % de segmentos de 2 s > 150 µV (umbral de rechazo); "invalida" = sin segmento limpio.
+            # Rojo si alguno invalida ventanas por sí solo; naranja si solo está ruidoso. Revisar gel/contacto de esos.
+            chs = line.split(":", 1)[1].strip()
+            self.set_status("Ruido", chs + " → revisar contacto", "#A32D2D" if "invalida" in chs else "#B5590B")
         if m := re.search(r"parpadeos=(\S+)/min", line):
             self.set_status("Parpadeos", f"{m.group(1)}/min (en vivo, provisional)")
         elif line.strip().startswith("PARPADEOS"):  # cierre de período: línea propia, la tasa en vivo no la tapa
