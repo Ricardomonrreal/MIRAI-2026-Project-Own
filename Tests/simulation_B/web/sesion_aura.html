@@ -1,0 +1,549 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AURA Session</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* Paleta del proyecto: coral #e07c62 · cielo #e2f4f9 · azul #1e7093 · blanco #ffffff (el resto son tonos de ellos) */
+  :root {
+    --coral: #e07c62; --sky: #e2f4f9; --blue: #1e7093; --white: #ffffff;
+    --ink: #123548;            /* texto: azul muy oscuro */
+    --muted: #5e7e8d;          /* texto secundario */
+    --line: #d3e7ee;           /* bordes suaves */
+    --blue-soft: #d4ebf3;      /* fondos de píldoras */
+    --coral-soft: #fbe6df;
+    --err: #c4553a;            /* coral profundo: errores (los avisos usan el coral normal) */
+    /* Espaciado fluido: crece con el ancho de la pantalla (mínimo en laptop, máximo en 4K) */
+    --radius: clamp(18px, 1.3vw, 28px);
+    --gap: clamp(12px, 1.1vw, 24px);       /* entre tarjetas y entre secciones */
+    --pad: clamp(18px, 1.4vw, 30px);       /* relleno interior de las tarjetas */
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--sky); color: var(--ink);
+         font: 14px/1.45 "Raleway", "Segoe UI", system-ui, sans-serif; }
+  /* Raleway forzada en todo el documento (incluye el registro, antes monoespaciado) */
+  body, body * { font-family: "Raleway", "Segoe UI", system-ui, sans-serif !important; }
+  /* Excepción: el registro usa la fuente de consola (monoespaciada) */
+  .log, .log * { font-family: Consolas, "Cascadia Mono", "Courier New", monospace !important; }
+  button, input { font: inherit; color: inherit; }
+  /* El tablero ocupa todo el ancho en cualquier pantalla; solo un margen lateral pequeño y fluido (1,5 % del ancho, 16–40 px) */
+  .app { margin: 0; padding: clamp(10px, 1.2vw, 28px) clamp(16px, 1.5vw, 40px) var(--gap); }
+
+  /* ---------- barra superior ---------- */
+  .top { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .logo { width: 44px; height: 44px; border-radius: 14px; background: var(--blue); color: var(--white);
+          display: grid; place-items: center; font-weight: 700; font-size: 18px; letter-spacing: .5px; }
+  .conn { display: flex; align-items: center; gap: 8px; background: var(--white); border-radius: 999px;
+          padding: 9px 16px; font-size: 13px; color: var(--muted); }
+  .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--coral); }
+  .dot.on { background: var(--blue); }
+  nav { display: flex; gap: 6px; margin-left: auto; background: var(--white); padding: 5px; border-radius: 999px; }
+  nav a { padding: 8px 18px; border-radius: 999px; text-decoration: none; color: var(--ink); font-size: 13px; }
+  nav a.active { background: var(--blue); color: var(--white); }
+  .procs { display: flex; gap: 6px; margin-left: 8px; }
+  .chip { background: var(--white); border-radius: 999px; padding: 6px 12px; font-size: 12px; color: var(--muted); }
+  .chip.run { background: var(--coral-soft); color: var(--err); }
+
+  /* ---------- título y KPI ---------- */
+  .head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin: 0 0 calc(var(--gap) * .6);
+          flex-wrap: wrap; }
+  .head > div:first-child { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }  /* h1 y conexión en una fila */
+  h1 { font-size: clamp(26px, 1.2vw + 17px, 42px); margin: 0; letter-spacing: -.5px; }
+  .sub { color: var(--muted); font-size: 13px; margin: 10px 10px}
+  .clock { font-size: clamp(30px, 1.4vw + 20px, 52px); font-weight: 700; letter-spacing: -1px; font-variant-numeric: tabular-nums; }
+  .kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gap); margin: 0 0 var(--gap); }
+  .kpi .lab { color: var(--muted); font-size: 13px; }
+  .kpi .val { display: flex; align-items: baseline; gap: 8px; margin-top: 2px; min-width: 0; }
+  .kpi .big { font-size: 26px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+              flex: 0 0 auto; max-width: 100%; }  /* el valor no cede espacio: lo recorta la píldora */
+  .pill:empty { display: none; }
+  .pill { flex: 0 100 auto; background: var(--white); border-radius: 999px; padding: 2px 10px; font-size: 12px; color: var(--muted);
+          white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+
+  /* ---------- tarjetas ---------- */
+  /* dense: una tarjeta de una columna rellena el hueco que deja otra de dos */
+  .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap); grid-auto-flow: row dense; }
+  /* Durante la sesión el reloj queda fijo arriba al desplazarse (p. ej. al bajar al registro) */
+  .live .head { position: sticky; top: 0; z-index: 5; background: var(--sky); padding: 10px 0; margin-left: 0;
+                margin-right: 0; box-shadow: 0 8px 12px -12px rgba(18, 53, 72, .35); }
+  .card { background: var(--white); border-radius: var(--radius); padding: var(--pad); min-width: 0; }
+  .span2 { grid-column: span 2; } .span3 { grid-column: span 3; }
+  .card .kicker { color: var(--muted); font-size: 12px; }
+  .card h2 { font-size: 18px; margin: 2px 0 14px; }
+  .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .fields { display: grid; gap: 10px; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-bottom: 12px; }
+  /* justify-content: flex-end alinea los inputs de una fila aunque una etiqueta ocupe dos líneas */
+  label.f { display: flex; flex-direction: column; justify-content: flex-end; gap: 4px; font-size: 12px;
+            color: var(--muted); min-width: 0; }
+  input[type=text] { border: 1px solid var(--line); border-radius: 12px; padding: 8px 12px; background: var(--white);
+                     min-width: 0; width: 100%; }
+  input[type=text]:focus { outline: 2px solid var(--blue); outline-offset: -1px; }
+  .btn { border: 0; border-radius: 999px; padding: 9px 16px; cursor: pointer; background: var(--blue-soft);
+         color: var(--blue); font-weight: 600; font-size: 13px; }
+  .btn.primary { background: var(--blue); color: var(--white); }
+  .btn.danger { background: var(--coral-soft); color: var(--err); }
+  .btn:disabled { opacity: .38; cursor: default; }
+  .note { margin-top: 12px; font-size: 13px; color: var(--muted); }
+  .note.ok, .ok { color: var(--blue); } .note.err, .err { color: var(--err); } .warn { color: var(--coral); }
+
+  /* ---------- cronómetro ---------- */
+  .block { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+  .next { font-size: 14px; color: var(--ink); min-height: 21px; }
+  .next.soon { color: var(--err); font-weight: 700; }
+  .timeline { position: relative; display: flex; height: 54px; border-radius: 16px; overflow: hidden; margin-top: 22px;
+              background: var(--sky); }
+  .seg { display: flex; align-items: flex-end; padding: 0 10px 8px; font-size: 12px; font-weight: 600;
+         border-right: 2px solid var(--white); white-space: nowrap; overflow: hidden; }
+  .seg.a { background: var(--blue-soft); color: var(--blue); } .seg.b { background: var(--coral-soft); color: var(--err); }
+  .cal { position: absolute; top: 0; left: 0; height: 8px; width: var(--at, 0%); background: repeating-linear-gradient(45deg,
+         var(--blue) 0 4px, transparent 4px 8px); opacity: .45; }
+  .now { position: absolute; top: -4px; bottom: -4px; left: var(--at, 0%); width: 3px; background: var(--ink); border-radius: 3px;
+         display: none; }
+  .ticks { position: relative; height: 18px; font-size: 11px; color: var(--muted); margin-top: 4px; }
+  .ticks span { position: absolute; left: var(--at); transform: translateX(-50%); }
+  .legend { display: flex; gap: 14px; font-size: 12px; color: var(--muted); margin-top: 6px; flex-wrap: wrap; }
+  .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px;
+              vertical-align: -1px; }
+
+  /* ---------- estado ---------- */
+  .status { display: flex; flex-direction: column; }
+  .st { display: grid; grid-template-columns: 128px minmax(0, 1fr); gap: 10px; padding: 8px 0;
+        border-bottom: 1px solid var(--line); font-size: 13px; }
+  .st:last-child { border-bottom: 0; }
+  .st b { font-weight: 600; color: var(--muted); }
+  .st span { overflow-wrap: anywhere; }
+  .st span.err, .st span.warn, .st span.ok { font-weight: 600; }
+
+  /* ---------- registro ---------- */
+  .loghead { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .filters { display: flex; gap: 6px; }
+  .filters button { border: 1px solid var(--line); background: var(--white); border-radius: 999px; padding: 5px 12px;
+                    font-size: 12px; cursor: pointer; color: var(--muted); }
+  .filters button.active { background: var(--ink); color: var(--white); border-color: var(--ink); }
+  .log { height: clamp(160px, 42vh, 560px); overflow: auto; background: #f6fbfd; border-radius: 16px; padding: 12px 14px;
+         font: 12px/1.55 Consolas, "Cascadia Mono", monospace; white-space: pre; }
+  .log.f-warn div:not(.warn):not(.err) { display: none; }
+  .log.f-err div:not(.err) { display: none; }
+
+  /* ---------- responsivo: 3 columnas ≥ 1280 px · 2 columnas en laptop chica y tableta · 1 en celular ---------- */
+  @media (max-width: 1279px) {
+    .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .span3 { grid-column: span 2; }
+    .statecard { grid-column: span 2; }  /* Paso 1 · Paso 2 en una fila y Estado a lo ancho debajo */
+  }
+  @media (max-width: 900px) {
+    .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 12px; }
+    .top { display: grid; grid-template-columns: auto minmax(0, 1fr); }
+    .procs { grid-column: 1 / -1; margin-left: 0; }
+    nav { grid-column: 1 / -1; margin-left: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    nav a { padding: 8px 4px; text-align: center; }
+  }
+  @media (max-width: 720px) {
+    .app { padding: 12px 16px 32px; } .grid { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+    .span2, .span3, .statecard { grid-column: span 1; }
+    .live .clockcard { order: -1; }  /* en celular, durante la sesión el bloque actual sube al principio */
+    .card { padding: 16px; border-radius: 18px; }
+    .head { margin: 18px 2px 14px; } .clock { font-size: 30px; } h1 { font-size: 26px; }
+    .live .head { flex-wrap: nowrap; align-items: center; } .live .sub { display: none; }
+    .live h1 { font-size: 20px; } .live .clock { font-size: 26px; }
+    .block { font-size: 18px; }
+    .kpis { margin: 0 0 12px; } .kpi .big { font-size: 22px; }
+    .kpi .val { flex-wrap: wrap; row-gap: 2px; } .kpi .pill { max-width: 100%; }  /* píldora bajo el valor */
+    .st { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+    nav a { font-size: 12px; }
+    .log { white-space: pre-wrap; overflow-wrap: anywhere; }  /* sin barra horizontal en pantallas angostas */
+    .ticks span:not(:first-child):not(:last-child) { font-size: 10px; }
+  }
+  @media (max-width: 380px) {
+    .fields { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .fields label:last-child { grid-column: 1 / -1; }
+    .chip { padding: 5px 9px; font-size: 11px; }
+  }
+  /* Pantallas bajas (apaisadas o con zoom alto) o muy angostas: la barra fija de la sesión se reduce a reloj y
+     conexión en una sola línea; con título ocupaba hasta un tercio de la pantalla. */
+  @media (max-height: 600px), (max-width: 360px) {
+    .live .head { flex-wrap: nowrap; align-items: center; padding: 6px 2px; margin-top: 0; margin-bottom: 8px; }
+    .live .head > div { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    .live h1 { display: none; }
+    .live .conn { padding: 5px 10px; font-size: 12px; min-width: 0; }
+    .live .clock { font-size: 22px; white-space: nowrap; }
+  }
+  /* Muy angosta (p. ej. zoom ≥ 400 % en laptop): reloj bajo la conexión en vez de al lado */
+  @media (max-width: 360px) { .live .head { flex-wrap: wrap; row-gap: 4px; } }
+  /* Pantallas táctiles: blancos de al menos ~44 px */
+  @media (pointer: coarse) {
+    .btn { min-height: 44px; padding: 10px 16px; }
+    input[type=text] { min-height: 44px; font-size: 16px; }  /* 16 px evita el zoom automático de iOS */
+    nav a { min-height: 40px; display: flex; align-items: center; justify-content: center; }
+    .filters button { min-height: 36px; }
+  }
+  /* ---------- Computadora (≥ 1024 px de ancho, con mouse/touchpad): todo en una pantalla, sin scroll ----------
+     Fila 1: Paso 1 · Paso 2 · Estado │ Bloque actual (columna derecha a toda la altura)
+     Fila 2: Registro (ocupa el alto que sobra; desplaza solo su contenido) │
+     hover + pointer fine deja fuera iPad y celulares (táctiles), que conservan el diseño con scroll de arriba.
+     Va al final para ganar a las reglas de 2 columnas (≤ 1279 px).                                            */
+  @media (min-width: 1024px) and (hover: hover) and (pointer: fine) {
+    .app { height: 100vh; height: 100dvh; display: flex; flex-direction: column; }
+    .grid { flex: 1; min-height: 0; grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(180px, .38fr);
+            grid-template-rows: auto minmax(0, 1fr); }
+    .clockcard { grid-column: 4; grid-row: 1 / 3; } .statecard { grid-column: auto; }
+    #registro { grid-column: 1 / 4; grid-row: 2; display: flex; flex-direction: column; min-height: 0; }
+    .log { flex: 1; height: auto; min-height: 90px; }  /* si no cabe ni así, la página hace scroll */
+    .card h2 { margin-bottom: 8px; } .st { padding: 5px 0; }  /* fila 1 más baja: más alto para el registro */
+    /* Bloque actual: columna angosta; barra vertical (inicio arriba, fin abajo), marcas de tiempo a la izquierda
+       y leyenda a la derecha con el texto girado */
+    .clockcard { display: flex; flex-direction: column; padding-inline: 16px; }  /* angosta: menos relleno lateral */
+    /* marcas | barra | leyenda: columnas laterales del mismo ancho para que la barra quede justo al centro */
+    .track { flex: 1; min-height: 0; display: grid; grid-template-columns: 38px minmax(0, 110px) 38px;
+             justify-content: center; gap: 8px; margin-top: 16px; padding: 6px 0; }
+    .timeline { flex: 1; max-width: 110px; flex-direction: column; height: auto; margin-top: 0; }
+    .legend { flex-direction: column; flex-wrap: nowrap; gap: 8px; font-size: 11px; margin: 0 0 0 4px; overflow: hidden; }
+    .legend span { writing-mode: vertical-rl; display: inline-flex; flex-direction: row-reverse; align-items: center;
+                   gap: 8px; white-space: nowrap; }  /* texto de arriba hacia abajo y el punto al final */
+    .legend i { margin: 0; }
+    .seg { align-items: center; justify-content: center; padding: 6px; border-right: 0; border-bottom: 2px solid var(--white); }
+    .cal { width: 8px; height: var(--at, 0%); }
+    .now { top: var(--at, 0%); bottom: auto; left: 0; right: 0; width: auto; height: 3px; }
+    .ticks { order: -1; width: 38px; height: auto; margin-top: 0; }
+    .ticks span { left: auto; right: 0; top: var(--at); transform: translateY(-50%); }
+  }
+  /* Computadora con pantalla baja (laptop 1366×768, escala 125–150 %, zoom del navegador): todo más compacto
+     para que la vista completa siga cabiendo sin scroll */
+  @media (min-width: 1024px) and (hover: hover) and (pointer: fine) and (max-height: 820px) {
+    :root { --gap: 10px; --pad: 14px; }
+    .app { padding-top: 8px; padding-bottom: 10px; }
+    .head { margin-bottom: 4px; } h1 { font-size: 26px; } .clock { font-size: 30px; }
+    .conn { padding: 5px 12px; font-size: 12px; }
+    .kpis { margin-bottom: 8px; } .kpi .lab { font-size: 12px; } .kpi .big { font-size: 20px; }
+    .card .kicker { font-size: 11px; } .card h2 { font-size: 16px; margin: 0 0 6px; }
+    .fields { gap: 8px; margin-bottom: 8px; } label.f { gap: 2px; font-size: 11px; }
+    input[type=text] { padding: 5px 10px; border-radius: 10px; }
+    .row { gap: 6px; } .btn { padding: 6px 12px; font-size: 12px; } .note { margin-top: 6px; font-size: 12px; }
+    .st { padding: 3px 0; font-size: 12px; }
+    #registro .kicker { display: none; } .loghead { margin-bottom: 6px; } .log { padding: 8px 12px; }
+    .block { font-size: 18px; } .next { font-size: 13px; } .track { margin-top: 10px; }
+    .legend { font-size: 10px; gap: 6px; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+  </header>
+
+  <div class="head">
+    <div>
+      <h1>AURA Session</h1>
+      <div class="conn"><span class="dot" id="dot"></span><span id="conn">Connecting to the server…</span></div>
+    </div>
+    <div class="clock" id="clock">0:00 / 0:00</div>
+  </div>
+
+  <section class="kpis">
+    <div class="kpi"><div class="lab">Valid windows</div><div class="val"><span class="big" id="k-val">—</span><span class="pill" id="k-val-s">last 10</span></div></div>
+    <div class="kpi"><div class="lab">Blinks</div><div class="val"><span class="big" id="k-blk">—</span><span class="pill" id="k-blk-s">live</span></div></div>
+    <div class="kpi"><div class="lab">Calibration</div><div class="val"><span class="big" id="k-cal">—</span><span class="pill" id="k-cal-s">—</span></div></div>
+    <div class="kpi"><div class="lab">Noise</div><div class="val"><span class="big" id="k-noise">—</span><span class="pill" id="k-noise-s">—</span></div></div>
+  </section>
+
+  <!-- Distribución (9 nov): Paso 1 · Paso 2 · Estado / Registro / Bloque actual. Interfaz en inglés (9 nov). -->
+  <main class="grid">
+    <!-- Paso 1 · Verificación -->
+    <section class="card" id="verif">
+      <div class="kicker">Step 1 · check_lsl_stream.py</div>
+      <h2>Stream verification</h2>
+      <div class="fields">
+        <label class="f">Stream<input type="text" id="p-name"></label>
+        <label class="f">source_id prefix<input type="text" id="p-sid"></label>
+        <label class="f">Duration (s)<input type="text" id="p-chk_s"></label>
+      </div>
+      <div class="row">
+        <button class="btn primary" id="b-check">Start verification</button>
+        <button class="btn" id="b-ok">Verification OK · continue</button>
+        <button class="btn danger" id="b-abort_chk">Abort</button>
+      </div>
+      <div class="note" id="check-lbl">Not verified</div>
+    </section>
+
+    <!-- Paso 2 · Sesión -->
+    <section class="card" id="ses">
+      <div class="kicker">Step 2 · behavior_markers.py + realtime_pipeline.py</div>
+      <h2>Session</h2>
+      <div class="fields">
+        <label class="f">IAF (Hz)<input type="text" id="p-iaf"></label>
+        <label class="f">Duration (s)<input type="text" id="p-dur"></label>
+        <label class="f">Blink threshold every (s)<input type="text" id="p-per"></label>
+      </div>
+      <label class="f" style="margin-bottom:12px">Blocks: pairs &lt;seconds&gt; bloque:&lt;name&gt;<input type="text" id="p-plan"></label>
+      <div class="row">
+        <button class="btn primary" id="b-start">Start session</button>
+        <button class="btn" id="b-stop">Stop session</button>
+        <button class="btn danger" id="b-abort_ses">Abort</button>
+        <button class="btn" id="b-rep">Open report</button>
+      </div>
+      <div class="note" id="rep-note"></div>
+    </section>
+
+    <!-- Estado -->
+    <section class="card statecard">
+      <div class="kicker">What the pipeline reports</div>
+      <h2>Status</h2>
+      <div class="status" id="status"></div>
+    </section>
+
+    <!-- Registro -->
+    <section class="card span3" id="registro">
+      <div class="loghead">
+        <div><div class="kicker">Output of the three processes</div><h2>Log</h2></div>
+        <div class="filters" id="filters">
+          <button class="active" data-f="">All</button>
+          <button data-f="f-warn">Warnings and errors</button>
+          <button data-f="f-err">Errors only</button>
+        </div>
+      </div>
+      <div class="log" id="log"></div>
+    </section>
+
+    <!-- Bloque actual -->
+    <section class="card span3 clockcard">
+      <div class="kicker">Session timer</div>
+      <h2>Current block</h2>
+      <div class="block" id="block">Block: —</div>
+      <div class="next" id="next">Next: —</div>
+      <div class="track">
+        <div class="timeline" id="timeline"><div class="cal" id="cal"></div><div class="now" id="now"></div></div>
+        <div class="ticks" id="ticks"></div>
+        <div class="legend">
+          <span><i style="background:var(--blue-soft)"></i>even blocks</span>
+          <span><i style="background:var(--coral-soft)"></i>odd blocks</span>
+          <span><i style="background:var(--blue);opacity:.45"></i>calibration · 160 s</span>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const STATUS = ["Quality", "Calibration", "Valid windows", "Noise", "Blinks", "Blink threshold", "Intervention"];
+const PARAMS = ["name", "sid", "chk_s", "iaf", "dur", "per", "plan"];
+const BTNS = ["check", "ok", "abort_chk", "start", "stop", "abort_ses", "rep"];
+let S = null, base = null, done = null, planKey = "";
+
+const fmt = s => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, "0")}`;
+
+// ---------- aviso sonoro (el navegador lo habilita tras el primer clic en la página) ----------
+let audio = null;
+document.addEventListener("click", () => { audio = audio || new AudioContext(); }, { once: true });
+function bell() {
+  if (!audio) return;
+  const o = audio.createOscillator(), g = audio.createGain();
+  o.frequency.value = 880; g.gain.setValueAtTime(0.25, audio.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.001, audio.currentTime + 0.35);
+  o.connect(g).connect(audio.destination); o.start(); o.stop(audio.currentTime + 0.35);
+}
+
+// ---------- llamadas al servidor ----------
+async function post(url, body) {
+  let r;
+  try {
+    r = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" },
+                           body: JSON.stringify(body || {}) });
+  } catch {
+    alert("No connection to the server: the action was not sent.");
+    return {};
+  }
+  const d = await r.json().catch(() => ({ error: `Server error (${r.status})` }));
+  if (d.error) alert(d.error);
+  return d;
+}
+const params = () => Object.fromEntries(PARAMS.map(k => [k, $("p-" + k).value.trim()]));
+
+$("b-check").onclick = () => post("/api/verificacion/iniciar", params());
+$("b-ok").onclick = () => post("/api/verificacion/ok");
+$("b-start").onclick = () => {
+  const p = params(), tok = p.plan.split(/\s+/).filter(Boolean);
+  const bad = tok.length % 2 || [p.iaf, p.dur, p.per].some(v => v === "" || isNaN(+v)) ||
+              tok.some((t, i) => i % 2 ? !t.includes(":") : t === "" || isNaN(+t));
+  if (bad) return alert("Check IAF, duration, period and blocks (<seconds> bloque:<name>).");
+  if (!confirm("Is Aura already recording (red button)?")) return;
+  post("/api/sesion/iniciar", p);
+};
+$("b-stop").onclick = () => {
+  if (S.running.includes("pipeline") && confirm("Stop the session? The pipeline will write its report."))
+    post("/api/sesion/detener");
+};
+function abortAll() {
+  if (!S.running.length) return alert("No process is running.");
+  if (confirm(`Force-close the running processes (${S.running.join(", ")})?`)) post("/api/abortar");
+}
+$("b-abort_chk").onclick = $("b-abort_ses").onclick = abortAll;
+$("b-rep").onclick = () => post("/api/reporte/abrir");
+
+$("filters").onclick = e => {
+  const b = e.target.closest("button"); if (!b) return;
+  [...$("filters").children].forEach(x => x.classList.toggle("active", x === b));
+  $("log").className = "log " + b.dataset.f;
+};
+
+// ---------- registro ----------
+function addLog(text, cls) {
+  const el = $("log"), stick = el.scrollTop + el.clientHeight >= el.scrollHeight - 30;
+  const d = document.createElement("div"); d.textContent = text; if (cls) d.className = cls;
+  el.appendChild(d);
+  if (stick) el.scrollTop = el.scrollHeight;
+}
+
+// ---------- estado ----------
+function render(full) {
+  if (full) PARAMS.forEach(k => { $("p-" + k).value = S.params[k]; });  // no pisa lo que se está escribiendo
+  BTNS.forEach(k => { $("b-" + k).disabled = !connected || !S.btn[k]; });  // sin servidor no hay acciones
+  $("check-lbl").textContent = S.check_lbl[0]; $("check-lbl").className = "note " + S.check_lbl[1];
+  $("rep-note").innerHTML = S.btn.rep
+    ? `Report ready · <a href="/api/reporte" target="_blank" style="color:var(--blue)">view it in the browser</a>` : "";
+
+  $("status").innerHTML = "";
+  STATUS.forEach(k => {
+    const [txt, cls] = S.status[k], r = document.createElement("div"), b = document.createElement("b"),
+          s = document.createElement("span");
+    r.className = "st"; b.textContent = k; s.textContent = txt; s.className = cls; r.append(b, s);
+    $("status").appendChild(r);
+  });
+  kpi("val", "Valid windows"); kpi("blk", "Blinks"); kpi("cal", "Calibration"); kpi("noise", "Noise");
+
+  // Procesos y navegación son opcionales: si se quitan del HTML, la página sigue funcionando (antes fallaba aquí y
+  // nunca llegaba a marcar "Servidor conectado").
+  const procs = $("procs"), nav = $("nav");
+  if (procs) {
+    procs.innerHTML = "";
+    ["check", "behavior", "pipeline"].forEach(t => {
+      const c = document.createElement("span"), on = S.running.includes(t);
+      c.className = "chip" + (on ? " run" : ""); c.textContent = (on ? "● " : "○ ") + t; procs.appendChild(c);
+    });
+  }
+
+  document.body.classList.toggle("live", S.running.includes("pipeline") || S.running.includes("behavior"));
+  const phase = S.running.includes("pipeline") || S.running.includes("behavior") || S.btn.start ? "ses"
+              : "verif";
+  if (nav) [...nav.children].forEach(a => a.classList.toggle("active", a.dataset.p === phase));
+
+  base = S.elapsed == null ? null : { el: S.elapsed, at: performance.now() };
+  const key = JSON.stringify([S.plan, S.dur]);
+  if (key !== planKey) { planKey = key; done = null; drawTimeline(); }
+}
+
+function kpi(id, k) {  // valor corto grande + el resto en la píldora; el texto completo queda en Estado
+  const [txt, cls] = S.status[k];
+  // Noise: "no warning" o "<canales> → check contact"; los demás: primera palabra grande y el resto en la píldora.
+  const i = k === "Noise" ? txt.indexOf(" → ") : txt.indexOf(" ");
+  const big = i < 0 ? txt : txt.slice(0, i), rest = i < 0 ? "" : txt.slice(i + (k === "Noise" ? 3 : 1));
+  $("k-" + id).textContent = big; $("k-" + id).className = "big " + cls; $("k-" + id).title = txt;
+  $("k-" + id + "-s").textContent = rest;
+}
+
+function inputPlan() {  // vista previa antes de la primera sesión: los bloques que se están escribiendo
+  const tok = $("p-plan").value.split(/\s+/).filter(Boolean), plan = [];
+  for (let i = 0; i + 1 < tok.length; i += 2)
+    if (!isNaN(+tok[i]) && tok[i + 1].includes(":")) plan.push([+tok[i], tok[i + 1].split(":").slice(1).join(":")]);
+  return [plan.sort((a, b) => a[0] - b[0]), +$("p-dur").value || 0];
+}
+["p-plan", "p-dur"].forEach(id => $(id).addEventListener("input", () => { if (!S.plan.length) drawTimeline(); }));
+
+function drawTimeline() {
+  const tl = $("timeline"), [plan, dur] = S.plan.length ? [S.plan, S.dur] : inputPlan();
+  tl.querySelectorAll(".seg").forEach(x => x.remove());
+  $("ticks").innerHTML = "";
+  if (!dur || !plan.length) { $("cal").style.setProperty("--at", "0%"); return; }
+  plan.forEach(([t, n], i) => {
+    const end = i + 1 < plan.length ? plan[i + 1][0] : dur, s = document.createElement("div");
+    s.className = "seg " + (i % 2 ? "b" : "a"); s.style.flex = `0 0 ${100 * Math.max(0, Math.min(end, dur) - t) / dur}%`;
+    s.textContent = n; tl.insertBefore(s, $("cal"));
+  });
+  [...new Set([0, ...plan.map(p => p[0]), dur])].filter(t => t <= dur).forEach(t => {
+    const s = document.createElement("span"); s.style.setProperty("--at", `${100 * t / dur}%`); s.textContent = fmt(t);
+    $("ticks").appendChild(s);
+  });
+  $("cal").style.setProperty("--at", `${100 * Math.min(160, dur) / dur}%`);
+}
+
+// ---------- cronómetro (como tick() de sesion_aura.py) ----------
+function tick() {
+  if (!S) return;
+  if (base == null) {
+    $("now").style.display = "none";
+    if (S.aborted) { $("block").textContent = "Block: — (aborted)"; $("next").textContent = "Next: —";
+                     $("next").className = "next"; }
+    return;
+  }
+  const el = base.el + (performance.now() - base.at) / 1000, A = S.action;
+  $("clock").textContent = `${fmt(el)} / ${fmt(S.dur)}`;
+  const cur = S.plan.filter(([t]) => t <= el).map(p => p[1]);
+  $("block").textContent = `Block: ${cur.length ? cur[cur.length - 1] : "—"}`
+    + (el < 160 && !S.frozen ? "  ·  calibration: stay still, relax forehead and jaw" : "");
+  const steps = S.plan.filter(([t]) => t > 0)
+    .map(([t, n]) => [t, `${n}: press the space bar in Aura and ${A[n] || "switch block"}`])
+    .concat([[S.dur, "end: press the space bar and stop the recording in Aura"]]);
+  if (done == null) done = new Set(steps.filter(([t]) => t <= el).map(([t]) => t));  // al recargar no repite avisos
+  steps.forEach(([t]) => { if (t <= el && !done.has(t)) { done.add(t); bell(); } });  // aviso en el cambio
+  const nxt = steps.filter(([t]) => t > el);
+  if (nxt.length) {
+    const [t, a] = nxt[0], soon = t - el < 15;
+    $("next").textContent = `Next in ${fmt(t - el)} (${fmt(t)}): ${a}`;
+    $("next").className = "next" + (soon ? " soon" : "");
+  }
+  const now = $("now"); now.style.display = "block"; now.style.setProperty("--at", `${Math.min(100, 100 * el / S.dur)}%`);
+}
+setInterval(tick, 250);
+
+// ---------- conexión en vivo ----------
+// La reconexión la lleva la página, no el navegador: EventSource reintenta solo en unos navegadores (Firefox se
+// rinde con el servidor apagado) y no detecta una conexión colgada (suspensión, cambio de red). Al volver, el
+// servidor manda el estado completo ("full"), así que la página queda al día aunque el servidor se haya reiniciado.
+let es = null, retryTimer = null, attempt = 0, lastMsg = 0, connected = false;
+
+function setConn(on, txt) {
+  connected = on;
+  $("dot").classList.toggle("on", on); $("conn").textContent = txt;
+  if (S) render(false);
+}
+
+function connect() {
+  clearTimeout(retryTimer);
+  if (es) es.close();
+  es = new EventSource("/api/eventos");
+  lastMsg = Date.now();
+  const on = (name, fn) => es.addEventListener(name, e => { lastMsg = Date.now(); fn(e); });
+  on("full", e => {
+    attempt = 0; S = JSON.parse(e.data);
+    $("log").innerHTML = ""; S.log.forEach(([t, c]) => addLog(t, c));
+    setConn(true, "Server connected");  // primero el indicador: un fallo al dibujar no lo deja en "Connecting…"
+    render(true);
+  });
+  on("state", e => { S = JSON.parse(e.data); render(false); });
+  on("log", e => { const [t, c] = JSON.parse(e.data); addLog(t, c); });
+  on("clear", () => { $("log").innerHTML = ""; });
+  on("bell", bell);
+  on("ping", () => {});  // el servidor lo manda cada 10 s sin otra actividad
+  es.onerror = () => { es.close(); es = null; retryLater(); };
+}
+
+function retryLater() {
+  const wait = Math.min(5, 1 + attempt++);  // 1, 2, 3, 4, 5, 5… s
+  setConn(false, `No connection to the server · retrying in ${wait} s`);
+  clearTimeout(retryTimer);
+  retryTimer = setTimeout(connect, wait * 1000);
+}
+
+// Conexión colgada: abierta pero sin nada (ni ping) en 25 s → se cierra y se reintenta.
+setInterval(() => { if (es && Date.now() - lastMsg > 25000) { es.close(); es = null; retryLater(); } }, 5000);
+// Al volver la red o la pestaña, no esperar al siguiente reintento.
+window.addEventListener("online", () => { if (!connected) connect(); });
+document.addEventListener("visibilitychange", () => { if (!document.hidden && !connected) connect(); });
+connect();
+window.addEventListener("beforeunload", e => { if (S && S.running.length) e.preventDefault(); });
+</script>
+</body>
+</html>

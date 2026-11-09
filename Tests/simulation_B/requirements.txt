@@ -2,3 +2,4 @@ numpy
 scipy
 mne>=1.6
 pylsl>=1.16
+flask>=3.0  # solo sesion_aura_web.py

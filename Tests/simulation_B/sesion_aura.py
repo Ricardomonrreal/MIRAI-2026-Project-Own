@@ -2,10 +2,9 @@
 sesion_aura.py — sesión en vivo con la AURA en una sola ventana (MIRAI 2026) · VERSIÓN B
 
 Junta los tres módulos sin fusionarlos: cada uno sigue siendo su propio script y aquí solo se lanzan en orden, con el
-usuario marcando cada paso.
-  1. Preparación: lista de acciones manuales (gel, contacto, Aura).
-  2. Verificación: check_lsl_stream.py; al terminar, el usuario la da por buena (o la repite).
-  3. Sesión: behavior_markers.py (bloques) y, 1.5 s después, realtime_pipeline.py. Cronómetro con el bloque actual y la
+usuario marcando cada paso. Mismos pasos que la versión web (web/sesion_aura.html); sin lista de preparación (9 nov).
+  1. Verificación: check_lsl_stream.py; al terminar, el usuario la da por buena (o la repite).
+  2. Sesión: behavior_markers.py (bloques) y, 1.5 s después, realtime_pipeline.py. Cronómetro con el bloque actual y la
      próxima acción manual (barra espaciadora en Aura, empezar el scroll…). Detener = Ctrl+Break al pipeline, que lo
      trata como Ctrl+C y escribe igual su reporte.
 
@@ -29,15 +28,6 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 PY = sys.executable
 ENV = {**os.environ, "PYTHONIOENCODING": "utf-8", "PYTHONUNBUFFERED": "1"}  # θ, µ… por la tubería sin cp1252
 ANSI = re.compile(r"\x1b\[[0-9;]*m")
-CHECKLIST = [
-    "Verificación de otras ventanas abiertas",
-    "REF con gel en el lóbulo izquierdo",
-    "8 electrodos con gel y Fp1 con la frente limpia",
-    "Contact quality en azul (CH1–CH8 y REF) y 3–5 min de espera",
-    "Aura: Notch 60 Hz · Bandpass No Filtering · LSL Stream Out marcado",
-    "Tocar cada electrodo (salta solo su canal) y parpadear (Fp1 baja)",
-    "IAF anotada: pico alfa de O1/O2 con ojos cerrados",
-]
 ACTION = {"reposo": "deja el teléfono, ojos abiertos y mirada fija", "scroll": "empieza el scroll (videos cortos)"}
 
 
@@ -69,13 +59,7 @@ class SessionApp:
         self.paned.add(c, weight=0)
         bold = ("Arial", 10, "bold")
 
-        ttk.Label(c, text="1 · Preparación (manual)", font=bold).pack(anchor="w")
-        self.checks = [tk.BooleanVar(value=False) for _ in CHECKLIST]
-        for v, txt in zip(self.checks, CHECKLIST):
-            ttk.Checkbutton(c, text=txt, variable=v).pack(anchor="w")
-
-        ttk.Separator(c).pack(fill=tk.X, pady=8)
-        lbl_chk = ttk.Label(c, text="2 · Verificación del stream", font=bold)
+        lbl_chk = ttk.Label(c, text="Paso 1 · Verificación del stream", font=bold)
         lbl_chk.pack(anchor="w", fill=tk.X)
         f_chk = ttk.Frame(c)
         f_chk.pack(fill=tk.X, pady=2)
@@ -98,7 +82,7 @@ class SessionApp:
         self.check_lbl.pack(anchor="w", fill=tk.X)
 
         ttk.Separator(c).pack(fill=tk.X, pady=8)
-        lbl_ses = ttk.Label(c, text="3 · Sesión", font=bold)
+        lbl_ses = ttk.Label(c, text="Paso 2 · Sesión", font=bold)
         lbl_ses.pack(anchor="w", fill=tk.X)
         f_ses = ttk.Frame(c)
         f_ses.pack(fill=tk.X, pady=2)
@@ -138,7 +122,6 @@ class SessionApp:
         for lbl in self.status.values():
             lbl.pack(anchor="w", fill=tk.X)
 
-        style = ttk.Style()
         self._last_c_w = None
 
         def on_resize(event):
@@ -154,7 +137,6 @@ class SessionApp:
             lbl_plan.config(wraplength=w)
             for lbl in self.status.values():
                 lbl.config(wraplength=w)
-            style.configure("TCheckbutton", wraplength=max(100, w - 24))
 
             # Marcador de tiempo responsivo (escalado y wraplength)
             clock_font_size = max(15, min(24, int(w / 18)))
@@ -296,9 +278,6 @@ class SessionApp:
 
     # ---------- pasos ----------
     def start_check(self):
-        if not all(v.get() for v in self.checks) and not messagebox.askyesno(
-                "Preparación", "Faltan puntos de la preparación por marcar. ¿Verificar de todos modos?"):
-            return
         self._aborted = False
         self.btn_check.config(state=tk.DISABLED)
         self.btn_ok.config(state=tk.DISABLED)

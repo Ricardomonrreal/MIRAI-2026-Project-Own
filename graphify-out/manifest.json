@@ -210,10 +210,10 @@
     "semantic_hash": "7958373bd0dc87292c4719d489a2e63d"
   },
   "Tests/simulation_B/check_lsl_stream.py": {
-    "mtime": 1793176542.2306173,
-    "seen": 1793334293.1855667,
-    "ast_hash": "62b0a1d71da9f4077ed1874e2cb1272c",
-    "semantic_hash": "62b0a1d71da9f4077ed1874e2cb1272c"
+    "mtime": 1794198223.972269,
+    "seen": 1794198722.6654785,
+    "ast_hash": "a9dfc70e718f24278ec0cbc78f8823eb",
+    "semantic_hash": ""
   },
   "Tests/simulation_B/mock_lsl_streamer.py": {
     "mtime": 1793936318.3096,
@@ -240,16 +240,16 @@
     "semantic_hash": ""
   },
   "Tests/simulation_B/VERSION_B.md": {
-    "mtime": 1793948223.3485637,
-    "seen": 1793948239.60848,
-    "ast_hash": "ca088eac3555ae6abb328e7941f208b1",
+    "mtime": 1794203892.4110212,
+    "seen": 1794203900.1558444,
+    "ast_hash": "c717cfc837131b8c16245a580d6e4232",
     "semantic_hash": ""
   },
   "Tests/simulation_B/requirements.txt": {
-    "mtime": 1793157830.1340086,
-    "seen": 1793334293.1856205,
-    "ast_hash": "4653a54250dff2ba7f9382dba52a6438",
-    "semantic_hash": "4653a54250dff2ba7f9382dba52a6438"
+    "mtime": 1794198695.6663728,
+    "seen": 1794198722.6656246,
+    "ast_hash": "9fd59d4d0b73568b0d9fe03d9362b4a0",
+    "semantic_hash": ""
   },
   "Tests/simulation_B/spectral_features.py": {
     "mtime": 1793595947.2878559,
@@ -288,9 +288,27 @@
     "semantic_hash": ""
   },
   "Tests/simulation_B/sesion_aura.py": {
-    "mtime": 1793948089.9348814,
-    "seen": 1793948239.6083512,
-    "ast_hash": "82330f792c584c103f96851859b538db",
+    "mtime": 1794203880.304149,
+    "seen": 1794203900.1557806,
+    "ast_hash": "3db8209b060dd1b6f4bbba4ebb3c9321",
+    "semantic_hash": ""
+  },
+  "Tests/simulation_B/sesion_aura_web.py": {
+    "mtime": 1794203652.2570417,
+    "seen": 1794203660.1656218,
+    "ast_hash": "2f61719eedbcae3c35710269a5f6ea87",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_Semana_Muestra_Regresion.md": {
+    "mtime": 1794196023.403567,
+    "seen": 1794198722.6655564,
+    "ast_hash": "f3e407f255cc822f150da3447ae71be2",
+    "semantic_hash": ""
+  },
+  "Tests/simulation_B/web/sesion_aura.html": {
+    "mtime": 1794203598.0532527,
+    "seen": 1794203660.1656854,
+    "ast_hash": "d6f773ad8c846a984972f88a434cb6da",
     "semantic_hash": ""
   }
 }

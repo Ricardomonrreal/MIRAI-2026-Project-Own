@@ -319,6 +319,23 @@ Mann-Whitney sobre los minutos completos). `replay_offline.eeg_blinks` usa la mi
   empezar el scroll) con aviso sonoro, y el estado que imprime el pipeline (calidad, calibración, válidas, parpadeos,
   intervención). *Detener* manda Ctrl+Break; el pipeline lo trata como Ctrl+C (SIGBREAK → KeyboardInterrupt) y deja
   su reporte. Probada con el emulador (`--name AURA`, prefijo `mirai-sim-`): verificación, sesión, detener y reporte.
+  *9 nov:* sin lista de preparación; los pasos quedan como en la versión web (Paso 1 · Verificación del stream,
+  Paso 2 · Sesión).
+- **Interfaz web `sesion_aura_web.py` (9 nov):** la misma sesión en el navegador. Un servidor
+  Flask local (`python sesion_aura_web.py` → http://localhost:8000; `--lan` para otro dispositivo de la red, con token)
+  sirve `web/sesion_aura.html`; `servidor_web.bat` lo arranca con doble clic en una consola minimizada y abre
+  la página (si ya está encendido, solo la abre); usa la ruta absoluta de `simulation_B`, así que funciona desde
+  cualquier carpeta. Lanza los mismos tres módulos y manda su salida en vivo (Server-Sent Events). Conserva
+  de la ventana: verificación (OK / abortar), parámetros y bloques, iniciar / detener / abortar / abrir reporte,
+  cronómetro con bloque, próxima acción y aviso sonoro, los 8 estados y el registro con colores; la lista de
+  preparación se quitó (9 nov): Paso 1 = verificación, Paso 2 = sesión. Distribución: Paso 1 · Paso 2 · Estado en
+  una fila, Registro a lo ancho y Bloque actual al final (2 columnas en tableta, 1 en celular). Añade indicadores
+  arriba, línea de tiempo de los bloques, filtro del registro, ver el reporte desde el navegador, recuperar el
+  estado al recargar y reconexión automática con el servidor. Interfaz en inglés (9 nov): etiquetas, botones, avisos
+  y estados (las frases fijas del pipeline que llegan a Estado se traducen con la tabla `EN` del servidor); el
+  registro muestra la salida de los scripts tal cual, en español, y el proceso de conducta aparece como `behavior`. El navegador no puede leer LSL ni lanzar procesos: el servidor tiene que estar
+  encendido; cerrarlo (Ctrl+C) cierra los procesos sin reporte. `sesion_aura.py` sigue igual. Probada con el
+  emulador: verificación, abortar, sesión de 200 s con calibración congelada, recarga a mitad y detener con reporte.
 - **Re-referencia promedio con la AURA real (5 nov):** primera sesión en vivo (CSV RAW 17:50, 40 min) abortó la
   calibración dos veces: ~12 mV de 60 Hz idénticos en los 8 canales (corr. 0.98–1.00, modo común por REF/sin bias), red
   en 59.97 Hz → el notch (Q 30) deja ~100 µV y el 99 % de las ventanas supera 150 µV. Con `source_id` `AuraLSL-` el
