@@ -6,7 +6,8 @@ Se conecta a un stream LSL (el emulador o la AURA real) y comprueba durante N se
   * sin huecos ni marcas de tiempo repetidas o hacia atrás,
   * sin deriva entre las marcas de tiempo y el reloj del sistema,
   * latencia de entrega (reloj local − marca de la última muestra del bloque),
-  * metadatos: canales, unidades, frecuencia de red; RMS por canal en µV.
+  * metadatos: canales, unidades, frecuencia de red; RMS por canal en µV (crudo y filtrado 1–40 Hz + notch,
+    que es el que se juzga; latencia: p95 < 50 ms + 1 periodo con el emulador, < 500 ms con Aura.exe).
 También imprime los marcadores de '<nombre>_Markers' si existen.
 
 Uso:
@@ -148,7 +149,15 @@ def main():
     slope = np.polyfit(tb, ob, 1)[0] * 60 * 1000 if len(tb) >= 3 else 0.0
     drift_total = slope * span / 60
     lat = np.array(lat) * 1000
-    rms = x.std(axis=0)
+    rms_crudo = x.std(axis=0)
+    # La amplitud se juzga con el mismo filtro que usa el pipeline (1–40 Hz + notch): el stream crudo de AURA
+    # trae ~−100 000 µV de offset, deriva y mV de 60 Hz, y su RMS crudo nunca cae en 1–200 µV (10 nov).
+    from realtime_pipeline import CausalFilter  # import diferido: realtime_pipeline importa este módulo
+    from scipy import signal
+    sos = CausalFilter(fs, float(line if line != "?" else 60.0), nch).sos  # Aura.exe no publica la red: México
+    y = signal.sosfiltfilt(sos, x.astype(np.float64), axis=0)
+    e = int(2 * fs) if len(y) > 5 * fs else 0  # 2 s por borde: el transitorio del filtro duplicaba el RMS
+    rms = y[e:len(y) - e].std(axis=0)
 
     print("\n================ REPORTE PASO 1 ================")
     print(f"Muestras recibidas        : {len(ts)} en {span:.2f} s")
@@ -159,10 +168,12 @@ def main():
     print(f"Deriva                    : {slope:+.3f} ms/min ({drift_total:+.2f} ms acumulados)")
     print(f"Latencia de entrega       : media {lat.mean():.1f} ms | p95 {np.percentile(lat, 95):.1f} ms | máx {lat.max():.1f} ms")
     print(f"Marcadores recibidos      : {n_markers}")
-    print("RMS por canal (µV)        : " + "  ".join(f"{c}={r:.1f}" for c, r in zip(labels or range(nch), rms)))
+    print("RMS crudo (µV)            : " + "  ".join(f"{c}={r:.1f}" for c, r in zip(labels or range(nch), rms_crudo)))
+    print("RMS 1–40 Hz + notch (µV)  : " + "  ".join(f"{c}={r:.1f}" for c, r in zip(labels or range(nch), rms)))
 
-    # La marca de una muestra va hasta un periodo por detrás del envío: a 50 Hz eso suma 20 ms.
-    lat_max = 50 + 1000 / fs
+    # Emulador: la marca de una muestra va hasta un periodo por detrás del envío (a 50 Hz suma 20 ms).
+    # Aura.exe entrega en ráfagas (p95 ~216 ms el 10 nov): se usa el criterio del pipeline, p95 < 500 ms.
+    lat_max = 500.0 if info.source_id().startswith("AuraLSL-") else 50 + 1000 / fs
     bad = [str(c) for c, r in zip(labels or range(nch), rms) if not 1 < r < 200]
     checks = {
         f"tasa = {fs:.0f} Hz ±0.1 %": abs(rate_ts - fs) / fs < 1e-3 and abs(rate_rx - fs) / fs < 5e-3,
@@ -171,7 +182,7 @@ def main():
         "deriva acumulada < 5 ms": abs(drift_total) < 5.0,
         f"latencia p95 < {lat_max:.0f} ms": np.percentile(lat, 95) < lat_max,
         "8 canales": nch == 8,
-        "amplitud en rango µV (1-200 RMS)" + (f" — fuera: {', '.join(bad)}" if bad else ""): not bad,
+        "amplitud filtrada en rango µV (1-200 RMS)" + (f" — fuera: {', '.join(bad)}" if bad else ""): not bad,
     }
     print("------------------------------------------------")
     for k, ok in checks.items():

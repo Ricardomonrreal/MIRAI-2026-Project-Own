@@ -350,3 +350,9 @@ Mann-Whitney sobre los minutos completos). `replay_offline.eeg_blinks` usa la mi
   Fp1 queda fuera (sus parpadeos superan el umbral en el 52–80 % de los segmentos con buen contacto).
   `sesion_aura.py` colorea la línea y la muestra en el estado *Ruido*. No cambia el rechazo. En el replay del 5 nov:
   sin avisos hasta 18:08; F4 desde 18:09 (~7 min antes de perder las válidas), Pz 18:15, todos desde 18:20.
+- **Verificación del stream con la AURA real (10 nov):** `check_lsl_stream.py` daba siempre NO PASA con Aura.exe porque
+  medía el RMS del stream crudo (offset ~−100 000 µV, deriva y mV de 60 Hz → 600–2300 µV) y exigía latencia p95
+  < 54 ms (Aura.exe entrega en ráfagas: p95 ~216 ms en la sesión del 10 nov). Ahora juzga el RMS tras el filtro del
+  pipeline (`CausalFilter`: 1–40 Hz + notch, sin desfase, sin 2 s por borde) e imprime también el crudo; con
+  `source_id` `AuraLSL-` la latencia usa el criterio del pipeline (p95 < 500 ms). Replay de la grabación del 10 nov:
+  15–36 µV filtrado y PASA; sintético sin cambios (PASA).

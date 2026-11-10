@@ -210,9 +210,9 @@
     "semantic_hash": "7958373bd0dc87292c4719d489a2e63d"
   },
   "Tests/simulation_B/check_lsl_stream.py": {
-    "mtime": 1794198223.972269,
-    "seen": 1794198722.6654785,
-    "ast_hash": "a9dfc70e718f24278ec0cbc78f8823eb",
+    "mtime": 1794295699.8584087,
+    "seen": 1794295777.2132485,
+    "ast_hash": "3c9c5e0ef5ead13a74c35399a6f6e48f",
     "semantic_hash": ""
   },
   "Tests/simulation_B/mock_lsl_streamer.py": {
@@ -240,9 +240,9 @@
     "semantic_hash": ""
   },
   "Tests/simulation_B/VERSION_B.md": {
-    "mtime": 1794203892.4110212,
-    "seen": 1794203900.1558444,
-    "ast_hash": "c717cfc837131b8c16245a580d6e4232",
+    "mtime": 1794295769.621232,
+    "seen": 1794295777.2133443,
+    "ast_hash": "b7f84a42b9e9835a1db080920d15a1d8",
     "semantic_hash": ""
   },
   "Tests/simulation_B/requirements.txt": {
@@ -294,9 +294,9 @@
     "semantic_hash": ""
   },
   "Tests/simulation_B/sesion_aura_web.py": {
-    "mtime": 1794203652.2570417,
-    "seen": 1794203660.1656218,
-    "ast_hash": "2f61719eedbcae3c35710269a5f6ea87",
+    "mtime": 1794204814.3349,
+    "seen": 1794295777.2132723,
+    "ast_hash": "cf7b4f78562d5b0d6e749e99764f19b3",
     "semantic_hash": ""
   },
   "Tests/Analisis_Semana_Muestra_Regresion.md": {
@@ -306,9 +306,9 @@
     "semantic_hash": ""
   },
   "Tests/simulation_B/web/sesion_aura.html": {
-    "mtime": 1794203598.0532527,
-    "seen": 1794203660.1656854,
-    "ast_hash": "d6f773ad8c846a984972f88a434cb6da",
+    "mtime": 1794215774.019359,
+    "seen": 1794295777.2133498,
+    "ast_hash": "2ba1b8151bd87c728b3591954373c6f5",
     "semantic_hash": ""
   }
 }

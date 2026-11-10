@@ -229,24 +229,11 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 12,
-      "community_name": "simulation_B/spectral_features.py",
+      "community_name": "scipy",
       "file_type": "code",
       "norm_label": "features",
       "source_file": "Tests/simulation_B/spectral_features.py",
       "source_location": "L51"
-    },
-    {
-      "id": "tests_simulation_spectral_features_features",
-      "label": "Features",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 13,
-      "community_name": "simulation/replay_offline.py",
-      "file_type": "code",
-      "norm_label": "features",
-      "source_file": "Tests/simulation/spectral_features.py",
-      "source_location": "L30"
     },
     {
       "id": "tests_simulation_b_sesion_aura_sessionapp",
@@ -314,6 +301,19 @@
       "source_location": "L73"
     },
     {
+      "id": "tests_simulation_b_sesion_aura_web_session",
+      "label": "Session",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 48,
+      "community_name": "sesion_aura_web.py",
+      "file_type": "code",
+      "norm_label": "session",
+      "source_file": "Tests/simulation_B/sesion_aura_web.py",
+      "source_location": "L64"
+    },
+    {
       "id": "tests_simulation_realtime_pipeline_causalfilter",
       "label": "CausalFilter",
       "_callable": true,
@@ -359,7 +359,7 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 50,
-      "community_name": "main",
+      "community_name": "Rejector",
       "file_type": "code",
       "norm_label": "rejector",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
@@ -418,17 +418,17 @@
       "source_location": "L91"
     },
     {
-      "id": "tests_simulation_b_sesion_aura_web_session",
-      "label": "Session",
+      "id": "tests_simulation_spectral_features_features",
+      "label": "Features",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
-      "community": 84,
-      "community_name": "Session",
+      "community": 95,
+      "community_name": "Features",
       "file_type": "code",
-      "norm_label": "session",
-      "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L45"
+      "norm_label": "features",
+      "source_file": "Tests/simulation/spectral_features.py",
+      "source_location": "L30"
     },
     {
       "id": "tests_datasets_workflow_eeg_dataset_9_10_demo_processing_eegviewer_build_controls",
@@ -587,18 +587,6 @@
       "source_location": "L1033"
     },
     {
-      "id": "tests_datasets_workflow_eeg_dataset_9_10_demo_processing_eegviewer_scan_directory",
-      "label": "._scan_directory()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "EEGViewer",
-      "file_type": "code",
-      "norm_label": "._scan_directory()",
-      "source_file": "Tests/datasets workflow/EEG Dataset 9-10/Demo_processing.py",
-      "source_location": "L709"
-    },
-    {
       "id": "tests_datasets_workflow_eeg_dataset_9_10_demo_processing_eegviewer_step",
       "label": ".step()",
       "_callable": true,
@@ -707,6 +695,18 @@
       "source_location": "L265"
     },
     {
+      "id": "tests_datasets_workflow_eeg_svrec_h1_svrec_epochs_psd",
+      "label": "epochs_psd()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "h1_svrec.py",
+      "file_type": "code",
+      "norm_label": "epochs_psd()",
+      "source_file": "Tests/datasets workflow/EEG-SVRec/h1_svrec.py",
+      "source_location": "L147"
+    },
+    {
       "id": "tests_datasets_workflow_eeg_svrec_h1_svrec_holm",
       "label": "holm()",
       "_callable": true,
@@ -779,42 +779,6 @@
       "source_location": "L332"
     },
     {
-      "id": "tests_datasets_workflow_eeg_svrec_h1_svrec_process_all",
-      "label": "process_all()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 10,
-      "community_name": "h1_svrec.py",
-      "file_type": "code",
-      "norm_label": "process_all()",
-      "source_file": "Tests/datasets workflow/EEG-SVRec/h1_svrec.py",
-      "source_location": "L362"
-    },
-    {
-      "id": "tests_datasets_workflow_eeg_svrec_h1_svrec_process_all_fetch",
-      "label": "fetch()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 10,
-      "community_name": "h1_svrec.py",
-      "file_type": "code",
-      "norm_label": "fetch()",
-      "source_file": "Tests/datasets workflow/EEG-SVRec/h1_svrec.py",
-      "source_location": "L381"
-    },
-    {
-      "id": "tests_datasets_workflow_eeg_svrec_h1_svrec_remote_files",
-      "label": "remote_files()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 10,
-      "community_name": "h1_svrec.py",
-      "file_type": "code",
-      "norm_label": "remote_files()",
-      "source_file": "Tests/datasets workflow/EEG-SVRec/h1_svrec.py",
-      "source_location": "L117"
-    },
-    {
       "id": "tests_datasets_workflow_eeg_svrec_h1_svrec_report",
       "label": "report()",
       "_callable": true,
@@ -868,7 +832,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 12,
-      "community_name": "simulation_B/spectral_features.py",
+      "community_name": "scipy",
       "file_type": "code",
       "norm_label": "band_per()",
       "source_file": "Tests/simulation_B/spectral_features.py",
@@ -880,7 +844,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 12,
-      "community_name": "simulation_B/spectral_features.py",
+      "community_name": "scipy",
       "file_type": "code",
       "norm_label": "bands()",
       "source_file": "Tests/simulation_B/spectral_features.py",
@@ -892,7 +856,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 12,
-      "community_name": "simulation_B/spectral_features.py",
+      "community_name": "scipy",
       "file_type": "code",
       "norm_label": ".__call__()",
       "source_file": "Tests/simulation_B/spectral_features.py",
@@ -904,7 +868,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 12,
-      "community_name": "simulation_B/spectral_features.py",
+      "community_name": "scipy",
       "file_type": "code",
       "norm_label": ".__init__()",
       "source_file": "Tests/simulation_B/spectral_features.py",
@@ -916,7 +880,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 12,
-      "community_name": "simulation_B/spectral_features.py",
+      "community_name": "scipy",
       "file_type": "code",
       "norm_label": "fit_roi()",
       "source_file": "Tests/simulation_B/spectral_features.py",
@@ -928,10 +892,22 @@
       "_callable": true,
       "_origin": "ast",
       "community": 12,
-      "community_name": "simulation_B/spectral_features.py",
+      "community_name": "scipy",
       "file_type": "code",
       "norm_label": "window_psd()",
       "source_file": "Tests/simulation_B/spectral_features.py",
+      "source_location": "L22"
+    },
+    {
+      "id": "tests_simulation_spectral_features_window_psd",
+      "label": "window_psd()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "scipy",
+      "file_type": "code",
+      "norm_label": "window_psd()",
+      "source_file": "Tests/simulation/spectral_features.py",
       "source_location": "L22"
     },
     {
@@ -1017,30 +993,6 @@
       "norm_label": "score()",
       "source_file": "Tests/simulation/replay_offline.py",
       "source_location": "L62"
-    },
-    {
-      "id": "tests_simulation_spectral_features_features_call",
-      "label": ".__call__()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 13,
-      "community_name": "simulation/replay_offline.py",
-      "file_type": "code",
-      "norm_label": ".__call__()",
-      "source_file": "Tests/simulation/spectral_features.py",
-      "source_location": "L37"
-    },
-    {
-      "id": "tests_simulation_spectral_features_features_init",
-      "label": ".__init__()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 13,
-      "community_name": "simulation/replay_offline.py",
-      "file_type": "code",
-      "norm_label": ".__init__()",
-      "source_file": "Tests/simulation/spectral_features.py",
-      "source_location": "L33"
     },
     {
       "id": "tests_simulation_b_sesion_aura_fmt",
@@ -1295,16 +1247,16 @@
       "source_location": "L198"
     },
     {
-      "id": "tests_datasets_workflow_cao2019_h1b_cao2019_lapse_fraction",
-      "label": "lapse_fraction()",
+      "id": "tests_datasets_workflow_cao2019_h1b_cao2019_epochs",
+      "label": "epochs()",
       "_callable": true,
       "_origin": "ast",
       "community": 15,
       "community_name": "h1b_cao2019.py",
       "file_type": "code",
-      "norm_label": "lapse_fraction()",
+      "norm_label": "epochs()",
       "source_file": "Tests/datasets workflow/Cao2019/h1b_cao2019.py",
-      "source_location": "L88"
+      "source_location": "L180"
     },
     {
       "id": "tests_datasets_workflow_cao2019_h1b_cao2019_main",
@@ -1317,42 +1269,6 @@
       "norm_label": "main()",
       "source_file": "Tests/datasets workflow/Cao2019/h1b_cao2019.py",
       "source_location": "L324"
-    },
-    {
-      "id": "tests_datasets_workflow_cao2019_h1b_cao2019_measures",
-      "label": "measures()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "h1b_cao2019.py",
-      "file_type": "code",
-      "norm_label": "measures()",
-      "source_file": "Tests/datasets workflow/Cao2019/h1b_cao2019.py",
-      "source_location": "L187"
-    },
-    {
-      "id": "tests_datasets_workflow_cao2019_h1b_cao2019_phasic",
-      "label": "phasic()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "h1b_cao2019.py",
-      "file_type": "code",
-      "norm_label": "phasic()",
-      "source_file": "Tests/datasets workflow/Cao2019/h1b_cao2019.py",
-      "source_location": "L97"
-    },
-    {
-      "id": "tests_datasets_workflow_cao2019_h1b_cao2019_phasic_idx",
-      "label": "idx()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "h1b_cao2019.py",
-      "file_type": "code",
-      "norm_label": "idx()",
-      "source_file": "Tests/datasets workflow/Cao2019/h1b_cao2019.py",
-      "source_location": "L110"
     },
     {
       "id": "tests_datasets_workflow_cao2019_h1b_cao2019_phasic_report",
@@ -1391,18 +1307,6 @@
       "source_location": "L269"
     },
     {
-      "id": "tests_datasets_workflow_cao2019_h1b_cao2019_reaction_times",
-      "label": "reaction_times()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "h1b_cao2019.py",
-      "file_type": "code",
-      "norm_label": "reaction_times()",
-      "source_file": "Tests/datasets workflow/Cao2019/h1b_cao2019.py",
-      "source_location": "L76"
-    },
-    {
       "id": "tests_datasets_workflow_cao2019_h1b_cao2019_report",
       "label": "report()",
       "_callable": true,
@@ -1413,30 +1317,6 @@
       "norm_label": "report()",
       "source_file": "Tests/datasets workflow/Cao2019/h1b_cao2019.py",
       "source_location": "L217"
-    },
-    {
-      "id": "tests_datasets_workflow_cao2019_h1b_cao2019_session",
-      "label": "session()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "h1b_cao2019.py",
-      "file_type": "code",
-      "norm_label": "session()",
-      "source_file": "Tests/datasets workflow/Cao2019/h1b_cao2019.py",
-      "source_location": "L130"
-    },
-    {
-      "id": "tests_datasets_workflow_eeg_svrec_h1_svrec_download",
-      "label": "download()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "h1b_cao2019.py",
-      "file_type": "code",
-      "norm_label": "download()",
-      "source_file": "Tests/datasets workflow/EEG-SVRec/h1_svrec.py",
-      "source_location": "L78"
     },
     {
       "id": "tests_simulation_b_mock_lsl_streamer_add_blink",
@@ -1605,6 +1485,18 @@
       "norm_label": "draw_electrode_map()",
       "source_file": "Tests/datasets workflow/EEG Dataset 9-10/Demo_processing.py",
       "source_location": "L71"
+    },
+    {
+      "id": "tests_datasets_workflow_eeg_dataset_9_10_demo_processing_eegviewer_scan_directory",
+      "label": "._scan_directory()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "Demo_processing.py",
+      "file_type": "code",
+      "norm_label": "._scan_directory()",
+      "source_file": "Tests/datasets workflow/EEG Dataset 9-10/Demo_processing.py",
+      "source_location": "L709"
     },
     {
       "id": "tests_datasets_workflow_eeg_dataset_9_10_demo_processing_is_bids",
@@ -1912,7 +1804,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 27,
-      "community_name": "os",
+      "community_name": "simulation_B/replay_offline.py",
       "file_type": "code",
       "norm_label": "eeg_blinks()",
       "source_file": "Tests/simulation_B/replay_offline.py",
@@ -1924,7 +1816,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 27,
-      "community_name": "os",
+      "community_name": "simulation_B/replay_offline.py",
       "file_type": "code",
       "norm_label": "equivalence()",
       "source_file": "Tests/simulation_B/replay_offline.py",
@@ -1936,7 +1828,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 27,
-      "community_name": "os",
+      "community_name": "simulation_B/replay_offline.py",
       "file_type": "code",
       "norm_label": "on()",
       "source_file": "Tests/simulation_B/replay_offline.py",
@@ -1948,7 +1840,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 27,
-      "community_name": "os",
+      "community_name": "simulation_B/replay_offline.py",
       "file_type": "code",
       "norm_label": "et_blinks()",
       "source_file": "Tests/simulation_B/replay_offline.py",
@@ -1960,7 +1852,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 27,
-      "community_name": "os",
+      "community_name": "simulation_B/replay_offline.py",
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "Tests/simulation_B/replay_offline.py",
@@ -1972,7 +1864,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 27,
-      "community_name": "os",
+      "community_name": "simulation_B/replay_offline.py",
       "file_type": "code",
       "norm_label": "et_ok()",
       "source_file": "Tests/simulation_B/replay_offline.py",
@@ -1984,23 +1876,107 @@
       "_callable": true,
       "_origin": "ast",
       "community": 27,
-      "community_name": "os",
+      "community_name": "simulation_B/replay_offline.py",
       "file_type": "code",
       "norm_label": "score()",
       "source_file": "Tests/simulation_B/replay_offline.py",
       "source_location": "L58"
     },
     {
-      "id": "tests_datasets_workflow_eeg_dataset_9_10_demo_processing_compute_psd",
-      "label": "compute_psd()",
+      "id": "tests_datasets_workflow_cao2019_h1b_cao2019_lapse_fraction",
+      "label": "lapse_fraction()",
       "_callable": true,
       "_origin": "ast",
       "community": 3,
-      "community_name": "\ud83c\udfa7 Adaptaci\u00f3n a la diadema AURA",
+      "community_name": "os",
       "file_type": "code",
-      "norm_label": "compute_psd()",
-      "source_file": "Tests/datasets workflow/EEG Dataset 9-10/Demo_processing.py",
-      "source_location": "L321"
+      "norm_label": "lapse_fraction()",
+      "source_file": "Tests/datasets workflow/Cao2019/h1b_cao2019.py",
+      "source_location": "L88"
+    },
+    {
+      "id": "tests_datasets_workflow_cao2019_h1b_cao2019_measures",
+      "label": "measures()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 3,
+      "community_name": "os",
+      "file_type": "code",
+      "norm_label": "measures()",
+      "source_file": "Tests/datasets workflow/Cao2019/h1b_cao2019.py",
+      "source_location": "L187"
+    },
+    {
+      "id": "tests_datasets_workflow_cao2019_h1b_cao2019_reaction_times",
+      "label": "reaction_times()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 3,
+      "community_name": "os",
+      "file_type": "code",
+      "norm_label": "reaction_times()",
+      "source_file": "Tests/datasets workflow/Cao2019/h1b_cao2019.py",
+      "source_location": "L76"
+    },
+    {
+      "id": "tests_datasets_workflow_cao2019_h1b_cao2019_session",
+      "label": "session()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 3,
+      "community_name": "os",
+      "file_type": "code",
+      "norm_label": "session()",
+      "source_file": "Tests/datasets workflow/Cao2019/h1b_cao2019.py",
+      "source_location": "L130"
+    },
+    {
+      "id": "tests_datasets_workflow_eeg_svrec_h1_svrec_download",
+      "label": "download()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 3,
+      "community_name": "os",
+      "file_type": "code",
+      "norm_label": "download()",
+      "source_file": "Tests/datasets workflow/EEG-SVRec/h1_svrec.py",
+      "source_location": "L78"
+    },
+    {
+      "id": "tests_datasets_workflow_eeg_svrec_h1_svrec_process_all",
+      "label": "process_all()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 3,
+      "community_name": "os",
+      "file_type": "code",
+      "norm_label": "process_all()",
+      "source_file": "Tests/datasets workflow/EEG-SVRec/h1_svrec.py",
+      "source_location": "L362"
+    },
+    {
+      "id": "tests_datasets_workflow_eeg_svrec_h1_svrec_process_all_fetch",
+      "label": "fetch()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 3,
+      "community_name": "os",
+      "file_type": "code",
+      "norm_label": "fetch()",
+      "source_file": "Tests/datasets workflow/EEG-SVRec/h1_svrec.py",
+      "source_location": "L381"
+    },
+    {
+      "id": "tests_datasets_workflow_eeg_svrec_h1_svrec_remote_files",
+      "label": "remote_files()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 3,
+      "community_name": "os",
+      "file_type": "code",
+      "norm_label": "remote_files()",
+      "source_file": "Tests/datasets workflow/EEG-SVRec/h1_svrec.py",
+      "source_location": "L117"
     },
     {
       "id": "tests_simulation_mock_lsl_streamer_add_blink",
@@ -2315,6 +2291,18 @@
       "source_location": "L386"
     },
     {
+      "id": "tests_datasets_workflow_eeg_dataset_9_10_demo_processing_compute_psd",
+      "label": "compute_psd()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 43,
+      "community_name": "window_biomarkers",
+      "file_type": "code",
+      "norm_label": "compute_psd()",
+      "source_file": "Tests/datasets workflow/EEG Dataset 9-10/Demo_processing.py",
+      "source_location": "L321"
+    },
+    {
       "id": "tests_datasets_workflow_eeg_dataset_9_10_demo_processing_metrics_from_bp",
       "label": "_metrics_from_bp()",
       "_callable": true,
@@ -2337,18 +2325,6 @@
       "norm_label": "window_biomarkers()",
       "source_file": "Tests/datasets workflow/EEG Dataset 9-10/Demo_processing.py",
       "source_location": "L406"
-    },
-    {
-      "id": "tests_simulation_b_realtime_pipeline_blink_gain",
-      "label": "blink_gain()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 47,
-      "community_name": "CausalFilter",
-      "file_type": "code",
-      "norm_label": "blink_gain()",
-      "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L167"
     },
     {
       "id": "tests_simulation_b_realtime_pipeline_causalfilter_call",
@@ -2384,7 +2360,7 @@
       "file_type": "code",
       "norm_label": "abortar()",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L341"
+      "source_location": "L359"
     },
     {
       "id": "tests_simulation_b_sesion_aura_web_act",
@@ -2396,7 +2372,7 @@
       "file_type": "code",
       "norm_label": "act()",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L312"
+      "source_location": "L330"
     },
     {
       "id": "tests_simulation_b_sesion_aura_web_check_token",
@@ -2408,7 +2384,19 @@
       "file_type": "code",
       "norm_label": "check_token()",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L262"
+      "source_location": "L280"
+    },
+    {
+      "id": "tests_simulation_b_sesion_aura_web_en",
+      "label": "en()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 48,
+      "community_name": "sesion_aura_web.py",
+      "file_type": "code",
+      "norm_label": "en()",
+      "source_file": "Tests/simulation_B/sesion_aura_web.py",
+      "source_location": "L57"
     },
     {
       "id": "tests_simulation_b_sesion_aura_web_estado",
@@ -2420,7 +2408,7 @@
       "file_type": "code",
       "norm_label": "estado()",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L284"
+      "source_location": "L302"
     },
     {
       "id": "tests_simulation_b_sesion_aura_web_eventos",
@@ -2432,7 +2420,7 @@
       "file_type": "code",
       "norm_label": "eventos()",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L290"
+      "source_location": "L308"
     },
     {
       "id": "tests_simulation_b_sesion_aura_web_eventos_stream",
@@ -2444,7 +2432,7 @@
       "file_type": "code",
       "norm_label": "stream()",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L296"
+      "source_location": "L314"
     },
     {
       "id": "tests_simulation_b_sesion_aura_web_index",
@@ -2456,7 +2444,7 @@
       "file_type": "code",
       "norm_label": "index()",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L279"
+      "source_location": "L297"
     },
     {
       "id": "tests_simulation_b_sesion_aura_web_keep_token",
@@ -2468,7 +2456,7 @@
       "file_type": "code",
       "norm_label": "keep_token()",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L272"
+      "source_location": "L290"
     },
     {
       "id": "tests_simulation_b_sesion_aura_web_main",
@@ -2480,7 +2468,7 @@
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L363"
+      "source_location": "L381"
     },
     {
       "id": "tests_simulation_b_sesion_aura_web_reporte_abrir",
@@ -2492,7 +2480,7 @@
       "file_type": "code",
       "norm_label": "reporte_abrir()",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L346"
+      "source_location": "L364"
     },
     {
       "id": "tests_simulation_b_sesion_aura_web_reporte_ver",
@@ -2504,7 +2492,7 @@
       "file_type": "code",
       "norm_label": "reporte_ver()",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L355"
+      "source_location": "L373"
     },
     {
       "id": "tests_simulation_b_sesion_aura_web_sesion_detener",
@@ -2516,7 +2504,7 @@
       "file_type": "code",
       "norm_label": "sesion_detener()",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L336"
+      "source_location": "L354"
     },
     {
       "id": "tests_simulation_b_sesion_aura_web_sesion_iniciar",
@@ -2528,7 +2516,235 @@
       "file_type": "code",
       "norm_label": "sesion_iniciar()",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L331"
+      "source_location": "L349"
+    },
+    {
+      "id": "tests_simulation_b_sesion_aura_web_session_abort_all",
+      "label": ".abort_all()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 48,
+      "community_name": "sesion_aura_web.py",
+      "file_type": "code",
+      "norm_label": ".abort_all()",
+      "source_file": "Tests/simulation_B/sesion_aura_web.py",
+      "source_location": "L195"
+    },
+    {
+      "id": "tests_simulation_b_sesion_aura_web_session_add_log",
+      "label": ".add_log()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 48,
+      "community_name": "sesion_aura_web.py",
+      "file_type": "code",
+      "norm_label": ".add_log()",
+      "source_file": "Tests/simulation_B/sesion_aura_web.py",
+      "source_location": "L101"
+    },
+    {
+      "id": "tests_simulation_b_sesion_aura_web_session_check_ok",
+      "label": ".check_ok()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 48,
+      "community_name": "sesion_aura_web.py",
+      "file_type": "code",
+      "norm_label": ".check_ok()",
+      "source_file": "Tests/simulation_B/sesion_aura_web.py",
+      "source_location": "L222"
+    },
+    {
+      "id": "tests_simulation_b_sesion_aura_web_session_emit",
+      "label": ".emit()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 48,
+      "community_name": "sesion_aura_web.py",
+      "file_type": "code",
+      "norm_label": ".emit()",
+      "source_file": "Tests/simulation_B/sesion_aura_web.py",
+      "source_location": "L93"
+    },
+    {
+      "id": "tests_simulation_b_sesion_aura_web_session_init",
+      "label": ".__init__()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 48,
+      "community_name": "sesion_aura_web.py",
+      "file_type": "code",
+      "norm_label": ".__init__()",
+      "source_file": "Tests/simulation_B/sesion_aura_web.py",
+      "source_location": "L67"
+    },
+    {
+      "id": "tests_simulation_b_sesion_aura_web_session_launch",
+      "label": ".launch()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 48,
+      "community_name": "sesion_aura_web.py",
+      "file_type": "code",
+      "norm_label": ".launch()",
+      "source_file": "Tests/simulation_B/sesion_aura_web.py",
+      "source_location": "L109"
+    },
+    {
+      "id": "tests_simulation_b_sesion_aura_web_session_on_exit",
+      "label": ".on_exit()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 48,
+      "community_name": "sesion_aura_web.py",
+      "file_type": "code",
+      "norm_label": ".on_exit()",
+      "source_file": "Tests/simulation_B/sesion_aura_web.py",
+      "source_location": "L162"
+    },
+    {
+      "id": "tests_simulation_b_sesion_aura_web_session_on_line",
+      "label": ".on_line()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 48,
+      "community_name": "sesion_aura_web.py",
+      "file_type": "code",
+      "norm_label": ".on_line()",
+      "source_file": "Tests/simulation_B/sesion_aura_web.py",
+      "source_location": "L127"
+    },
+    {
+      "id": "tests_simulation_b_sesion_aura_web_session_push_state",
+      "label": ".push_state()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 48,
+      "community_name": "sesion_aura_web.py",
+      "file_type": "code",
+      "norm_label": ".push_state()",
+      "source_file": "Tests/simulation_B/sesion_aura_web.py",
+      "source_location": "L98"
+    },
+    {
+      "id": "tests_simulation_b_sesion_aura_web_session_read",
+      "label": "._read()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 48,
+      "community_name": "sesion_aura_web.py",
+      "file_type": "code",
+      "norm_label": "._read()",
+      "source_file": "Tests/simulation_B/sesion_aura_web.py",
+      "source_location": "L117"
+    },
+    {
+      "id": "tests_simulation_b_sesion_aura_web_session_running",
+      "label": ".running()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 48,
+      "community_name": "sesion_aura_web.py",
+      "file_type": "code",
+      "norm_label": ".running()",
+      "source_file": "Tests/simulation_B/sesion_aura_web.py",
+      "source_location": "L191"
+    },
+    {
+      "id": "tests_simulation_b_sesion_aura_web_session_set_status",
+      "label": ".set_status()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 48,
+      "community_name": "sesion_aura_web.py",
+      "file_type": "code",
+      "norm_label": ".set_status()",
+      "source_file": "Tests/simulation_B/sesion_aura_web.py",
+      "source_location": "L105"
+    },
+    {
+      "id": "tests_simulation_b_sesion_aura_web_session_shutdown",
+      "label": ".shutdown()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 48,
+      "community_name": "sesion_aura_web.py",
+      "file_type": "code",
+      "norm_label": ".shutdown()",
+      "source_file": "Tests/simulation_B/sesion_aura_web.py",
+      "source_location": "L267"
+    },
+    {
+      "id": "tests_simulation_b_sesion_aura_web_session_snapshot",
+      "label": ".snapshot()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 48,
+      "community_name": "sesion_aura_web.py",
+      "file_type": "code",
+      "norm_label": ".snapshot()",
+      "source_file": "Tests/simulation_B/sesion_aura_web.py",
+      "source_location": "L85"
+    },
+    {
+      "id": "tests_simulation_b_sesion_aura_web_session_start_check",
+      "label": ".start_check()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 48,
+      "community_name": "sesion_aura_web.py",
+      "file_type": "code",
+      "norm_label": ".start_check()",
+      "source_file": "Tests/simulation_B/sesion_aura_web.py",
+      "source_location": "L212"
+    },
+    {
+      "id": "tests_simulation_b_sesion_aura_web_session_start_session",
+      "label": ".start_session()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 48,
+      "community_name": "sesion_aura_web.py",
+      "file_type": "code",
+      "norm_label": ".start_session()",
+      "source_file": "Tests/simulation_B/sesion_aura_web.py",
+      "source_location": "L226"
+    },
+    {
+      "id": "tests_simulation_b_sesion_aura_web_session_start_session_launch_pipeline",
+      "label": "launch_pipeline()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 48,
+      "community_name": "sesion_aura_web.py",
+      "file_type": "code",
+      "norm_label": "launch_pipeline()",
+      "source_file": "Tests/simulation_B/sesion_aura_web.py",
+      "source_location": "L246"
+    },
+    {
+      "id": "tests_simulation_b_sesion_aura_web_session_stop_proc",
+      "label": ".stop_proc()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 48,
+      "community_name": "sesion_aura_web.py",
+      "file_type": "code",
+      "norm_label": ".stop_proc()",
+      "source_file": "Tests/simulation_B/sesion_aura_web.py",
+      "source_location": "L183"
+    },
+    {
+      "id": "tests_simulation_b_sesion_aura_web_session_stop_session",
+      "label": ".stop_session()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 48,
+      "community_name": "sesion_aura_web.py",
+      "file_type": "code",
+      "norm_label": ".stop_session()",
+      "source_file": "Tests/simulation_B/sesion_aura_web.py",
+      "source_location": "L262"
     },
     {
       "id": "tests_simulation_b_sesion_aura_web_verif_iniciar",
@@ -2540,7 +2756,7 @@
       "file_type": "code",
       "norm_label": "verif_iniciar()",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L321"
+      "source_location": "L339"
     },
     {
       "id": "tests_simulation_b_sesion_aura_web_verif_ok",
@@ -2552,7 +2768,7 @@
       "file_type": "code",
       "norm_label": "verif_ok()",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L326"
+      "source_location": "L344"
     },
     {
       "id": "tests_simulation_realtime_pipeline_blink_report",
@@ -2663,64 +2879,16 @@
       "source_location": "L73"
     },
     {
-      "id": "tests_simulation_b_realtime_pipeline_blink_blocks",
-      "label": "blink_blocks()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 50,
-      "community_name": "main",
-      "file_type": "code",
-      "norm_label": "blink_blocks()",
-      "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L322"
-    },
-    {
-      "id": "tests_simulation_b_realtime_pipeline_blink_match",
-      "label": "blink_match()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 50,
-      "community_name": "main",
-      "file_type": "code",
-      "norm_label": "blink_match()",
-      "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L312"
-    },
-    {
-      "id": "tests_simulation_b_realtime_pipeline_main",
-      "label": "main()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 50,
-      "community_name": "main",
-      "file_type": "code",
-      "norm_label": "main()",
-      "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L463"
-    },
-    {
       "id": "tests_simulation_b_realtime_pipeline_main_emit_jitai",
       "label": "emit_jitai()",
       "_callable": true,
       "_origin": "ast",
       "community": 50,
-      "community_name": "main",
+      "community_name": "Rejector",
       "file_type": "code",
       "norm_label": "emit_jitai()",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
       "source_location": "L612"
-    },
-    {
-      "id": "tests_simulation_b_realtime_pipeline_main_log_blinks",
-      "label": "log_blinks()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 50,
-      "community_name": "main",
-      "file_type": "code",
-      "norm_label": "log_blinks()",
-      "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L595"
     },
     {
       "id": "tests_simulation_b_realtime_pipeline_main_on_window",
@@ -2728,11 +2896,23 @@
       "_callable": true,
       "_origin": "ast",
       "community": 50,
-      "community_name": "main",
+      "community_name": "Rejector",
       "file_type": "code",
       "norm_label": "on_window()",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
       "source_location": "L628"
+    },
+    {
+      "id": "tests_simulation_b_realtime_pipeline_mem_mb",
+      "label": "mem_mb()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 50,
+      "community_name": "Rejector",
+      "file_type": "code",
+      "norm_label": "mem_mb()",
+      "source_file": "Tests/simulation_B/realtime_pipeline.py",
+      "source_location": "L442"
     },
     {
       "id": "tests_simulation_b_realtime_pipeline_rejector_call",
@@ -2740,7 +2920,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 50,
-      "community_name": "main",
+      "community_name": "Rejector",
       "file_type": "code",
       "norm_label": ".__call__()",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
@@ -2752,47 +2932,11 @@
       "_callable": true,
       "_origin": "ast",
       "community": 50,
-      "community_name": "main",
+      "community_name": "Rejector",
       "file_type": "code",
       "norm_label": ".__init__()",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
       "source_location": "L122"
-    },
-    {
-      "id": "tests_datasets_workflow_ds007537_h1_ds007537_band_db",
-      "label": "band_db()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "h1_ds007537.py",
-      "file_type": "code",
-      "norm_label": "band_db()",
-      "source_file": "Tests/datasets workflow/ds007537/h1_ds007537.py",
-      "source_location": "L166"
-    },
-    {
-      "id": "tests_datasets_workflow_ds007537_h1_ds007537_et_window",
-      "label": "et_window()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "h1_ds007537.py",
-      "file_type": "code",
-      "norm_label": "et_window()",
-      "source_file": "Tests/datasets workflow/ds007537/h1_ds007537.py",
-      "source_location": "L204"
-    },
-    {
-      "id": "tests_datasets_workflow_ds007537_h1_ds007537_eyetrack",
-      "label": "eyetrack()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "h1_ds007537.py",
-      "file_type": "code",
-      "norm_label": "eyetrack()",
-      "source_file": "Tests/datasets workflow/ds007537/h1_ds007537.py",
-      "source_location": "L184"
     },
     {
       "id": "tests_datasets_workflow_ds007537_h1_ds007537_is_downloaded",
@@ -2855,18 +2999,6 @@
       "source_location": "L363"
     },
     {
-      "id": "tests_datasets_workflow_ds007537_h1_ds007537_preprocess",
-      "label": "preprocess()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "h1_ds007537.py",
-      "file_type": "code",
-      "norm_label": "preprocess()",
-      "source_file": "Tests/datasets workflow/ds007537/h1_ds007537.py",
-      "source_location": "L93"
-    },
-    {
       "id": "tests_datasets_workflow_ds007537_h1_ds007537_questionnaires",
       "label": "questionnaires()",
       "_callable": true,
@@ -2915,18 +3047,6 @@
       "source_location": "L319"
     },
     {
-      "id": "tests_datasets_workflow_ds007537_h1_ds007537_subject",
-      "label": "subject()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "h1_ds007537.py",
-      "file_type": "code",
-      "norm_label": "subject()",
-      "source_file": "Tests/datasets workflow/ds007537/h1_ds007537.py",
-      "source_location": "L223"
-    },
-    {
       "id": "tests_datasets_workflow_ds007537_h1_ds007537_test_vs_zero",
       "label": "test_vs_zero()",
       "_callable": true,
@@ -2937,6 +3057,30 @@
       "norm_label": "test_vs_zero()",
       "source_file": "Tests/datasets workflow/ds007537/h1_ds007537.py",
       "source_location": "L308"
+    },
+    {
+      "id": "tests_datasets_workflow_eeg_dataset_9_10_demo_processing_load_bids",
+      "label": "load_bids()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 6,
+      "community_name": "h1_ds007537.py",
+      "file_type": "code",
+      "norm_label": "load_bids()",
+      "source_file": "Tests/datasets workflow/EEG Dataset 9-10/Demo_processing.py",
+      "source_location": "L187"
+    },
+    {
+      "id": "tests_datasets_workflow_eeg_dataset_9_10_demo_processing_load_eeg",
+      "label": "load_eeg()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 6,
+      "community_name": "h1_ds007537.py",
+      "file_type": "code",
+      "norm_label": "load_eeg()",
+      "source_file": "Tests/datasets workflow/EEG Dataset 9-10/Demo_processing.py",
+      "source_location": "L213"
     },
     {
       "id": "tests_datasets_workflow_eeg_dataset_9_10_demo_processing_band_filter",
@@ -3143,6 +3287,30 @@
       "source_location": "L99"
     },
     {
+      "id": "tests_simulation_b_realtime_pipeline_blink_blocks",
+      "label": "blink_blocks()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "simulation_B/realtime_pipeline.py",
+      "file_type": "code",
+      "norm_label": "blink_blocks()",
+      "source_file": "Tests/simulation_B/realtime_pipeline.py",
+      "source_location": "L322"
+    },
+    {
+      "id": "tests_simulation_b_realtime_pipeline_blink_match",
+      "label": "blink_match()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "simulation_B/realtime_pipeline.py",
+      "file_type": "code",
+      "norm_label": "blink_match()",
+      "source_file": "Tests/simulation_B/realtime_pipeline.py",
+      "source_location": "L312"
+    },
+    {
       "id": "tests_simulation_b_realtime_pipeline_blink_report",
       "label": "blink_report()",
       "_callable": true,
@@ -3155,16 +3323,28 @@
       "source_location": "L175"
     },
     {
-      "id": "tests_simulation_b_realtime_pipeline_mem_mb",
-      "label": "mem_mb()",
+      "id": "tests_simulation_b_realtime_pipeline_main",
+      "label": "main()",
       "_callable": true,
       "_origin": "ast",
       "community": 8,
       "community_name": "simulation_B/realtime_pipeline.py",
       "file_type": "code",
-      "norm_label": "mem_mb()",
+      "norm_label": "main()",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L442"
+      "source_location": "L463"
+    },
+    {
+      "id": "tests_simulation_b_realtime_pipeline_main_log_blinks",
+      "label": "log_blinks()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "simulation_B/realtime_pipeline.py",
+      "file_type": "code",
+      "norm_label": "log_blinks()",
+      "source_file": "Tests/simulation_B/realtime_pipeline.py",
+      "source_location": "L595"
     },
     {
       "id": "tests_simulation_b_realtime_pipeline_open_run",
@@ -3200,7 +3380,7 @@
       "file_type": "code",
       "norm_label": "channel_meta()",
       "source_file": "Tests/simulation_B/check_lsl_stream.py",
-      "source_location": "L29"
+      "source_location": "L30"
     },
     {
       "id": "tests_simulation_b_check_lsl_stream_find_markers",
@@ -3212,7 +3392,7 @@
       "file_type": "code",
       "norm_label": "find_markers()",
       "source_file": "Tests/simulation_B/check_lsl_stream.py",
-      "source_location": "L73"
+      "source_location": "L74"
     },
     {
       "id": "tests_simulation_b_check_lsl_stream_find_stream",
@@ -3224,7 +3404,7 @@
       "file_type": "code",
       "norm_label": "find_stream()",
       "source_file": "Tests/simulation_B/check_lsl_stream.py",
-      "source_location": "L39"
+      "source_location": "L40"
     },
     {
       "id": "tests_simulation_b_check_lsl_stream_main",
@@ -3236,7 +3416,7 @@
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "Tests/simulation_B/check_lsl_stream.py",
-      "source_location": "L81"
+      "source_location": "L82"
     },
     {
       "id": "tests_simulation_check_lsl_stream_channel_meta",
@@ -3311,16 +3491,16 @@
       "source_location": "L173"
     },
     {
-      "id": "tests_datasets_workflow_cao2019_h1b_cao2019_epochs",
-      "label": "epochs()",
+      "id": "tests_datasets_workflow_ds007537_h1_ds007537_band_db",
+      "label": "band_db()",
       "_callable": true,
       "_origin": "ast",
       "community": 83,
       "community_name": "numpy",
       "file_type": "code",
-      "norm_label": "epochs()",
-      "source_file": "Tests/datasets workflow/Cao2019/h1b_cao2019.py",
-      "source_location": "L180"
+      "norm_label": "band_db()",
+      "source_file": "Tests/datasets workflow/ds007537/h1_ds007537.py",
+      "source_location": "L166"
     },
     {
       "id": "tests_datasets_workflow_ds007537_h1_ds007537_clean",
@@ -3359,256 +3539,64 @@
       "source_location": "L146"
     },
     {
-      "id": "tests_datasets_workflow_eeg_svrec_h1_svrec_epochs_psd",
-      "label": "epochs_psd()",
+      "id": "tests_datasets_workflow_ds007537_h1_ds007537_et_window",
+      "label": "et_window()",
       "_callable": true,
       "_origin": "ast",
       "community": 83,
       "community_name": "numpy",
       "file_type": "code",
-      "norm_label": "epochs_psd()",
-      "source_file": "Tests/datasets workflow/EEG-SVRec/h1_svrec.py",
-      "source_location": "L147"
-    },
-    {
-      "id": "tests_simulation_spectral_features_window_psd",
-      "label": "window_psd()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 83,
-      "community_name": "numpy",
-      "file_type": "code",
-      "norm_label": "window_psd()",
-      "source_file": "Tests/simulation/spectral_features.py",
-      "source_location": "L22"
-    },
-    {
-      "id": "tests_simulation_b_sesion_aura_web_session_abort_all",
-      "label": ".abort_all()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 84,
-      "community_name": "Session",
-      "file_type": "code",
-      "norm_label": ".abort_all()",
-      "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L177"
-    },
-    {
-      "id": "tests_simulation_b_sesion_aura_web_session_add_log",
-      "label": ".add_log()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 84,
-      "community_name": "Session",
-      "file_type": "code",
-      "norm_label": ".add_log()",
-      "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L82"
-    },
-    {
-      "id": "tests_simulation_b_sesion_aura_web_session_check_ok",
-      "label": ".check_ok()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 84,
-      "community_name": "Session",
-      "file_type": "code",
-      "norm_label": ".check_ok()",
-      "source_file": "Tests/simulation_B/sesion_aura_web.py",
+      "norm_label": "et_window()",
+      "source_file": "Tests/datasets workflow/ds007537/h1_ds007537.py",
       "source_location": "L204"
     },
     {
-      "id": "tests_simulation_b_sesion_aura_web_session_emit",
-      "label": ".emit()",
+      "id": "tests_datasets_workflow_ds007537_h1_ds007537_eyetrack",
+      "label": "eyetrack()",
       "_callable": true,
       "_origin": "ast",
-      "community": 84,
-      "community_name": "Session",
+      "community": 83,
+      "community_name": "numpy",
       "file_type": "code",
-      "norm_label": ".emit()",
-      "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L74"
+      "norm_label": "eyetrack()",
+      "source_file": "Tests/datasets workflow/ds007537/h1_ds007537.py",
+      "source_location": "L184"
     },
     {
-      "id": "tests_simulation_b_sesion_aura_web_session_init",
-      "label": ".__init__()",
+      "id": "tests_datasets_workflow_ds007537_h1_ds007537_preprocess",
+      "label": "preprocess()",
       "_callable": true,
       "_origin": "ast",
-      "community": 84,
-      "community_name": "Session",
+      "community": 83,
+      "community_name": "numpy",
       "file_type": "code",
-      "norm_label": ".__init__()",
-      "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L48"
+      "norm_label": "preprocess()",
+      "source_file": "Tests/datasets workflow/ds007537/h1_ds007537.py",
+      "source_location": "L93"
     },
     {
-      "id": "tests_simulation_b_sesion_aura_web_session_launch",
-      "label": ".launch()",
+      "id": "tests_datasets_workflow_ds007537_h1_ds007537_subject",
+      "label": "subject()",
       "_callable": true,
       "_origin": "ast",
-      "community": 84,
-      "community_name": "Session",
+      "community": 83,
+      "community_name": "numpy",
       "file_type": "code",
-      "norm_label": ".launch()",
-      "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L90"
+      "norm_label": "subject()",
+      "source_file": "Tests/datasets workflow/ds007537/h1_ds007537.py",
+      "source_location": "L223"
     },
     {
-      "id": "tests_simulation_b_sesion_aura_web_session_on_exit",
-      "label": ".on_exit()",
+      "id": "tests_simulation_b_realtime_pipeline_blink_gain",
+      "label": "blink_gain()",
       "_callable": true,
       "_origin": "ast",
       "community": 84,
-      "community_name": "Session",
+      "community_name": "Versi\u00f3n B \u2014 criterio de detecci\u00f3n del Paso 3 precisado (29 oct 2026)",
       "file_type": "code",
-      "norm_label": ".on_exit()",
-      "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L144"
-    },
-    {
-      "id": "tests_simulation_b_sesion_aura_web_session_on_line",
-      "label": ".on_line()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 84,
-      "community_name": "Session",
-      "file_type": "code",
-      "norm_label": ".on_line()",
-      "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L108"
-    },
-    {
-      "id": "tests_simulation_b_sesion_aura_web_session_push_state",
-      "label": ".push_state()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 84,
-      "community_name": "Session",
-      "file_type": "code",
-      "norm_label": ".push_state()",
-      "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L79"
-    },
-    {
-      "id": "tests_simulation_b_sesion_aura_web_session_read",
-      "label": "._read()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 84,
-      "community_name": "Session",
-      "file_type": "code",
-      "norm_label": "._read()",
-      "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L98"
-    },
-    {
-      "id": "tests_simulation_b_sesion_aura_web_session_running",
-      "label": ".running()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 84,
-      "community_name": "Session",
-      "file_type": "code",
-      "norm_label": ".running()",
-      "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L173"
-    },
-    {
-      "id": "tests_simulation_b_sesion_aura_web_session_set_status",
-      "label": ".set_status()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 84,
-      "community_name": "Session",
-      "file_type": "code",
-      "norm_label": ".set_status()",
-      "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L86"
-    },
-    {
-      "id": "tests_simulation_b_sesion_aura_web_session_shutdown",
-      "label": ".shutdown()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 84,
-      "community_name": "Session",
-      "file_type": "code",
-      "norm_label": ".shutdown()",
-      "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L249"
-    },
-    {
-      "id": "tests_simulation_b_sesion_aura_web_session_snapshot",
-      "label": ".snapshot()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 84,
-      "community_name": "Session",
-      "file_type": "code",
-      "norm_label": ".snapshot()",
-      "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L66"
-    },
-    {
-      "id": "tests_simulation_b_sesion_aura_web_session_start_check",
-      "label": ".start_check()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 84,
-      "community_name": "Session",
-      "file_type": "code",
-      "norm_label": ".start_check()",
-      "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L194"
-    },
-    {
-      "id": "tests_simulation_b_sesion_aura_web_session_start_session",
-      "label": ".start_session()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 84,
-      "community_name": "Session",
-      "file_type": "code",
-      "norm_label": ".start_session()",
-      "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L208"
-    },
-    {
-      "id": "tests_simulation_b_sesion_aura_web_session_start_session_launch_pipeline",
-      "label": "launch_pipeline()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 84,
-      "community_name": "Session",
-      "file_type": "code",
-      "norm_label": "launch_pipeline()",
-      "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L228"
-    },
-    {
-      "id": "tests_simulation_b_sesion_aura_web_session_stop_proc",
-      "label": ".stop_proc()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 84,
-      "community_name": "Session",
-      "file_type": "code",
-      "norm_label": ".stop_proc()",
-      "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L165"
-    },
-    {
-      "id": "tests_simulation_b_sesion_aura_web_session_stop_session",
-      "label": ".stop_session()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 84,
-      "community_name": "Session",
-      "file_type": "code",
-      "norm_label": ".stop_session()",
-      "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L244"
+      "norm_label": "blink_gain()",
+      "source_file": "Tests/simulation_B/realtime_pipeline.py",
+      "source_location": "L167"
     },
     {
       "id": "tests_datasets_workflow_eeg_dataset_9_10_demo_processing_main",
@@ -3635,28 +3623,52 @@
       "source_location": "L361"
     },
     {
-      "id": "tests_datasets_workflow_eeg_dataset_9_10_demo_processing_load_bids",
-      "label": "load_bids()",
+      "id": "tests_simulation_spectral_features_features_call",
+      "label": ".__call__()",
       "_callable": true,
       "_origin": "ast",
-      "community": 96,
-      "community_name": "load_eeg",
+      "community": 95,
+      "community_name": "Features",
       "file_type": "code",
-      "norm_label": "load_bids()",
-      "source_file": "Tests/datasets workflow/EEG Dataset 9-10/Demo_processing.py",
-      "source_location": "L187"
+      "norm_label": ".__call__()",
+      "source_file": "Tests/simulation/spectral_features.py",
+      "source_location": "L37"
     },
     {
-      "id": "tests_datasets_workflow_eeg_dataset_9_10_demo_processing_load_eeg",
-      "label": "load_eeg()",
+      "id": "tests_simulation_spectral_features_features_init",
+      "label": ".__init__()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 95,
+      "community_name": "Features",
+      "file_type": "code",
+      "norm_label": ".__init__()",
+      "source_file": "Tests/simulation/spectral_features.py",
+      "source_location": "L33"
+    },
+    {
+      "id": "tests_datasets_workflow_cao2019_h1b_cao2019_phasic",
+      "label": "phasic()",
       "_callable": true,
       "_origin": "ast",
       "community": 96,
-      "community_name": "load_eeg",
+      "community_name": "phasic",
       "file_type": "code",
-      "norm_label": "load_eeg()",
-      "source_file": "Tests/datasets workflow/EEG Dataset 9-10/Demo_processing.py",
-      "source_location": "L213"
+      "norm_label": "phasic()",
+      "source_file": "Tests/datasets workflow/Cao2019/h1b_cao2019.py",
+      "source_location": "L97"
+    },
+    {
+      "id": "tests_datasets_workflow_cao2019_h1b_cao2019_phasic_idx",
+      "label": "idx()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 96,
+      "community_name": "phasic",
+      "file_type": "code",
+      "norm_label": "idx()",
+      "source_file": "Tests/datasets workflow/Cao2019/h1b_cao2019.py",
+      "source_location": "L110"
     },
     {
       "id": "tests_datasets_workflow_ds007537_reporte_h1_ds007537",
@@ -4139,17 +4151,6 @@
       "source_location": "L1"
     },
     {
-      "id": "tests_datasets_workflow_eeg_svrec_h1_svrec_rationale_118",
-      "label": "{sujeto: {\"oid\": sha256, \"size\": bytes}} desde la API de Hugging Face.",
-      "_origin": "ast",
-      "community": 10,
-      "community_name": "h1_svrec.py",
-      "file_type": "rationale",
-      "norm_label": "{sujeto: {\"oid\": sha256, \"size\": bytes}} desde la api de hugging face.",
-      "source_file": "Tests/datasets workflow/EEG-SVRec/h1_svrec.py",
-      "source_location": "L118"
-    },
-    {
       "id": "tests_datasets_workflow_eeg_svrec_h1_svrec_rationale_124",
       "label": "Videos con ventana EEG v\u00e1lida, ordenados en el tiempo (segundos del .cnt).",
       "_origin": "ast",
@@ -4170,6 +4171,17 @@
       "norm_label": "lee solo la ventana de la sesion (sin cargar el archivo completo) con nombres...",
       "source_file": "Tests/datasets workflow/EEG-SVRec/h1_svrec.py",
       "source_location": "L135"
+    },
+    {
+      "id": "tests_datasets_workflow_eeg_svrec_h1_svrec_rationale_148",
+      "label": "Como h1.epoch_psd pero devuelve el inicio de cada \u00e9poca v\u00e1lida (s desde el\u2026",
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "h1_svrec.py",
+      "file_type": "rationale",
+      "norm_label": "como h1.epoch_psd pero devuelve el inicio de cada epoca valida (s desde el...",
+      "source_file": "Tests/datasets workflow/EEG-SVRec/h1_svrec.py",
+      "source_location": "L148"
     },
     {
       "id": "tests_datasets_workflow_eeg_svrec_h1_svrec_rationale_167",
@@ -4216,57 +4228,33 @@
       "source_location": "L283"
     },
     {
-      "id": "tests_datasets_workflow_eeg_svrec_h1_svrec_rationale_363",
-      "label": "Descarga y procesa los sujetos pendientes (2 a la vez, con descarga anticipada).",
-      "_origin": "ast",
-      "community": 10,
-      "community_name": "h1_svrec.py",
-      "file_type": "rationale",
-      "norm_label": "descarga y procesa los sujetos pendientes (2 a la vez, con descarga anticipada).",
-      "source_file": "Tests/datasets workflow/EEG-SVRec/h1_svrec.py",
-      "source_location": "L363"
-    },
-    {
       "id": "tests_simulation_b_spectral_features",
       "label": "simulation_B/spectral_features.py",
       "_origin": "ast",
       "community": 12,
-      "community_name": "simulation_B/spectral_features.py",
+      "community_name": "scipy",
       "file_type": "code",
       "norm_label": "simulation_b/spectral_features.py",
       "source_file": "Tests/simulation_B/spectral_features.py",
       "source_location": "L1"
     },
     {
-      "id": "tests_simulation_b_version_b_comparaci\u00f3n_a_frente_a_b_con_el_paso_4_29_oct",
-      "label": "Comparaci\u00f3n A frente a B con el Paso 4 (29 oct)",
+      "id": "tests_simulation_spectral_features",
+      "label": "simulation/spectral_features.py",
       "_origin": "ast",
       "community": 12,
-      "community_name": "simulation_B/spectral_features.py",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "comparacion a frente a b con el paso 4 (29 oct)",
-      "source_file": "Tests/simulation_B/VERSION_B.md",
-      "source_location": "L76"
-    },
-    {
-      "id": "tests_simulation_b_version_b_hallazgo_que_motiv\u00f3_el_ajuste",
-      "label": "Hallazgo que motiv\u00f3 el ajuste",
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "simulation_B/spectral_features.py",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "hallazgo que motivo el ajuste",
-      "source_file": "Tests/simulation_B/VERSION_B.md",
-      "source_location": "L32"
+      "community_name": "scipy",
+      "file_type": "code",
+      "norm_label": "simulation/spectral_features.py",
+      "source_file": "Tests/simulation/spectral_features.py",
+      "source_location": "L1"
     },
     {
       "id": "tests_simulation_b_version_b_paso_5_calibraci\u00f3n_congelada_30_oct",
       "label": "Paso 5 \u2014 calibraci\u00f3n congelada (30 oct)",
       "_origin": "ast",
       "community": 12,
-      "community_name": "simulation_B/spectral_features.py",
+      "community_name": "scipy",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "paso 5 \u2014 calibracion congelada (30 oct)",
@@ -4274,59 +4262,11 @@
       "source_location": "L170"
     },
     {
-      "id": "tests_simulation_b_version_b_prueba_en_vivo_29_oct_10_min_de_uno_en_uno_tren_de_parpadeos_de_30_s_en_el_minuto_5",
-      "label": "Prueba en vivo (29 oct, 10 min de uno en uno, tren de parpadeos de 30 s en el minuto 5)",
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "simulation_B/spectral_features.py",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "prueba en vivo (29 oct, 10 min de uno en uno, tren de parpadeos de 30 s en el minuto 5)",
-      "source_file": "Tests/simulation_B/VERSION_B.md",
-      "source_location": "L57"
-    },
-    {
-      "id": "tests_simulation_b_version_b_resultados_offline_600_s_sint\u00e9ticos_15_parpadeos_min",
-      "label": "Resultados offline (600 s sint\u00e9ticos, ~15 parpadeos/min)",
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "simulation_B/spectral_features.py",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "resultados offline (600 s sinteticos, ~15 parpadeos/min)",
-      "source_file": "Tests/simulation_B/VERSION_B.md",
-      "source_location": "L40"
-    },
-    {
-      "id": "tests_simulation_b_version_b_sin_veto_emg_y_ajuste_2_30_hz_29_oct_tarde",
-      "label": "Sin veto EMG y ajuste 2\u201330 Hz (29 oct, tarde)",
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "simulation_B/spectral_features.py",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "sin veto emg y ajuste 2\u201330 hz (29 oct, tarde)",
-      "source_file": "Tests/simulation_B/VERSION_B.md",
-      "source_location": "L90"
-    },
-    {
-      "id": "tests_simulation_b_version_b_versi\u00f3n_b_criterio_de_detecci\u00f3n_del_paso_3_precisado_29_oct_2026",
-      "label": "Versi\u00f3n B \u2014 criterio de detecci\u00f3n del Paso 3 precisado (29 oct 2026)",
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "simulation_B/spectral_features.py",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "version b \u2014 criterio de deteccion del paso 3 precisado (29 oct 2026)",
-      "source_file": "Tests/simulation_B/VERSION_B.md",
-      "source_location": "L1"
-    },
-    {
       "id": "tests_simulation_b_spectral_features_rationale_1",
       "label": "spectral_features.py \u2014 Paso 4 del Protocolo de Simulaci\u00f3n (MIRAI 2026) Por\u2026",
       "_origin": "ast",
       "community": 12,
-      "community_name": "simulation_B/spectral_features.py",
+      "community_name": "scipy",
       "file_type": "rationale",
       "norm_label": "spectral_features.py \u2014 paso 4 del protocolo de simulacion (mirai 2026) por...",
       "source_file": "Tests/simulation_B/spectral_features.py",
@@ -4337,7 +4277,7 @@
       "label": "PSD (canales, frecuencias) en \u00b5V\u00b2/Hz: periodograma Hamming de cada segmento\u2026",
       "_origin": "ast",
       "community": 12,
-      "community_name": "simulation_B/spectral_features.py",
+      "community_name": "scipy",
       "file_type": "rationale",
       "norm_label": "psd (canales, frecuencias) en \u03bcv2/hz: periodograma hamming de cada segmento...",
       "source_file": "Tests/simulation_B/spectral_features.py",
@@ -4348,7 +4288,7 @@
       "label": "El mismo ajuste que h1.periodic() (test_realtime_pipeline lo comprueba), pero\u2026",
       "_origin": "ast",
       "community": 12,
-      "community_name": "simulation_B/spectral_features.py",
+      "community_name": "scipy",
       "file_type": "rationale",
       "norm_label": "el mismo ajuste que h1.periodic() (test_realtime_pipeline lo comprueba), pero...",
       "source_file": "Tests/simulation_B/spectral_features.py",
@@ -4359,7 +4299,7 @@
       "label": "Potencia peri\u00f3dica media de [lo, hi) en dB, como el return de h1.periodic().",
       "_origin": "ast",
       "community": 12,
-      "community_name": "simulation_B/spectral_features.py",
+      "community_name": "scipy",
       "file_type": "rationale",
       "norm_label": "potencia periodica media de [lo, hi) en db, como el return de h1.periodic().",
       "source_file": "Tests/simulation_B/spectral_features.py",
@@ -4370,11 +4310,33 @@
       "label": "theta_per / alfa_per (dB sobre el fondo 1/f), exponente aperi\u00f3dico y R\u00b2 de cada\u2026",
       "_origin": "ast",
       "community": 12,
-      "community_name": "simulation_B/spectral_features.py",
+      "community_name": "scipy",
       "file_type": "rationale",
       "norm_label": "theta_per / alfa_per (db sobre el fondo 1/f), exponente aperiodico y r2 de cada...",
       "source_file": "Tests/simulation_B/spectral_features.py",
       "source_location": "L52"
+    },
+    {
+      "id": "tests_simulation_spectral_features_rationale_1",
+      "label": "spectral_features.py \u2014 Paso 4 del Protocolo de Simulaci\u00f3n (MIRAI 2026) Por\u2026",
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "scipy",
+      "file_type": "rationale",
+      "norm_label": "spectral_features.py \u2014 paso 4 del protocolo de simulacion (mirai 2026) por...",
+      "source_file": "Tests/simulation/spectral_features.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_simulation_spectral_features_rationale_23",
+      "label": "PSD (canales, frecuencias) en \u00b5V\u00b2/Hz: periodograma Hamming de cada segmento\u2026",
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "scipy",
+      "file_type": "rationale",
+      "norm_label": "psd (canales, frecuencias) en \u03bcv2/hz: periodograma hamming de cada segmento...",
+      "source_file": "Tests/simulation/spectral_features.py",
+      "source_location": "L23"
     },
     {
       "id": "tests_simulation_replay_offline",
@@ -4443,17 +4405,6 @@
       "source_location": "L80"
     },
     {
-      "id": "tests_simulation_spectral_features_rationale_31",
-      "label": "theta_per / alfa_per (dB sobre el fondo 1/f), exponente aperi\u00f3dico y R\u00b2 de cada\u2026",
-      "_origin": "ast",
-      "community": 13,
-      "community_name": "simulation/replay_offline.py",
-      "file_type": "rationale",
-      "norm_label": "theta_per / alfa_per (db sobre el fondo 1/f), exponente aperiodico y r2 de cada...",
-      "source_file": "Tests/simulation/spectral_features.py",
-      "source_location": "L31"
-    },
-    {
       "id": "tests_simulation_b_sesion_aura_rationale_331",
       "label": "Cron\u00f3metro de la sesi\u00f3n: bloque actual y pr\u00f3xima acci\u00f3n manual (con aviso\u2026",
       "_origin": "ast",
@@ -4507,50 +4458,6 @@
       "norm_label": "izq.: relativo a la base de cada ensayo (oculta diferencias de base). der.:...",
       "source_file": "Tests/datasets workflow/Cao2019/h1b_cao2019.py",
       "source_location": "L270"
-    },
-    {
-      "id": "tests_datasets_workflow_cao2019_h1b_cao2019_rationale_77",
-      "label": "(inicio del desv\u00edo, TR en s): primera respuesta 253 tras cada desv\u00edo y antes\u2026",
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "h1b_cao2019.py",
-      "file_type": "rationale",
-      "norm_label": "(inicio del desvio, tr en s): primera respuesta 253 tras cada desvio y antes...",
-      "source_file": "Tests/datasets workflow/Cao2019/h1b_cao2019.py",
-      "source_location": "L77"
-    },
-    {
-      "id": "tests_datasets_workflow_cao2019_h1b_cao2019_rationale_89",
-      "label": "Fracci\u00f3n de [a, b) con un desv\u00edo sin corregir. Capta episodios de sue\u00f1o (p. ej.\u2026",
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "h1b_cao2019.py",
-      "file_type": "rationale",
-      "norm_label": "fraccion de [a, b) con un desvio sin corregir. capta episodios de sueno (p. ej....",
-      "source_file": "Tests/datasets workflow/Cao2019/h1b_cao2019.py",
-      "source_location": "L89"
-    },
-    {
-      "id": "tests_datasets_workflow_cao2019_h1b_cao2019_rationale_98",
-      "label": "Theta F\u00c1SICO Fz/FCz alineado al inicio de cada desv\u00edo (ensayo a ensayo) y su\u2026",
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "h1b_cao2019.py",
-      "file_type": "rationale",
-      "norm_label": "theta fasico fz/fcz alineado al inicio de cada desvio (ensayo a ensayo) y su...",
-      "source_file": "Tests/datasets workflow/Cao2019/h1b_cao2019.py",
-      "source_location": "L98"
-    },
-    {
-      "id": "tests_datasets_workflow_eeg_svrec_h1_svrec_rationale_79",
-      "label": "Descarga por bloques a .part y renombra solo si el sha256 coincide. Si la\u2026",
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "h1b_cao2019.py",
-      "file_type": "rationale",
-      "norm_label": "descarga por bloques a .part y renombra solo si el sha256 coincide. si la...",
-      "source_file": "Tests/datasets workflow/EEG-SVRec/h1_svrec.py",
-      "source_location": "L79"
     },
     {
       "id": "tests_simulation_b_mock_lsl_streamer",
@@ -4762,6 +4669,102 @@
       "source_location": "L1"
     },
     {
+      "id": "tests_protocolo_simulacion_pipeline_1_arquitectura_del_lazo_cerrado_simulado",
+      "label": "\ud83c\udfd7\ufe0f 1. Arquitectura del Lazo Cerrado Simulado",
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "calibration.py",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "\ud83c\udfd7\ufe0f 1. arquitectura del lazo cerrado simulado",
+      "source_file": "Tests/Protocolo_Simulacion_Pipeline.md",
+      "source_location": "L7"
+    },
+    {
+      "id": "tests_protocolo_simulacion_pipeline_2_pasos_de_implementaci\u00f3n_y_validaci\u00f3n_t\u00e9cnica",
+      "label": "\ud83d\udccb 2. Pasos de Implementaci\u00f3n y Validaci\u00f3n T\u00e9cnica",
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "calibration.py",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "\ud83d\udccb 2. pasos de implementacion y validacion tecnica",
+      "source_file": "Tests/Protocolo_Simulacion_Pipeline.md",
+      "source_location": "L168"
+    },
+    {
+      "id": "tests_protocolo_simulacion_pipeline_3_estructura_de_c\u00f3digo_a_implementar",
+      "label": "\ud83d\udcc1 3. Estructura de C\u00f3digo a Implementar",
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "calibration.py",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "\ud83d\udcc1 3. estructura de codigo a implementar",
+      "source_file": "Tests/Protocolo_Simulacion_Pipeline.md",
+      "source_location": "L427"
+    },
+    {
+      "id": "tests_protocolo_simulacion_pipeline_flujo_actual_28_oct_2026_paso_1_implementado",
+      "label": "Flujo actual (28 oct 2026: Paso 1 implementado)",
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "calibration.py",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "flujo actual (28 oct 2026: paso 1 implementado)",
+      "source_file": "Tests/Protocolo_Simulacion_Pipeline.md",
+      "source_location": "L38"
+    },
+    {
+      "id": "tests_protocolo_simulacion_pipeline_flujo_actual_y_flujo_esperado_qu\u00e9_archivos_se_ejecutan",
+      "label": "\ud83d\uddfa\ufe0f Flujo actual y flujo esperado (qu\u00e9 archivos se ejecutan)",
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "calibration.py",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "\ud83d\uddfa\ufe0f flujo actual y flujo esperado (que archivos se ejecutan)",
+      "source_file": "Tests/Protocolo_Simulacion_Pipeline.md",
+      "source_location": "L36"
+    },
+    {
+      "id": "tests_protocolo_simulacion_pipeline_flujo_esperado_pasos_2_7",
+      "label": "Flujo esperado (Pasos 2\u20137)",
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "calibration.py",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "flujo esperado (pasos 2\u20137)",
+      "source_file": "Tests/Protocolo_Simulacion_Pipeline.md",
+      "source_location": "L95"
+    },
+    {
+      "id": "tests_protocolo_simulacion_pipeline_protocolo_t\u00e9cnico_de_simulaci\u00f3n_y_pipeline_en_tiempo_real_mirai_2026",
+      "label": "Protocolo T\u00e9cnico de Simulaci\u00f3n y Pipeline en Tiempo Real (MIRAI 2026)",
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "calibration.py",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "protocolo tecnico de simulacion y pipeline en tiempo real (mirai 2026)",
+      "source_file": "Tests/Protocolo_Simulacion_Pipeline.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_protocolo_simulacion_pipeline_x_paso_1_emulador_de_hardware_y_transmisi\u00f3n_lsl_mock_lsl_streamer_py_implementado_28_oct_2026",
+      "label": "[x] Paso 1: Emulador de Hardware y Transmisi\u00f3n LSL (`mock_lsl_streamer.py`) \u2014 implementado 28 oct 2026",
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "calibration.py",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "[x] paso 1: emulador de hardware y transmision lsl (`mock_lsl_streamer.py`) \u2014 implementado 28 oct 2026",
+      "source_file": "Tests/Protocolo_Simulacion_Pipeline.md",
+      "source_location": "L174"
+    },
+    {
       "id": "tests_simulation_b_calibration_rationale_1",
       "label": "calibration.py \u2014 Paso 5 del Protocolo de Simulaci\u00f3n (MIRAI 2026) \u00b7 VERSI\u00d3N B\u2026",
       "_origin": "ast",
@@ -4957,21 +4960,10 @@
       "label": "simulation_B/replay_offline.py",
       "_origin": "ast",
       "community": 27,
-      "community_name": "os",
+      "community_name": "simulation_B/replay_offline.py",
       "file_type": "code",
       "norm_label": "simulation_b/replay_offline.py",
       "source_file": "Tests/simulation_B/replay_offline.py",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_simulation_spectral_features",
-      "label": "simulation/spectral_features.py",
-      "_origin": "ast",
-      "community": 27,
-      "community_name": "os",
-      "file_type": "code",
-      "norm_label": "simulation/spectral_features.py",
-      "source_file": "Tests/simulation/spectral_features.py",
       "source_location": "L1"
     },
     {
@@ -4979,7 +4971,7 @@
       "label": "replay_offline.py \u00b7 VERSI\u00d3N B \u2014 Pasos 2\u20133 sobre un archivo real, sin LSL ni\u2026",
       "_origin": "ast",
       "community": 27,
-      "community_name": "os",
+      "community_name": "simulation_B/replay_offline.py",
       "file_type": "rationale",
       "norm_label": "replay_offline.py \u00b7 version b \u2014 pasos 2\u20133 sobre un archivo real, sin lsl ni...",
       "source_file": "Tests/simulation_B/replay_offline.py",
@@ -4990,7 +4982,7 @@
       "label": "Picos de parpadeo en Fp1 (s): blink_peaks() sobre el registro entero filtrado\u2026",
       "_origin": "ast",
       "community": 27,
-      "community_name": "os",
+      "community_name": "simulation_B/replay_offline.py",
       "file_type": "rationale",
       "norm_label": "picos de parpadeo en fp1 (s): blink_peaks() sobre el registro entero filtrado...",
       "source_file": "Tests/simulation_B/replay_offline.py",
@@ -5001,7 +4993,7 @@
       "label": "(intervalos de parpadeo [inicio, fin] s, tiempos ET s, pupila perdida bool) en\u2026",
       "_origin": "ast",
       "community": 27,
-      "community_name": "os",
+      "community_name": "simulation_B/replay_offline.py",
       "file_type": "rationale",
       "norm_label": "(intervalos de parpadeo [inicio, fin] s, tiempos et s, pupila perdida bool) en...",
       "source_file": "Tests/simulation_B/replay_offline.py",
@@ -5012,7 +5004,7 @@
       "label": "Rechazo de segmentos con / sin parpadeo. intervals: [[ini, fin]] s;\u2026",
       "_origin": "ast",
       "community": 27,
-      "community_name": "os",
+      "community_name": "simulation_B/replay_offline.py",
       "file_type": "rationale",
       "norm_label": "rechazo de segmentos con / sin parpadeo. intervals: [[ini, fin]] s;...",
       "source_file": "Tests/simulation_B/replay_offline.py",
@@ -5023,22 +5015,11 @@
       "label": "Paso 4: features por minuto del pipeline en tiempo real frente a\u2026",
       "_origin": "ast",
       "community": 27,
-      "community_name": "os",
+      "community_name": "simulation_B/replay_offline.py",
       "file_type": "rationale",
       "norm_label": "paso 4: features por minuto del pipeline en tiempo real frente a...",
       "source_file": "Tests/simulation_B/replay_offline.py",
       "source_location": "L76"
-    },
-    {
-      "id": "tests_simulation_spectral_features_rationale_1",
-      "label": "spectral_features.py \u2014 Paso 4 del Protocolo de Simulaci\u00f3n (MIRAI 2026) Por\u2026",
-      "_origin": "ast",
-      "community": 27,
-      "community_name": "os",
-      "file_type": "rationale",
-      "norm_label": "spectral_features.py \u2014 paso 4 del protocolo de simulacion (mirai 2026) por...",
-      "source_file": "Tests/simulation/spectral_features.py",
-      "source_location": "L1"
     },
     {
       "id": "readme_1_clonar_el_repositorio",
@@ -5221,99 +5202,59 @@
       "source_location": "L8"
     },
     {
-      "id": "tests_protocolo_simulacion_pipeline_adaptaci\u00f3n_a_la_diadema_aura",
-      "label": "\ud83c\udfa7 Adaptaci\u00f3n a la diadema AURA",
+      "id": "tests_datasets_workflow_cao2019_h1b_cao2019_rationale_77",
+      "label": "(inicio del desv\u00edo, TR en s): primera respuesta 253 tras cada desv\u00edo y antes\u2026",
       "_origin": "ast",
       "community": 3,
-      "community_name": "\ud83c\udfa7 Adaptaci\u00f3n a la diadema AURA",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "\ud83c\udfa7 adaptacion a la diadema aura",
-      "source_file": "Tests/Protocolo_Simulacion_Pipeline.md",
-      "source_location": "L224"
-    },
-    {
-      "id": "tests_protocolo_simulacion_pipeline_paso_6_motor_de_decisi\u00f3n_neuroadaptativa_jitai_escalera_de_intervenci\u00f3n",
-      "label": "[ ] Paso 6: Motor de Decisi\u00f3n Neuroadaptativa JITAI (Escalera de Intervenci\u00f3n)",
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "\ud83c\udfa7 Adaptaci\u00f3n a la diadema AURA",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "[ ] paso 6: motor de decision neuroadaptativa jitai (escalera de intervencion)",
-      "source_file": "Tests/Protocolo_Simulacion_Pipeline.md",
-      "source_location": "L384"
-    },
-    {
-      "id": "tests_protocolo_simulacion_pipeline_paso_7_benchmarking_de_latencia_y_validaci\u00f3n_extremo_a_extremo_run_simulation_py",
-      "label": "[ ] Paso 7: Benchmarking de Latencia y Validaci\u00f3n Extremo a Extremo (`run_simulation.py`)",
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "\ud83c\udfa7 Adaptaci\u00f3n a la diadema AURA",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "[ ] paso 7: benchmarking de latencia y validacion extremo a extremo (`run_simulation.py`)",
-      "source_file": "Tests/Protocolo_Simulacion_Pipeline.md",
-      "source_location": "L410"
-    },
-    {
-      "id": "tests_protocolo_simulacion_pipeline_x_paso_2_b\u00fafer_circular_continuo_y_filtrado_causal_realtime_pipeline_py_implementado_28_oct_2026",
-      "label": "[x] Paso 2: B\u00fafer Circular Continuo y Filtrado Causal (`realtime_pipeline.py`) \u2014 implementado 28 oct 2026",
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "\ud83c\udfa7 Adaptaci\u00f3n a la diadema AURA",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "[x] paso 2: bufer circular continuo y filtrado causal (`realtime_pipeline.py`) \u2014 implementado 28 oct 2026",
-      "source_file": "Tests/Protocolo_Simulacion_Pipeline.md",
-      "source_location": "L240"
-    },
-    {
-      "id": "tests_protocolo_simulacion_pipeline_x_paso_3_rechazo_de_artefactos_ocular_en_fp1_y_emg_implementado_28_29_oct_2026_detecci\u00f3n_en_sint\u00e9tico_94_bajo_el_criterio_del_95_ver_resultados",
-      "label": "[x] Paso 3: Rechazo de Artefactos (ocular en $Fp1$ y EMG) \u2014 implementado 28\u201329 oct 2026 (detecci\u00f3n en sint\u00e9tico 94 %, bajo el criterio del 95 %; ver resultados)",
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "\ud83c\udfa7 Adaptaci\u00f3n a la diadema AURA",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "[x] paso 3: rechazo de artefactos (ocular en $fp1$ y emg) \u2014 implementado 28\u201329 oct 2026 (deteccion en sintetico 94 %, bajo el criterio del 95 %; ver resultados)",
-      "source_file": "Tests/Protocolo_Simulacion_Pipeline.md",
-      "source_location": "L291"
-    },
-    {
-      "id": "tests_protocolo_simulacion_pipeline_x_paso_4_descomposici\u00f3n_espectral_y_extracci\u00f3n_con_specparam_cerrado_30_oct_2026_con_la_versi\u00f3n_b",
-      "label": "[x] Paso 4: Descomposici\u00f3n Espectral y Extracci\u00f3n con `specparam` \u2014 cerrado 30 oct 2026 con la versi\u00f3n B",
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "\ud83c\udfa7 Adaptaci\u00f3n a la diadema AURA",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "[x] paso 4: descomposicion espectral y extraccion con `specparam` \u2014 cerrado 30 oct 2026 con la version b",
-      "source_file": "Tests/Protocolo_Simulacion_Pipeline.md",
-      "source_location": "L322"
-    },
-    {
-      "id": "tests_protocolo_simulacion_pipeline_x_paso_5_calibraci\u00f3n_individual_congelada_cerrado_30_oct_2026_con_la_versi\u00f3n_b",
-      "label": "[x] Paso 5: Calibraci\u00f3n Individual Congelada \u2014 cerrado 30 oct 2026 con la versi\u00f3n B",
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "\ud83c\udfa7 Adaptaci\u00f3n a la diadema AURA",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "[x] paso 5: calibracion individual congelada \u2014 cerrado 30 oct 2026 con la version b",
-      "source_file": "Tests/Protocolo_Simulacion_Pipeline.md",
-      "source_location": "L362"
-    },
-    {
-      "id": "tests_datasets_workflow_eeg_dataset_9_10_demo_processing_rationale_322",
-      "label": "PSD de Welch por canal.",
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "\ud83c\udfa7 Adaptaci\u00f3n a la diadema AURA",
+      "community_name": "os",
       "file_type": "rationale",
-      "norm_label": "psd de welch por canal.",
-      "source_file": "Tests/datasets workflow/EEG Dataset 9-10/Demo_processing.py",
-      "source_location": "L322"
+      "norm_label": "(inicio del desvio, tr en s): primera respuesta 253 tras cada desvio y antes...",
+      "source_file": "Tests/datasets workflow/Cao2019/h1b_cao2019.py",
+      "source_location": "L77"
+    },
+    {
+      "id": "tests_datasets_workflow_cao2019_h1b_cao2019_rationale_89",
+      "label": "Fracci\u00f3n de [a, b) con un desv\u00edo sin corregir. Capta episodios de sue\u00f1o (p. ej.\u2026",
+      "_origin": "ast",
+      "community": 3,
+      "community_name": "os",
+      "file_type": "rationale",
+      "norm_label": "fraccion de [a, b) con un desvio sin corregir. capta episodios de sueno (p. ej....",
+      "source_file": "Tests/datasets workflow/Cao2019/h1b_cao2019.py",
+      "source_location": "L89"
+    },
+    {
+      "id": "tests_datasets_workflow_eeg_svrec_h1_svrec_rationale_118",
+      "label": "{sujeto: {\"oid\": sha256, \"size\": bytes}} desde la API de Hugging Face.",
+      "_origin": "ast",
+      "community": 3,
+      "community_name": "os",
+      "file_type": "rationale",
+      "norm_label": "{sujeto: {\"oid\": sha256, \"size\": bytes}} desde la api de hugging face.",
+      "source_file": "Tests/datasets workflow/EEG-SVRec/h1_svrec.py",
+      "source_location": "L118"
+    },
+    {
+      "id": "tests_datasets_workflow_eeg_svrec_h1_svrec_rationale_363",
+      "label": "Descarga y procesa los sujetos pendientes (2 a la vez, con descarga anticipada).",
+      "_origin": "ast",
+      "community": 3,
+      "community_name": "os",
+      "file_type": "rationale",
+      "norm_label": "descarga y procesa los sujetos pendientes (2 a la vez, con descarga anticipada).",
+      "source_file": "Tests/datasets workflow/EEG-SVRec/h1_svrec.py",
+      "source_location": "L363"
+    },
+    {
+      "id": "tests_datasets_workflow_eeg_svrec_h1_svrec_rationale_79",
+      "label": "Descarga por bloques a .part y renombra solo si el sha256 coincide. Si la\u2026",
+      "_origin": "ast",
+      "community": 3,
+      "community_name": "os",
+      "file_type": "rationale",
+      "norm_label": "descarga por bloques a .part y renombra solo si el sha256 coincide. si la...",
+      "source_file": "Tests/datasets workflow/EEG-SVRec/h1_svrec.py",
+      "source_location": "L79"
     },
     {
       "id": "tests_datasets_workflow_eeg_svrec_reporte_h1_svrec",
@@ -5909,6 +5850,89 @@
       "source_location": "L1"
     },
     {
+      "id": "tests_protocolo_simulacion_pipeline_adaptaci\u00f3n_a_la_diadema_aura",
+      "label": "\ud83c\udfa7 Adaptaci\u00f3n a la diadema AURA",
+      "_origin": "ast",
+      "community": 43,
+      "community_name": "window_biomarkers",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "\ud83c\udfa7 adaptacion a la diadema aura",
+      "source_file": "Tests/Protocolo_Simulacion_Pipeline.md",
+      "source_location": "L224"
+    },
+    {
+      "id": "tests_protocolo_simulacion_pipeline_paso_6_motor_de_decisi\u00f3n_neuroadaptativa_jitai_escalera_de_intervenci\u00f3n",
+      "label": "[ ] Paso 6: Motor de Decisi\u00f3n Neuroadaptativa JITAI (Escalera de Intervenci\u00f3n)",
+      "_origin": "ast",
+      "community": 43,
+      "community_name": "window_biomarkers",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "[ ] paso 6: motor de decision neuroadaptativa jitai (escalera de intervencion)",
+      "source_file": "Tests/Protocolo_Simulacion_Pipeline.md",
+      "source_location": "L384"
+    },
+    {
+      "id": "tests_protocolo_simulacion_pipeline_paso_7_benchmarking_de_latencia_y_validaci\u00f3n_extremo_a_extremo_run_simulation_py",
+      "label": "[ ] Paso 7: Benchmarking de Latencia y Validaci\u00f3n Extremo a Extremo (`run_simulation.py`)",
+      "_origin": "ast",
+      "community": 43,
+      "community_name": "window_biomarkers",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "[ ] paso 7: benchmarking de latencia y validacion extremo a extremo (`run_simulation.py`)",
+      "source_file": "Tests/Protocolo_Simulacion_Pipeline.md",
+      "source_location": "L410"
+    },
+    {
+      "id": "tests_protocolo_simulacion_pipeline_x_paso_2_b\u00fafer_circular_continuo_y_filtrado_causal_realtime_pipeline_py_implementado_28_oct_2026",
+      "label": "[x] Paso 2: B\u00fafer Circular Continuo y Filtrado Causal (`realtime_pipeline.py`) \u2014 implementado 28 oct 2026",
+      "_origin": "ast",
+      "community": 43,
+      "community_name": "window_biomarkers",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "[x] paso 2: bufer circular continuo y filtrado causal (`realtime_pipeline.py`) \u2014 implementado 28 oct 2026",
+      "source_file": "Tests/Protocolo_Simulacion_Pipeline.md",
+      "source_location": "L240"
+    },
+    {
+      "id": "tests_protocolo_simulacion_pipeline_x_paso_3_rechazo_de_artefactos_ocular_en_fp1_y_emg_implementado_28_29_oct_2026_detecci\u00f3n_en_sint\u00e9tico_94_bajo_el_criterio_del_95_ver_resultados",
+      "label": "[x] Paso 3: Rechazo de Artefactos (ocular en $Fp1$ y EMG) \u2014 implementado 28\u201329 oct 2026 (detecci\u00f3n en sint\u00e9tico 94 %, bajo el criterio del 95 %; ver resultados)",
+      "_origin": "ast",
+      "community": 43,
+      "community_name": "window_biomarkers",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "[x] paso 3: rechazo de artefactos (ocular en $fp1$ y emg) \u2014 implementado 28\u201329 oct 2026 (deteccion en sintetico 94 %, bajo el criterio del 95 %; ver resultados)",
+      "source_file": "Tests/Protocolo_Simulacion_Pipeline.md",
+      "source_location": "L291"
+    },
+    {
+      "id": "tests_protocolo_simulacion_pipeline_x_paso_4_descomposici\u00f3n_espectral_y_extracci\u00f3n_con_specparam_cerrado_30_oct_2026_con_la_versi\u00f3n_b",
+      "label": "[x] Paso 4: Descomposici\u00f3n Espectral y Extracci\u00f3n con `specparam` \u2014 cerrado 30 oct 2026 con la versi\u00f3n B",
+      "_origin": "ast",
+      "community": 43,
+      "community_name": "window_biomarkers",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "[x] paso 4: descomposicion espectral y extraccion con `specparam` \u2014 cerrado 30 oct 2026 con la version b",
+      "source_file": "Tests/Protocolo_Simulacion_Pipeline.md",
+      "source_location": "L322"
+    },
+    {
+      "id": "tests_datasets_workflow_eeg_dataset_9_10_demo_processing_rationale_322",
+      "label": "PSD de Welch por canal.",
+      "_origin": "ast",
+      "community": 43,
+      "community_name": "window_biomarkers",
+      "file_type": "rationale",
+      "norm_label": "psd de welch por canal.",
+      "source_file": "Tests/datasets workflow/EEG Dataset 9-10/Demo_processing.py",
+      "source_location": "L322"
+    },
+    {
       "id": "tests_datasets_workflow_eeg_dataset_9_10_demo_processing_rationale_330",
       "label": "Potencia absoluta en \u00b5V\u00b2 para cada banda.",
       "_origin": "ast",
@@ -5962,29 +5986,6 @@
       "norm_label": "evolucion temporal de biomarcadores en ventanas deslizantes.",
       "source_file": "Tests/datasets workflow/EEG Dataset 9-10/Demo_processing.py",
       "source_location": "L407"
-    },
-    {
-      "id": "tests_simulation_b_version_b_qu\u00e9_cambia",
-      "label": "Qu\u00e9 cambia",
-      "_origin": "ast",
-      "community": 47,
-      "community_name": "CausalFilter",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "que cambia",
-      "source_file": "Tests/simulation_B/VERSION_B.md",
-      "source_location": "L6"
-    },
-    {
-      "id": "tests_simulation_b_realtime_pipeline_rationale_168",
-      "label": "Ganancia pico a pico del filtro sobre el parpadeo sint\u00e9tico (pico gaussiano de\u2026",
-      "_origin": "ast",
-      "community": 47,
-      "community_name": "CausalFilter",
-      "file_type": "rationale",
-      "norm_label": "ganancia pico a pico del filtro sobre el parpadeo sintetico (pico gaussiano de...",
-      "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L168"
     },
     {
       "id": "tests_simulation_b_realtime_pipeline_rationale_74",
@@ -6075,7 +6076,7 @@
       "source_location": "L1"
     },
     {
-      "id": "tests_simulation_b_sesion_aura_web_rationale_263",
+      "id": "tests_simulation_b_sesion_aura_web_rationale_281",
       "label": "Con --lan, cualquiera en la red podr\u00eda lanzar o detener procesos: se exige el\u2026",
       "_origin": "ast",
       "community": 48,
@@ -6083,10 +6084,10 @@
       "file_type": "rationale",
       "norm_label": "con --lan, cualquiera en la red podria lanzar o detener procesos: se exige el...",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L263"
+      "source_location": "L281"
     },
     {
-      "id": "tests_simulation_b_sesion_aura_web_rationale_313",
+      "id": "tests_simulation_b_sesion_aura_web_rationale_331",
       "label": "Ejecuta una acci\u00f3n con el candado, emite el estado nuevo y devuelve {error} si\u2026",
       "_origin": "ast",
       "community": 48,
@@ -6094,10 +6095,10 @@
       "file_type": "rationale",
       "norm_label": "ejecuta una accion con el candado, emite el estado nuevo y devuelve {error} si...",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L313"
+      "source_location": "L331"
     },
     {
-      "id": "tests_simulation_b_sesion_aura_web_rationale_347",
+      "id": "tests_simulation_b_sesion_aura_web_rationale_365",
       "label": "Como en la ventana: abre reporte.md con el programa predeterminado de esta PC.",
       "_origin": "ast",
       "community": 48,
@@ -6105,10 +6106,10 @@
       "file_type": "rationale",
       "norm_label": "como en la ventana: abre reporte.md con el programa predeterminado de esta pc.",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L347"
+      "source_location": "L365"
     },
     {
-      "id": "tests_simulation_b_sesion_aura_web_rationale_356",
+      "id": "tests_simulation_b_sesion_aura_web_rationale_374",
       "label": "Para verlo desde otro dispositivo de la red, donde os.startfile no llega.",
       "_origin": "ast",
       "community": 48,
@@ -6116,7 +6117,18 @@
       "file_type": "rationale",
       "norm_label": "para verlo desde otro dispositivo de la red, donde os.startfile no llega.",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L356"
+      "source_location": "L374"
+    },
+    {
+      "id": "tests_simulation_b_sesion_aura_web_rationale_65",
+      "label": "Equivalente de SessionApp sin la ventana: guarda el estado y lo emite a todas\u2026",
+      "_origin": "ast",
+      "community": 48,
+      "community_name": "sesion_aura_web.py",
+      "file_type": "rationale",
+      "norm_label": "equivalente de sessionapp sin la ventana: guarda el estado y lo emite a todas...",
+      "source_file": "Tests/simulation_B/sesion_aura_web.py",
+      "source_location": "L65"
     },
     {
       "id": "tests_simulation_realtime_pipeline",
@@ -6200,33 +6212,22 @@
       "label": "Paso 3: decide qu\u00e9 segmentos de 2 s de la ventana (paso de 0.5 s \u2192 9 por\u2026",
       "_origin": "ast",
       "community": 50,
-      "community_name": "main",
+      "community_name": "Rejector",
       "file_type": "rationale",
       "norm_label": "paso 3: decide que segmentos de 2 s de la ventana (paso de 0.5 s \u2192 9 por...",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
       "source_location": "L114"
     },
     {
-      "id": "tests_simulation_b_realtime_pipeline_rationale_313",
-      "label": "(recall, precisi\u00f3n) de los parpadeos detectados frente a la verdad de campo del\u2026",
+      "id": "tests_simulation_b_realtime_pipeline_rationale_443",
+      "label": "Working set del proceso en MB (Windows, sin dependencias externas); None en\u2026",
       "_origin": "ast",
       "community": 50,
-      "community_name": "main",
+      "community_name": "Rejector",
       "file_type": "rationale",
-      "norm_label": "(recall, precision) de los parpadeos detectados frente a la verdad de campo del...",
+      "norm_label": "working set del proceso en mb (windows, sin dependencias externas); none en...",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L313"
-    },
-    {
-      "id": "tests_simulation_b_realtime_pipeline_rationale_323",
-      "label": "Tasa de parpadeo por bloque (marcadores `bloque:<nombre>` o fases del CSV de\u2026",
-      "_origin": "ast",
-      "community": 50,
-      "community_name": "main",
-      "file_type": "rationale",
-      "norm_label": "tasa de parpadeo por bloque (marcadores `bloque:<nombre>` o fases del csv de...",
-      "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L323"
+      "source_location": "L443"
     },
     {
       "id": "claude",
@@ -6275,28 +6276,6 @@
       "source_location": "L1"
     },
     {
-      "id": "tests_datasets_workflow_ds007537_h1_ds007537_rationale_185",
-      "label": "Pupila (mm) y muestras perdidas del Tobii, en el tiempo del EEG (alineado por\u2026",
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "h1_ds007537.py",
-      "file_type": "rationale",
-      "norm_label": "pupila (mm) y muestras perdidas del tobii, en el tiempo del eeg (alineado por...",
-      "source_file": "Tests/datasets workflow/ds007537/h1_ds007537.py",
-      "source_location": "L185"
-    },
-    {
-      "id": "tests_datasets_workflow_ds007537_h1_ds007537_rationale_205",
-      "label": "Pupila mediana (sin los 100 ms alrededor de cada p\u00e9rdida) y parpadeos/min en\u2026",
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "h1_ds007537.py",
-      "file_type": "rationale",
-      "norm_label": "pupila mediana (sin los 100 ms alrededor de cada perdida) y parpadeos/min en...",
-      "source_file": "Tests/datasets workflow/ds007537/h1_ds007537.py",
-      "source_location": "L205"
-    },
-    {
       "id": "tests_datasets_workflow_ds007537_h1_ds007537_rationale_285",
       "label": "Cambio relativo a la media de los minutos iniciales de la sesi\u00f3n de smartphone.",
       "_origin": "ast",
@@ -6306,6 +6285,28 @@
       "norm_label": "cambio relativo a la media de los minutos iniciales de la sesion de smartphone.",
       "source_file": "Tests/datasets workflow/ds007537/h1_ds007537.py",
       "source_location": "L285"
+    },
+    {
+      "id": "tests_datasets_workflow_eeg_dataset_9_10_demo_processing_rationale_188",
+      "label": "Lee un sujeto de ds007537 (BrainVision, 64 canales, 1000 Hz): recorta la sesi\u00f3n\u2026",
+      "_origin": "ast",
+      "community": 6,
+      "community_name": "h1_ds007537.py",
+      "file_type": "rationale",
+      "norm_label": "lee un sujeto de ds007537 (brainvision, 64 canales, 1000 hz): recorta la sesion...",
+      "source_file": "Tests/datasets workflow/EEG Dataset 9-10/Demo_processing.py",
+      "source_location": "L188"
+    },
+    {
+      "id": "tests_datasets_workflow_eeg_dataset_9_10_demo_processing_rationale_214",
+      "label": "Carga registros EEG adapt\u00e1ndose autom\u00e1ticamente a los canales disponibles en el\u2026",
+      "_origin": "ast",
+      "community": 6,
+      "community_name": "h1_ds007537.py",
+      "file_type": "rationale",
+      "norm_label": "carga registros eeg adaptandose automaticamente a los canales disponibles en el...",
+      "source_file": "Tests/datasets workflow/EEG Dataset 9-10/Demo_processing.py",
+      "source_location": "L214"
     },
     {
       "id": "tests_datasets_workflow_eeg_dataset_9_10_demo_processing_rationale_340",
@@ -6720,6 +6721,28 @@
       "source_location": "L176"
     },
     {
+      "id": "tests_simulation_b_realtime_pipeline_rationale_313",
+      "label": "(recall, precisi\u00f3n) de los parpadeos detectados frente a la verdad de campo del\u2026",
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "simulation_B/realtime_pipeline.py",
+      "file_type": "rationale",
+      "norm_label": "(recall, precision) de los parpadeos detectados frente a la verdad de campo del...",
+      "source_file": "Tests/simulation_B/realtime_pipeline.py",
+      "source_location": "L313"
+    },
+    {
+      "id": "tests_simulation_b_realtime_pipeline_rationale_323",
+      "label": "Tasa de parpadeo por bloque (marcadores `bloque:<nombre>` o fases del CSV de\u2026",
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "simulation_B/realtime_pipeline.py",
+      "file_type": "rationale",
+      "norm_label": "tasa de parpadeo por bloque (marcadores `bloque:<nombre>` o fases del csv de...",
+      "source_file": "Tests/simulation_B/realtime_pipeline.py",
+      "source_location": "L323"
+    },
+    {
       "id": "tests_simulation_b_realtime_pipeline_rationale_356",
       "label": "Paso 7: reporte final de la sesi\u00f3n en runs/<sesi\u00f3n>/reporte.md.",
       "_origin": "ast",
@@ -6729,17 +6752,6 @@
       "norm_label": "paso 7: reporte final de la sesion en runs/<sesion>/reporte.md.",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
       "source_location": "L356"
-    },
-    {
-      "id": "tests_simulation_b_realtime_pipeline_rationale_443",
-      "label": "Working set del proceso en MB (Windows, sin dependencias externas); None en\u2026",
-      "_origin": "ast",
-      "community": 8,
-      "community_name": "simulation_B/realtime_pipeline.py",
-      "file_type": "rationale",
-      "norm_label": "working set del proceso en mb (windows, sin dependencias externas); none en...",
-      "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L443"
     },
     {
       "id": "tests_aura_configuracion_1_ajustes_de_la_interfaz_de_arriba_a_abajo",
@@ -6847,7 +6859,7 @@
       "source_location": "L1"
     },
     {
-      "id": "tests_simulation_b_check_lsl_stream_rationale_40",
+      "id": "tests_simulation_b_check_lsl_stream_rationale_41",
       "label": "El \u00fanico stream `name` que corre en ESTA PC y cuyo source_id empieza por\u2026",
       "_origin": "ast",
       "community": 81,
@@ -6855,10 +6867,10 @@
       "file_type": "rationale",
       "norm_label": "el unico stream `name` que corre en esta pc y cuyo source_id empieza por...",
       "source_file": "Tests/simulation_B/check_lsl_stream.py",
-      "source_location": "L40"
+      "source_location": "L41"
     },
     {
-      "id": "tests_simulation_b_check_lsl_stream_rationale_74",
+      "id": "tests_simulation_b_check_lsl_stream_rationale_75",
       "label": "Inlet del stream de marcadores del mismo emisor (source_id + '-markers', mismo\u2026",
       "_origin": "ast",
       "community": 81,
@@ -6866,7 +6878,7 @@
       "file_type": "rationale",
       "norm_label": "inlet del stream de marcadores del mismo emisor (source_id + '-markers', mismo...",
       "source_file": "Tests/simulation_B/check_lsl_stream.py",
-      "source_location": "L74"
+      "source_location": "L75"
     },
     {
       "id": "tests_simulation_check_lsl_stream_rationale_1",
@@ -6974,28 +6986,16 @@
       "source_location": "L1"
     },
     {
-      "id": "tests_protocolo_simulacion_pipeline_2_pasos_de_implementaci\u00f3n_y_validaci\u00f3n_t\u00e9cnica",
-      "label": "\ud83d\udccb 2. Pasos de Implementaci\u00f3n y Validaci\u00f3n T\u00e9cnica",
+      "id": "tests_protocolo_simulacion_pipeline_x_paso_5_calibraci\u00f3n_individual_congelada_cerrado_30_oct_2026_con_la_versi\u00f3n_b",
+      "label": "[x] Paso 5: Calibraci\u00f3n Individual Congelada \u2014 cerrado 30 oct 2026 con la versi\u00f3n B",
       "_origin": "ast",
       "community": 82,
       "community_name": "periodic",
       "file_type": "document",
       "node_kind": "heading",
-      "norm_label": "\ud83d\udccb 2. pasos de implementacion y validacion tecnica",
+      "norm_label": "[x] paso 5: calibracion individual congelada \u2014 cerrado 30 oct 2026 con la version b",
       "source_file": "Tests/Protocolo_Simulacion_Pipeline.md",
-      "source_location": "L168"
-    },
-    {
-      "id": "tests_protocolo_simulacion_pipeline_x_paso_1_emulador_de_hardware_y_transmisi\u00f3n_lsl_mock_lsl_streamer_py_implementado_28_oct_2026",
-      "label": "[x] Paso 1: Emulador de Hardware y Transmisi\u00f3n LSL (`mock_lsl_streamer.py`) \u2014 implementado 28 oct 2026",
-      "_origin": "ast",
-      "community": 82,
-      "community_name": "periodic",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "[x] paso 1: emulador de hardware y transmision lsl (`mock_lsl_streamer.py`) \u2014 implementado 28 oct 2026",
-      "source_file": "Tests/Protocolo_Simulacion_Pipeline.md",
-      "source_location": "L174"
+      "source_location": "L362"
     },
     {
       "id": "tests_datasets_workflow_ds007537_h1_ds007537_rationale_158",
@@ -7053,109 +7053,121 @@
       "source_location": "L147"
     },
     {
-      "id": "tests_datasets_workflow_eeg_svrec_h1_svrec_rationale_148",
-      "label": "Como h1.epoch_psd pero devuelve el inicio de cada \u00e9poca v\u00e1lida (s desde el\u2026",
+      "id": "tests_datasets_workflow_ds007537_h1_ds007537_rationale_185",
+      "label": "Pupila (mm) y muestras perdidas del Tobii, en el tiempo del EEG (alineado por\u2026",
       "_origin": "ast",
       "community": 83,
       "community_name": "numpy",
       "file_type": "rationale",
-      "norm_label": "como h1.epoch_psd pero devuelve el inicio de cada epoca valida (s desde el...",
-      "source_file": "Tests/datasets workflow/EEG-SVRec/h1_svrec.py",
-      "source_location": "L148"
+      "norm_label": "pupila (mm) y muestras perdidas del tobii, en el tiempo del eeg (alineado por...",
+      "source_file": "Tests/datasets workflow/ds007537/h1_ds007537.py",
+      "source_location": "L185"
     },
     {
-      "id": "tests_simulation_spectral_features_rationale_23",
-      "label": "PSD (canales, frecuencias) en \u00b5V\u00b2/Hz: periodograma Hamming de cada segmento\u2026",
+      "id": "tests_datasets_workflow_ds007537_h1_ds007537_rationale_205",
+      "label": "Pupila mediana (sin los 100 ms alrededor de cada p\u00e9rdida) y parpadeos/min en\u2026",
       "_origin": "ast",
       "community": 83,
       "community_name": "numpy",
       "file_type": "rationale",
-      "norm_label": "psd (canales, frecuencias) en \u03bcv2/hz: periodograma hamming de cada segmento...",
-      "source_file": "Tests/simulation/spectral_features.py",
-      "source_location": "L23"
+      "norm_label": "pupila mediana (sin los 100 ms alrededor de cada perdida) y parpadeos/min en...",
+      "source_file": "Tests/datasets workflow/ds007537/h1_ds007537.py",
+      "source_location": "L205"
     },
     {
-      "id": "tests_simulation_b_sesion_aura_web_rationale_46",
-      "label": "Equivalente de SessionApp sin la ventana: guarda el estado y lo emite a todas\u2026",
+      "id": "tests_simulation_b_version_b_comparaci\u00f3n_a_frente_a_b_con_el_paso_4_29_oct",
+      "label": "Comparaci\u00f3n A frente a B con el Paso 4 (29 oct)",
       "_origin": "ast",
       "community": 84,
-      "community_name": "Session",
-      "file_type": "rationale",
-      "norm_label": "equivalente de sessionapp sin la ventana: guarda el estado y lo emite a todas...",
-      "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L46"
-    },
-    {
-      "id": "tests_protocolo_simulacion_pipeline_1_arquitectura_del_lazo_cerrado_simulado",
-      "label": "\ud83c\udfd7\ufe0f 1. Arquitectura del Lazo Cerrado Simulado",
-      "_origin": "ast",
-      "community": 88,
-      "community_name": "Protocolo T\u00e9cnico de Simulaci\u00f3n y Pipeline en Tiempo Real (MIRAI 2026)",
+      "community_name": "Versi\u00f3n B \u2014 criterio de detecci\u00f3n del Paso 3 precisado (29 oct 2026)",
       "file_type": "document",
       "node_kind": "heading",
-      "norm_label": "\ud83c\udfd7\ufe0f 1. arquitectura del lazo cerrado simulado",
-      "source_file": "Tests/Protocolo_Simulacion_Pipeline.md",
-      "source_location": "L7"
+      "norm_label": "comparacion a frente a b con el paso 4 (29 oct)",
+      "source_file": "Tests/simulation_B/VERSION_B.md",
+      "source_location": "L76"
     },
     {
-      "id": "tests_protocolo_simulacion_pipeline_3_estructura_de_c\u00f3digo_a_implementar",
-      "label": "\ud83d\udcc1 3. Estructura de C\u00f3digo a Implementar",
+      "id": "tests_simulation_b_version_b_hallazgo_que_motiv\u00f3_el_ajuste",
+      "label": "Hallazgo que motiv\u00f3 el ajuste",
       "_origin": "ast",
-      "community": 88,
-      "community_name": "Protocolo T\u00e9cnico de Simulaci\u00f3n y Pipeline en Tiempo Real (MIRAI 2026)",
+      "community": 84,
+      "community_name": "Versi\u00f3n B \u2014 criterio de detecci\u00f3n del Paso 3 precisado (29 oct 2026)",
       "file_type": "document",
       "node_kind": "heading",
-      "norm_label": "\ud83d\udcc1 3. estructura de codigo a implementar",
-      "source_file": "Tests/Protocolo_Simulacion_Pipeline.md",
-      "source_location": "L427"
+      "norm_label": "hallazgo que motivo el ajuste",
+      "source_file": "Tests/simulation_B/VERSION_B.md",
+      "source_location": "L32"
     },
     {
-      "id": "tests_protocolo_simulacion_pipeline_flujo_actual_28_oct_2026_paso_1_implementado",
-      "label": "Flujo actual (28 oct 2026: Paso 1 implementado)",
+      "id": "tests_simulation_b_version_b_prueba_en_vivo_29_oct_10_min_de_uno_en_uno_tren_de_parpadeos_de_30_s_en_el_minuto_5",
+      "label": "Prueba en vivo (29 oct, 10 min de uno en uno, tren de parpadeos de 30 s en el minuto 5)",
       "_origin": "ast",
-      "community": 88,
-      "community_name": "Protocolo T\u00e9cnico de Simulaci\u00f3n y Pipeline en Tiempo Real (MIRAI 2026)",
+      "community": 84,
+      "community_name": "Versi\u00f3n B \u2014 criterio de detecci\u00f3n del Paso 3 precisado (29 oct 2026)",
       "file_type": "document",
       "node_kind": "heading",
-      "norm_label": "flujo actual (28 oct 2026: paso 1 implementado)",
-      "source_file": "Tests/Protocolo_Simulacion_Pipeline.md",
-      "source_location": "L38"
+      "norm_label": "prueba en vivo (29 oct, 10 min de uno en uno, tren de parpadeos de 30 s en el minuto 5)",
+      "source_file": "Tests/simulation_B/VERSION_B.md",
+      "source_location": "L57"
     },
     {
-      "id": "tests_protocolo_simulacion_pipeline_flujo_actual_y_flujo_esperado_qu\u00e9_archivos_se_ejecutan",
-      "label": "\ud83d\uddfa\ufe0f Flujo actual y flujo esperado (qu\u00e9 archivos se ejecutan)",
+      "id": "tests_simulation_b_version_b_qu\u00e9_cambia",
+      "label": "Qu\u00e9 cambia",
       "_origin": "ast",
-      "community": 88,
-      "community_name": "Protocolo T\u00e9cnico de Simulaci\u00f3n y Pipeline en Tiempo Real (MIRAI 2026)",
+      "community": 84,
+      "community_name": "Versi\u00f3n B \u2014 criterio de detecci\u00f3n del Paso 3 precisado (29 oct 2026)",
       "file_type": "document",
       "node_kind": "heading",
-      "norm_label": "\ud83d\uddfa\ufe0f flujo actual y flujo esperado (que archivos se ejecutan)",
-      "source_file": "Tests/Protocolo_Simulacion_Pipeline.md",
-      "source_location": "L36"
+      "norm_label": "que cambia",
+      "source_file": "Tests/simulation_B/VERSION_B.md",
+      "source_location": "L6"
     },
     {
-      "id": "tests_protocolo_simulacion_pipeline_flujo_esperado_pasos_2_7",
-      "label": "Flujo esperado (Pasos 2\u20137)",
+      "id": "tests_simulation_b_version_b_resultados_offline_600_s_sint\u00e9ticos_15_parpadeos_min",
+      "label": "Resultados offline (600 s sint\u00e9ticos, ~15 parpadeos/min)",
       "_origin": "ast",
-      "community": 88,
-      "community_name": "Protocolo T\u00e9cnico de Simulaci\u00f3n y Pipeline en Tiempo Real (MIRAI 2026)",
+      "community": 84,
+      "community_name": "Versi\u00f3n B \u2014 criterio de detecci\u00f3n del Paso 3 precisado (29 oct 2026)",
       "file_type": "document",
       "node_kind": "heading",
-      "norm_label": "flujo esperado (pasos 2\u20137)",
-      "source_file": "Tests/Protocolo_Simulacion_Pipeline.md",
-      "source_location": "L95"
+      "norm_label": "resultados offline (600 s sinteticos, ~15 parpadeos/min)",
+      "source_file": "Tests/simulation_B/VERSION_B.md",
+      "source_location": "L40"
     },
     {
-      "id": "tests_protocolo_simulacion_pipeline_protocolo_t\u00e9cnico_de_simulaci\u00f3n_y_pipeline_en_tiempo_real_mirai_2026",
-      "label": "Protocolo T\u00e9cnico de Simulaci\u00f3n y Pipeline en Tiempo Real (MIRAI 2026)",
+      "id": "tests_simulation_b_version_b_sin_veto_emg_y_ajuste_2_30_hz_29_oct_tarde",
+      "label": "Sin veto EMG y ajuste 2\u201330 Hz (29 oct, tarde)",
       "_origin": "ast",
-      "community": 88,
-      "community_name": "Protocolo T\u00e9cnico de Simulaci\u00f3n y Pipeline en Tiempo Real (MIRAI 2026)",
+      "community": 84,
+      "community_name": "Versi\u00f3n B \u2014 criterio de detecci\u00f3n del Paso 3 precisado (29 oct 2026)",
       "file_type": "document",
       "node_kind": "heading",
-      "norm_label": "protocolo tecnico de simulacion y pipeline en tiempo real (mirai 2026)",
-      "source_file": "Tests/Protocolo_Simulacion_Pipeline.md",
+      "norm_label": "sin veto emg y ajuste 2\u201330 hz (29 oct, tarde)",
+      "source_file": "Tests/simulation_B/VERSION_B.md",
+      "source_location": "L90"
+    },
+    {
+      "id": "tests_simulation_b_version_b_versi\u00f3n_b_criterio_de_detecci\u00f3n_del_paso_3_precisado_29_oct_2026",
+      "label": "Versi\u00f3n B \u2014 criterio de detecci\u00f3n del Paso 3 precisado (29 oct 2026)",
+      "_origin": "ast",
+      "community": 84,
+      "community_name": "Versi\u00f3n B \u2014 criterio de detecci\u00f3n del Paso 3 precisado (29 oct 2026)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "version b \u2014 criterio de deteccion del paso 3 precisado (29 oct 2026)",
+      "source_file": "Tests/simulation_B/VERSION_B.md",
       "source_location": "L1"
+    },
+    {
+      "id": "tests_simulation_b_realtime_pipeline_rationale_168",
+      "label": "Ganancia pico a pico del filtro sobre el parpadeo sint\u00e9tico (pico gaussiano de\u2026",
+      "_origin": "ast",
+      "community": 84,
+      "community_name": "Versi\u00f3n B \u2014 criterio de detecci\u00f3n del Paso 3 precisado (29 oct 2026)",
+      "file_type": "rationale",
+      "norm_label": "ganancia pico a pico del filtro sobre el parpadeo sintetico (pico gaussiano de...",
+      "source_file": "Tests/simulation_B/realtime_pipeline.py",
+      "source_location": "L168"
     },
     {
       "id": "tests_guia_exposicion_0_la_idea_en_30_segundos_apr\u00e9ndela_de_memoria",
@@ -7648,26 +7660,26 @@
       "source_location": "L1"
     },
     {
-      "id": "tests_datasets_workflow_eeg_dataset_9_10_demo_processing_rationale_188",
-      "label": "Lee un sujeto de ds007537 (BrainVision, 64 canales, 1000 Hz): recorta la sesi\u00f3n\u2026",
+      "id": "tests_simulation_spectral_features_rationale_31",
+      "label": "theta_per / alfa_per (dB sobre el fondo 1/f), exponente aperi\u00f3dico y R\u00b2 de cada\u2026",
       "_origin": "ast",
-      "community": 96,
-      "community_name": "load_eeg",
+      "community": 95,
+      "community_name": "Features",
       "file_type": "rationale",
-      "norm_label": "lee un sujeto de ds007537 (brainvision, 64 canales, 1000 hz): recorta la sesion...",
-      "source_file": "Tests/datasets workflow/EEG Dataset 9-10/Demo_processing.py",
-      "source_location": "L188"
+      "norm_label": "theta_per / alfa_per (db sobre el fondo 1/f), exponente aperiodico y r2 de cada...",
+      "source_file": "Tests/simulation/spectral_features.py",
+      "source_location": "L31"
     },
     {
-      "id": "tests_datasets_workflow_eeg_dataset_9_10_demo_processing_rationale_214",
-      "label": "Carga registros EEG adapt\u00e1ndose autom\u00e1ticamente a los canales disponibles en el\u2026",
+      "id": "tests_datasets_workflow_cao2019_h1b_cao2019_rationale_98",
+      "label": "Theta F\u00c1SICO Fz/FCz alineado al inicio de cada desv\u00edo (ensayo a ensayo) y su\u2026",
       "_origin": "ast",
       "community": 96,
-      "community_name": "load_eeg",
+      "community_name": "phasic",
       "file_type": "rationale",
-      "norm_label": "carga registros eeg adaptandose automaticamente a los canales disponibles en el...",
-      "source_file": "Tests/datasets workflow/EEG Dataset 9-10/Demo_processing.py",
-      "source_location": "L214"
+      "norm_label": "theta fasico fz/fcz alineado al inicio de cada desvio (ensayo a ensayo) y su...",
+      "source_file": "Tests/datasets workflow/Cao2019/h1b_cao2019.py",
+      "source_location": "L98"
     },
     {
       "id": "tests_progress_report_mirai_ricardo_monrreal_zhang2024",
@@ -8571,6 +8583,21 @@
       "source_url": null
     },
     {
+      "id": "tests_simulation_b_version_b_aura_baseline_phases",
+      "label": "AURA baseline phases (eyes open mu/sigma, eyes closed IAF + Berger)",
+      "_origin": "semantic",
+      "author": null,
+      "captured_at": null,
+      "community": 21,
+      "community_name": "VERSION_B.md",
+      "contributor": null,
+      "file_type": "concept",
+      "norm_label": "aura baseline phases (eyes open mu/sigma, eyes closed iaf + berger)",
+      "source_file": "Tests/simulation_B/VERSION_B.md",
+      "source_location": null,
+      "source_url": null
+    },
+    {
       "id": "tests_simulation_b_version_b_blink_amplitude_markers",
       "label": "Emulator markers blink:<amplitude uV>",
       "_origin": "semantic",
@@ -8687,6 +8714,21 @@
       "file_type": "rationale",
       "norm_label": "eeg blink detector (fp1+fp2, adaptive per-person threshold)",
       "rationale": "MNE detector overcounted ~8x by including eye movements; validated vs eye-tracker rho=0.75.",
+      "source_file": "Tests/datasets workflow/ds007537/Reporte_H1_ds007537.md",
+      "source_location": null,
+      "source_url": null
+    },
+    {
+      "id": "tests_datasets_workflow_ds007537_reporte_h1_ds007537_iaf_bands",
+      "label": "Individual alpha frequency (IAF) bands",
+      "_origin": "semantic",
+      "author": null,
+      "captured_at": null,
+      "community": 21,
+      "community_name": "VERSION_B.md",
+      "contributor": null,
+      "file_type": "rationale",
+      "norm_label": "individual alpha frequency (iaf) bands",
       "source_file": "Tests/datasets workflow/ds007537/Reporte_H1_ds007537.md",
       "source_location": null,
       "source_url": null
@@ -9979,22 +10021,6 @@
       "source_url": null
     },
     {
-      "id": "tests_datasets_workflow_ds007537_reporte_h1_ds007537_cortical_disengagement",
-      "label": "Cortical disengagement (functional inhibition of visual cortex)",
-      "_origin": "semantic",
-      "author": null,
-      "captured_at": null,
-      "community": 30,
-      "community_name": "Reporte H1 ds007537",
-      "contributor": null,
-      "file_type": "concept",
-      "norm_label": "cortical disengagement (functional inhibition of visual cortex)",
-      "rationale": "Alpha rise without blink/pupil change argues against drowsiness; compatible with disengagement, not proof of fatigue.",
-      "source_file": "Tests/datasets workflow/ds007537/Reporte_H1_ds007537.md",
-      "source_location": null,
-      "source_url": null
-    },
-    {
       "id": "tests_datasets_workflow_ds007537_reporte_h1_ds007537_periodic_alpha",
       "label": "Periodic posterior alpha (dB over 1/f)",
       "_origin": "semantic",
@@ -10007,21 +10033,6 @@
       "norm_label": "periodic posterior alpha (db over 1/f)",
       "rationale": "Total alpha hid the effect: rhythm rose while the steeper 1/f background lowered power under the peak; recommended primary measure.",
       "source_file": "Tests/datasets workflow/ds007537/Reporte_H1_ds007537.md",
-      "source_location": null,
-      "source_url": null
-    },
-    {
-      "id": "tests_simulation_b_version_b_aura_baseline_phases",
-      "label": "AURA baseline phases (eyes open mu/sigma, eyes closed IAF + Berger)",
-      "_origin": "semantic",
-      "author": null,
-      "captured_at": null,
-      "community": 30,
-      "community_name": "Reporte H1 ds007537",
-      "contributor": null,
-      "file_type": "concept",
-      "norm_label": "aura baseline phases (eyes open mu/sigma, eyes closed iaf + berger)",
-      "source_file": "Tests/simulation_B/VERSION_B.md",
       "source_location": null,
       "source_url": null
     },
@@ -10041,8 +10052,8 @@
       "source_url": null
     },
     {
-      "id": "tests_datasets_workflow_ds007537_reporte_h1_ds007537_jensen_mazaheri_2010",
-      "label": "Jensen & Mazaheri 2010 - Gating by inhibition",
+      "id": "tests_datasets_workflow_ds007537_reporte_h1_ds007537_tran_2020",
+      "label": "Tran et al. 2020 - Mental fatigue meta-analysis",
       "_origin": "semantic",
       "author": null,
       "captured_at": null,
@@ -10050,14 +10061,14 @@
       "community_name": "Reporte H1 ds007537",
       "contributor": null,
       "file_type": "paper",
-      "norm_label": "jensen & mazaheri 2010 - gating by inhibition",
+      "norm_label": "tran et al. 2020 - mental fatigue meta-analysis",
       "source_file": "Tests/datasets workflow/ds007537/Reporte_H1_ds007537.md",
       "source_location": null,
       "source_url": null
     },
     {
-      "id": "tests_datasets_workflow_ds007537_reporte_h1_ds007537_klimesch_2007",
-      "label": "Klimesch et al. 2007 - Alpha inhibition-timing hypothesis",
+      "id": "tests_datasets_workflow_ds007537_reporte_h1_ds007537_wascher_2014",
+      "label": "Wascher et al. 2014 - Frontal theta and mental fatigue",
       "_origin": "semantic",
       "author": null,
       "captured_at": null,
@@ -10065,8 +10076,24 @@
       "community_name": "Reporte H1 ds007537",
       "contributor": null,
       "file_type": "paper",
-      "norm_label": "klimesch et al. 2007 - alpha inhibition-timing hypothesis",
+      "norm_label": "wascher et al. 2014 - frontal theta and mental fatigue",
       "source_file": "Tests/datasets workflow/ds007537/Reporte_H1_ds007537.md",
+      "source_location": null,
+      "source_url": null
+    },
+    {
+      "id": "tests_datasets_workflow_cao2019_results_cao_reporte_h1b_positive_control",
+      "label": "H1b positive control: Cao 2019 sustained driving (60-90 min)",
+      "_origin": "semantic",
+      "author": null,
+      "captured_at": null,
+      "community": 30,
+      "community_name": "Reporte H1 ds007537",
+      "contributor": null,
+      "file_type": "rationale",
+      "norm_label": "h1b positive control: cao 2019 sustained driving (60-90 min)",
+      "rationale": "Checks the pipeline detects fatigue theta when it exists before Phase D.",
+      "source_file": "Tests/datasets workflow/Cao2019/results/cao_reporte.txt",
       "source_location": null,
       "source_url": null
     },
@@ -10102,8 +10129,8 @@
       "source_url": null
     },
     {
-      "id": "tests_datasets_workflow_ds007537_reporte_h1_ds007537_iaf_bands",
-      "label": "Individual alpha frequency (IAF) bands",
+      "id": "tests_datasets_workflow_ds007537_reporte_h1_ds007537_h1b_frontal_theta",
+      "label": "H1b frontal-medial tonic theta increase",
       "_origin": "semantic",
       "author": null,
       "captured_at": null,
@@ -10111,7 +10138,23 @@
       "community_name": "Reporte H1 ds007537",
       "contributor": null,
       "file_type": "rationale",
-      "norm_label": "individual alpha frequency (iaf) bands",
+      "norm_label": "h1b frontal-medial tonic theta increase",
+      "rationale": "Not detected in 10 min: fatigue-theta studies use 30 min-4 h; theta reflects compensatory effort and passive video demands no performance.",
+      "source_file": "Tests/datasets workflow/ds007537/Reporte_H1_ds007537.md",
+      "source_location": null,
+      "source_url": null
+    },
+    {
+      "id": "tests_datasets_workflow_ds007537_reporte_h1_ds007537_passive_disengagement_hypothesis",
+      "label": "Derived hypothesis: passive consumption yields disengagement (alpha) not overload (theta)",
+      "_origin": "semantic",
+      "author": null,
+      "captured_at": null,
+      "community": 30,
+      "community_name": "Reporte H1 ds007537",
+      "contributor": null,
+      "file_type": "rationale",
+      "norm_label": "derived hypothesis: passive consumption yields disengagement (alpha) not overload (theta)",
       "source_file": "Tests/datasets workflow/ds007537/Reporte_H1_ds007537.md",
       "source_location": null,
       "source_url": null
@@ -10148,21 +10191,6 @@
       "source_url": null
     },
     {
-      "id": "tests_datasets_workflow_ds007537_reporte_h1_ds007537_alternative_explanations",
-      "label": "Alternative explanations: fatigue, habituation, mind wandering, time-on-task",
-      "_origin": "semantic",
-      "author": null,
-      "captured_at": null,
-      "community": 31,
-      "community_name": "Reporte_H1_SVRec.md",
-      "contributor": null,
-      "file_type": "concept",
-      "norm_label": "alternative explanations: fatigue, habituation, mind wandering, time-on-task",
-      "source_file": "Tests/datasets workflow/ds007537/Reporte_H1_ds007537.md",
-      "source_location": null,
-      "source_url": null
-    },
-    {
       "id": "tests_datasets_workflow_eeg_svrec_reporte_h1_svrec_eeg_svrec_dataset",
       "label": "EEG-SVRec dataset (Zhang et al., SIGIR 2024)",
       "_origin": "semantic",
@@ -10189,21 +10217,6 @@
       "file_type": "concept",
       "norm_label": "periodic alpha ~ immersion/arousal per video (engagement state marker)",
       "rationale": "Most robust result: less alpha in more engaging videos, not explained by EMG or time.",
-      "source_file": "Tests/datasets workflow/EEG-SVRec/Reporte_H1_SVRec.md",
-      "source_location": null,
-      "source_url": null
-    },
-    {
-      "id": "tests_datasets_workflow_eeg_svrec_reporte_h1_svrec_phase_d",
-      "label": "Phase D (own experiment with control condition and AURA montage)",
-      "_origin": "semantic",
-      "author": null,
-      "captured_at": null,
-      "community": 31,
-      "community_name": "Reporte_H1_SVRec.md",
-      "contributor": null,
-      "file_type": "concept",
-      "norm_label": "phase d (own experiment with control condition and aura montage)",
       "source_file": "Tests/datasets workflow/EEG-SVRec/Reporte_H1_SVRec.md",
       "source_location": null,
       "source_url": null
@@ -10250,21 +10263,6 @@
       "file_type": "paper",
       "norm_label": "zhang et al. 2024 (sigir) - eeg-svrec",
       "source_file": "Tests/datasets workflow/EEG-SVRec/Reporte_H1_SVRec.md",
-      "source_location": null,
-      "source_url": null
-    },
-    {
-      "id": "tests_datasets_workflow_ds007537_reporte_h1_ds007537_control_condition_need",
-      "label": "Need for control condition + KSS/VAS + Go/NoGo",
-      "_origin": "semantic",
-      "author": null,
-      "captured_at": null,
-      "community": 31,
-      "community_name": "Reporte_H1_SVRec.md",
-      "contributor": null,
-      "file_type": "rationale",
-      "norm_label": "need for control condition + kss/vas + go/nogo",
-      "source_file": "Tests/datasets workflow/ds007537/Reporte_H1_ds007537.md",
       "source_location": null,
       "source_url": null
     },
@@ -12334,6 +12332,97 @@
       "source_url": null
     },
     {
+      "id": "tests_datasets_workflow_ds007537_reporte_h1_ds007537_alternative_explanations",
+      "label": "Alternative explanations: fatigue, habituation, mind wandering, time-on-task",
+      "_origin": "semantic",
+      "author": null,
+      "captured_at": null,
+      "community": 88,
+      "community_name": "Cortical disengagement (functional inhibition of visual cortex)",
+      "contributor": null,
+      "file_type": "concept",
+      "norm_label": "alternative explanations: fatigue, habituation, mind wandering, time-on-task",
+      "source_file": "Tests/datasets workflow/ds007537/Reporte_H1_ds007537.md",
+      "source_location": null,
+      "source_url": null
+    },
+    {
+      "id": "tests_datasets_workflow_ds007537_reporte_h1_ds007537_cortical_disengagement",
+      "label": "Cortical disengagement (functional inhibition of visual cortex)",
+      "_origin": "semantic",
+      "author": null,
+      "captured_at": null,
+      "community": 88,
+      "community_name": "Cortical disengagement (functional inhibition of visual cortex)",
+      "contributor": null,
+      "file_type": "concept",
+      "norm_label": "cortical disengagement (functional inhibition of visual cortex)",
+      "rationale": "Alpha rise without blink/pupil change argues against drowsiness; compatible with disengagement, not proof of fatigue.",
+      "source_file": "Tests/datasets workflow/ds007537/Reporte_H1_ds007537.md",
+      "source_location": null,
+      "source_url": null
+    },
+    {
+      "id": "tests_datasets_workflow_eeg_svrec_reporte_h1_svrec_phase_d",
+      "label": "Phase D (own experiment with control condition and AURA montage)",
+      "_origin": "semantic",
+      "author": null,
+      "captured_at": null,
+      "community": 88,
+      "community_name": "Cortical disengagement (functional inhibition of visual cortex)",
+      "contributor": null,
+      "file_type": "concept",
+      "norm_label": "phase d (own experiment with control condition and aura montage)",
+      "source_file": "Tests/datasets workflow/EEG-SVRec/Reporte_H1_SVRec.md",
+      "source_location": null,
+      "source_url": null
+    },
+    {
+      "id": "tests_datasets_workflow_ds007537_reporte_h1_ds007537_jensen_mazaheri_2010",
+      "label": "Jensen & Mazaheri 2010 - Gating by inhibition",
+      "_origin": "semantic",
+      "author": null,
+      "captured_at": null,
+      "community": 88,
+      "community_name": "Cortical disengagement (functional inhibition of visual cortex)",
+      "contributor": null,
+      "file_type": "paper",
+      "norm_label": "jensen & mazaheri 2010 - gating by inhibition",
+      "source_file": "Tests/datasets workflow/ds007537/Reporte_H1_ds007537.md",
+      "source_location": null,
+      "source_url": null
+    },
+    {
+      "id": "tests_datasets_workflow_ds007537_reporte_h1_ds007537_klimesch_2007",
+      "label": "Klimesch et al. 2007 - Alpha inhibition-timing hypothesis",
+      "_origin": "semantic",
+      "author": null,
+      "captured_at": null,
+      "community": 88,
+      "community_name": "Cortical disengagement (functional inhibition of visual cortex)",
+      "contributor": null,
+      "file_type": "paper",
+      "norm_label": "klimesch et al. 2007 - alpha inhibition-timing hypothesis",
+      "source_file": "Tests/datasets workflow/ds007537/Reporte_H1_ds007537.md",
+      "source_location": null,
+      "source_url": null
+    },
+    {
+      "id": "tests_datasets_workflow_ds007537_reporte_h1_ds007537_control_condition_need",
+      "label": "Need for control condition + KSS/VAS + Go/NoGo",
+      "_origin": "semantic",
+      "author": null,
+      "captured_at": null,
+      "community": 88,
+      "community_name": "Cortical disengagement (functional inhibition of visual cortex)",
+      "contributor": null,
+      "file_type": "rationale",
+      "norm_label": "need for control condition + kss/vas + go/nogo",
+      "source_file": "Tests/datasets workflow/ds007537/Reporte_H1_ds007537.md",
+      "source_location": null,
+      "source_url": null
+    },
+    {
       "id": "tests_plan_avances_h1_state",
       "label": "H1-State (complementary, for JITAI)",
       "_origin": "semantic",
@@ -12425,81 +12514,16 @@
       "source_url": null
     },
     {
-      "id": "tests_datasets_workflow_ds007537_reporte_h1_ds007537_tran_2020",
-      "label": "Tran et al. 2020 - Mental fatigue meta-analysis",
+      "id": "concurrent_futures",
+      "label": "concurrent_futures",
       "_origin": "semantic",
-      "author": null,
-      "captured_at": null,
-      "community": 95,
-      "community_name": "H1b frontal-medial tonic theta increase",
-      "contributor": null,
-      "file_type": "paper",
-      "norm_label": "tran et al. 2020 - mental fatigue meta-analysis",
-      "source_file": "Tests/datasets workflow/ds007537/Reporte_H1_ds007537.md",
-      "source_location": null,
-      "source_url": null
-    },
-    {
-      "id": "tests_datasets_workflow_ds007537_reporte_h1_ds007537_wascher_2014",
-      "label": "Wascher et al. 2014 - Frontal theta and mental fatigue",
-      "_origin": "semantic",
-      "author": null,
-      "captured_at": null,
-      "community": 95,
-      "community_name": "H1b frontal-medial tonic theta increase",
-      "contributor": null,
-      "file_type": "paper",
-      "norm_label": "wascher et al. 2014 - frontal theta and mental fatigue",
-      "source_file": "Tests/datasets workflow/ds007537/Reporte_H1_ds007537.md",
-      "source_location": null,
-      "source_url": null
-    },
-    {
-      "id": "tests_datasets_workflow_cao2019_results_cao_reporte_h1b_positive_control",
-      "label": "H1b positive control: Cao 2019 sustained driving (60-90 min)",
-      "_origin": "semantic",
-      "author": null,
-      "captured_at": null,
-      "community": 95,
-      "community_name": "H1b frontal-medial tonic theta increase",
-      "contributor": null,
-      "file_type": "rationale",
-      "norm_label": "h1b positive control: cao 2019 sustained driving (60-90 min)",
-      "rationale": "Checks the pipeline detects fatigue theta when it exists before Phase D.",
-      "source_file": "Tests/datasets workflow/Cao2019/results/cao_reporte.txt",
-      "source_location": null,
-      "source_url": null
-    },
-    {
-      "id": "tests_datasets_workflow_ds007537_reporte_h1_ds007537_h1b_frontal_theta",
-      "label": "H1b frontal-medial tonic theta increase",
-      "_origin": "semantic",
-      "author": null,
-      "captured_at": null,
-      "community": 95,
-      "community_name": "H1b frontal-medial tonic theta increase",
-      "contributor": null,
-      "file_type": "rationale",
-      "norm_label": "h1b frontal-medial tonic theta increase",
-      "rationale": "Not detected in 10 min: fatigue-theta studies use 30 min-4 h; theta reflects compensatory effort and passive video demands no performance.",
-      "source_file": "Tests/datasets workflow/ds007537/Reporte_H1_ds007537.md",
-      "source_location": null,
-      "source_url": null
-    },
-    {
-      "id": "tests_datasets_workflow_ds007537_reporte_h1_ds007537_passive_disengagement_hypothesis",
-      "label": "Derived hypothesis: passive consumption yields disengagement (alpha) not overload (theta)",
-      "_origin": "semantic",
-      "author": null,
-      "captured_at": null,
-      "community": 95,
-      "community_name": "H1b frontal-medial tonic theta increase",
-      "contributor": null,
-      "file_type": "rationale",
-      "norm_label": "derived hypothesis: passive consumption yields disengagement (alpha) not overload (theta)",
-      "source_file": "Tests/datasets workflow/ds007537/Reporte_H1_ds007537.md",
-      "source_location": null,
-      "source_url": null
+      "community": 10,
+      "community_name": "h1_svrec.py",
+      "external": true,
+      "file_type": "concept",
+      "norm_label": "concurrent_futures",
+      "source_file": "",
+      "type": "external"
     },
     {
       "id": "http_client",
@@ -12514,26 +12538,26 @@
       "type": "external"
     },
     {
-      "id": "matplotlib_pyplot",
-      "label": "matplotlib_pyplot",
+      "id": "matplotlib",
+      "label": "matplotlib",
       "_origin": "semantic",
       "community": 10,
       "community_name": "h1_svrec.py",
       "external": true,
       "file_type": "concept",
-      "norm_label": "matplotlib_pyplot",
+      "norm_label": "matplotlib",
       "source_file": "",
       "type": "external"
     },
     {
-      "id": "threading",
-      "label": "threading",
+      "id": "urllib_request",
+      "label": "urllib_request",
       "_origin": "semantic",
       "community": 10,
       "community_name": "h1_svrec.py",
       "external": true,
       "file_type": "concept",
-      "norm_label": "threading",
+      "norm_label": "urllib_request",
       "source_file": "",
       "type": "external"
     },
@@ -12542,10 +12566,22 @@
       "label": "h1_ds007537",
       "_origin": "semantic",
       "community": 12,
-      "community_name": "simulation_B/spectral_features.py",
+      "community_name": "scipy",
       "external": true,
       "file_type": "concept",
       "norm_label": "h1_ds007537",
+      "source_file": "",
+      "type": "external"
+    },
+    {
+      "id": "scipy",
+      "label": "scipy",
+      "_origin": "semantic",
+      "community": 12,
+      "community_name": "scipy",
+      "external": true,
+      "file_type": "concept",
+      "norm_label": "scipy",
       "source_file": "",
       "type": "external"
     },
@@ -12574,18 +12610,6 @@
       "type": "external"
     },
     {
-      "id": "concurrent_futures",
-      "label": "concurrent_futures",
-      "_origin": "semantic",
-      "community": 15,
-      "community_name": "h1b_cao2019.py",
-      "external": true,
-      "file_type": "concept",
-      "norm_label": "concurrent_futures",
-      "source_file": "",
-      "type": "external"
-    },
-    {
       "id": "h1_svrec",
       "label": "h1_svrec",
       "_origin": "semantic",
@@ -12598,38 +12622,26 @@
       "type": "external"
     },
     {
-      "id": "hashlib",
-      "label": "hashlib",
+      "id": "matplotlib_pyplot",
+      "label": "matplotlib_pyplot",
       "_origin": "semantic",
       "community": 15,
       "community_name": "h1b_cao2019.py",
       "external": true,
       "file_type": "concept",
-      "norm_label": "hashlib",
+      "norm_label": "matplotlib_pyplot",
       "source_file": "",
       "type": "external"
     },
     {
-      "id": "urllib_request",
-      "label": "urllib_request",
+      "id": "mne",
+      "label": "mne",
       "_origin": "semantic",
       "community": 15,
       "community_name": "h1b_cao2019.py",
       "external": true,
       "file_type": "concept",
-      "norm_label": "urllib_request",
-      "source_file": "",
-      "type": "external"
-    },
-    {
-      "id": "matplotlib",
-      "label": "matplotlib",
-      "_origin": "semantic",
-      "community": 17,
-      "community_name": "Demo_processing.py",
-      "external": true,
-      "file_type": "concept",
-      "norm_label": "matplotlib",
+      "norm_label": "mne",
       "source_file": "",
       "type": "external"
     },
@@ -12758,7 +12770,7 @@
       "label": "ambiguous_python_import_3707e67fc6e3",
       "_origin": "semantic",
       "community": 27,
-      "community_name": "os",
+      "community_name": "simulation_B/replay_offline.py",
       "external": true,
       "file_type": "concept",
       "norm_label": "ambiguous_python_import_3707e67fc6e3",
@@ -12770,7 +12782,7 @@
       "label": "ambiguous_python_import_a8dbda20d6c8",
       "_origin": "semantic",
       "community": 27,
-      "community_name": "os",
+      "community_name": "simulation_B/replay_offline.py",
       "external": true,
       "file_type": "concept",
       "norm_label": "ambiguous_python_import_a8dbda20d6c8",
@@ -12778,10 +12790,22 @@
       "type": "external"
     },
     {
+      "id": "hashlib",
+      "label": "hashlib",
+      "_origin": "semantic",
+      "community": 3,
+      "community_name": "os",
+      "external": true,
+      "file_type": "concept",
+      "norm_label": "hashlib",
+      "source_file": "",
+      "type": "external"
+    },
+    {
       "id": "os",
       "label": "os",
       "_origin": "semantic",
-      "community": 27,
+      "community": 3,
       "community_name": "os",
       "external": true,
       "file_type": "concept",
@@ -12790,14 +12814,14 @@
       "type": "external"
     },
     {
-      "id": "scipy",
-      "label": "scipy",
+      "id": "threading",
+      "label": "threading",
       "_origin": "semantic",
-      "community": 27,
+      "community": 3,
       "community_name": "os",
       "external": true,
       "file_type": "concept",
-      "norm_label": "scipy",
+      "norm_label": "threading",
       "source_file": "",
       "type": "external"
     },
@@ -13362,18 +13386,6 @@
       "external": true,
       "file_type": "concept",
       "norm_label": "socket",
-      "source_file": "",
-      "type": "external"
-    },
-    {
-      "id": "mne",
-      "label": "mne",
-      "_origin": "semantic",
-      "community": 83,
-      "community_name": "numpy",
-      "external": true,
-      "file_type": "concept",
-      "norm_label": "mne",
       "source_file": "",
       "type": "external"
     },
@@ -15848,7 +15860,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/check_lsl_stream.py",
-      "source_location": "L75",
+      "source_location": "L76",
       "weight": 1.0
     },
     {
@@ -15860,7 +15872,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/check_lsl_stream.py",
-      "source_location": "L48",
+      "source_location": "L49",
       "weight": 1.0
     },
     {
@@ -15872,7 +15884,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/check_lsl_stream.py",
-      "source_location": "L50",
+      "source_location": "L51",
       "weight": 1.0
     },
     {
@@ -15884,7 +15896,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/check_lsl_stream.py",
-      "source_location": "L52",
+      "source_location": "L53",
       "weight": 1.0
     },
     {
@@ -15896,79 +15908,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/check_lsl_stream.py",
-      "source_location": "L65",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_simulation_b_check_lsl_stream_main",
-      "target": "numpy",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "Tests/simulation_B/check_lsl_stream.py",
-      "source_location": "L114",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_simulation_b_check_lsl_stream_main",
-      "target": "sys",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "Tests/simulation_B/check_lsl_stream.py",
-      "source_location": "L131",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_simulation_b_check_lsl_stream_main",
-      "target": "argparse",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "Tests/simulation_B/check_lsl_stream.py",
-      "source_location": "L82",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_simulation_b_check_lsl_stream_main",
-      "target": "pylsl",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "Tests/simulation_B/check_lsl_stream.py",
-      "source_location": "L90",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_simulation_b_check_lsl_stream_main",
-      "target": "tests_simulation_b_check_lsl_stream_find_stream",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "Tests/simulation_B/check_lsl_stream.py",
-      "source_location": "L90",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_simulation_b_check_lsl_stream_main",
-      "target": "tests_simulation_b_check_lsl_stream_channel_meta",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "Tests/simulation_B/check_lsl_stream.py",
-      "source_location": "L94",
+      "source_location": "L66",
       "weight": 1.0
     },
     {
@@ -15980,7 +15920,79 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/check_lsl_stream.py",
-      "source_location": "L99",
+      "source_location": "L100",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_simulation_b_check_lsl_stream_main",
+      "target": "numpy",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "Tests/simulation_B/check_lsl_stream.py",
+      "source_location": "L115",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_simulation_b_check_lsl_stream_main",
+      "target": "sys",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "Tests/simulation_B/check_lsl_stream.py",
+      "source_location": "L132",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_simulation_b_check_lsl_stream_main",
+      "target": "argparse",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "Tests/simulation_B/check_lsl_stream.py",
+      "source_location": "L83",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_simulation_b_check_lsl_stream_main",
+      "target": "pylsl",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "Tests/simulation_B/check_lsl_stream.py",
+      "source_location": "L91",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_simulation_b_check_lsl_stream_main",
+      "target": "tests_simulation_b_check_lsl_stream_find_stream",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "Tests/simulation_B/check_lsl_stream.py",
+      "source_location": "L91",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_simulation_b_check_lsl_stream_main",
+      "target": "tests_simulation_b_check_lsl_stream_channel_meta",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "Tests/simulation_B/check_lsl_stream.py",
+      "source_location": "L95",
       "weight": 1.0
     },
     {
@@ -17024,7 +17036,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L342",
+      "source_location": "L360",
       "weight": 1.0
     },
     {
@@ -17036,7 +17048,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L337",
+      "source_location": "L355",
       "weight": 1.0
     },
     {
@@ -17048,7 +17060,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L332",
+      "source_location": "L350",
       "weight": 1.0
     },
     {
@@ -17060,7 +17072,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L181",
+      "source_location": "L199",
       "weight": 1.0
     },
     {
@@ -17072,7 +17084,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L186",
+      "source_location": "L204",
       "weight": 1.0
     },
     {
@@ -17084,7 +17096,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L188",
+      "source_location": "L206",
       "weight": 1.0
     },
     {
@@ -17096,7 +17108,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L84",
+      "source_location": "L103",
       "weight": 1.0
     },
     {
@@ -17108,7 +17120,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L148",
+      "source_location": "L166",
       "weight": 1.0
     },
     {
@@ -17120,7 +17132,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L158",
+      "source_location": "L176",
       "weight": 1.0
     },
     {
@@ -17132,7 +17144,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L163",
+      "source_location": "L181",
       "weight": 1.0
     },
     {
@@ -17144,7 +17156,19 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L112",
+      "source_location": "L131",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_simulation_b_sesion_aura_web_session_on_line",
+      "target": "tests_simulation_b_sesion_aura_web_en",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "Tests/simulation_B/sesion_aura_web.py",
+      "source_location": "L139",
       "weight": 1.0
     },
     {
@@ -17156,7 +17180,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L119",
+      "source_location": "L139",
       "weight": 1.0
     },
     {
@@ -17168,7 +17192,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L80",
+      "source_location": "L99",
       "weight": 1.0
     },
     {
@@ -17180,7 +17204,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L80",
+      "source_location": "L99",
       "weight": 1.0
     },
     {
@@ -17192,7 +17216,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L101",
+      "source_location": "L120",
       "weight": 1.0
     },
     {
@@ -17204,7 +17228,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L102",
+      "source_location": "L121",
       "weight": 1.0
     },
     {
@@ -17216,7 +17240,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L105",
+      "source_location": "L124",
       "weight": 1.0
     },
     {
@@ -17228,7 +17252,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L253",
+      "source_location": "L271",
       "weight": 1.0
     },
     {
@@ -17240,7 +17264,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L200",
+      "source_location": "L218",
       "weight": 1.0
     },
     {
@@ -17252,7 +17276,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L201",
+      "source_location": "L219",
       "weight": 1.0
     },
     {
@@ -17264,7 +17288,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L225",
+      "source_location": "L243",
       "weight": 1.0
     },
     {
@@ -17276,7 +17300,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L226",
+      "source_location": "L244",
       "weight": 1.0
     },
     {
@@ -17288,7 +17312,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L233",
+      "source_location": "L251",
       "weight": 1.0
     },
     {
@@ -17300,7 +17324,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L237",
+      "source_location": "L255",
       "weight": 1.0
     },
     {
@@ -17312,7 +17336,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L322",
+      "source_location": "L340",
       "weight": 1.0
     },
     {
@@ -17324,7 +17348,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L327",
+      "source_location": "L345",
       "weight": 1.0
     },
     {
@@ -18380,7 +18404,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L296",
+      "source_location": "L314",
       "weight": 1.0
     },
     {
@@ -18428,7 +18452,7 @@
       "confidence_score": 1.0,
       "context": "decorator",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L340",
+      "source_location": "L358",
       "weight": 1.0
     },
     {
@@ -18440,7 +18464,7 @@
       "confidence_score": 1.0,
       "context": "decorator",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L261",
+      "source_location": "L279",
       "weight": 1.0
     },
     {
@@ -18452,7 +18476,7 @@
       "confidence_score": 1.0,
       "context": "decorator",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L283",
+      "source_location": "L301",
       "weight": 1.0
     },
     {
@@ -18464,7 +18488,7 @@
       "confidence_score": 1.0,
       "context": "decorator",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L289",
+      "source_location": "L307",
       "weight": 1.0
     },
     {
@@ -18476,7 +18500,7 @@
       "confidence_score": 1.0,
       "context": "decorator",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L278",
+      "source_location": "L296",
       "weight": 1.0
     },
     {
@@ -18488,7 +18512,7 @@
       "confidence_score": 1.0,
       "context": "decorator",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L271",
+      "source_location": "L289",
       "weight": 1.0
     },
     {
@@ -18500,7 +18524,7 @@
       "confidence_score": 1.0,
       "context": "decorator",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L345",
+      "source_location": "L363",
       "weight": 1.0
     },
     {
@@ -18512,7 +18536,7 @@
       "confidence_score": 1.0,
       "context": "decorator",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L354",
+      "source_location": "L372",
       "weight": 1.0
     },
     {
@@ -18524,7 +18548,7 @@
       "confidence_score": 1.0,
       "context": "decorator",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L335",
+      "source_location": "L353",
       "weight": 1.0
     },
     {
@@ -18536,7 +18560,7 @@
       "confidence_score": 1.0,
       "context": "decorator",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L330",
+      "source_location": "L348",
       "weight": 1.0
     },
     {
@@ -18548,7 +18572,7 @@
       "confidence_score": 1.0,
       "context": "decorator",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L320",
+      "source_location": "L338",
       "weight": 1.0
     },
     {
@@ -18560,7 +18584,7 @@
       "confidence_score": 1.0,
       "context": "decorator",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L325",
+      "source_location": "L343",
       "weight": 1.0
     },
     {
@@ -19112,7 +19136,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "Tests/simulation_B/check_lsl_stream.py",
-      "source_location": "L16",
+      "source_location": "L17",
       "weight": 1.0
     },
     {
@@ -19124,7 +19148,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "Tests/simulation_B/check_lsl_stream.py",
-      "source_location": "L17",
+      "source_location": "L18",
       "weight": 1.0
     },
     {
@@ -19136,7 +19160,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "Tests/simulation_B/check_lsl_stream.py",
-      "source_location": "L18",
+      "source_location": "L19",
       "weight": 1.0
     },
     {
@@ -19148,7 +19172,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "Tests/simulation_B/check_lsl_stream.py",
-      "source_location": "L19",
+      "source_location": "L20",
       "weight": 1.0
     },
     {
@@ -19160,7 +19184,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "Tests/simulation_B/check_lsl_stream.py",
-      "source_location": "L20",
+      "source_location": "L21",
       "weight": 1.0
     },
     {
@@ -19172,7 +19196,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "Tests/simulation_B/check_lsl_stream.py",
-      "source_location": "L22",
+      "source_location": "L23",
       "weight": 1.0
     },
     {
@@ -19184,7 +19208,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "Tests/simulation_B/check_lsl_stream.py",
-      "source_location": "L26",
+      "source_location": "L27",
       "weight": 1.0
     },
     {
@@ -23492,7 +23516,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/check_lsl_stream.py",
-      "source_location": "L29",
+      "source_location": "L30",
       "weight": 1.0
     },
     {
@@ -23503,7 +23527,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/check_lsl_stream.py",
-      "source_location": "L39",
+      "source_location": "L40",
       "weight": 1.0
     },
     {
@@ -23514,7 +23538,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/check_lsl_stream.py",
-      "source_location": "L73",
+      "source_location": "L74",
       "weight": 1.0
     },
     {
@@ -23525,7 +23549,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/check_lsl_stream.py",
-      "source_location": "L81",
+      "source_location": "L82",
       "weight": 1.0
     },
     {
@@ -23943,7 +23967,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L262",
+      "source_location": "L280",
       "weight": 1.0
     },
     {
@@ -23954,7 +23978,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L272",
+      "source_location": "L290",
       "weight": 1.0
     },
     {
@@ -23965,7 +23989,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L279",
+      "source_location": "L297",
       "weight": 1.0
     },
     {
@@ -23976,7 +24000,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L284",
+      "source_location": "L302",
       "weight": 1.0
     },
     {
@@ -23987,7 +24011,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L290",
+      "source_location": "L308",
       "weight": 1.0
     },
     {
@@ -23998,7 +24022,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L312",
+      "source_location": "L330",
       "weight": 1.0
     },
     {
@@ -24009,7 +24033,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L321",
+      "source_location": "L339",
       "weight": 1.0
     },
     {
@@ -24020,7 +24044,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L326",
+      "source_location": "L344",
       "weight": 1.0
     },
     {
@@ -24031,7 +24055,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L331",
+      "source_location": "L349",
       "weight": 1.0
     },
     {
@@ -24042,7 +24066,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L336",
+      "source_location": "L354",
       "weight": 1.0
     },
     {
@@ -24053,7 +24077,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L341",
+      "source_location": "L359",
       "weight": 1.0
     },
     {
@@ -24064,7 +24088,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L346",
+      "source_location": "L364",
       "weight": 1.0
     },
     {
@@ -24075,7 +24099,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L355",
+      "source_location": "L373",
       "weight": 1.0
     },
     {
@@ -24086,7 +24110,18 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L363",
+      "source_location": "L381",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_simulation_b_sesion_aura_web",
+      "target": "tests_simulation_b_sesion_aura_web_en",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Tests/simulation_B/sesion_aura_web.py",
+      "source_location": "L57",
       "weight": 1.0
     },
     {
@@ -24097,7 +24132,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L45",
+      "source_location": "L64",
       "weight": 1.0
     },
     {
@@ -25400,167 +25435,13 @@
     },
     {
       "source": "tests_simulation_b_sesion_aura_web_session",
-      "target": "tests_simulation_b_sesion_aura_web_session_on_line",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L108",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_simulation_b_sesion_aura_web_session",
-      "target": "tests_simulation_b_sesion_aura_web_session_on_exit",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L144",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_simulation_b_sesion_aura_web_session",
-      "target": "tests_simulation_b_sesion_aura_web_session_stop_proc",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L165",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_simulation_b_sesion_aura_web_session",
-      "target": "tests_simulation_b_sesion_aura_web_session_running",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L173",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_simulation_b_sesion_aura_web_session",
-      "target": "tests_simulation_b_sesion_aura_web_session_abort_all",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L177",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_simulation_b_sesion_aura_web_session",
-      "target": "tests_simulation_b_sesion_aura_web_session_start_check",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L194",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_simulation_b_sesion_aura_web_session",
-      "target": "tests_simulation_b_sesion_aura_web_session_check_ok",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L204",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_simulation_b_sesion_aura_web_session",
-      "target": "tests_simulation_b_sesion_aura_web_session_start_session",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L208",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_simulation_b_sesion_aura_web_session",
-      "target": "tests_simulation_b_sesion_aura_web_session_stop_session",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L244",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_simulation_b_sesion_aura_web_session",
-      "target": "tests_simulation_b_sesion_aura_web_session_shutdown",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L249",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_simulation_b_sesion_aura_web_session",
-      "target": "tests_simulation_b_sesion_aura_web_session_init",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L48",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_simulation_b_sesion_aura_web_session",
-      "target": "tests_simulation_b_sesion_aura_web_session_snapshot",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L66",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_simulation_b_sesion_aura_web_session",
-      "target": "tests_simulation_b_sesion_aura_web_session_emit",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L74",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_simulation_b_sesion_aura_web_session",
-      "target": "tests_simulation_b_sesion_aura_web_session_push_state",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L79",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_simulation_b_sesion_aura_web_session",
       "target": "tests_simulation_b_sesion_aura_web_session_add_log",
       "relation": "method",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L82",
+      "source_location": "L101",
       "weight": 1.0
     },
     {
@@ -25571,7 +25452,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L86",
+      "source_location": "L105",
       "weight": 1.0
     },
     {
@@ -25582,12 +25463,166 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L90",
+      "source_location": "L109",
       "weight": 1.0
     },
     {
       "source": "tests_simulation_b_sesion_aura_web_session",
       "target": "tests_simulation_b_sesion_aura_web_session_read",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Tests/simulation_B/sesion_aura_web.py",
+      "source_location": "L117",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_simulation_b_sesion_aura_web_session",
+      "target": "tests_simulation_b_sesion_aura_web_session_on_line",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Tests/simulation_B/sesion_aura_web.py",
+      "source_location": "L127",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_simulation_b_sesion_aura_web_session",
+      "target": "tests_simulation_b_sesion_aura_web_session_on_exit",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Tests/simulation_B/sesion_aura_web.py",
+      "source_location": "L162",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_simulation_b_sesion_aura_web_session",
+      "target": "tests_simulation_b_sesion_aura_web_session_stop_proc",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Tests/simulation_B/sesion_aura_web.py",
+      "source_location": "L183",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_simulation_b_sesion_aura_web_session",
+      "target": "tests_simulation_b_sesion_aura_web_session_running",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Tests/simulation_B/sesion_aura_web.py",
+      "source_location": "L191",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_simulation_b_sesion_aura_web_session",
+      "target": "tests_simulation_b_sesion_aura_web_session_abort_all",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Tests/simulation_B/sesion_aura_web.py",
+      "source_location": "L195",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_simulation_b_sesion_aura_web_session",
+      "target": "tests_simulation_b_sesion_aura_web_session_start_check",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Tests/simulation_B/sesion_aura_web.py",
+      "source_location": "L212",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_simulation_b_sesion_aura_web_session",
+      "target": "tests_simulation_b_sesion_aura_web_session_check_ok",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Tests/simulation_B/sesion_aura_web.py",
+      "source_location": "L222",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_simulation_b_sesion_aura_web_session",
+      "target": "tests_simulation_b_sesion_aura_web_session_start_session",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Tests/simulation_B/sesion_aura_web.py",
+      "source_location": "L226",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_simulation_b_sesion_aura_web_session",
+      "target": "tests_simulation_b_sesion_aura_web_session_stop_session",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Tests/simulation_B/sesion_aura_web.py",
+      "source_location": "L262",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_simulation_b_sesion_aura_web_session",
+      "target": "tests_simulation_b_sesion_aura_web_session_shutdown",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Tests/simulation_B/sesion_aura_web.py",
+      "source_location": "L267",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_simulation_b_sesion_aura_web_session",
+      "target": "tests_simulation_b_sesion_aura_web_session_init",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Tests/simulation_B/sesion_aura_web.py",
+      "source_location": "L67",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_simulation_b_sesion_aura_web_session",
+      "target": "tests_simulation_b_sesion_aura_web_session_snapshot",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Tests/simulation_B/sesion_aura_web.py",
+      "source_location": "L85",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_simulation_b_sesion_aura_web_session",
+      "target": "tests_simulation_b_sesion_aura_web_session_emit",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Tests/simulation_B/sesion_aura_web.py",
+      "source_location": "L93",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_simulation_b_sesion_aura_web_session",
+      "target": "tests_simulation_b_sesion_aura_web_session_push_state",
       "relation": "method",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -26279,25 +26314,25 @@
       "weight": 1.0
     },
     {
-      "source": "tests_simulation_b_check_lsl_stream_rationale_40",
+      "source": "tests_simulation_b_check_lsl_stream_rationale_41",
       "target": "tests_simulation_b_check_lsl_stream_find_stream",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/check_lsl_stream.py",
-      "source_location": "L40",
+      "source_location": "L41",
       "weight": 1.0
     },
     {
-      "source": "tests_simulation_b_check_lsl_stream_rationale_74",
+      "source": "tests_simulation_b_check_lsl_stream_rationale_75",
       "target": "tests_simulation_b_check_lsl_stream_find_markers",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/check_lsl_stream.py",
-      "source_location": "L74",
+      "source_location": "L75",
       "weight": 1.0
     },
     {
@@ -26741,58 +26776,58 @@
       "weight": 1.0
     },
     {
-      "source": "tests_simulation_b_sesion_aura_web_rationale_263",
+      "source": "tests_simulation_b_sesion_aura_web_rationale_281",
       "target": "tests_simulation_b_sesion_aura_web_check_token",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L263",
+      "source_location": "L281",
       "weight": 1.0
     },
     {
-      "source": "tests_simulation_b_sesion_aura_web_rationale_313",
+      "source": "tests_simulation_b_sesion_aura_web_rationale_331",
       "target": "tests_simulation_b_sesion_aura_web_act",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L313",
+      "source_location": "L331",
       "weight": 1.0
     },
     {
-      "source": "tests_simulation_b_sesion_aura_web_rationale_347",
+      "source": "tests_simulation_b_sesion_aura_web_rationale_365",
       "target": "tests_simulation_b_sesion_aura_web_reporte_abrir",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L347",
+      "source_location": "L365",
       "weight": 1.0
     },
     {
-      "source": "tests_simulation_b_sesion_aura_web_rationale_356",
+      "source": "tests_simulation_b_sesion_aura_web_rationale_374",
       "target": "tests_simulation_b_sesion_aura_web_reporte_ver",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L356",
+      "source_location": "L374",
       "weight": 1.0
     },
     {
-      "source": "tests_simulation_b_sesion_aura_web_rationale_46",
+      "source": "tests_simulation_b_sesion_aura_web_rationale_65",
       "target": "tests_simulation_b_sesion_aura_web_session",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L46",
+      "source_location": "L65",
       "weight": 1.0
     },
     {
@@ -27318,7 +27353,7 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L240",
+      "source_location": "L258",
       "weight": 1.0
     },
     {
@@ -27391,6 +27426,18 @@
       "context": "call",
       "source_file": "Tests/datasets workflow/Cao2019/h1b_cao2019.py",
       "source_location": "L137",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_simulation_b_check_lsl_stream_main",
+      "target": "tests_simulation_b_realtime_pipeline_causalfilter",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "context": "call",
+      "source_file": "Tests/simulation_B/check_lsl_stream.py",
+      "source_location": "L157",
       "weight": 1.0
     },
     {
@@ -33797,5 +33844,5 @@
       "source_file": "Tests/datasets workflow/EEG-SVRec/results/svrec_trayectorias.png"
     }
   ],
-  "built_at_commit": "3c9dd4c464ab18b2f06697f15adfcac02ca4ab11"
+  "built_at_commit": "4f8608f558d29e35ad57725fc50026a5a8e4b754"
 }
