@@ -332,7 +332,9 @@ def blink_blocks(blinks, blocks, t_ini, t_fin):
         d = out.setdefault(nm, {"dur_s": 0.0, "parpadeos": 0, "por_minuto": []})
         d["dur_s"] += float(t1 - t0)
         d["parpadeos"] += int(((tb >= t0) & (tb < t1)).sum())
-        d["por_minuto"] += [int(((tb >= s) & (tb < s + 60)).sum()) for s in np.arange(t0, t1 - 60 + 1e-9, 60)]
+        # 1 s de tolerancia (10 nov): el baseline del protocolo dura 120 s y el marcador siguiente llega ± ms; sin ella
+        # podía quedar con 1 minuto completo y la referencia pasaba al Go/NoGo pre. El minuto se recorta al bloque.
+        d["por_minuto"] += [int(((tb >= s) & (tb < min(s + 60, t1))).sum()) for s in np.arange(t0, t1 - 59, 60)]
     for d in out.values():
         d["tasa_min"] = d["parpadeos"] / (d["dur_s"] / 60)
     base = next((nm for nm, d in out.items() if len(d["por_minuto"]) >= 2), None)

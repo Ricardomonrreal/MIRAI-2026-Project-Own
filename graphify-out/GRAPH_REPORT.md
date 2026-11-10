@@ -1,7 +1,7 @@
 # Graph Report - Project  (2026-11-10)
 
 ## Corpus Check
-- 38 files · ~154,055 words
+- 38 files · ~155,357 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 11 file(s) not represented in the graph (top: .bat 3, (none) 2, .pptx 2)
 
@@ -11,7 +11,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `4f8608f5`
+- Built from commit: `389dfe61`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -380,7 +380,7 @@ _Questions this graph is uniquely positioned to answer:_
 - **What is the exact relationship between `Posterior Broadband 20-45 Hz Elevation (sub 02)` and `Pilot Raw PSD Spectra (EEG-SVRec sub 07 & sub 02)`?**
   _Edge tagged AMBIGUOUS (relation: references) - confidence is low._
 - **Why does `Reporte H1 ds007537` connect `Reporte H1 ds007537` to `h1_ds007537.py`, `Reporte H1 · Validación en OpenNeuro ds007537`, `Offline equivalence vs h1_por_minuto.csv (ds007537 sub-01): alpha_per r=0.938 PASA`, `VERSION_B.md`, `Cortical disengagement (functional inhibition of visual cortex)`, `Reporte_H1_SVRec.md`?**
-  _High betweenness centrality (0.074) - this node is a cross-community bridge._
+  _High betweenness centrality (0.069) - this node is a cross-community bridge._
 - **What connects `graphify`, `1. Cambios de la semana pasada (2–8 nov)`, `2. ¿Cuántas pruebas hacen falta?` to the rest of the system?**
   _208 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `3. Contenido nuevo de la presentación (v2)` be split into smaller, more focused modules?**

@@ -356,3 +356,17 @@ Mann-Whitney sobre los minutos completos). `replay_offline.eeg_blinks` usa la mi
   pipeline (`CausalFilter`: 1–40 Hz + notch, sin desfase, sin 2 s por borde) e imprime también el crudo; con
   `source_id` `AuraLSL-` la latencia usa el criterio del pipeline (p95 < 500 ms). Replay de la grabación del 10 nov:
   15–36 µV filtrado y PASA; sintético sin cambios (PASA).
+- **Protocolo completo en el tablero web (10 nov):** el plan por defecto de `sesion_aura_web.py` es el del Progress
+  Report: `0 bloque:baseline 120 bloque:gonogo_pre 300 bloque:scroll 3000 bloque:gonogo_post`, 3180 s (Baseline 2 min →
+  Go/NoGo pre 3 min → Scrolling 45 min → Go/NoGo post 3 min → fin). *Current block* muestra una sección por etapa (inicio,
+  duración, qué hacer; la actual resaltada con barra y tiempo restante). KPI: ventanas válidas de las últimas 10 y
+  promedio de la sesión (media de los grupos de 10 que imprime el pipeline); Blinks y Calibration salen de los KPI y
+  siguen en Status. `blink_blocks` tolera 1 s al contar minutos completos para que el baseline de 120 s sea la
+  referencia. La tarea Go/NoGo en sí no existe aún: el bloque solo marca el tiempo. `sesion_aura.py` no cambia.
+- **Biomarcadores en tiempo real en el tablero (10 nov):** la tarjeta *Status* se quitó; en su lugar *Biomarkers* muestra
+  theta tónica (Fz/Cz) y alfa periódica (Pz/O1/O2): flecha ↑/↓/→ según Zθ/Zα frente al baseline (|Z| ≥ 0.5, valor fijo
+  en la página), Z y dB actuales y una línea con la Z de cada 10 s sobre la duración de la sesión. Debajo queda
+  *Intervention*. El servidor lee θ_per/α_per y Zθ/Zα de la línea de estado que el pipeline ya imprime cada 10 ventanas;
+  el pipeline no cambia. Probada con el emulador a 1366×768 y 1920×1080 sin scroll.
+- **Sin barra de bloques (10 nov):** se quitó la barra vertical de *Current block* (segmentos, marcas, franja de calibración y leyenda); quedan el bloque actual, el próximo aviso y las secciones por etapa.
+- **Resumen por etapa (10 nov):** cada etapa de *Current block*, desde que empieza, muestra las ventanas válidas (%), la Z media de θ y α en el bloque (grupos de 10 ventanas ya calibrados) y las intervenciones encendidas (L1×n…); terminada, se reduce a título + resumen. El servidor guarda `hist` = [s, Zθ, Zα, % válidas] e `ivs` = [s, nivel].

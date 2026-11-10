@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "sesion-aura-web",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["Tests/simulation_B/sesion_aura_web.py", "--port", "8010"],
+      "port": 8010
+    }
+  ]
+}

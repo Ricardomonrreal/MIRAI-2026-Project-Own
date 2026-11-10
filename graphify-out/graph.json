@@ -311,7 +311,7 @@
       "file_type": "code",
       "norm_label": "session",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L64"
+      "source_location": "L72"
     },
     {
       "id": "tests_simulation_realtime_pipeline_causalfilter",
@@ -389,7 +389,7 @@
       "file_type": "code",
       "norm_label": "offlineinlet",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L411"
+      "source_location": "L413"
     },
     {
       "id": "tests_simulation_b_realtime_pipeline_offlinemarkers",
@@ -402,7 +402,7 @@
       "file_type": "code",
       "norm_label": "offlinemarkers",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L428"
+      "source_location": "L430"
     },
     {
       "id": "tests_simulation_b_realtime_pipeline_windower",
@@ -2360,7 +2360,7 @@
       "file_type": "code",
       "norm_label": "abortar()",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L359"
+      "source_location": "L388"
     },
     {
       "id": "tests_simulation_b_sesion_aura_web_act",
@@ -2372,7 +2372,7 @@
       "file_type": "code",
       "norm_label": "act()",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L330"
+      "source_location": "L359"
     },
     {
       "id": "tests_simulation_b_sesion_aura_web_check_token",
@@ -2384,7 +2384,7 @@
       "file_type": "code",
       "norm_label": "check_token()",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L280"
+      "source_location": "L309"
     },
     {
       "id": "tests_simulation_b_sesion_aura_web_en",
@@ -2396,7 +2396,7 @@
       "file_type": "code",
       "norm_label": "en()",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L57"
+      "source_location": "L65"
     },
     {
       "id": "tests_simulation_b_sesion_aura_web_estado",
@@ -2408,7 +2408,7 @@
       "file_type": "code",
       "norm_label": "estado()",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L302"
+      "source_location": "L331"
     },
     {
       "id": "tests_simulation_b_sesion_aura_web_eventos",
@@ -2420,7 +2420,7 @@
       "file_type": "code",
       "norm_label": "eventos()",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L308"
+      "source_location": "L337"
     },
     {
       "id": "tests_simulation_b_sesion_aura_web_eventos_stream",
@@ -2432,7 +2432,7 @@
       "file_type": "code",
       "norm_label": "stream()",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L314"
+      "source_location": "L343"
     },
     {
       "id": "tests_simulation_b_sesion_aura_web_index",
@@ -2444,7 +2444,7 @@
       "file_type": "code",
       "norm_label": "index()",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L297"
+      "source_location": "L326"
     },
     {
       "id": "tests_simulation_b_sesion_aura_web_keep_token",
@@ -2456,7 +2456,7 @@
       "file_type": "code",
       "norm_label": "keep_token()",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L290"
+      "source_location": "L319"
     },
     {
       "id": "tests_simulation_b_sesion_aura_web_main",
@@ -2468,7 +2468,7 @@
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L381"
+      "source_location": "L410"
     },
     {
       "id": "tests_simulation_b_sesion_aura_web_reporte_abrir",
@@ -2480,7 +2480,7 @@
       "file_type": "code",
       "norm_label": "reporte_abrir()",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L364"
+      "source_location": "L393"
     },
     {
       "id": "tests_simulation_b_sesion_aura_web_reporte_ver",
@@ -2492,7 +2492,7 @@
       "file_type": "code",
       "norm_label": "reporte_ver()",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L373"
+      "source_location": "L402"
     },
     {
       "id": "tests_simulation_b_sesion_aura_web_sesion_detener",
@@ -2504,7 +2504,7 @@
       "file_type": "code",
       "norm_label": "sesion_detener()",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L354"
+      "source_location": "L383"
     },
     {
       "id": "tests_simulation_b_sesion_aura_web_sesion_iniciar",
@@ -2516,7 +2516,7 @@
       "file_type": "code",
       "norm_label": "sesion_iniciar()",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L349"
+      "source_location": "L378"
     },
     {
       "id": "tests_simulation_b_sesion_aura_web_session_abort_all",
@@ -2528,7 +2528,7 @@
       "file_type": "code",
       "norm_label": ".abort_all()",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L195"
+      "source_location": "L224"
     },
     {
       "id": "tests_simulation_b_sesion_aura_web_session_add_log",
@@ -2540,7 +2540,7 @@
       "file_type": "code",
       "norm_label": ".add_log()",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L101"
+      "source_location": "L114"
     },
     {
       "id": "tests_simulation_b_sesion_aura_web_session_check_ok",
@@ -2552,7 +2552,7 @@
       "file_type": "code",
       "norm_label": ".check_ok()",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L222"
+      "source_location": "L251"
     },
     {
       "id": "tests_simulation_b_sesion_aura_web_session_emit",
@@ -2564,7 +2564,7 @@
       "file_type": "code",
       "norm_label": ".emit()",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L93"
+      "source_location": "L106"
     },
     {
       "id": "tests_simulation_b_sesion_aura_web_session_init",
@@ -2576,7 +2576,7 @@
       "file_type": "code",
       "norm_label": ".__init__()",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L67"
+      "source_location": "L75"
     },
     {
       "id": "tests_simulation_b_sesion_aura_web_session_launch",
@@ -2588,7 +2588,7 @@
       "file_type": "code",
       "norm_label": ".launch()",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L109"
+      "source_location": "L122"
     },
     {
       "id": "tests_simulation_b_sesion_aura_web_session_on_exit",
@@ -2600,7 +2600,7 @@
       "file_type": "code",
       "norm_label": ".on_exit()",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L162"
+      "source_location": "L191"
     },
     {
       "id": "tests_simulation_b_sesion_aura_web_session_on_line",
@@ -2612,7 +2612,7 @@
       "file_type": "code",
       "norm_label": ".on_line()",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L127"
+      "source_location": "L140"
     },
     {
       "id": "tests_simulation_b_sesion_aura_web_session_push_state",
@@ -2624,7 +2624,7 @@
       "file_type": "code",
       "norm_label": ".push_state()",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L98"
+      "source_location": "L111"
     },
     {
       "id": "tests_simulation_b_sesion_aura_web_session_read",
@@ -2636,7 +2636,7 @@
       "file_type": "code",
       "norm_label": "._read()",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L117"
+      "source_location": "L130"
     },
     {
       "id": "tests_simulation_b_sesion_aura_web_session_running",
@@ -2648,7 +2648,7 @@
       "file_type": "code",
       "norm_label": ".running()",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L191"
+      "source_location": "L220"
     },
     {
       "id": "tests_simulation_b_sesion_aura_web_session_set_status",
@@ -2660,7 +2660,7 @@
       "file_type": "code",
       "norm_label": ".set_status()",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L105"
+      "source_location": "L118"
     },
     {
       "id": "tests_simulation_b_sesion_aura_web_session_shutdown",
@@ -2672,7 +2672,7 @@
       "file_type": "code",
       "norm_label": ".shutdown()",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L267"
+      "source_location": "L296"
     },
     {
       "id": "tests_simulation_b_sesion_aura_web_session_snapshot",
@@ -2684,7 +2684,7 @@
       "file_type": "code",
       "norm_label": ".snapshot()",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L85"
+      "source_location": "L98"
     },
     {
       "id": "tests_simulation_b_sesion_aura_web_session_start_check",
@@ -2696,7 +2696,7 @@
       "file_type": "code",
       "norm_label": ".start_check()",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L212"
+      "source_location": "L241"
     },
     {
       "id": "tests_simulation_b_sesion_aura_web_session_start_session",
@@ -2708,7 +2708,7 @@
       "file_type": "code",
       "norm_label": ".start_session()",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L226"
+      "source_location": "L255"
     },
     {
       "id": "tests_simulation_b_sesion_aura_web_session_start_session_launch_pipeline",
@@ -2720,7 +2720,7 @@
       "file_type": "code",
       "norm_label": "launch_pipeline()",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L246"
+      "source_location": "L275"
     },
     {
       "id": "tests_simulation_b_sesion_aura_web_session_stop_proc",
@@ -2732,7 +2732,7 @@
       "file_type": "code",
       "norm_label": ".stop_proc()",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L183"
+      "source_location": "L212"
     },
     {
       "id": "tests_simulation_b_sesion_aura_web_session_stop_session",
@@ -2744,7 +2744,7 @@
       "file_type": "code",
       "norm_label": ".stop_session()",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L262"
+      "source_location": "L291"
     },
     {
       "id": "tests_simulation_b_sesion_aura_web_verif_iniciar",
@@ -2756,7 +2756,7 @@
       "file_type": "code",
       "norm_label": "verif_iniciar()",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L339"
+      "source_location": "L368"
     },
     {
       "id": "tests_simulation_b_sesion_aura_web_verif_ok",
@@ -2768,7 +2768,7 @@
       "file_type": "code",
       "norm_label": "verif_ok()",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L344"
+      "source_location": "L373"
     },
     {
       "id": "tests_simulation_realtime_pipeline_blink_report",
@@ -2888,7 +2888,7 @@
       "file_type": "code",
       "norm_label": "emit_jitai()",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L612"
+      "source_location": "L614"
     },
     {
       "id": "tests_simulation_b_realtime_pipeline_main_on_window",
@@ -2900,7 +2900,7 @@
       "file_type": "code",
       "norm_label": "on_window()",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L628"
+      "source_location": "L630"
     },
     {
       "id": "tests_simulation_b_realtime_pipeline_mem_mb",
@@ -2912,7 +2912,7 @@
       "file_type": "code",
       "norm_label": "mem_mb()",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L442"
+      "source_location": "L444"
     },
     {
       "id": "tests_simulation_b_realtime_pipeline_rejector_call",
@@ -3212,7 +3212,7 @@
       "file_type": "code",
       "norm_label": ".done()",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L420"
+      "source_location": "L422"
     },
     {
       "id": "tests_simulation_b_realtime_pipeline_offlineinlet_init",
@@ -3224,7 +3224,7 @@
       "file_type": "code",
       "norm_label": ".__init__()",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L415"
+      "source_location": "L417"
     },
     {
       "id": "tests_simulation_b_realtime_pipeline_offlineinlet_pull_chunk",
@@ -3236,7 +3236,7 @@
       "file_type": "code",
       "norm_label": ".pull_chunk()",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L423"
+      "source_location": "L425"
     },
     {
       "id": "tests_simulation_b_realtime_pipeline_offlinemarkers_init",
@@ -3248,7 +3248,7 @@
       "file_type": "code",
       "norm_label": ".__init__()",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L431"
+      "source_location": "L433"
     },
     {
       "id": "tests_simulation_b_realtime_pipeline_offlinemarkers_pull_sample",
@@ -3260,7 +3260,7 @@
       "file_type": "code",
       "norm_label": ".pull_sample()",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L434"
+      "source_location": "L436"
     },
     {
       "id": "tests_simulation_b_realtime_pipeline_windower_init",
@@ -3332,7 +3332,7 @@
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L463"
+      "source_location": "L465"
     },
     {
       "id": "tests_simulation_b_realtime_pipeline_main_log_blinks",
@@ -3344,7 +3344,7 @@
       "file_type": "code",
       "norm_label": "log_blinks()",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L595"
+      "source_location": "L597"
     },
     {
       "id": "tests_simulation_b_realtime_pipeline_open_run",
@@ -3356,7 +3356,7 @@
       "file_type": "code",
       "norm_label": "open_run()",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L347"
+      "source_location": "L349"
     },
     {
       "id": "tests_simulation_b_realtime_pipeline_write_report_md",
@@ -3368,7 +3368,7 @@
       "file_type": "code",
       "norm_label": "write_report_md()",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L355"
+      "source_location": "L357"
     },
     {
       "id": "tests_simulation_b_check_lsl_stream_channel_meta",
@@ -6076,7 +6076,7 @@
       "source_location": "L1"
     },
     {
-      "id": "tests_simulation_b_sesion_aura_web_rationale_281",
+      "id": "tests_simulation_b_sesion_aura_web_rationale_310",
       "label": "Con --lan, cualquiera en la red podr\u00eda lanzar o detener procesos: se exige el\u2026",
       "_origin": "ast",
       "community": 48,
@@ -6084,10 +6084,10 @@
       "file_type": "rationale",
       "norm_label": "con --lan, cualquiera en la red podria lanzar o detener procesos: se exige el...",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L281"
+      "source_location": "L310"
     },
     {
-      "id": "tests_simulation_b_sesion_aura_web_rationale_331",
+      "id": "tests_simulation_b_sesion_aura_web_rationale_360",
       "label": "Ejecuta una acci\u00f3n con el candado, emite el estado nuevo y devuelve {error} si\u2026",
       "_origin": "ast",
       "community": 48,
@@ -6095,10 +6095,10 @@
       "file_type": "rationale",
       "norm_label": "ejecuta una accion con el candado, emite el estado nuevo y devuelve {error} si...",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L331"
+      "source_location": "L360"
     },
     {
-      "id": "tests_simulation_b_sesion_aura_web_rationale_365",
+      "id": "tests_simulation_b_sesion_aura_web_rationale_394",
       "label": "Como en la ventana: abre reporte.md con el programa predeterminado de esta PC.",
       "_origin": "ast",
       "community": 48,
@@ -6106,10 +6106,10 @@
       "file_type": "rationale",
       "norm_label": "como en la ventana: abre reporte.md con el programa predeterminado de esta pc.",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L365"
+      "source_location": "L394"
     },
     {
-      "id": "tests_simulation_b_sesion_aura_web_rationale_374",
+      "id": "tests_simulation_b_sesion_aura_web_rationale_403",
       "label": "Para verlo desde otro dispositivo de la red, donde os.startfile no llega.",
       "_origin": "ast",
       "community": 48,
@@ -6117,10 +6117,10 @@
       "file_type": "rationale",
       "norm_label": "para verlo desde otro dispositivo de la red, donde os.startfile no llega.",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L374"
+      "source_location": "L403"
     },
     {
-      "id": "tests_simulation_b_sesion_aura_web_rationale_65",
+      "id": "tests_simulation_b_sesion_aura_web_rationale_73",
       "label": "Equivalente de SessionApp sin la ventana: guarda el estado y lo emite a todas\u2026",
       "_origin": "ast",
       "community": 48,
@@ -6128,7 +6128,7 @@
       "file_type": "rationale",
       "norm_label": "equivalente de sessionapp sin la ventana: guarda el estado y lo emite a todas...",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L65"
+      "source_location": "L73"
     },
     {
       "id": "tests_simulation_realtime_pipeline",
@@ -6219,7 +6219,7 @@
       "source_location": "L114"
     },
     {
-      "id": "tests_simulation_b_realtime_pipeline_rationale_443",
+      "id": "tests_simulation_b_realtime_pipeline_rationale_445",
       "label": "Working set del proceso en MB (Windows, sin dependencias externas); None en\u2026",
       "_origin": "ast",
       "community": 50,
@@ -6227,7 +6227,7 @@
       "file_type": "rationale",
       "norm_label": "working set del proceso en mb (windows, sin dependencias externas); none en...",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L443"
+      "source_location": "L445"
     },
     {
       "id": "claude",
@@ -6331,7 +6331,7 @@
       "source_location": "L359"
     },
     {
-      "id": "tests_simulation_b_realtime_pipeline_rationale_412",
+      "id": "tests_simulation_b_realtime_pipeline_rationale_414",
       "label": "Sustituye al inlet de LSL en el replay sin LSL (Paso 7): entrega bloques de 20\u2026",
       "_origin": "ast",
       "community": 65,
@@ -6339,10 +6339,10 @@
       "file_type": "rationale",
       "norm_label": "sustituye al inlet de lsl en el replay sin lsl (paso 7): entrega bloques de 20...",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L412"
+      "source_location": "L414"
     },
     {
-      "id": "tests_simulation_b_realtime_pipeline_rationale_429",
+      "id": "tests_simulation_b_realtime_pipeline_rationale_431",
       "label": "Marcadores del archivo, entregados cuando el replay pasa por su muestra.",
       "_origin": "ast",
       "community": 68,
@@ -6350,7 +6350,7 @@
       "file_type": "rationale",
       "norm_label": "marcadores del archivo, entregados cuando el replay pasa por su muestra.",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L429"
+      "source_location": "L431"
     },
     {
       "id": "tests_datasets_workflow_ds007537_reporte_h1_ds007537_10_pr\u00f3ximos_pasos",
@@ -6743,7 +6743,7 @@
       "source_location": "L323"
     },
     {
-      "id": "tests_simulation_b_realtime_pipeline_rationale_356",
+      "id": "tests_simulation_b_realtime_pipeline_rationale_358",
       "label": "Paso 7: reporte final de la sesi\u00f3n en runs/<sesi\u00f3n>/reporte.md.",
       "_origin": "ast",
       "community": 8,
@@ -6751,7 +6751,7 @@
       "file_type": "rationale",
       "norm_label": "paso 7: reporte final de la sesion en runs/<sesion>/reporte.md.",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L356"
+      "source_location": "L358"
     },
     {
       "id": "tests_aura_configuracion_1_ajustes_de_la_interfaz_de_arriba_a_abajo",
@@ -16424,7 +16424,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L1005",
+      "source_location": "L1007",
       "weight": 1.0
     },
     {
@@ -16436,7 +16436,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L496",
+      "source_location": "L498",
       "weight": 1.0
     },
     {
@@ -16448,7 +16448,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L497",
+      "source_location": "L499",
       "weight": 1.0
     },
     {
@@ -16460,7 +16460,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L516",
+      "source_location": "L518",
       "weight": 1.0
     },
     {
@@ -16472,7 +16472,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L522",
+      "source_location": "L524",
       "weight": 1.0
     },
     {
@@ -16484,7 +16484,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L529",
+      "source_location": "L531",
       "weight": 1.0
     },
     {
@@ -16496,7 +16496,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L530",
+      "source_location": "L532",
       "weight": 1.0
     },
     {
@@ -16508,7 +16508,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L561",
+      "source_location": "L563",
       "weight": 1.0
     },
     {
@@ -16520,7 +16520,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L731",
+      "source_location": "L733",
       "weight": 1.0
     },
     {
@@ -16532,7 +16532,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L800",
+      "source_location": "L802",
       "weight": 1.0
     },
     {
@@ -16544,7 +16544,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L800",
+      "source_location": "L802",
       "weight": 1.0
     },
     {
@@ -16556,7 +16556,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L913",
+      "source_location": "L915",
       "weight": 1.0
     },
     {
@@ -16568,7 +16568,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L916",
+      "source_location": "L918",
       "weight": 1.0
     },
     {
@@ -16580,7 +16580,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L639",
+      "source_location": "L641",
       "weight": 1.0
     },
     {
@@ -16592,7 +16592,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L681",
+      "source_location": "L683",
       "weight": 1.0
     },
     {
@@ -16604,7 +16604,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L685",
+      "source_location": "L687",
       "weight": 1.0
     },
     {
@@ -17036,7 +17036,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L360",
+      "source_location": "L389",
       "weight": 1.0
     },
     {
@@ -17048,7 +17048,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L355",
+      "source_location": "L384",
       "weight": 1.0
     },
     {
@@ -17060,7 +17060,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L350",
+      "source_location": "L379",
       "weight": 1.0
     },
     {
@@ -17072,7 +17072,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L199",
+      "source_location": "L228",
       "weight": 1.0
     },
     {
@@ -17084,7 +17084,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L204",
+      "source_location": "L233",
       "weight": 1.0
     },
     {
@@ -17096,7 +17096,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L206",
+      "source_location": "L235",
       "weight": 1.0
     },
     {
@@ -17108,7 +17108,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L103",
+      "source_location": "L116",
       "weight": 1.0
     },
     {
@@ -17120,7 +17120,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L166",
+      "source_location": "L195",
       "weight": 1.0
     },
     {
@@ -17132,7 +17132,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L176",
+      "source_location": "L205",
       "weight": 1.0
     },
     {
@@ -17144,7 +17144,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L181",
+      "source_location": "L210",
       "weight": 1.0
     },
     {
@@ -17156,7 +17156,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L131",
+      "source_location": "L144",
       "weight": 1.0
     },
     {
@@ -17168,7 +17168,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L139",
+      "source_location": "L152",
       "weight": 1.0
     },
     {
@@ -17180,7 +17180,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L139",
+      "source_location": "L152",
       "weight": 1.0
     },
     {
@@ -17192,7 +17192,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L99",
+      "source_location": "L112",
       "weight": 1.0
     },
     {
@@ -17204,7 +17204,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L99",
+      "source_location": "L112",
       "weight": 1.0
     },
     {
@@ -17216,7 +17216,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L120",
+      "source_location": "L133",
       "weight": 1.0
     },
     {
@@ -17228,7 +17228,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L121",
+      "source_location": "L134",
       "weight": 1.0
     },
     {
@@ -17240,7 +17240,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L124",
+      "source_location": "L137",
       "weight": 1.0
     },
     {
@@ -17252,7 +17252,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L271",
+      "source_location": "L300",
       "weight": 1.0
     },
     {
@@ -17264,7 +17264,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L218",
+      "source_location": "L247",
       "weight": 1.0
     },
     {
@@ -17276,7 +17276,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L219",
+      "source_location": "L248",
       "weight": 1.0
     },
     {
@@ -17288,7 +17288,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L243",
+      "source_location": "L272",
       "weight": 1.0
     },
     {
@@ -17300,7 +17300,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L244",
+      "source_location": "L273",
       "weight": 1.0
     },
     {
@@ -17312,7 +17312,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L251",
+      "source_location": "L280",
       "weight": 1.0
     },
     {
@@ -17324,7 +17324,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L255",
+      "source_location": "L284",
       "weight": 1.0
     },
     {
@@ -17336,7 +17336,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L340",
+      "source_location": "L369",
       "weight": 1.0
     },
     {
@@ -17348,7 +17348,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L345",
+      "source_location": "L374",
       "weight": 1.0
     },
     {
@@ -18368,7 +18368,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L595",
+      "source_location": "L597",
       "weight": 1.0
     },
     {
@@ -18380,7 +18380,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L612",
+      "source_location": "L614",
       "weight": 1.0
     },
     {
@@ -18404,7 +18404,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L314",
+      "source_location": "L343",
       "weight": 1.0
     },
     {
@@ -18452,7 +18452,7 @@
       "confidence_score": 1.0,
       "context": "decorator",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L358",
+      "source_location": "L387",
       "weight": 1.0
     },
     {
@@ -18464,7 +18464,7 @@
       "confidence_score": 1.0,
       "context": "decorator",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L279",
+      "source_location": "L308",
       "weight": 1.0
     },
     {
@@ -18476,7 +18476,7 @@
       "confidence_score": 1.0,
       "context": "decorator",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L301",
+      "source_location": "L330",
       "weight": 1.0
     },
     {
@@ -18488,7 +18488,7 @@
       "confidence_score": 1.0,
       "context": "decorator",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L307",
+      "source_location": "L336",
       "weight": 1.0
     },
     {
@@ -18500,7 +18500,7 @@
       "confidence_score": 1.0,
       "context": "decorator",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L296",
+      "source_location": "L325",
       "weight": 1.0
     },
     {
@@ -18512,7 +18512,7 @@
       "confidence_score": 1.0,
       "context": "decorator",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L289",
+      "source_location": "L318",
       "weight": 1.0
     },
     {
@@ -18524,7 +18524,7 @@
       "confidence_score": 1.0,
       "context": "decorator",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L363",
+      "source_location": "L392",
       "weight": 1.0
     },
     {
@@ -18536,7 +18536,7 @@
       "confidence_score": 1.0,
       "context": "decorator",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L372",
+      "source_location": "L401",
       "weight": 1.0
     },
     {
@@ -18548,7 +18548,7 @@
       "confidence_score": 1.0,
       "context": "decorator",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L353",
+      "source_location": "L382",
       "weight": 1.0
     },
     {
@@ -18560,7 +18560,7 @@
       "confidence_score": 1.0,
       "context": "decorator",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L348",
+      "source_location": "L377",
       "weight": 1.0
     },
     {
@@ -18572,7 +18572,7 @@
       "confidence_score": 1.0,
       "context": "decorator",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L338",
+      "source_location": "L367",
       "weight": 1.0
     },
     {
@@ -18584,7 +18584,7 @@
       "confidence_score": 1.0,
       "context": "decorator",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L343",
+      "source_location": "L372",
       "weight": 1.0
     },
     {
@@ -23769,7 +23769,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L347",
+      "source_location": "L349",
       "weight": 1.0
     },
     {
@@ -23780,7 +23780,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L355",
+      "source_location": "L357",
       "weight": 1.0
     },
     {
@@ -23791,7 +23791,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L411",
+      "source_location": "L413",
       "weight": 1.0
     },
     {
@@ -23802,7 +23802,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L428",
+      "source_location": "L430",
       "weight": 1.0
     },
     {
@@ -23813,7 +23813,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L442",
+      "source_location": "L444",
       "weight": 1.0
     },
     {
@@ -23824,7 +23824,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L463",
+      "source_location": "L465",
       "weight": 1.0
     },
     {
@@ -23967,7 +23967,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L280",
+      "source_location": "L309",
       "weight": 1.0
     },
     {
@@ -23978,7 +23978,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L290",
+      "source_location": "L319",
       "weight": 1.0
     },
     {
@@ -23989,7 +23989,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L297",
+      "source_location": "L326",
       "weight": 1.0
     },
     {
@@ -24000,7 +24000,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L302",
+      "source_location": "L331",
       "weight": 1.0
     },
     {
@@ -24011,7 +24011,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L308",
+      "source_location": "L337",
       "weight": 1.0
     },
     {
@@ -24022,7 +24022,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L330",
+      "source_location": "L359",
       "weight": 1.0
     },
     {
@@ -24033,7 +24033,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L339",
+      "source_location": "L368",
       "weight": 1.0
     },
     {
@@ -24044,7 +24044,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L344",
+      "source_location": "L373",
       "weight": 1.0
     },
     {
@@ -24055,7 +24055,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L349",
+      "source_location": "L378",
       "weight": 1.0
     },
     {
@@ -24066,7 +24066,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L354",
+      "source_location": "L383",
       "weight": 1.0
     },
     {
@@ -24077,7 +24077,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L359",
+      "source_location": "L388",
       "weight": 1.0
     },
     {
@@ -24088,7 +24088,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L364",
+      "source_location": "L393",
       "weight": 1.0
     },
     {
@@ -24099,7 +24099,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L373",
+      "source_location": "L402",
       "weight": 1.0
     },
     {
@@ -24110,7 +24110,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L381",
+      "source_location": "L410",
       "weight": 1.0
     },
     {
@@ -24121,7 +24121,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L57",
+      "source_location": "L65",
       "weight": 1.0
     },
     {
@@ -24132,7 +24132,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L64",
+      "source_location": "L72",
       "weight": 1.0
     },
     {
@@ -25144,7 +25144,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L415",
+      "source_location": "L417",
       "weight": 1.0
     },
     {
@@ -25155,7 +25155,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L420",
+      "source_location": "L422",
       "weight": 1.0
     },
     {
@@ -25166,7 +25166,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L423",
+      "source_location": "L425",
       "weight": 1.0
     },
     {
@@ -25177,7 +25177,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L431",
+      "source_location": "L433",
       "weight": 1.0
     },
     {
@@ -25188,7 +25188,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L434",
+      "source_location": "L436",
       "weight": 1.0
     },
     {
@@ -25435,13 +25435,35 @@
     },
     {
       "source": "tests_simulation_b_sesion_aura_web_session",
+      "target": "tests_simulation_b_sesion_aura_web_session_emit",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Tests/simulation_B/sesion_aura_web.py",
+      "source_location": "L106",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_simulation_b_sesion_aura_web_session",
+      "target": "tests_simulation_b_sesion_aura_web_session_push_state",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Tests/simulation_B/sesion_aura_web.py",
+      "source_location": "L111",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_simulation_b_sesion_aura_web_session",
       "target": "tests_simulation_b_sesion_aura_web_session_add_log",
       "relation": "method",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L101",
+      "source_location": "L114",
       "weight": 1.0
     },
     {
@@ -25452,7 +25474,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L105",
+      "source_location": "L118",
       "weight": 1.0
     },
     {
@@ -25463,7 +25485,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L109",
+      "source_location": "L122",
       "weight": 1.0
     },
     {
@@ -25474,7 +25496,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L117",
+      "source_location": "L130",
       "weight": 1.0
     },
     {
@@ -25485,7 +25507,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L127",
+      "source_location": "L140",
       "weight": 1.0
     },
     {
@@ -25496,7 +25518,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L162",
+      "source_location": "L191",
       "weight": 1.0
     },
     {
@@ -25507,7 +25529,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L183",
+      "source_location": "L212",
       "weight": 1.0
     },
     {
@@ -25518,7 +25540,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L191",
+      "source_location": "L220",
       "weight": 1.0
     },
     {
@@ -25529,7 +25551,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L195",
+      "source_location": "L224",
       "weight": 1.0
     },
     {
@@ -25540,7 +25562,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L212",
+      "source_location": "L241",
       "weight": 1.0
     },
     {
@@ -25551,7 +25573,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L222",
+      "source_location": "L251",
       "weight": 1.0
     },
     {
@@ -25562,7 +25584,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L226",
+      "source_location": "L255",
       "weight": 1.0
     },
     {
@@ -25573,7 +25595,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L262",
+      "source_location": "L291",
       "weight": 1.0
     },
     {
@@ -25584,7 +25606,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L267",
+      "source_location": "L296",
       "weight": 1.0
     },
     {
@@ -25595,34 +25617,12 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L67",
+      "source_location": "L75",
       "weight": 1.0
     },
     {
       "source": "tests_simulation_b_sesion_aura_web_session",
       "target": "tests_simulation_b_sesion_aura_web_session_snapshot",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L85",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_simulation_b_sesion_aura_web_session",
-      "target": "tests_simulation_b_sesion_aura_web_session_emit",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L93",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_simulation_b_sesion_aura_web_session",
-      "target": "tests_simulation_b_sesion_aura_web_session_push_state",
       "relation": "method",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -26600,47 +26600,47 @@
       "weight": 1.0
     },
     {
-      "source": "tests_simulation_b_realtime_pipeline_rationale_356",
+      "source": "tests_simulation_b_realtime_pipeline_rationale_358",
       "target": "tests_simulation_b_realtime_pipeline_write_report_md",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L356",
+      "source_location": "L358",
       "weight": 1.0
     },
     {
-      "source": "tests_simulation_b_realtime_pipeline_rationale_412",
+      "source": "tests_simulation_b_realtime_pipeline_rationale_414",
       "target": "tests_simulation_b_realtime_pipeline_offlineinlet",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L412",
+      "source_location": "L414",
       "weight": 1.0
     },
     {
-      "source": "tests_simulation_b_realtime_pipeline_rationale_429",
+      "source": "tests_simulation_b_realtime_pipeline_rationale_431",
       "target": "tests_simulation_b_realtime_pipeline_offlinemarkers",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L429",
+      "source_location": "L431",
       "weight": 1.0
     },
     {
-      "source": "tests_simulation_b_realtime_pipeline_rationale_443",
+      "source": "tests_simulation_b_realtime_pipeline_rationale_445",
       "target": "tests_simulation_b_realtime_pipeline_mem_mb",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L443",
+      "source_location": "L445",
       "weight": 1.0
     },
     {
@@ -26776,58 +26776,58 @@
       "weight": 1.0
     },
     {
-      "source": "tests_simulation_b_sesion_aura_web_rationale_281",
+      "source": "tests_simulation_b_sesion_aura_web_rationale_310",
       "target": "tests_simulation_b_sesion_aura_web_check_token",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L281",
+      "source_location": "L310",
       "weight": 1.0
     },
     {
-      "source": "tests_simulation_b_sesion_aura_web_rationale_331",
+      "source": "tests_simulation_b_sesion_aura_web_rationale_360",
       "target": "tests_simulation_b_sesion_aura_web_act",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L331",
+      "source_location": "L360",
       "weight": 1.0
     },
     {
-      "source": "tests_simulation_b_sesion_aura_web_rationale_365",
+      "source": "tests_simulation_b_sesion_aura_web_rationale_394",
       "target": "tests_simulation_b_sesion_aura_web_reporte_abrir",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L365",
+      "source_location": "L394",
       "weight": 1.0
     },
     {
-      "source": "tests_simulation_b_sesion_aura_web_rationale_374",
+      "source": "tests_simulation_b_sesion_aura_web_rationale_403",
       "target": "tests_simulation_b_sesion_aura_web_reporte_ver",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L374",
+      "source_location": "L403",
       "weight": 1.0
     },
     {
-      "source": "tests_simulation_b_sesion_aura_web_rationale_65",
+      "source": "tests_simulation_b_sesion_aura_web_rationale_73",
       "target": "tests_simulation_b_sesion_aura_web_session",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L65",
+      "source_location": "L73",
       "weight": 1.0
     },
     {
@@ -27305,7 +27305,7 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L731",
+      "source_location": "L733",
       "weight": 1.0
     },
     {
@@ -27317,7 +27317,7 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "Tests/simulation_B/realtime_pipeline.py",
-      "source_location": "L661",
+      "source_location": "L663",
       "weight": 1.0
     },
     {
@@ -27353,7 +27353,7 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "Tests/simulation_B/sesion_aura_web.py",
-      "source_location": "L258",
+      "source_location": "L287",
       "weight": 1.0
     },
     {
@@ -33844,5 +33844,5 @@
       "source_file": "Tests/datasets workflow/EEG-SVRec/results/svrec_trayectorias.png"
     }
   ],
-  "built_at_commit": "4f8608f558d29e35ad57725fc50026a5a8e4b754"
+  "built_at_commit": "389dfe6132554ef4da5cff440fa10cb966f20e0d"
 }

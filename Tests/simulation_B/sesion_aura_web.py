@@ -38,8 +38,16 @@ ANSI = re.compile(r"\x1b\[[0-9;]*m")
 # Sin lista de preparación (9 nov): la página empieza en la verificación (Paso 1) y la sesión es el Paso 2.
 # Interfaz en inglés (9 nov): los textos que ve la página están en inglés; la salida de los scripts (registro y parte de
 # algunos estados) sigue en español, y el servidor la lee por sus palabras clave en español (no cambiarlas).
-# Los nombres de bloque (reposo, scroll) vienen del plan y behavior_markers.py los usa tal cual.
-ACTION = {"reposo": "put the phone down, eyes open, steady gaze", "scroll": "start scrolling (short videos)"}
+# Los nombres de bloque vienen del plan y behavior_markers.py los usa tal cual (marcadores bloque:<nombre>).
+# Protocolo del Progress Report (10 nov): Baseline 2 min → Go/NoGo pre 3 min → Scrolling 45 min → Go/NoGo post 3 min →
+# fin. La calibración (10 s de calidad + 90 s, hasta +60 s de extensión) cae dentro del baseline; el reporte compara los
+# parpadeos de cada bloque contra el primero con ≥ 2 min completos, que es el baseline.
+PROTOCOL_PLAN, PROTOCOL_DUR = "0 bloque:baseline 120 bloque:gonogo_pre 300 bloque:scroll 3000 bloque:gonogo_post", "3180"
+ACTION = {"baseline": "eyes open, steady gaze, stay still (calibration)",
+          "gonogo_pre": "start the Go/NoGo task (pre)", "scroll": "start scrolling short videos",
+          "gonogo_post": "start the Go/NoGo task (post)", "reposo": "put the phone down, eyes open, steady gaze"}
+LABEL = {"baseline": "Baseline", "gonogo_pre": "Go/NoGo · pre", "scroll": "Scrolling", "gonogo_post": "Go/NoGo · post",
+         "reposo": "Rest"}
 # Sin "Run" (9 nov): la carpeta de la sesión ya no se muestra; run_dir se sigue guardando para el reporte.
 STATUS = ("Quality", "Calibration", "Valid windows", "Noise", "Blinks", "Blink threshold", "Intervention")
 # Frases fijas del pipeline, calibration.py y jitai.py que llegan a los estados (no al registro). Orden: frases largas
@@ -73,8 +81,13 @@ class Session:
         self._launch_timer = None
         self._aborted = False
         self.log = []  # [(texto, clase)] — se borra al iniciar la verificación, como en la ventana
-        self.params = {"name": "AURA", "sid": "AuraLSL-", "chk_s": "120", "iaf": "10", "dur": "1260", "per": "420",
-                       "plan": "0 bloque:reposo 420 bloque:scroll 840 bloque:reposo"}
+        self.params = {"name": "AURA", "sid": "AuraLSL-", "chk_s": "120", "iaf": "10", "dur": PROTOCOL_DUR, "per": "420",
+                       "plan": PROTOCOL_PLAN}
+        self.valid = []  # % válidas de cada grupo de 10 ventanas (disjuntos): su media es el promedio de la sesión
+        # Biomarcadores en tiempo real (10 nov): theta tónica y alfa periódica, último valor (dB) y Z frente al baseline;
+        # hist = [segundo de la sesión, Zθ, Zα, % válidas] cada 10 ventanas (Z = None antes de calibrar): línea de
+        # progresión y resumen por etapa; ivs = [segundo, nivel] de cada intervención encendida.
+        self.bio, self.hist, self.ivs = {}, [], []
         self.btn = {"check": True, "ok": False, "abort_chk": False, "start": False, "stop": False, "abort_ses": False,
                     "rep": False}
         self.check_lbl = ("Not verified", "")
@@ -83,9 +96,9 @@ class Session:
 
     # ---------- emisión a la página ----------
     def snapshot(self):
-        return {"action": ACTION, "params": self.params,
+        return {"action": ACTION, "label": LABEL, "params": self.params,
                 "btn": self.btn, "check_lbl": self.check_lbl, "status": self.status, "plan": self.plan,
-                "dur": self.dur, "frozen": self.frozen, "aborted": self.session_aborted,
+                "dur": self.dur, "frozen": self.frozen, "bio": self.bio, "hist": self.hist, "ivs": self.ivs, "aborted": self.session_aborted,
                 "elapsed": None if self.t_start is None else time.monotonic() - self.t_start,
                 "running": [t for t, p in self.procs.items() if p.poll() is None],
                 "run_dir": self.run_dir}
@@ -144,8 +157,24 @@ class Session:
             self.set_status("Calibration", en(line.strip()), "err")
         elif "NIVEL" in line and ">>>" in line:
             self.set_status("Intervention", en(line.split(">>>", 1)[1].strip().replace("NIVEL", "LEVEL")))
-        if m := re.search(r"válidas\(últ\. 10\)=(\d+%)", line):
-            self.set_status("Valid windows", m.group(1) + " of the last 10")
+            if (lv := re.search(r"NIVEL (\d) ON", line)) and self.t_start is not None:
+                self.ivs.append([round(time.monotonic() - self.t_start), int(lv.group(1))])
+        if m := re.search(r"válidas\(últ\. 10\)=(\d+)%", line):
+            self.valid.append(int(m.group(1)))
+            self.set_status("Valid windows", f"{m.group(1)}% last 10 · avg {sum(self.valid) / len(self.valid):.0f}% "
+                                             f"over {len(self.valid) * 10} windows")
+            # θ_per/α_per solo vienen si la ventana tuvo features; Zθ/Zα, desde que la calibración se congela.
+            per = re.search(r"θ_per=\s*(-?[\d.]+)\s+α_per=\s*(-?[\d.]+)", line)
+            z = re.search(r"Zθ=\s*([+-]?[\d.]+)\s+Zα=\s*([+-]?[\d.]+)", line)
+            for i, k in enumerate(("theta", "alpha"), 1):
+                b = self.bio.setdefault(k, {"per": None, "z": None})
+                if per:
+                    b["per"] = float(per.group(i))
+                if z:
+                    b["z"] = float(z.group(i))
+            if self.t_start is not None:
+                self.hist.append([round(time.monotonic() - self.t_start), float(z.group(1)) if z else None,
+                                  float(z.group(2)) if z else None, int(m.group(1))])
             self.set_status("Noise", "no warning")  # el pipeline imprime AVISO RUIDO justo después, si lo hay
         if warn:
             # Canales con ≥ 50 % de segmentos de 2 s > 150 µV (umbral de rechazo); "invalida" = sin segmento limpio.
@@ -236,7 +265,7 @@ class Session:
             return "Check IAF, duration, period and blocks (<seconds> bloque:<name>)."
         self._aborted = False
         self.plan, self.dur, self.frozen = plan, dur, False
-        self.run_dir = None
+        self.run_dir, self.valid, self.bio, self.hist, self.ivs = None, [], {}, [], []
         self.session_aborted = False
         self.btn.update(start=False, rep=False, stop=True, abort_ses=True)
         for k in self.status:

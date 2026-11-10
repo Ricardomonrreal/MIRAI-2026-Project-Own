@@ -55,7 +55,7 @@
   h1 { font-size: clamp(26px, 1.2vw + 17px, 42px); margin: 0; letter-spacing: -.5px; }
   .sub { color: var(--muted); font-size: 13px; margin: 10px 10px}
   .clock { font-size: clamp(30px, 1.4vw + 20px, 52px); font-weight: 700; letter-spacing: -1px; font-variant-numeric: tabular-nums; }
-  .kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gap); margin: 0 0 var(--gap); }
+  .kpis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap); margin: 0 0 var(--gap); }
   .kpi .lab { color: var(--muted); font-size: 13px; }
   .kpi .val { display: flex; align-items: baseline; gap: 8px; margin-top: 2px; min-width: 0; }
   .kpi .big { font-size: 26px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
@@ -94,29 +94,45 @@
   .block { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
   .next { font-size: 14px; color: var(--ink); min-height: 21px; }
   .next.soon { color: var(--err); font-weight: 700; }
-  .timeline { position: relative; display: flex; height: 54px; border-radius: 16px; overflow: hidden; margin-top: 22px;
-              background: var(--sky); }
-  .seg { display: flex; align-items: flex-end; padding: 0 10px 8px; font-size: 12px; font-weight: 600;
-         border-right: 2px solid var(--white); white-space: nowrap; overflow: hidden; }
-  .seg.a { background: var(--blue-soft); color: var(--blue); } .seg.b { background: var(--coral-soft); color: var(--err); }
-  .cal { position: absolute; top: 0; left: 0; height: 8px; width: var(--at, 0%); background: repeating-linear-gradient(45deg,
-         var(--blue) 0 4px, transparent 4px 8px); opacity: .45; }
-  .now { position: absolute; top: -4px; bottom: -4px; left: var(--at, 0%); width: 3px; background: var(--ink); border-radius: 3px;
-         display: none; }
-  .ticks { position: relative; height: 18px; font-size: 11px; color: var(--muted); margin-top: 4px; }
-  .ticks span { position: absolute; left: var(--at); transform: translateX(-50%); }
-  .legend { display: flex; gap: 14px; font-size: 12px; color: var(--muted); margin-top: 6px; flex-wrap: wrap; }
-  .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px;
-              vertical-align: -1px; }
 
-  /* ---------- estado ---------- */
-  .status { display: flex; flex-direction: column; }
-  .st { display: grid; grid-template-columns: 128px minmax(0, 1fr); gap: 10px; padding: 8px 0;
-        border-bottom: 1px solid var(--line); font-size: 13px; }
-  .st:last-child { border-bottom: 0; }
-  .st b { font-weight: 600; color: var(--muted); }
-  .st span { overflow-wrap: anywhere; }
-  .st span.err, .st span.warn, .st span.ok { font-weight: 600; }
+  /* ---------- etapas del protocolo ---------- */
+  .stages { display: flex; flex-direction: column; gap: 6px; margin-top: 12px; }
+  .stage { border-radius: 12px; padding: 7px 10px; background: var(--sky); font-size: 12px; }
+  .stage .t { display: flex; justify-content: space-between; gap: 8px; font-size: 13px; font-weight: 700; }
+  .stage .t span:last-child { font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .stage .d { color: var(--muted); }
+  .stage .bar { height: 4px; border-radius: 2px; background: var(--blue-soft); margin-top: 6px; overflow: hidden; }
+  .stage .bar i { display: block; height: 100%; width: var(--p, 0%); background: var(--blue); }
+  .stage.cur { background: var(--blue); color: var(--white); }
+  .stage.cur .d { color: var(--sky); } .stage.cur .bar { background: rgba(255, 255, 255, .3); }
+  .stage.cur .bar i { background: var(--white); }
+  .stage.done .t { opacity: .6; } .stage.done .d, .stage.done .bar { display: none; }  /* terminada: título + resumen */
+  /* Resumen de la etapa (10 nov): válidas, Z media de θ y α en el bloque, intervenciones encendidas */
+  .stage .s { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; margin-top: 6px; }
+  .stage .s span { display: flex; flex-direction: column; background: var(--white); border-radius: 8px; padding: 3px 7px;
+                   min-width: 0; }
+  .stage .s small { font-size: 10px; color: var(--muted); }
+  .stage .s b { font-size: 13px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .stage .s .th b { color: var(--blue); } .stage .s .al b { color: var(--coral); }
+  .stage .n { margin-top: 4px; font-size: 11px; color: var(--muted); } .stage .n:empty { display: none; }
+  .stage.cur .s span { background: rgba(255, 255, 255, .15); } .stage.cur .s small, .stage.cur .n { color: var(--sky); }
+  .stage.cur .s b { color: var(--white); }
+
+  /* ---------- biomarcadores en tiempo real (ORT) + intervención (10 nov: reemplaza a Estado) ---------- */
+  .bio { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .bm { background: var(--sky); border-radius: 14px; padding: 10px 12px; min-width: 0; }
+  .bm.theta { color: var(--blue); } .bm.alpha { color: var(--coral); }
+  .bm .sym { font-size: 38px; line-height: 1; font-weight: 500; white-space: nowrap; }
+  .bm .lab { font-size: 12px; font-weight: 700; margin-top: 4px; }
+  .bm .v { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap;
+           overflow: hidden; text-overflow: ellipsis; }
+  .bm svg { display: block; width: 100%; height: 26px; margin-top: 4px; }
+  .bm polyline { fill: none; stroke: currentColor; stroke-width: 1.5; vector-effect: non-scaling-stroke; }
+  .bm line { stroke: var(--line); vector-effect: non-scaling-stroke; }
+  .iv { display: flex; gap: 10px; margin-top: 10px; font-size: 13px; min-width: 0; }
+  .iv b { color: var(--muted); font-weight: 600; flex: none; }
+  .iv span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .iv span.err, .iv span.warn, .iv span.ok { font-weight: 600; }
 
   /* ---------- registro ---------- */
   .loghead { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
@@ -152,10 +168,8 @@
     .block { font-size: 18px; }
     .kpis { margin: 0 0 12px; } .kpi .big { font-size: 22px; }
     .kpi .val { flex-wrap: wrap; row-gap: 2px; } .kpi .pill { max-width: 100%; }  /* píldora bajo el valor */
-    .st { grid-template-columns: minmax(0, 1fr); gap: 2px; }
     nav a { font-size: 12px; }
     .log { white-space: pre-wrap; overflow-wrap: anywhere; }  /* sin barra horizontal en pantallas angostas */
-    .ticks span:not(:first-child):not(:last-child) { font-size: 10px; }
   }
   @media (max-width: 380px) {
     .fields { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -187,28 +201,14 @@
      Va al final para ganar a las reglas de 2 columnas (≤ 1279 px).                                            */
   @media (min-width: 1024px) and (hover: hover) and (pointer: fine) {
     .app { height: 100vh; height: 100dvh; display: flex; flex-direction: column; }
-    .grid { flex: 1; min-height: 0; grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(180px, .38fr);
+    .grid { flex: 1; min-height: 0; grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(230px, .5fr);
             grid-template-rows: auto minmax(0, 1fr); }
     .clockcard { grid-column: 4; grid-row: 1 / 3; } .statecard { grid-column: auto; }
     #registro { grid-column: 1 / 4; grid-row: 2; display: flex; flex-direction: column; min-height: 0; }
     .log { flex: 1; height: auto; min-height: 90px; }  /* si no cabe ni así, la página hace scroll */
-    .card h2 { margin-bottom: 8px; } .st { padding: 5px 0; }  /* fila 1 más baja: más alto para el registro */
-    /* Bloque actual: columna angosta; barra vertical (inicio arriba, fin abajo), marcas de tiempo a la izquierda
-       y leyenda a la derecha con el texto girado */
-    .clockcard { display: flex; flex-direction: column; padding-inline: 16px; }  /* angosta: menos relleno lateral */
-    /* marcas | barra | leyenda: columnas laterales del mismo ancho para que la barra quede justo al centro */
-    .track { flex: 1; min-height: 0; display: grid; grid-template-columns: 38px minmax(0, 110px) 38px;
-             justify-content: center; gap: 8px; margin-top: 16px; padding: 6px 0; }
-    .timeline { flex: 1; max-width: 110px; flex-direction: column; height: auto; margin-top: 0; }
-    .legend { flex-direction: column; flex-wrap: nowrap; gap: 8px; font-size: 11px; margin: 0 0 0 4px; overflow: hidden; }
-    .legend span { writing-mode: vertical-rl; display: inline-flex; flex-direction: row-reverse; align-items: center;
-                   gap: 8px; white-space: nowrap; }  /* texto de arriba hacia abajo y el punto al final */
-    .legend i { margin: 0; }
-    .seg { align-items: center; justify-content: center; padding: 6px; border-right: 0; border-bottom: 2px solid var(--white); }
-    .cal { width: 8px; height: var(--at, 0%); }
-    .now { top: var(--at, 0%); bottom: auto; left: 0; right: 0; width: auto; height: 3px; }
-    .ticks { order: -1; width: 38px; height: auto; margin-top: 0; }
-    .ticks span { left: auto; right: 0; top: var(--at); transform: translateY(-50%); }
+    .card h2 { margin-bottom: 8px; }  /* fila 1 más baja: más alto para el registro */
+    /* Bloque actual: columna angosta a toda la altura (10 nov: sin barra de bloques, solo las etapas) */
+    .clockcard { display: flex; flex-direction: column; padding-inline: 16px; overflow: auto; }
   }
   /* Computadora con pantalla baja (laptop 1366×768, escala 125–150 %, zoom del navegador): todo más compacto
      para que la vista completa siga cabiendo sin scroll */
@@ -222,10 +222,9 @@
     .fields { gap: 8px; margin-bottom: 8px; } label.f { gap: 2px; font-size: 11px; }
     input[type=text] { padding: 5px 10px; border-radius: 10px; }
     .row { gap: 6px; } .btn { padding: 6px 12px; font-size: 12px; } .note { margin-top: 6px; font-size: 12px; }
-    .st { padding: 3px 0; font-size: 12px; }
+    .bm { padding: 8px 10px; } .bm .sym { font-size: 30px; } .bm svg { height: 20px; } .iv { margin-top: 6px; font-size: 12px; }
     #registro .kicker { display: none; } .loghead { margin-bottom: 6px; } .log { padding: 8px 12px; }
-    .block { font-size: 18px; } .next { font-size: 13px; } .track { margin-top: 10px; }
-    .legend { font-size: 10px; gap: 6px; }
+    .block { font-size: 18px; } .next { font-size: 13px; }
   }
 </style>
 </head>
@@ -236,16 +235,15 @@
 
   <div class="head">
     <div>
-      <h1>AURA Session</h1>
       <div class="conn"><span class="dot" id="dot"></span><span id="conn">Connecting to the server…</span></div>
     </div>
     <div class="clock" id="clock">0:00 / 0:00</div>
   </div>
 
   <section class="kpis">
-    <div class="kpi"><div class="lab">Valid windows</div><div class="val"><span class="big" id="k-val">—</span><span class="pill" id="k-val-s">last 10</span></div></div>
-    <div class="kpi"><div class="lab">Blinks</div><div class="val"><span class="big" id="k-blk">—</span><span class="pill" id="k-blk-s">live</span></div></div>
-    <div class="kpi"><div class="lab">Calibration</div><div class="val"><span class="big" id="k-cal">—</span><span class="pill" id="k-cal-s">—</span></div></div>
+    <!-- 10 nov: sin Blinks ni Calibration (siguen en Status); ventanas válidas = últimas 10 + promedio de la sesión -->
+    <div class="kpi"><div class="lab">Valid windows · last 10</div><div class="val"><span class="big" id="k-val">—</span><span class="pill" id="k-val-s">—</span></div></div>
+    <div class="kpi"><div class="lab">Valid windows · session avg</div><div class="val"><span class="big" id="k-avg">—</span><span class="pill" id="k-avg-s">—</span></div></div>
     <div class="kpi"><div class="lab">Noise</div><div class="val"><span class="big" id="k-noise">—</span><span class="pill" id="k-noise-s">—</span></div></div>
   </section>
 
@@ -287,11 +285,17 @@
       <div class="note" id="rep-note"></div>
     </section>
 
-    <!-- Estado -->
+    <!-- Biomarcadores ORT (10 nov): flecha = Z frente al baseline; línea = Z a lo largo de la sesión -->
     <section class="card statecard">
-      <div class="kicker">What the pipeline reports</div>
-      <h2>Status</h2>
-      <div class="status" id="status"></div>
+      <div class="kicker">On real time · Z vs baseline</div>
+      <h2>Biomarkers</h2>
+      <div class="bio">
+        <div class="bm theta"><div class="sym"><span id="bt-ar">·</span>θ</div><div class="lab">Tonic theta · ORT</div>
+          <div class="v" id="bt-v">—</div><svg id="bt-sp" viewBox="0 0 100 26" preserveAspectRatio="none"></svg></div>
+        <div class="bm alpha"><div class="sym"><span id="ba-ar">·</span>α</div><div class="lab">Periodic alpha · ORT</div>
+          <div class="v" id="ba-v">—</div><svg id="ba-sp" viewBox="0 0 100 26" preserveAspectRatio="none"></svg></div>
+      </div>
+      <div class="iv"><b>Intervention</b><span id="iv">—</span></div>
     </section>
 
     <!-- Registro -->
@@ -313,22 +317,15 @@
       <h2>Current block</h2>
       <div class="block" id="block">Block: —</div>
       <div class="next" id="next">Next: —</div>
-      <div class="track">
-        <div class="timeline" id="timeline"><div class="cal" id="cal"></div><div class="now" id="now"></div></div>
-        <div class="ticks" id="ticks"></div>
-        <div class="legend">
-          <span><i style="background:var(--blue-soft)"></i>even blocks</span>
-          <span><i style="background:var(--coral-soft)"></i>odd blocks</span>
-          <span><i style="background:var(--blue);opacity:.45"></i>calibration · 160 s</span>
-        </div>
-      </div>
+      <!-- Etapas del protocolo (10 nov): una sección por bloque del plan + fin -->
+      <div class="stages" id="stages"></div>
     </section>
   </main>
 </div>
 
 <script>
 const $ = id => document.getElementById(id);
-const STATUS = ["Quality", "Calibration", "Valid windows", "Noise", "Blinks", "Blink threshold", "Intervention"];
+const ARROW_Z = 0.5;  // ponytail: umbral fijo de la flecha (↑/↓ si |Z| ≥ 0.5); ajustar con datos reales
 const PARAMS = ["name", "sid", "chk_s", "iaf", "dur", "per", "plan"];
 const BTNS = ["check", "ok", "abort_chk", "start", "stop", "abort_ses", "rep"];
 let S = null, base = null, done = null, planKey = "";
@@ -405,14 +402,14 @@ function render(full) {
   $("rep-note").innerHTML = S.btn.rep
     ? `Report ready · <a href="/api/reporte" target="_blank" style="color:var(--blue)">view it in the browser</a>` : "";
 
-  $("status").innerHTML = "";
-  STATUS.forEach(k => {
-    const [txt, cls] = S.status[k], r = document.createElement("div"), b = document.createElement("b"),
-          s = document.createElement("span");
-    r.className = "st"; b.textContent = k; s.textContent = txt; s.className = cls; r.append(b, s);
-    $("status").appendChild(r);
-  });
-  kpi("val", "Valid windows"); kpi("blk", "Blinks"); kpi("cal", "Calibration"); kpi("noise", "Noise");
+  bio("t", "theta", 1); bio("a", "alpha", 2);
+  const [ivt, ivc] = S.status.Intervention;
+  $("iv").textContent = ivt; $("iv").className = ivc; $("iv").title = ivt;
+  kpi("noise", "Noise");
+  // Valid windows: "62% last 10 · avg 80% over 340 windows" → dos KPI
+  const vw = S.status["Valid windows"][0].match(/^(\d+%) last 10 · avg (\d+%) over (\d+) windows/);
+  $("k-val").textContent = vw ? vw[1] : "—"; $("k-val-s").textContent = vw ? "1 s windows" : "";
+  $("k-avg").textContent = vw ? vw[2] : "—"; $("k-avg-s").textContent = vw ? `${vw[3]} windows` : "";
 
   // Procesos y navegación son opcionales: si se quitan del HTML, la página sigue funcionando (antes fallaba aquí y
   // nunca llegaba a marcar "Servidor conectado").
@@ -433,6 +430,16 @@ function render(full) {
   base = S.elapsed == null ? null : { el: S.elapsed, at: performance.now() };
   const key = JSON.stringify([S.plan, S.dur]);
   if (key !== planKey) { planKey = key; done = null; drawTimeline(); }
+  else if (full && !S.plan.length) drawTimeline();  // la vista previa se dibujaba antes de llenar los campos
+}
+
+function bio(id, k, col) {  // flecha y valor actuales + Z de cada 10 s sobre la duración de la sesión (−3…+3)
+  const b = (S.bio || {})[k], z = b ? b.z : null;
+  $(`b${id}-ar`).textContent = z == null ? "·" : z >= ARROW_Z ? "↑" : z <= -ARROW_Z ? "↓" : "→";
+  $(`b${id}-v`).textContent = !b ? "—" : (z == null ? "calibrating" : `Z ${z >= 0 ? "+" : ""}${z.toFixed(2)}`)
+    + (b.per == null ? "" : ` · ${b.per.toFixed(2)} dB`);
+  const pts = (S.hist || []).filter(p => p[col] != null).map(p => `${(100 * p[0] / (S.dur || 1)).toFixed(1)},${(13 - 13 * Math.max(-3, Math.min(3, p[col])) / 3).toFixed(1)}`);
+  $(`b${id}-sp`).innerHTML = `<line x1="0" x2="100" y1="13" y2="13"/><polyline points="${pts.join(" ")}"/>`;
 }
 
 function kpi(id, k) {  // valor corto grande + el resto en la píldora; el texto completo queda en Estado
@@ -452,28 +459,61 @@ function inputPlan() {  // vista previa antes de la primera sesión: los bloques
 }
 ["p-plan", "p-dur"].forEach(id => $(id).addEventListener("input", () => { if (!S.plan.length) drawTimeline(); }));
 
-function drawTimeline() {
-  const tl = $("timeline"), [plan, dur] = S.plan.length ? [S.plan, S.dur] : inputPlan();
-  tl.querySelectorAll(".seg").forEach(x => x.remove());
-  $("ticks").innerHTML = "";
-  if (!dur || !plan.length) { $("cal").style.setProperty("--at", "0%"); return; }
-  plan.forEach(([t, n], i) => {
-    const end = i + 1 < plan.length ? plan[i + 1][0] : dur, s = document.createElement("div");
-    s.className = "seg " + (i % 2 ? "b" : "a"); s.style.flex = `0 0 ${100 * Math.max(0, Math.min(end, dur) - t) / dur}%`;
-    s.textContent = n; tl.insertBefore(s, $("cal"));
+function drawTimeline() {  // 10 nov: sin barra de bloques; solo las etapas (plan de la sesión o el que se escribe)
+  const [plan, dur] = S.plan.length ? [S.plan, S.dur] : inputPlan();
+  if (!dur || !plan.length) { $("stages").innerHTML = ""; stages = []; return; }
+  drawStages(plan, dur);
+}
+
+// ---------- etapas: una sección por bloque (inicio, duración, qué hacer) + fin; tick() marca la actual ----------
+let stages = [];
+function drawStages(plan, dur) {
+  const L = S.label || {}, A = S.action || {};
+  stages = plan.filter(([t]) => t < dur).map(([t, n], i) => [t, Math.min(i + 1 < plan.length ? plan[i + 1][0] : dur, dur), n])
+    .concat([[dur, dur, "end"]]);
+  $("stages").innerHTML = "";
+  stages.forEach(([t0, t1, n]) => {
+    const d = document.createElement("div");
+    d.className = "stage";
+    d.innerHTML = `<div class="t"><span></span><span></span></div><div class="d"></div>`
+                + (n === "end" ? "" : `<div class="bar"><i></i></div><div class="s" style="display:none">`
+                   + `<span><small>valid</small><b></b></span><span class="th"><small>θ Z</small><b></b></span>`
+                   + `<span class="al"><small>α Z</small><b></b></span></div><div class="n"></div>`);
+    d.querySelector(".t span").textContent = n === "end" ? "End" : (L[n] || n);
+    d.querySelector(".t span:last-child").textContent = n === "end" ? fmt(dur) : `${fmt(t0)} · ${Math.round((t1 - t0) / 60)} min`;
+    d.querySelector(".d").textContent = n === "end" ? "stop the recording in Aura · report is written" : (A[n] || "");
+    $("stages").appendChild(d);
   });
-  [...new Set([0, ...plan.map(p => p[0]), dur])].filter(t => t <= dur).forEach(t => {
-    const s = document.createElement("span"); s.style.setProperty("--at", `${100 * t / dur}%`); s.textContent = fmt(t);
-    $("ticks").appendChild(s);
+}
+function updateStages(el) {  // el = null: sin sesión, todas pendientes
+  [...$("stages").children].forEach((d, i) => {
+    const [t0, t1, n] = stages[i], cur = el != null && el >= t0 && (el < t1 || n === "end"),
+          done = el != null && !cur && el >= t1;
+    d.className = "stage" + (cur ? " cur" : done ? " done" : "");
+    const bar = d.querySelector(".bar i");
+    if (bar) bar.style.setProperty("--p", `${el == null ? 0 : 100 * Math.min(1, Math.max(0, (el - t0) / (t1 - t0)))}%`);
+    if (n === "end") return;
+    d.querySelector(".t span:last-child").textContent =
+      cur ? `${fmt(t1 - el)} left` : `${fmt(t0)} · ${Math.round((t1 - t0) / 60)} min`;
+    // Resumen desde que la etapa empieza: medias de los grupos de 10 ventanas y conteo de intervenciones del bloque
+    const s = d.querySelector(".s"), b = s.querySelectorAll("b");
+    s.style.display = el != null && el >= t0 ? "" : "none";
+    if (s.style.display) return;
+    const h = (S.hist || []).filter(p => p[0] >= t0 && p[0] < t1), iv = (S.ivs || []).filter(p => p[0] >= t0 && p[0] < t1);
+    const mean = c => { const v = h.map(p => p[c]).filter(x => x != null); return v.length ? v.reduce((a, x) => a + x, 0) / v.length : null; };
+    const sz = z => z == null ? "—" : `${z >= 0 ? "+" : ""}${z.toFixed(2)}`, va = mean(3);
+    b[0].textContent = va == null ? "—" : `${Math.round(va)}%`; b[1].textContent = sz(mean(1)); b[2].textContent = sz(mean(2));
+    d.querySelector(".n").textContent = iv.length
+      ? "Interventions: " + [1, 2, 3].map(l => [l, iv.filter(p => p[1] === l).length]).filter(x => x[1]).map(([l, c]) => `L${l}×${c}`).join(" · ")
+      : "";
   });
-  $("cal").style.setProperty("--at", `${100 * Math.min(160, dur) / dur}%`);
 }
 
 // ---------- cronómetro (como tick() de sesion_aura.py) ----------
 function tick() {
   if (!S) return;
   if (base == null) {
-    $("now").style.display = "none";
+    // las etapas quedan como estaban al terminar (drawStages las crea pendientes)
     if (S.aborted) { $("block").textContent = "Block: — (aborted)"; $("next").textContent = "Next: —";
                      $("next").className = "next"; }
     return;
@@ -494,7 +534,7 @@ function tick() {
     $("next").textContent = `Next in ${fmt(t - el)} (${fmt(t)}): ${a}`;
     $("next").className = "next" + (soon ? " soon" : "");
   }
-  const now = $("now"); now.style.display = "block"; now.style.setProperty("--at", `${Math.min(100, 100 * el / S.dur)}%`);
+  updateStages(el);
 }
 setInterval(tick, 250);
 
