@@ -2,11 +2,11 @@
 sesion_aura.py — sesión en vivo con la AURA en una sola ventana (MIRAI 2026) · VERSIÓN B
 
 Junta los tres módulos sin fusionarlos: cada uno sigue siendo su propio script y aquí solo se lanzan en orden, con el
-usuario marcando cada paso. Mismos pasos que la versión web (web/sesion_aura.html); sin lista de preparación (9 nov).
-  1. Verificación: check_lsl_stream.py; al terminar, el usuario la da por buena (o la repite).
-  2. Sesión: behavior_markers.py (bloques) y, 1.5 s después, realtime_pipeline.py. Cronómetro con el bloque actual y la
-     próxima acción manual (barra espaciadora en Aura, empezar el scroll…). Detener = Ctrl+Break al pipeline, que lo
-     trata como Ctrl+C y escribe igual su reporte.
+usuario marcando cada paso. Sin lista de preparación (9 nov) ni verificación del stream (11 nov: check_lsl_stream.py ya
+no se lanza; el semáforo de electrodos, semaforo_canales.py, está solo en la versión web).
+  Sesión: behavior_markers.py (bloques) y, 1.5 s después, realtime_pipeline.py. Cronómetro con el bloque actual y la
+  próxima acción manual (barra espaciadora en Aura, empezar el scroll…). Detener = Ctrl+Break al pipeline, que lo
+  trata como Ctrl+C y escribe igual su reporte.
 
 Uso (desde una terminal: Detener necesita una consola compartida para mandar Ctrl+Break):
   python sesion_aura.py
@@ -59,31 +59,15 @@ class SessionApp:
         self.paned.add(c, weight=0)
         bold = ("Arial", 10, "bold")
 
-        lbl_chk = ttk.Label(c, text="Paso 1 · Verificación del stream", font=bold)
-        lbl_chk.pack(anchor="w", fill=tk.X)
-        f_chk = ttk.Frame(c)
-        f_chk.pack(fill=tk.X, pady=2)
-        self.name_var, self.sid_var, self.chk_s_var = tk.StringVar(value="AURA"), tk.StringVar(value="AuraLSL-"), tk.StringVar(value="120")
-        for i, (lbl, var, w) in enumerate([("Stream", self.name_var, 6), ("Prefijo source_id", self.sid_var, 8),
-                                           ("Duración (s)", self.chk_s_var, 4)]):
-            f_chk.columnconfigure(2 * i, weight=0)
-            f_chk.columnconfigure(2 * i + 1, weight=1)
-            ttk.Label(f_chk, text=lbl).grid(row=0, column=2 * i, padx=(0 if i == 0 else 6, 2), sticky="w")
-            ttk.Entry(f_chk, textvariable=var, width=w).grid(row=0, column=2 * i + 1, sticky="ew")
-        f_chk_btns = ttk.Frame(c)
-        f_chk_btns.pack(fill=tk.X, pady=2)
-        self.btn_check = ttk.Button(f_chk_btns, text="Iniciar verificación", command=self.start_check)
-        self.btn_check.pack(side=tk.LEFT)
-        self.btn_ok = ttk.Button(f_chk_btns, text="Verificación OK · continuar", command=self.check_ok, state=tk.DISABLED)
-        self.btn_ok.pack(side=tk.LEFT, padx=6)
-        self.btn_abort_chk = ttk.Button(f_chk_btns, text="Abortar", command=self.abort_all, state=tk.DISABLED)
-        self.btn_abort_chk.pack(side=tk.LEFT)
-        self.check_lbl = ttk.Label(c, text="Sin verificar")
-        self.check_lbl.pack(anchor="w", fill=tk.X)
-
-        ttk.Separator(c).pack(fill=tk.X, pady=8)
-        lbl_ses = ttk.Label(c, text="Paso 2 · Sesión", font=bold)
+        lbl_ses = ttk.Label(c, text="Sesión", font=bold)
         lbl_ses.pack(anchor="w", fill=tk.X)
+        f_src = ttk.Frame(c)
+        f_src.pack(fill=tk.X, pady=2)
+        self.name_var, self.sid_var = tk.StringVar(value="AURA"), tk.StringVar(value="AuraLSL-")
+        for i, (lbl, var, w) in enumerate([("Stream", self.name_var, 6), ("Prefijo source_id", self.sid_var, 8)]):
+            f_src.columnconfigure(2 * i + 1, weight=1)
+            ttk.Label(f_src, text=lbl).grid(row=0, column=2 * i, padx=(0 if i == 0 else 6, 2), sticky="w")
+            ttk.Entry(f_src, textvariable=var, width=w).grid(row=0, column=2 * i + 1, sticky="ew")
         f_ses = ttk.Frame(c)
         f_ses.pack(fill=tk.X, pady=2)
         self.iaf_var, self.dur_var, self.per_var = tk.StringVar(value="10"), tk.StringVar(value="1260"), tk.StringVar(value="420")
@@ -99,7 +83,7 @@ class SessionApp:
         ttk.Entry(c, textvariable=self.plan_var).pack(fill=tk.X, anchor="w", pady=(2, 4))
         f_ses_btns = ttk.Frame(c)
         f_ses_btns.pack(fill=tk.X, pady=4)
-        self.btn_start = ttk.Button(f_ses_btns, text="Iniciar sesión", command=self.start_session, state=tk.DISABLED)
+        self.btn_start = ttk.Button(f_ses_btns, text="Iniciar sesión", command=self.start_session)
         self.btn_start.pack(side=tk.LEFT)
         self.btn_stop = ttk.Button(f_ses_btns, text="Detener sesión", command=self.stop_session, state=tk.DISABLED)
         self.btn_stop.pack(side=tk.LEFT, padx=6)
@@ -130,9 +114,7 @@ class SessionApp:
             self._last_c_w = event.width
             w = max(100, event.width - 24)
             self.next_lbl.config(wraplength=w)
-            self.check_lbl.config(wraplength=w)
             self.block_lbl.config(wraplength=w)
-            lbl_chk.config(wraplength=w)
             lbl_ses.config(wraplength=w)
             lbl_plan.config(wraplength=w)
             for lbl in self.status.values():
@@ -224,16 +206,7 @@ class SessionApp:
         code = self.procs.pop(tag).returncode
         self.log.insert(tk.END, f"[{tag}] terminó (código {code})\n", "ok" if code == 0 else "err")
         self.log.see(tk.END)
-        if tag == "check":
-            self.btn_check.config(state=tk.NORMAL)
-            self.btn_abort_chk.config(state=tk.DISABLED)
-            if self._aborted:
-                self.check_lbl.config(text="Verificación abortada manualmente", foreground="#A32D2D")
-                self.btn_ok.config(state=tk.DISABLED)
-            else:
-                self.check_lbl.config(text=f"Terminó (código {code}): revisa el registro y decide")
-                self.btn_ok.config(state=tk.NORMAL)
-        elif tag == "pipeline":
+        if tag == "pipeline":
             self.stop_proc("conducta")
             self.t_start = None
             self.btn_stop.config(state=tk.DISABLED)
@@ -267,31 +240,14 @@ class SessionApp:
         self.t_start = None
         self.log.insert(tk.END, f"[sistema] Procesos abortados manualmente: {', '.join(running)}\n", "err")
         self.log.see(tk.END)
-        self.btn_check.config(state=tk.NORMAL)
-        self.btn_abort_chk.config(state=tk.DISABLED)
         self.btn_abort_ses.config(state=tk.DISABLED)
         self.btn_stop.config(state=tk.DISABLED)
-        self.btn_start.config(state=tk.NORMAL if self.btn_ok.instate(["!disabled"]) else tk.DISABLED)
+        self.btn_start.config(state=tk.NORMAL)
         if "pipeline" in running or "conducta" in running:
             self.block_lbl.config(text="Bloque: — (abortado)")
             self.next_lbl.config(text="Siguiente: —", fg=self.next_fg)
 
     # ---------- pasos ----------
-    def start_check(self):
-        self._aborted = False
-        self.btn_check.config(state=tk.DISABLED)
-        self.btn_ok.config(state=tk.DISABLED)
-        self.btn_start.config(state=tk.DISABLED)
-        self.btn_abort_chk.config(state=tk.NORMAL)
-        self.check_lbl.config(text=f"Verificando ({self.chk_s_var.get()} s)…", foreground="")
-        self.log.delete("1.0", tk.END)
-        self.launch("check", ["check_lsl_stream.py", "--name", self.name_var.get(), "--source-id", self.sid_var.get(),
-                              "--seconds", self.chk_s_var.get()])
-
-    def check_ok(self):
-        self.check_lbl.config(text="Verificación dada por buena", foreground="#0F6E56")
-        self.btn_start.config(state=tk.NORMAL)
-
     def start_session(self):
         tok = self.plan_var.get().split()
         try:
@@ -305,6 +261,7 @@ class SessionApp:
         if not messagebox.askyesno("Sesión", "¿Aura ya está grabando (botón rojo)?"):
             return
         self._aborted = False
+        self.log.delete("1.0", tk.END)
         self.dur, self.done, self.frozen = dur, set(), False
         self.run_dir = None
         self.btn_start.config(state=tk.DISABLED)

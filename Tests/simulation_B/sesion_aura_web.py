@@ -1,11 +1,11 @@
 """
 sesion_aura_web.py — la misma sesión en vivo de sesion_aura.py, con la interfaz en el navegador (MIRAI 2026) · VERSIÓN B
 
-Servidor Flask local: sirve web/sesion_aura.html, lanza los mismos tres módulos sin fusionarlos (check_lsl_stream.py,
+Servidor Flask local: sirve web/sesion_aura.html, lanza los módulos sin fusionarlos (semaforo_canales.py,
 behavior_markers.py, realtime_pipeline.py) y manda su salida en vivo a la página (Server-Sent Events). La lógica de
-sesion_aura.py está aquí (lectura de líneas, estados, botones, abortar, detener con Ctrl+Break) salvo la lista de
-preparación, que ya no forma parte de la página (Paso 1 = verificación, Paso 2 = sesión); el cronómetro y el aviso
-sonoro corren en la página. sesion_aura.py (tkinter) sigue disponible y no cambia.
+sesion_aura.py está aquí (lectura de líneas, estados, botones, abortar, detener con Ctrl+Break); el cronómetro y el
+aviso sonoro corren en la página. 11 nov: sin verificación del stream (check_lsl_stream.py ya no se lanza): la tarjeta
+Electrodes muestra el semáforo por canal, que corre aparte de la sesión y puede seguir encendido durante ella.
 
 Sin terminal: doble clic en servidor_web.bat (consola minimizada + abre la página; si ya corre, solo la abre). Usa
 la ruta absoluta de esta carpeta, así que una copia o acceso directo funciona desde cualquier lugar.
@@ -35,14 +35,14 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 PY = sys.executable
 ENV = {**os.environ, "PYTHONIOENCODING": "utf-8", "PYTHONUNBUFFERED": "1"}  # θ, µ… por la tubería sin cp1252
 ANSI = re.compile(r"\x1b\[[0-9;]*m")
-# Sin lista de preparación (9 nov): la página empieza en la verificación (Paso 1) y la sesión es el Paso 2.
+# Sin lista de preparación (9 nov) ni verificación del stream (11 nov): semáforo de electrodos + sesión.
 # Interfaz en inglés (9 nov): los textos que ve la página están en inglés; la salida de los scripts (registro y parte de
 # algunos estados) sigue en español, y el servidor la lee por sus palabras clave en español (no cambiarlas).
 # Los nombres de bloque vienen del plan y behavior_markers.py los usa tal cual (marcadores bloque:<nombre>).
-# Protocolo del Progress Report (10 nov): Baseline 2 min → Go/NoGo pre 3 min → Scrolling 45 min → Go/NoGo post 3 min →
+# Protocolo del Progress Report (10 nov; scroll 45 → 30 min el 11 nov): Baseline 2 min → Go/NoGo pre 3 min → Scrolling 30 min → Go/NoGo post 3 min →
 # fin. La calibración (10 s de calidad + 90 s, hasta +60 s de extensión) cae dentro del baseline; el reporte compara los
 # parpadeos de cada bloque contra el primero con ≥ 2 min completos, que es el baseline.
-PROTOCOL_PLAN, PROTOCOL_DUR = "0 bloque:baseline 120 bloque:gonogo_pre 300 bloque:scroll 3000 bloque:gonogo_post", "3180"
+PROTOCOL_PLAN, PROTOCOL_DUR = "0 bloque:baseline 120 bloque:gonogo_pre 300 bloque:scroll 2100 bloque:gonogo_post", "2280"
 ACTION = {"baseline": "eyes open, steady gaze, stay still (calibration)",
           "gonogo_pre": "start the Go/NoGo task (pre)", "scroll": "start scrolling short videos",
           "gonogo_post": "start the Go/NoGo task (post)", "reposo": "put the phone down, eyes open, steady gaze"}
@@ -80,24 +80,25 @@ class Session:
         self.plan, self.dur, self.frozen = [], 0.0, False
         self._launch_timer = None
         self._aborted = False
-        self.log = []  # [(texto, clase)] — se borra al iniciar la verificación, como en la ventana
-        self.params = {"name": "AURA", "sid": "AuraLSL-", "chk_s": "120", "iaf": "10", "dur": PROTOCOL_DUR, "per": "420",
+        self._mon_stopped = False
+        self.log = []  # [(texto, clase)] — se borra al iniciar la sesión
+        self.params = {"name": "AURA", "sid": "AuraLSL-", "iaf": "10", "dur": PROTOCOL_DUR, "per": "420",
                        "plan": PROTOCOL_PLAN}
         self.valid = []  # % válidas de cada grupo de 10 ventanas (disjuntos): su media es el promedio de la sesión
         # Biomarcadores en tiempo real (10 nov): theta tónica y alfa periódica, último valor (dB) y Z frente al baseline;
         # hist = [segundo de la sesión, Zθ, Zα, % válidas] cada 10 ventanas (Z = None antes de calibrar): línea de
         # progresión y resumen por etapa; ivs = [segundo, nivel] de cada intervención encendida.
         self.bio, self.hist, self.ivs = {}, [], []
-        self.btn = {"check": True, "ok": False, "abort_chk": False, "start": False, "stop": False, "abort_ses": False,
-                    "rep": False}
-        self.check_lbl = ("Not verified", "")
+        self.btn = {"mon": True, "mon_stop": False, "start": True, "stop": False, "abort_ses": False, "rep": False}
+        self.chan = {}  # semáforo: {canal: [g/y/r, σ µV, % segmentos > 150 µV]} del último segundo; {} = apagado
+        self.mon_lbl = ("Monitor off", "")
         self.status = {k: ("—", "") for k in STATUS}
         self.session_aborted = False  # "Bloque: — (abortado)"
 
     # ---------- emisión a la página ----------
     def snapshot(self):
         return {"action": ACTION, "label": LABEL, "params": self.params,
-                "btn": self.btn, "check_lbl": self.check_lbl, "status": self.status, "plan": self.plan,
+                "btn": self.btn, "chan": self.chan, "mon_lbl": self.mon_lbl, "status": self.status, "plan": self.plan,
                 "dur": self.dur, "frozen": self.frozen, "bio": self.bio, "hist": self.hist, "ivs": self.ivs, "aborted": self.session_aborted,
                 "elapsed": None if self.t_start is None else time.monotonic() - self.t_start,
                 "running": [t for t, p in self.procs.items() if p.poll() is None],
@@ -138,6 +139,10 @@ class Session:
             self.push_state()
 
     def on_line(self, tag, line):
+        if tag == "semaforo" and line.startswith("SEMAFORO "):  # una por segundo: al estado, no al registro
+            self.chan = json.loads(line[9:])
+            self.mon_lbl = ("Live · last 10 s, updated every second", "ok")
+            return
         # "NO PASA" va en rojo (en la ventana salía verde porque contiene "PASA").
         bad = any(k in line for k in ("FALLA", "SESIÓN DETENIDA", "Traceback", "Error", "abortada", "NO PASA"))
         warn = "AVISO RUIDO" in line
@@ -192,15 +197,14 @@ class Session:
         if self.procs.get(tag) is not p:  # ya reemplazado por un lanzamiento nuevo
             return
         code = self.procs.pop(tag).returncode
-        self.add_log(f"[{tag}] exited (code {code})", "ok" if code == 0 else "err")
-        if tag == "check":
-            self.btn.update(check=True, abort_chk=False)
-            if self._aborted:
-                self.check_lbl = ("Verification aborted manually", "err")
-                self.btn["ok"] = False
-            else:
-                self.check_lbl = (f"Finished (code {code}): review the log and decide", "")
-                self.btn["ok"] = True
+        stopped = tag == "semaforo" and self._mon_stopped  # detenido con su botón: no es un fallo
+        self.add_log(f"[{tag}] exited (code {code})" + (" · stopped" if stopped else ""),
+                     "ok" if code == 0 or stopped else "err")
+        if tag == "semaforo":
+            self.btn.update(mon=True, mon_stop=False)
+            self.chan = {}
+            self.mon_lbl = (("Monitor off", "") if self._mon_stopped
+                            else (f"Monitor exited (code {code}): see the log", "err"))
         elif tag == "pipeline":
             self.stop_proc("behavior")
             self.t_start = None
@@ -222,35 +226,33 @@ class Session:
 
     # ---------- acciones (las confirmaciones las pide la página antes de llamar) ----------
     def abort_all(self):
+        """Aborta la sesión (conducta + pipeline); el semáforo sigue, tiene su propio botón."""
         if self._launch_timer:
             self._launch_timer.cancel()
             self._launch_timer = None
-        running = self.running()
+        running = [t for t in self.running() if t != "semaforo"]
         if not running:
-            return "No process is running."
+            return "No session process is running."
         self._aborted = True
-        for tag in list(self.procs):
+        for tag in running:
             self.stop_proc(tag)
         self.t_start = None
         self.add_log(f"[system] Processes aborted manually: {', '.join(running)}", "err")
-        self.btn.update(check=True, abort_chk=False, abort_ses=False, stop=False, start=self.btn["ok"])
-        if "pipeline" in running or "behavior" in running:
-            self.session_aborted = True
+        self.btn.update(abort_ses=False, stop=False, start=True)
+        self.session_aborted = True
         return None
 
-    def start_check(self, p):
-        self.params.update({k: str(p[k]) for k in ("name", "sid", "chk_s") if k in p})
-        self._aborted = False
-        self.btn.update(check=False, ok=False, start=False, abort_chk=True)
-        self.check_lbl = (f"Verifying ({self.params['chk_s']} s)…", "")
-        self.log.clear()
-        self.emit("clear", None)
-        self.launch("check", ["check_lsl_stream.py", "--name", self.params["name"], "--source-id",
-                              self.params["sid"], "--seconds", self.params["chk_s"]])
+    def start_monitor(self, p):
+        self.params.update({k: str(p[k]) for k in ("name", "sid") if k in p})
+        self._mon_stopped = False
+        self.btn.update(mon=False, mon_stop=True)
+        self.chan = {}
+        self.mon_lbl = ("Looking for the stream…", "")
+        self.launch("semaforo", ["semaforo_canales.py", "--name", self.params["name"], "--source-id", self.params["sid"]])
 
-    def check_ok(self):
-        self.check_lbl = ("Verification accepted", "ok")
-        self.btn["start"] = True
+    def stop_monitor(self):
+        self._mon_stopped = True  # kill() da código ≠ 0: no es un fallo
+        self.stop_proc("semaforo")
 
     def start_session(self, p):
         self.params.update({k: str(p[k]) for k in ("name", "sid", "iaf", "dur", "per", "plan") if k in p})
@@ -264,6 +266,8 @@ class Session:
         except (ValueError, IndexError):
             return "Check IAF, duration, period and blocks (<seconds> bloque:<name>)."
         self._aborted = False
+        self.log.clear()  # el registro empieza con la sesión (el semáforo no escribe en él salvo al arrancar)
+        self.emit("clear", None)
         self.plan, self.dur, self.frozen = plan, dur, False
         self.run_dir, self.valid, self.bio, self.hist, self.ivs = None, [], {}, [], []
         self.session_aborted = False
@@ -364,14 +368,14 @@ def act(fn):
     return jsonify({"error": err})
 
 
-@app.post("/api/verificacion/iniciar")
-def verif_iniciar():
-    return act(lambda: S.start_check(request.get_json()))
+@app.post("/api/semaforo/iniciar")
+def semaforo_iniciar():
+    return act(lambda: S.start_monitor(request.get_json()))
 
 
-@app.post("/api/verificacion/ok")
-def verif_ok():
-    return act(S.check_ok)
+@app.post("/api/semaforo/detener")
+def semaforo_detener():
+    return act(S.stop_monitor)
 
 
 @app.post("/api/sesion/iniciar")

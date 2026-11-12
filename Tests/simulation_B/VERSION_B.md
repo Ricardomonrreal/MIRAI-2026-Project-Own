@@ -370,3 +370,22 @@ Mann-Whitney sobre los minutos completos). `replay_offline.eeg_blinks` usa la mi
   el pipeline no cambia. Probada con el emulador a 1366×768 y 1920×1080 sin scroll.
 - **Sin barra de bloques (10 nov):** se quitó la barra vertical de *Current block* (segmentos, marcas, franja de calibración y leyenda); quedan el bloque actual, el próximo aviso y las secciones por etapa.
 - **Resumen por etapa (10 nov):** cada etapa de *Current block*, desde que empieza, muestra las ventanas válidas (%), la Z media de θ y α en el bloque (grupos de 10 ventanas ya calibrados) y las intervenciones encendidas (L1×n…); terminada, se reduce a título + resumen. El servidor guarda `hist` = [s, Zθ, Zα, % válidas] e `ivs` = [s, nivel].
+- **Semáforo de electrodos en lugar de la verificación del stream (11 nov):** el Paso 1 de la sesión (*Stream
+  verification*, `check_lsl_stream.py`) deja de existir en el tablero web y en `sesion_aura.py`: no aportaba (el usuario
+  lo revisaba a mano y luego iniciaba igual) y el indicador de contacto de Aura.exe no es confiable. En su lugar, la
+  tarjeta *Electrodes* muestra un semáforo por canal que da `semaforo_canales.py` (inlet LSL propio; corre hasta que se
+  detiene y puede seguir durante la sesión; *Abort* de la sesión no lo cierra). Cada segundo, sobre los últimos 10 s
+  filtrados como en el pipeline (`CausalFilter` 1–40 Hz + notch; referencia promedio sin Fp1 con `AuraLSL-`):
+  σ robusto (1.4826·MAD, casi inmune a los parpadeos) y % de segmentos de 2 s > 150 µV (`PTP_UV`). **Verde** σ ≤ 15 µV
+  y ningún segmento > 150 µV; **amarillo** σ 15–25 µV o algún segmento > 150 µV; **rojo** σ > 25 µV (≈ 150 µV pico a
+  pico en 2 s), canal plano (< 0.5 µV), en el riel (−375 000 µV) o ≥ 50 % de segmentos > 150 µV (`RUIDO_FRAC`: él solo
+  invalidaría las ventanas); los 8 en rojo «no data» si no llegan muestras en 3 s. Fp1 se juzga solo por σ (sus
+  parpadeos superan 150 µV con buen contacto). Umbrales fijos, a ajustar con sesiones reales. Replay offline de los RAW:
+  13:50 → F4 rojo 63 % / amarillo 34 % (el secado del gel conocido), resto verde 63–92 %; 18:37 → **Fz rojo 100 %**
+  (σ 41 µV: la causa del 0 % de válidas), resto verde 48–75 %; 5 nov → 24–49 % rojo por canal (la pérdida de contacto
+  desde el min ~25). `python semaforo_canales.py --selftest` comprueba las reglas sin LSL. Probado en el tablero con el
+  emulador: verde en los 8, sesión con el semáforo encendido, abortar sesión (el semáforo sigue), detener semáforo y
+  pérdida del stream (8 rojos). `check_lsl_stream.py` se conserva: `find_stream()`/`find_markers()` los usa el pipeline.
+- **Scrolling de 30 min (11 nov):** el protocolo por defecto del tablero pasa a `0 bloque:baseline 120 bloque:gonogo_pre
+  300 bloque:scroll 2100 bloque:gonogo_post`, 2280 s (Baseline 2 min → Go/NoGo pre 3 min → Scrolling 30 min → Go/NoGo
+  post 3 min → fin, 38 min). Solo cambian `PROTOCOL_PLAN` / `PROTOCOL_DUR` de `sesion_aura_web.py`.

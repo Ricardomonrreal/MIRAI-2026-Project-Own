@@ -1,17 +1,17 @@
-# Graph Report - Project  (2026-11-10)
+# Graph Report - Project  (2026-11-11)
 
 ## Corpus Check
-- 38 files · ~155,357 words
+- 39 files · ~156,994 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 11 file(s) not represented in the graph (top: .bat 3, (none) 2, .pptx 2)
 
 ## Summary
-- 1033 nodes · 1771 edges · 97 communities (58 shown, 39 thin omitted)
+- 1041 nodes · 1795 edges · 97 communities (59 shown, 38 thin omitted)
 - Extraction: 93% EXTRACTED · 7% INFERRED · 0% AMBIGUOUS · INFERRED: 122 edges (avg confidence: 0.86)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `389dfe61`
+- Built from commit: `390fede7`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -19,7 +19,7 @@
 - EEGViewer
 - 3. Contenido nuevo de la presentación (v2)
 - calibration.py
-- os
+- session
 - H1 ds007537 trajectories figure (tonic evolution and arousal markers, mean +/- SE)
 - simulation/realtime_pipeline.py
 - h1_ds007537.py
@@ -28,13 +28,13 @@
 - 3. Explicación diapositiva por diapositiva
 - h1_svrec.py
 - Own Experiment (scrolling vs documentary, 45-60 min, Go/NoGo)
-- scipy
-- simulation/replay_offline.py
+- simulation_B/spectral_features.py
+- time
 - SessionApp
 - h1b_cao2019.py
-- simulation_B/mock_lsl_streamer.py
+- sys
 - Demo_processing.py
-- time
+- run_simulation.py
 - README: Plataforma Neuroadaptativa AR y procesamiento EEG
 - Protocolo_Simulacion_Pipeline.md
 - VERSION_B.md
@@ -43,19 +43,19 @@
 - Resumen de sesión MIRAI 2026 (19-21 oct)
 - Project Proposal v1: Closed-Loop Neuroadaptive VR Platform for Dopamine Scrolling
 - BlinkCounter
-- simulation_B/replay_offline.py
+- Session
 - Plataforma Neuroadaptativa en Realidad Aumentada (AR) y Procesamiento de Señales EEG
 - JITAI Intervention Ladder (Cue / Friction / Pause)
 - Reporte H1 ds007537
 - Reporte_H1_SVRec.md
-- sys
+- simulation/mock_lsl_streamer.py
 - Análisis del Scope v2 y guía de cambios
 - 4. Pasos a seguir
 - Proposal presentation v2 structure (AR title)
 - Scope Dopamine Scrolling: biomarcadores de fatiga cognitiva y control inhibitorio
-- specparam periodic/aperiodic decomposition
+- Cortical disengagement (functional inhibition of visual cortex)
 - Phasic frontal-midline theta (NoGo-evoked, Fz/FCz)
-- Guia_Canales_y_Datasets.md
+- Guía de Uso: Nuevos Canales, Modulación Automática y Datasets EEG
 - Reporte H1 · EEG-SVRec (Fase C)
 - simulation_B/test_realtime_pipeline.py
 - Offline equivalence vs h1_por_minuto.csv (ds007537 sub-01): alpha_per r=0.938 PASA
@@ -64,7 +64,7 @@
 - cao_reporte.txt (Cao 2019 positive control output)
 - CausalFilter
 - sesion_aura_web.py
-- Rejector
+- main
 - requirements.txt (simulation_B)
 - CLAUDE.md
 - .refresh_biomarkers
@@ -75,24 +75,24 @@
 - Diagrama_Pipeline.md
 - Windower
 - Configuración de la AURA para MIRAI 2026
-- pylsl
+- argparse
 - periodic
 - numpy
-- Versión B — criterio de detección del Paso 3 precisado (29 oct 2026)
-- Cortical disengagement (functional inhibition of visual cortex)
+- semaforo_canales.py
+- Guia_Canales_y_Datasets.md
 - Plan_Avances.md
 - MIRAI 2026 · ¿La literatura sostiene las hipótesis originales? (22 oct 2026)
 - sesion_aura.py
-- Features
-- phasic
+- scipy
+- Protocolo Técnico de Simulación y Pipeline en Tiempo Real (MIRAI 2026)
 
 ## God Nodes (most connected - your core abstractions)
 1. `Progress Report: Closed-Loop Neuroadaptive AR Platform for Scrolling` - 24 edges
 2. `Análisis del Scope v2 y guía de cambios` - 24 edges
 3. `EEGViewer` - 23 edges
-4. `SessionApp` - 20 edges
-5. `Session` - 20 edges
-6. `Project Proposal v1: Closed-Loop Neuroadaptive VR Platform for Dopamine Scrolling` - 19 edges
+4. `Session` - 20 edges
+5. `Project Proposal v1: Closed-Loop Neuroadaptive VR Platform for Dopamine Scrolling` - 19 edges
+6. `SessionApp` - 18 edges
 7. `README: Plataforma Neuroadaptativa AR y procesamiento EEG` - 18 edges
 8. `main()` - 17 edges
 9. `Reporte H1 ds007537` - 15 edges
@@ -129,7 +129,7 @@
 - **Tonic theta up, phasic theta preserved under fatigue** — tests_datasets_workflow_cao2019_results_cao_fasico_curso_phasic_theta, tests_datasets_workflow_cao2019_results_cao_fasico_curso_tonic_theta, tests_datasets_workflow_cao2019_results_cao_fasico_curso_fast_vs_slow_trials, tests_datasets_workflow_cao2019_results_cao_fasico_curso_baseline_normalization_artifact [INFERRED 0.85]
 - **Spectral parametrization: periodic alpha, periodic theta, aperiodic exponent** — tests_datasets_workflow_eeg_svrec_results_svrec_trayectorias_periodic_alpha, tests_datasets_workflow_eeg_svrec_results_svrec_trayectorias_periodic_theta, tests_datasets_workflow_eeg_svrec_results_svrec_trayectorias_aperiodic_exponent [INFERRED 0.85]
 
-## Communities (97 total, 39 thin omitted)
+## Communities (97 total, 38 thin omitted)
 
 ### Community 0 - "EEGViewer"
 Cohesion: 0.18
@@ -140,12 +140,12 @@ Cohesion: 0.06
 Nodes (33): 0. Estado actual de `/Tests`, 1. Objetivo central 1: datasets EEG de scrolling / video corto, 2.1 Veredicto general, 2.2 Qué está bien sustentado ✅, 2.3 Qué hay que corregir ⚠️, 2.4 Implicaciones para `Demo_processing.py`, 2. Objetivo central 2: revisión de la teoría, 3. Contenido nuevo de la presentación (v2) (+25 more)
 
 ### Community 2 - "calibration.py"
-Cohesion: 0.09
-Nodes (12): 🏗️ 1. Arquitectura del Lazo Cerrado Simulado, 📋 2. Pasos de Implementación y Validación Técnica, 📁 3. Estructura de Código a Implementar, Flujo actual (28 oct 2026: Paso 1 implementado), 🗺️ Flujo actual y flujo esperado (qué archivos se ejecutan), Flujo esperado (Pasos 2–7), Protocolo Técnico de Simulación y Pipeline en Tiempo Real (MIRAI 2026), [x] Paso 1: Emulador de Hardware y Transmisión LSL (`mock_lsl_streamer.py`) — implementado 28 oct 2026 (+4 more)
+Cohesion: 0.13
+Nodes (4): bad_channels(), Calibration, iaf_from(), rho_sum()
 
-### Community 3 - "os"
-Cohesion: 0.16
-Nodes (8): lapse_fraction(), measures(), reaction_times(), session(), download(), process_all(), fetch(), remote_files()
+### Community 3 - "session"
+Cohesion: 0.13
+Nodes (9): lapse_fraction(), measures(), phasic(), reaction_times(), session(), download(), process_all(), fetch() (+1 more)
 
 ### Community 4 - "H1 ds007537 trajectories figure (tonic evolution and arousal markers, mean +/- SE)"
 Cohesion: 0.13
@@ -153,7 +153,7 @@ Nodes (26): Cao 2019 sustained driving EEG dataset, H1b Cao 2019 Trajectories Fi
 
 ### Community 5 - "simulation/realtime_pipeline.py"
 Cohesion: 0.11
-Nodes (6): blink_report(), CausalFilter, main(), open_run(), Rejector, Windower
+Nodes (5): blink_report(), CausalFilter, main(), Rejector, Windower
 
 ### Community 6 - "h1_ds007537.py"
 Cohesion: 0.19
@@ -165,43 +165,39 @@ Nodes (25): 10. Próximos pasos, 11. Archivos, 1. Resumen, 2. Hipótesis evaluad
 
 ### Community 8 - "simulation_B/realtime_pipeline.py"
 Cohesion: 0.15
-Nodes (6): blink_blocks(), blink_match(), blink_report(), main(), open_run(), write_report_md()
+Nodes (4): blink_report(), mem_mb(), open_run(), write_report_md()
 
 ### Community 9 - "3. Explicación diapositiva por diapositiva"
 Cohesion: 0.09
 Nodes (23): 0. La idea en 30 segundos (apréndela de memoria), 10 · System Pipeline, 11 · Robust to Negative Results — **la diapositiva más importante para defender el proyecto**, 12 · Gantt, 13 · Next Steps, 14 · References, 1. Conceptos clave (glosario para no confundirte), 1 · Portada — *Closed-Loop Neuroadaptive AR Platform for Dopamine Scrolling* (+15 more)
 
 ### Community 10 - "h1_svrec.py"
-Cohesion: 0.11
+Cohesion: 0.13
 Nodes (12): across(), epochs_psd(), holm(), load_session(), main(), measures(), per_video(), plot() (+4 more)
 
 ### Community 11 - "Own Experiment (scrolling vs documentary, 45-60 min, Go/NoGo)"
 Cohesion: 0.20
 Nodes (9): EEG-SVRec Dataset (n=25, short video), OSF Preregistration, Own Experiment (scrolling vs documentary, 45-60 min, Go/NoGo), TOST / Bayes Factors, Zhang et al. 2024 (EEG-SVRec, SIGIR '24), Hopstaken et al. 2015 (reward reverses fatigue), Marcora et al. 2009 (neutral documentary control), Nguyen et al. 2025 (short video ~ inhibitory control r=-.41) (+1 more)
 
-### Community 12 - "scipy"
-Cohesion: 0.13
-Nodes (7): band_per(), bands(), Features, fit_roi(), window_psd(), Paso 5 — calibración congelada (30 oct), window_psd()
+### Community 12 - "simulation_B/spectral_features.py"
+Cohesion: 0.11
+Nodes (12): band_per(), bands(), Features, fit_roi(), window_psd(), Comparación A frente a B con el Paso 4 (29 oct), Hallazgo que motivó el ajuste, Paso 5 — calibración congelada (30 oct) (+4 more)
 
-### Community 13 - "simulation/replay_offline.py"
-Cohesion: 0.17
-Nodes (5): eeg_blinks(), equivalence(), et_blinks(), main(), score()
+### Community 13 - "time"
+Cohesion: 0.10
+Nodes (11): eeg_blinks(), equivalence(), et_blinks(), main(), score(), open_run(), eeg_blinks(), equivalence() (+3 more)
 
 ### Community 15 - "h1b_cao2019.py"
-Cohesion: 0.23
+Cohesion: 0.17
 Nodes (7): analyse(), epochs(), main(), phasic_report(), plot(), plot_curve(), report()
 
-### Community 16 - "simulation_B/mock_lsl_streamer.py"
-Cohesion: 0.15
+### Community 16 - "sys"
+Cohesion: 0.16
 Nodes (10): add_blink(), inject(), load_aura_csv(), load_file(), load_source(), main(), make_outlet(), montage_1005() (+2 more)
 
 ### Community 17 - "Demo_processing.py"
 Cohesion: 0.15
 Nodes (6): bids_downloaded(), draw_electrode_map(), is_bids(), numeric_sort_key(), preprocess(), repair_artifacts()
-
-### Community 18 - "time"
-Cohesion: 0.33
-Nodes (3): main(), latest_report(), main()
 
 ### Community 19 - "README: Plataforma Neuroadaptativa AR y procesamiento EEG"
 Cohesion: 0.16
@@ -231,9 +227,9 @@ Nodes (16): Drowsiness control with KSS and time of day, OpenNeuro ds007537 (Mis
 Cohesion: 0.15
 Nodes (14): 12-week Gantt (F1-F8), Sharpe & Spooner (2025) Dopamine-scrolling public health, Ahmed (2019) Gen Z smartphone and social media survey, Four-phase development plan and 11-week Gantt, Project Proposal v1: Closed-Loop Neuroadaptive VR Platform for Dopamine Scrolling, Innovation factor v1: closed-loop therapeutic intervention in immersive VR, Digital mental health market ($45B by 2030; 83% Gen Z), Neuroadaptive VR with Focus Index EEG feedback (ISMAR NeuroXR) (+6 more)
 
-### Community 27 - "simulation_B/replay_offline.py"
+### Community 27 - "Session"
 Cohesion: 0.17
-Nodes (5): eeg_blinks(), equivalence(), et_blinks(), main(), score()
+Nodes (3): en(), Session, launch_pipeline()
 
 ### Community 28 - "Plataforma Neuroadaptativa en Realidad Aumentada (AR) y Procesamiento de Señales EEG"
 Cohesion: 0.13
@@ -248,11 +244,11 @@ Cohesion: 0.23
 Nodes (6): Reporte H1 ds007537, AURA montage (Pz, O1, O2), Periodic posterior alpha (dB over 1/f), Tran et al. 2020 - Mental fatigue meta-analysis, Wascher et al. 2014 - Frontal theta and mental fatigue, h1_reporte.txt (ds007537 statistics output)
 
 ### Community 31 - "Reporte_H1_SVRec.md"
-Cohesion: 0.25
-Nodes (5): EEG-SVRec dataset (Zhang et al., SIGIR 2024), Periodic alpha ~ immersion/arousal per video (engagement state marker), Within-session slopes (primary, Holm): alpha down, theta up, both fragile, Zhang et al. 2024 (SIGIR) - EEG-SVRec, svrec_reporte.txt (EEG-SVRec statistics output)
+Cohesion: 0.22
+Nodes (6): EEG-SVRec dataset (Zhang et al., SIGIR 2024), Periodic alpha ~ immersion/arousal per video (engagement state marker), Phase D (own experiment with control condition and AURA montage), Within-session slopes (primary, Holm): alpha down, theta up, both fragile, Zhang et al. 2024 (SIGIR) - EEG-SVRec, svrec_reporte.txt (EEG-SVRec statistics output)
 
-### Community 32 - "sys"
-Cohesion: 0.18
+### Community 32 - "simulation/mock_lsl_streamer.py"
+Cohesion: 0.17
 Nodes (9): add_blink(), inject(), load_aura_csv(), load_file(), main(), make_outlet(), montage_1005(), stream() (+1 more)
 
 ### Community 33 - "Análisis del Scope v2 y guía de cambios"
@@ -271,17 +267,17 @@ Nodes (11): Competitor analysis v2 (app blockers, one sec, Muse), Friction / age
 Cohesion: 0.25
 Nodes (11): Ego depletion / resource-depletion model (failed replication, Hagger 2016), Frontal Alpha Asymmetry (FAA, exploratory approach-motivation index), Harmon-Jones & Gable (2018) frontal asymmetry motivation, Opportunity cost model of effort (Kurzban et al., 2013), Posterior alpha rises with accumulated fatigue (O1, O2, Pz), Scope Dopamine Scrolling: biomarcadores de fatiga cognitiva y control inhibitorio, FAA as inferred gratification 'hook' (left < right frontal alpha), Joint biomarker evolution and inhibitory-control collapse zone (+3 more)
 
-### Community 37 - "specparam periodic/aperiodic decomposition"
-Cohesion: 0.29
-Nodes (4): Posterior aperiodic 1/f exponent, Donoghue et al. 2020 - Parameterizing neural power spectra, Gao, Peterson & Voytek 2017 - E/I balance from field potentials, Periodic frontal theta Fz/FCz (dB over 1/f)
+### Community 37 - "Cortical disengagement (functional inhibition of visual cortex)"
+Cohesion: 0.18
+Nodes (8): Alternative explanations: fatigue, habituation, mind wandering, time-on-task, Posterior aperiodic 1/f exponent, Cortical disengagement (functional inhibition of visual cortex), Donoghue et al. 2020 - Parameterizing neural power spectra, Gao, Peterson & Voytek 2017 - E/I balance from field potentials, Jensen & Mazaheri 2010 - Gating by inhibition, Klimesch et al. 2007 - Alpha inhibition-timing hypothesis, Periodic frontal theta Fz/FCz (dB over 1/f)
 
 ### Community 38 - "Phasic frontal-midline theta (NoGo-evoked, Fz/FCz)"
 Cohesion: 0.22
 Nodes (9): Cavanagh & Frank (2014) frontal theta cognitive control, Experimental validation plan (35 min scrolling vs documentary), H2 phasic inhibition hypothesis, H3 tonic-phasic dissociation hypothesis, Pre/post Go/NoGo or Stop-Signal inhibitory probe, Nigbur et al. (2011) theta and cognitive interference, Phasic frontal-midline theta (NoGo-evoked, Fz/FCz), Embedded Scroll-NoGo web feed with LSL markers (+1 more)
 
-### Community 39 - "Guia_Canales_y_Datasets.md"
-Cohesion: 0.14
-Nodes (15): 1. Canales Objetivo y su Función Neurocientífica, 2. Modulación Automática de Canales, 3. Representación Visual del Montaje 10-20 en la Interfaz, 4. Cómo Buscar y Limpiar Nuevos Datasets, A. Para los archivos actuales de Stroop (`raw_data/Stroop_Data`):, B. Para nuevos datasets limpios (6 canales o con encabezados):, Dónde buscar:, 10-20 electrode map tab in Demo_processing (+7 more)
+### Community 39 - "Guía de Uso: Nuevos Canales, Modulación Automática y Datasets EEG"
+Cohesion: 0.22
+Nodes (9): 1. Canales Objetivo y su Función Neurocientífica, 2. Modulación Automática de Canales, 3. Representación Visual del Montaje 10-20 en la Interfaz, 4. Cómo Buscar y Limpiar Nuevos Datasets, A. Para los archivos actuales de Stroop (`raw_data/Stroop_Data`):, B. Para nuevos datasets limpios (6 canales o con encabezados):, Dónde buscar:, Guía de Uso: Nuevos Canales, Modulación Automática y Datasets EEG (+1 more)
 
 ### Community 40 - "Reporte H1 · EEG-SVRec (Fase C)"
 Cohesion: 0.22
@@ -307,13 +303,17 @@ Nodes (6): Cao 2019 Phasic Theta Time Course (fast vs slow trials), Relative-bas
 Cohesion: 0.53
 Nodes (6): cao_reporte.txt (Cao 2019 positive control output), EEG-behavior coupling (Spearman rho per window), Uncorrected-deviation lapse fraction, log10 reaction time behavioral fatigue (primary, Holm p=0.86, null), Phasic theta ERSP at deviation onset, Periodic theta Fz/FCz rises (primary, Holm p=0.034)
 
-### Community 48 - "sesion_aura_web.py"
-Cohesion: 0.07
-Nodes (16): abortar(), act(), check_token(), en(), estado(), eventos(), index(), keep_token() (+8 more)
-
-### Community 50 - "Rejector"
+### Community 47 - "CausalFilter"
 Cohesion: 0.25
-Nodes (4): emit_jitai(), on_window(), mem_mb(), Rejector
+Nodes (3): blink_gain(), CausalFilter, Qué cambia
+
+### Community 48 - "sesion_aura_web.py"
+Cohesion: 0.11
+Nodes (13): abortar(), act(), check_token(), estado(), eventos(), index(), keep_token(), reporte_abrir() (+5 more)
+
+### Community 50 - "main"
+Cohesion: 0.20
+Nodes (6): blink_blocks(), blink_match(), main(), emit_jitai(), on_window(), Rejector
 
 ### Community 51 - "requirements.txt (simulation_B)"
 Cohesion: 0.83
@@ -335,25 +335,25 @@ Nodes (6): ds007537 Dataset (n=27, 10 min smartphone), Mishra, Gandhi & Gandhi 2
 Cohesion: 0.33
 Nodes (6): 1. Ajustes de la interfaz (de arriba a abajo), 2. Verificación del stream (antes de cada sesión), 3. Prueba rápida de calidad: efecto Berger (2 min), 4. Lo que muestra el CSV de prueba (enero 2026, configuración desconocida), 5. Replay del CSV con el emulador, Configuración de la AURA para MIRAI 2026
 
-### Community 81 - "pylsl"
-Cohesion: 0.21
-Nodes (8): channel_meta(), find_markers(), find_stream(), main(), channel_meta(), find_markers(), find_stream(), main()
+### Community 81 - "argparse"
+Cohesion: 0.18
+Nodes (9): main(), channel_meta(), find_markers(), find_stream(), main(), channel_meta(), find_markers(), find_stream() (+1 more)
 
 ### Community 82 - "periodic"
-Cohesion: 0.20
-Nodes (9): iaf(), periodic(), 1. Contexto del proyecto, 2. Revisión del protocolo (problemas detectados, aún sin corregir en Pasos 2–7), 3. Paso 1 — HECHO, 4. Análisis del CSV real de AURA (`eeg_data_20260122_123839.csv`) — PRELIMINAR, interrumpido, 5. Herramientas, Handoff: sesión Cowork → Claude Code (MIRAI 2026, 28 oct 2026) (+1 more)
+Cohesion: 0.17
+Nodes (11): iaf(), periodic(), 1. Contexto del proyecto, 2. Revisión del protocolo (problemas detectados, aún sin corregir en Pasos 2–7), 3. Paso 1 — HECHO, 4. Análisis del CSV real de AURA (`eeg_data_20260122_123839.csv`) — PRELIMINAR, interrumpido, 5. Herramientas, Handoff: sesión Cowork → Claude Code (MIRAI 2026, 28 oct 2026) (+3 more)
 
 ### Community 83 - "numpy"
-Cohesion: 0.21
-Nodes (8): band_db(), clean(), detect_blinks(), epoch_psd(), et_window(), eyetrack(), preprocess(), subject()
+Cohesion: 0.17
+Nodes (9): band_db(), clean(), detect_blinks(), epoch_psd(), et_window(), eyetrack(), preprocess(), subject() (+1 more)
 
-### Community 84 - "Versión B — criterio de detección del Paso 3 precisado (29 oct 2026)"
-Cohesion: 0.22
-Nodes (8): blink_gain(), Comparación A frente a B con el Paso 4 (29 oct), Hallazgo que motivó el ajuste, Prueba en vivo (29 oct, 10 min de uno en uno, tren de parpadeos de 30 s en el minuto 5), Qué cambia, Resultados offline (600 s sintéticos, ~15 parpadeos/min), Sin veto EMG y ajuste 2–30 Hz (29 oct, tarde), Versión B — criterio de detección del Paso 3 precisado (29 oct 2026)
+### Community 84 - "semaforo_canales.py"
+Cohesion: 0.31
+Nodes (3): main(), selftest(), semaforo()
 
-### Community 88 - "Cortical disengagement (functional inhibition of visual cortex)"
-Cohesion: 0.33
-Nodes (5): Alternative explanations: fatigue, habituation, mind wandering, time-on-task, Cortical disengagement (functional inhibition of visual cortex), Jensen & Mazaheri 2010 - Gating by inhibition, Klimesch et al. 2007 - Alpha inhibition-timing hypothesis, Phase D (own experiment with control condition and AURA montage)
+### Community 88 - "Guia_Canales_y_Datasets.md"
+Cohesion: 0.38
+Nodes (6): 10-20 electrode map tab in Demo_processing, Frontal Alpha Asymmetry FAA = ln(alpha_F4) - ln(alpha_F3), load_eeg automatic channel modulation, MNE script exporting 6-channel CSV at 250 Hz, 6 target channels (Fz, F3, F4, Pz, O1, O2), Stroop dataset (OpenBCI Cyton 8 channels)
 
 ### Community 92 - "Plan_Avances.md"
 Cohesion: 0.16
@@ -363,6 +363,10 @@ Nodes (9): 1. Cambios de la semana pasada (2–8 nov), 2. ¿Cuántas pruebas hac
 Cohesion: 0.25
 Nodes (8): 1. Theta y alfa tónicos aumentan con el tiempo en tarea → **respaldado**, 2. Theta fásico ↓ con fatiga (control inhibitorio) → **respaldo moderado, literatura mixta**, 3. Matices que explican tus resultados (y que la teoría ya predecía), 4. ¿Aplica al scrolling? → **plausible, pero es el hueco de la literatura**, 5. Contraste con tus resultados, 6. Corrección a la reformulación v3, 7. Referencias (verificar páginas/DOI antes de citar en la propuesta), MIRAI 2026 · ¿La literatura sostiene las hipótesis originales? (22 oct 2026)
 
+### Community 96 - "Protocolo Técnico de Simulación y Pipeline en Tiempo Real (MIRAI 2026)"
+Cohesion: 0.33
+Nodes (6): 🏗️ 1. Arquitectura del Lazo Cerrado Simulado, 📁 3. Estructura de Código a Implementar, Flujo actual (28 oct 2026: Paso 1 implementado), 🗺️ Flujo actual y flujo esperado (qué archivos se ejecutan), Flujo esperado (Pasos 2–7), Protocolo Técnico de Simulación y Pipeline en Tiempo Real (MIRAI 2026)
+
 ## Ambiguous Edges - Review These
 - `Posterior Broadband 20-45 Hz Elevation (sub 02)` → `Pilot Raw PSD Spectra (EEG-SVRec sub 07 & sub 02)`  [AMBIGUOUS]
   Tests/datasets workflow/EEG-SVRec/results/piloto_espectros.png · relation: references
@@ -371,23 +375,23 @@ Nodes (8): 1. Theta y alfa tónicos aumentan con el tiempo en tarea → **respal
 
 ## Knowledge Gaps
 - **208 isolated node(s):** `graphify`, `1. Cambios de la semana pasada (2–8 nov)`, `2. ¿Cuántas pruebas hacen falta?`, `3. ¿Conviene usar regresión para dar más fuerza a la validación?`, `Diagrama de flujo del pipeline (versión B, 2 nov 2026)` (+203 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 448 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
-- **39 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 452 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **38 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
 - **What is the exact relationship between `Posterior Broadband 20-45 Hz Elevation (sub 02)` and `Pilot Raw PSD Spectra (EEG-SVRec sub 07 & sub 02)`?**
   _Edge tagged AMBIGUOUS (relation: references) - confidence is low._
-- **Why does `Reporte H1 ds007537` connect `Reporte H1 ds007537` to `h1_ds007537.py`, `Reporte H1 · Validación en OpenNeuro ds007537`, `Offline equivalence vs h1_por_minuto.csv (ds007537 sub-01): alpha_per r=0.938 PASA`, `VERSION_B.md`, `Cortical disengagement (functional inhibition of visual cortex)`, `Reporte_H1_SVRec.md`?**
-  _High betweenness centrality (0.069) - this node is a cross-community bridge._
+- **Why does `Reporte H1 ds007537` connect `Reporte H1 ds007537` to `Cortical disengagement (functional inhibition of visual cortex)`, `h1_ds007537.py`, `Reporte H1 · Validación en OpenNeuro ds007537`, `Offline equivalence vs h1_por_minuto.csv (ds007537 sub-01): alpha_per r=0.938 PASA`, `VERSION_B.md`, `Reporte_H1_SVRec.md`?**
+  _High betweenness centrality (0.063) - this node is a cross-community bridge._
 - **What connects `graphify`, `1. Cambios de la semana pasada (2–8 nov)`, `2. ¿Cuántas pruebas hacen falta?` to the rest of the system?**
   _208 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `3. Contenido nuevo de la presentación (v2)` be split into smaller, more focused modules?**
   _Cohesion score 0.05714285714285714 - nodes in this community are weakly interconnected._
 - **What is the exact relationship between `H1 (fatigue via theta/alpha)` and `H1 EEG-SVRec Trajectories Figure (within/between sessions)`?**
   _Edge tagged AMBIGUOUS (relation: rationale_for) - confidence is low._
-- **Why does `Reporte H1 · Validación en OpenNeuro ds007537` connect `Reporte H1 · Validación en OpenNeuro ds007537` to `Reporte H1 ds007537`?**
-  _High betweenness centrality (0.048) - this node is a cross-community bridge._
+- **Why does `SessionApp` connect `SessionApp` to `sesion_aura.py`?**
+  _High betweenness centrality (0.047) - this node is a cross-community bridge._
 - **Should `calibration.py` be split into smaller, more focused modules?**
-  _Cohesion score 0.08620689655172414 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.12857142857142856 - nodes in this community are weakly interconnected._

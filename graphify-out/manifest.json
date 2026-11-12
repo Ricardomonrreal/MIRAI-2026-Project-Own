@@ -60,9 +60,9 @@
     "semantic_hash": "d96e229b35a6c3dff6f2f6269bf277ea"
   },
   "Tests/Protocolo_Simulacion_Pipeline.md": {
-    "mtime": 1793948223.10401,
-    "seen": 1793948239.6084316,
-    "ast_hash": "7254e124b47218aa8eae771e6579693f",
+    "mtime": 1794377811.3929563,
+    "seen": 1794377822.7537124,
+    "ast_hash": "9a828b85cd260ce6361e565518ff1879",
     "semantic_hash": ""
   },
   "Tests/datasets workflow/Cao2019/results/cao_reporte.txt": {
@@ -156,9 +156,9 @@
     "semantic_hash": "dafceb92be1f2884a0bed6bcbd5c9abf"
   },
   "Tests/AURA_Configuracion.md": {
-    "mtime": 1793937552.1919167,
-    "seen": 1793937569.5383372,
-    "ast_hash": "5a42de1c65872a7d5941608d4f21e050",
+    "mtime": 1794377803.8745635,
+    "seen": 1794377822.7536926,
+    "ast_hash": "c6be7d385286e331261f39159db10e63",
     "semantic_hash": ""
   },
   "Tests/HANDOFF_Claude_Code.md": {
@@ -240,9 +240,9 @@
     "semantic_hash": ""
   },
   "Tests/simulation_B/VERSION_B.md": {
-    "mtime": 1794299712.3656893,
-    "seen": 1794299719.245801,
-    "ast_hash": "6308b76c66e4e414e4d604f99a603e70",
+    "mtime": 1794377803.8735595,
+    "seen": 1794377822.7537405,
+    "ast_hash": "2375a8abc14b27b4614836e4d400b963",
     "semantic_hash": ""
   },
   "Tests/simulation_B/requirements.txt": {
@@ -288,15 +288,15 @@
     "semantic_hash": ""
   },
   "Tests/simulation_B/sesion_aura.py": {
-    "mtime": 1794203880.304149,
-    "seen": 1794203900.1557806,
-    "ast_hash": "3db8209b060dd1b6f4bbba4ebb3c9321",
+    "mtime": 1794377760.8083663,
+    "seen": 1794377822.7536619,
+    "ast_hash": "2b9176bf80f78dde4c9aac3ad48a92d9",
     "semantic_hash": ""
   },
   "Tests/simulation_B/sesion_aura_web.py": {
-    "mtime": 1794299451.4148324,
-    "seen": 1794299719.2457256,
-    "ast_hash": "30836028b732f58335417d5de0439f2c",
+    "mtime": 1794377425.2083292,
+    "seen": 1794377822.7536662,
+    "ast_hash": "bf674b03286229247cfba0f77f0fc272",
     "semantic_hash": ""
   },
   "Tests/Analisis_Semana_Muestra_Regresion.md": {
@@ -306,9 +306,15 @@
     "semantic_hash": ""
   },
   "Tests/simulation_B/web/sesion_aura.html": {
-    "mtime": 1794299475.8757665,
-    "seen": 1794299719.2458072,
-    "ast_hash": "3b6bc8fff8112e50f7aa3acd1231dfce",
+    "mtime": 1794377590.5859506,
+    "seen": 1794377822.7537467,
+    "ast_hash": "1f2bfaeaec88d930bd804b15a5cf6ef0",
+    "semantic_hash": ""
+  },
+  "Tests/simulation_B/semaforo_canales.py": {
+    "mtime": 1794377345.6937268,
+    "seen": 1794377822.7536573,
+    "ast_hash": "0ff016e51a1e6e29906f6e79de6a45b7",
     "semantic_hash": ""
   }
 }

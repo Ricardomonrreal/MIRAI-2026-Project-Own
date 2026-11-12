@@ -27,22 +27,22 @@ Guía para que la diadema AURA (software v1.2.x / instalador 2.0.1) entregue EEG
 > se aplican al stream. Hay que comprobarlo (§2, paso 4): si se aplican, el bandpass 15–50 Hz arruinaría también
 > los datos del pipeline.
 
-## 2. Verificación del stream (antes de cada sesión)
+## 2. Semáforo de electrodos (antes de cada sesión)
 
-Requiere `pip install -r Tests/simulation/requirements.txt` (incluye `pylsl`).
+*11 nov 2026: reemplaza la verificación del stream con `check_lsl_stream.py`, que ya no forma parte de la sesión. El
+indicador de contacto de Aura.exe no es confiable: el semáforo mide cada canal con el filtro y el umbral del pipeline.*
 
-1. Conectar la AURA, contacto en azul (GOOD) en todos los canales y REF, marcar *LSL Stream Out*.
-2. En otra terminal:
-   ```bash
-   python Tests/simulation/check_lsl_stream.py --name AURA --source-id AuraLSL- --seconds 120
-   ```
-3. Anotar del reporte:
-   - **`nominal ... Hz`**: la frecuencia real del stream. Esperado 250 Hz; el CSV de prueba está a **50 Hz** (ver §4).
-   - **Canales/unidades**: etiquetas y si vienen en µV.
-   - **Huecos / marcas monótonas / deriva**: deben pasar como con el emulador.
-   - **RMS por canal**: 5–50 µV en canales buenos; ~0 = canal muerto; > 200 = mal contacto.
-4. **¿Los filtros de la UI llegan al stream?** Repetir el paso 2 con el bandpass en 15–50 Hz y luego en la opción
-   más amplia. Si el RMS de O1/O2 cambia mucho, los filtros sí se aplican al stream → usar siempre la opción más amplia.
+1. Conectar la AURA, gel en todos los canales y REF, marcar *LSL Stream Out*.
+2. En el tablero (`Tests/simulation_B/servidor_web.bat`), tarjeta **Electrodes** → *Start monitor* (stream `AURA`,
+   prefijo `AuraLSL-`). Sin tablero: `python Tests/simulation_B/semaforo_canales.py --name AURA --source-id AuraLSL-`.
+3. Cada canal muestra σ (µV, últimos 10 s filtrados 1–40 Hz + notch, ref. promedio) y % de segmentos de 2 s > 150 µV:
+   - **Verde**: σ ≤ 15 µV y ningún segmento > 150 µV → listo.
+   - **Amarillo**: σ 15–25 µV o algún segmento > 150 µV → revisar gel/contacto si hay tiempo.
+   - **Rojo**: σ > 25 µV, plano, desconectado (riel) o ≥ 50 % de segmentos > 150 µV → corregir antes de empezar
+     (en la ROI θ —Fz, Cz— o α —Pz, O1, O2— invalida las ventanas). Fp1 se juzga solo por σ (parpadeos).
+4. El semáforo puede quedar encendido durante la sesión para ver si un electrodo se degrada.
+5. **¿Los filtros de la UI llegan al stream?** Cambiar el bandpass de la UI entre 15–50 Hz y la opción más amplia con
+   el semáforo encendido: si la σ de O1/O2 cambia mucho, los filtros sí se aplican → usar siempre la más amplia.
 
 **Lo que publica Aura.exe por LSL** (visto el 28 oct con el software abierto y *sin* diadema): `AURA` (EEG, 8 ch,
 float32, **250 Hz nominal**, sin etiquetas de canal en los metadatos), `AURA_Filtered` (8 ch, 250 Hz; presumiblemente

@@ -303,8 +303,8 @@ def load_source(source, fs, start, duration, ref, line_freq, iaf, seed, specs):
 
 
 # --------------------------------------------------------------------------- LSL
-def make_outlet(name, fs, meta):
-    info = pylsl.StreamInfo(name, "EEG", len(AURA_CHANNELS), fs, pylsl.cf_float32, f"mirai-sim-{name}")
+def make_outlet(name, fs, meta, sid):
+    info = pylsl.StreamInfo(name, "EEG", len(AURA_CHANNELS), fs, pylsl.cf_float32, sid)
     d = info.desc()
     d.append_child_value("manufacturer", "MIRAI-2026 mock_lsl_streamer")
     for k, v in meta.items():
@@ -318,10 +318,11 @@ def make_outlet(name, fs, meta):
     return pylsl.StreamOutlet(info, chunk_size=0, max_buffered=360)
 
 
-def stream(data, events, fs, name, chunk_ms, loop, wait, meta, verbose=False):
-    outlet = make_outlet(name, fs, meta)
+def stream(data, events, fs, name, chunk_ms, loop, wait, meta, verbose=False, sid=None):
+    sid = sid or f"mirai-sim-{name}"
+    outlet = make_outlet(name, fs, meta, sid)
     mk = pylsl.StreamOutlet(pylsl.StreamInfo(f"{name}_Markers", "Markers", 1, pylsl.IRREGULAR_RATE,
-                                             pylsl.cf_string, f"mirai-sim-{name}-markers"))
+                                             pylsl.cf_string, f"{sid}-markers"))
     events = sorted(events)
     n_total = data.shape[1]
     print(f"Stream LSL '{name}' (EEG, {len(AURA_CHANNELS)} ch, {fs:.0f} Hz, µV) + '{name}_Markers'")
@@ -403,6 +404,9 @@ def main():
     p.add_argument("--verbose", action="store_true",
                    help="imprime cada bloque enviado (muestras, tiempo del registro, ts LSL, valores) y cada marcador")
     p.add_argument("--seed", type=int, default=7)
+    # 11 nov: un replay de AURA_RAW con prefijo AuraLSL- (p. ej. AuraLSL-replay) recibe en el pipeline y el semáforo el
+    # mismo trato que Aura.exe (referencia promedio, Fp1 invertido). Distinto de AuraLSL-<fecha> para no chocar con él.
+    p.add_argument("--source-id", default=None, help="source_id del stream (por defecto mirai-sim-<nombre>)")
     a = p.parse_args()
 
     specs = []
@@ -420,7 +424,7 @@ def main():
     if np.median(rms) < 0.01 or np.median(rms) > 500:
         print("[aviso] amplitudes fuera de rango EEG: revisa unidades/referencia")
     print(f"Red: {line:.0f} Hz | eventos/marcadores: {len(events)}")
-    stream(data, events, fs, a.name, a.chunk_ms, a.loop, a.wait, meta, a.verbose)
+    stream(data, events, fs, a.name, a.chunk_ms, a.loop, a.wait, meta, a.verbose, a.source_id)
 
 
 if __name__ == "__main__":

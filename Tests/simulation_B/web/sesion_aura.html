@@ -88,6 +88,7 @@
   .btn.danger { background: var(--coral-soft); color: var(--err); }
   .btn:disabled { opacity: .38; cursor: default; }
   .note { margin-top: 12px; font-size: 13px; color: var(--muted); }
+  .row.stack { flex-direction: column; align-items: stretch; }  /* Session: botones uno bajo otro (11 nov) */
   .note.ok, .ok { color: var(--blue); } .note.err, .err { color: var(--err); } .warn { color: var(--coral); }
 
   /* ---------- cronómetro ---------- */
@@ -119,20 +120,39 @@
   .stage.cur .s b { color: var(--white); }
 
   /* ---------- biomarcadores en tiempo real (ORT) + intervención (10 nov: reemplaza a Estado) ---------- */
-  .bio { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-  .bm { background: var(--sky); border-radius: 14px; padding: 10px 12px; min-width: 0; }
+  /* 11 nov: las dos tarjetas ocupan todo el alto de Biomarkers (antes dejaban medio card vacío) */
+  .statecard { display: flex; flex-direction: column; }
+  .bio { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; flex: 1; }
+  .bm { background: var(--sky); border-radius: 14px; padding: 12px 14px; min-width: 0; display: flex;
+        flex-direction: column; }
   .bm.theta { color: var(--blue); } .bm.alpha { color: var(--coral); }
-  .bm .sym { font-size: 38px; line-height: 1; font-weight: 500; white-space: nowrap; }
-  .bm .lab { font-size: 12px; font-weight: 700; margin-top: 4px; }
-  .bm .v { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap;
+  .bm .sym { font-size: 52px; line-height: 1; font-weight: 500; white-space: nowrap; }
+  .bm .lab { font-size: 14px; font-weight: 700; margin-top: 6px; }
+  .bm .v { font-size: 14px; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap;
            overflow: hidden; text-overflow: ellipsis; }
-  .bm svg { display: block; width: 100%; height: 26px; margin-top: 4px; }
+  .bm svg { display: block; width: 100%; flex: 1; min-height: 40px; margin-top: 6px; }
   .bm polyline { fill: none; stroke: currentColor; stroke-width: 1.5; vector-effect: non-scaling-stroke; }
   .bm line { stroke: var(--line); vector-effect: non-scaling-stroke; }
   .iv { display: flex; gap: 10px; margin-top: 10px; font-size: 13px; min-width: 0; }
   .iv b { color: var(--muted); font-weight: 600; flex: none; }
   .iv span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .iv span.err, .iv span.warn, .iv span.ok { font-weight: 600; }
+
+  /* ---------- semáforo de electrodos (11 nov) ---------- */
+  :root { --g: #2f9e6e; --y: #e0a82e; --r: var(--err); }
+  .fields.f2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .elec { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; margin-bottom: 6px; }
+  .el { display: flex; align-items: center; gap: 6px; background: var(--sky); border-radius: 12px; padding: 6px 7px;
+        min-width: 0; }
+  .el i, .legend i { flex: none; width: 14px; height: 14px; border-radius: 50%; background: var(--line); }
+  .el b { font-size: 13px; } .el small { display: block; font-size: 11px; color: var(--muted); white-space: nowrap;
+                                         overflow: hidden; text-overflow: ellipsis; font-variant-numeric: tabular-nums; }
+  .el > span { min-width: 0; }
+  .el.g i, .legend .g i { background: var(--g); } .el.y i, .legend .y i { background: var(--y); }
+  .el.r i, .legend .r i { background: var(--r); }
+  .el.g { background: #e3f4ec; } .el.y { background: #fbf1da; } .el.r { background: var(--coral-soft); }
+  .legend { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 11px; color: var(--muted); margin-bottom: 10px; }
+  .legend span { display: flex; align-items: center; gap: 5px; } .legend i { width: 10px; height: 10px; }
 
   /* ---------- registro ---------- */
   .loghead { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
@@ -148,7 +168,7 @@
   /* ---------- responsivo: 3 columnas ≥ 1280 px · 2 columnas en laptop chica y tableta · 1 en celular ---------- */
   @media (max-width: 1279px) {
     .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .span3 { grid-column: span 2; }
-    .statecard { grid-column: span 2; }  /* Paso 1 · Paso 2 en una fila y Estado a lo ancho debajo */
+    .statecard { grid-column: span 2; }  /* Session · Electrodes en una fila y Biomarkers a lo ancho debajo */
   }
   @media (max-width: 900px) {
     .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 12px; }
@@ -195,13 +215,14 @@
     .filters button { min-height: 36px; }
   }
   /* ---------- Computadora (≥ 1024 px de ancho, con mouse/touchpad): todo en una pantalla, sin scroll ----------
-     Fila 1: Paso 1 · Paso 2 · Estado │ Bloque actual (columna derecha a toda la altura)
+     Fila 1: Session (angosta) · Electrodes · Biomarkers │ Bloque actual (columna derecha a toda la altura)
      Fila 2: Registro (ocupa el alto que sobra; desplaza solo su contenido) │
      hover + pointer fine deja fuera iPad y celulares (táctiles), que conservan el diseño con scroll de arriba.
      Va al final para ganar a las reglas de 2 columnas (≤ 1279 px).                                            */
   @media (min-width: 1024px) and (hover: hover) and (pointer: fine) {
     .app { height: 100vh; height: 100dvh; display: flex; flex-direction: column; }
-    .grid { flex: 1; min-height: 0; grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(230px, .5fr);
+    .grid { flex: 1; min-height: 0;
+            grid-template-columns: minmax(150px, .45fr) minmax(0, 1.15fr) minmax(0, 1.15fr) minmax(230px, .5fr);
             grid-template-rows: auto minmax(0, 1fr); }
     .clockcard { grid-column: 4; grid-row: 1 / 3; } .statecard { grid-column: auto; }
     #registro { grid-column: 1 / 4; grid-row: 2; display: flex; flex-direction: column; min-height: 0; }
@@ -222,7 +243,8 @@
     .fields { gap: 8px; margin-bottom: 8px; } label.f { gap: 2px; font-size: 11px; }
     input[type=text] { padding: 5px 10px; border-radius: 10px; }
     .row { gap: 6px; } .btn { padding: 6px 12px; font-size: 12px; } .note { margin-top: 6px; font-size: 12px; }
-    .bm { padding: 8px 10px; } .bm .sym { font-size: 30px; } .bm svg { height: 20px; } .iv { margin-top: 6px; font-size: 12px; }
+    .bm { padding: 8px 10px; } .bm .sym { font-size: 40px; } .bm .lab, .bm .v { font-size: 13px; }
+    .bm svg { min-height: 28px; } .iv { margin-top: 6px; font-size: 12px; }
     #registro .kicker { display: none; } .loghead { margin-bottom: 6px; } .log { padding: 8px 12px; }
     .block { font-size: 18px; } .next { font-size: 13px; }
   }
@@ -247,42 +269,41 @@
     <div class="kpi"><div class="lab">Noise</div><div class="val"><span class="big" id="k-noise">—</span><span class="pill" id="k-noise-s">—</span></div></div>
   </section>
 
-  <!-- Distribución (9 nov): Paso 1 · Paso 2 · Estado / Registro / Bloque actual. Interfaz en inglés (9 nov). -->
+  <!-- Distribución (9 nov; 11 nov semáforo en lugar de la verificación): Session · Electrodes · Biomarkers / Registro / Bloque actual. Interfaz en inglés. -->
   <main class="grid">
-    <!-- Paso 1 · Verificación -->
-    <section class="card" id="verif">
-      <div class="kicker">Step 1 · check_lsl_stream.py</div>
-      <h2>Stream verification</h2>
-      <div class="fields">
-        <label class="f">Stream<input type="text" id="p-name"></label>
-        <label class="f">source_id prefix<input type="text" id="p-sid"></label>
-        <label class="f">Duration (s)<input type="text" id="p-chk_s"></label>
-      </div>
-      <div class="row">
-        <button class="btn primary" id="b-check">Start verification</button>
-        <button class="btn" id="b-ok">Verification OK · continue</button>
-        <button class="btn danger" id="b-abort_chk">Abort</button>
-      </div>
-      <div class="note" id="check-lbl">Not verified</div>
-    </section>
-
-    <!-- Paso 2 · Sesión -->
+    <!-- Sesión -->
     <section class="card" id="ses">
-      <div class="kicker">Step 2 · behavior_markers.py + realtime_pipeline.py</div>
+      <div class="kicker">behavior_markers.py + realtime_pipeline.py</div>
       <h2>Session</h2>
-      <div class="fields">
-        <label class="f">IAF (Hz)<input type="text" id="p-iaf"></label>
-        <label class="f">Duration (s)<input type="text" id="p-dur"></label>
-        <label class="f">Blink threshold every (s)<input type="text" id="p-per"></label>
-      </div>
-      <label class="f" style="margin-bottom:12px">Blocks: pairs &lt;seconds&gt; bloque:&lt;name&gt;<input type="text" id="p-plan"></label>
-      <div class="row">
+      <!-- 11 nov: IAF, duración, umbral de parpadeo y bloques ocultos; la página los sigue enviando con los valores del
+           servidor (iaf 10, PROTOCOL_DUR, per 420, PROTOCOL_PLAN) -->
+      <input type="hidden" id="p-iaf"><input type="hidden" id="p-dur"><input type="hidden" id="p-per">
+      <input type="hidden" id="p-plan">
+      <div class="row stack">
         <button class="btn primary" id="b-start">Start session</button>
         <button class="btn" id="b-stop">Stop session</button>
         <button class="btn danger" id="b-abort_ses">Abort</button>
         <button class="btn" id="b-rep">Open report</button>
       </div>
       <div class="note" id="rep-note"></div>
+    </section>
+
+    <!-- Semáforo de electrodos (11 nov): reemplaza la verificación del stream; puede seguir encendido en la sesión -->
+    <section class="card" id="verif">
+      <div class="kicker">Before and during the session · semaforo_canales.py</div>
+      <h2>Electrodes</h2>
+      <div class="fields f2">
+        <label class="f">Stream<input type="text" id="p-name"></label>
+        <label class="f">source_id prefix<input type="text" id="p-sid"></label>
+      </div>
+      <div class="elec" id="elec"></div>
+      <div class="legend"><span class="g"><i></i>σ ≤ 15 µV</span><span class="y"><i></i>15–25 µV or a few &gt; 150 µV</span>
+        <span class="r"><i></i>&gt; 25 µV, flat, rail or ≥ 50 % &gt; 150 µV</span></div>
+      <div class="row">
+        <button class="btn primary" id="b-mon">Start monitor</button>
+        <button class="btn" id="b-mon_stop">Stop monitor</button>
+      </div>
+      <div class="note" id="mon-lbl">Monitor off</div>
     </section>
 
     <!-- Biomarcadores ORT (10 nov): flecha = Z frente al baseline; línea = Z a lo largo de la sesión -->
@@ -326,8 +347,10 @@
 <script>
 const $ = id => document.getElementById(id);
 const ARROW_Z = 0.5;  // ponytail: umbral fijo de la flecha (↑/↓ si |Z| ≥ 0.5); ajustar con datos reales
-const PARAMS = ["name", "sid", "chk_s", "iaf", "dur", "per", "plan"];
-const BTNS = ["check", "ok", "abort_chk", "start", "stop", "abort_ses", "rep"];
+const PARAMS = ["name", "sid", "iaf", "dur", "per", "plan"];
+const BTNS = ["mon", "mon_stop", "start", "stop", "abort_ses", "rep"];
+const CHANNELS = ["Fp1", "F3", "Fz", "F4", "Cz", "Pz", "O1", "O2"];  // orden AURA (mock_lsl_streamer.AURA_CHANNELS)
+const COLOR = { g: "good", y: "fair", r: "bad" };
 let S = null, base = null, done = null, planKey = "";
 
 const fmt = s => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, "0")}`;
@@ -359,8 +382,8 @@ async function post(url, body) {
 }
 const params = () => Object.fromEntries(PARAMS.map(k => [k, $("p-" + k).value.trim()]));
 
-$("b-check").onclick = () => post("/api/verificacion/iniciar", params());
-$("b-ok").onclick = () => post("/api/verificacion/ok");
+$("b-mon").onclick = () => post("/api/semaforo/iniciar", params());
+$("b-mon_stop").onclick = () => post("/api/semaforo/detener");
 $("b-start").onclick = () => {
   const p = params(), tok = p.plan.split(/\s+/).filter(Boolean);
   const bad = tok.length % 2 || [p.iaf, p.dur, p.per].some(v => v === "" || isNaN(+v)) ||
@@ -373,11 +396,11 @@ $("b-stop").onclick = () => {
   if (S.running.includes("pipeline") && confirm("Stop the session? The pipeline will write its report."))
     post("/api/sesion/detener");
 };
-function abortAll() {
-  if (!S.running.length) return alert("No process is running.");
-  if (confirm(`Force-close the running processes (${S.running.join(", ")})?`)) post("/api/abortar");
-}
-$("b-abort_chk").onclick = $("b-abort_ses").onclick = abortAll;
+$("b-abort_ses").onclick = () => {  // solo la sesión: el semáforo tiene su propio botón
+  const run = S.running.filter(t => t !== "semaforo");
+  if (!run.length) return alert("No session process is running.");
+  if (confirm(`Force-close the running processes (${run.join(", ")})?`)) post("/api/abortar");
+};
 $("b-rep").onclick = () => post("/api/reporte/abrir");
 
 $("filters").onclick = e => {
@@ -398,7 +421,13 @@ function addLog(text, cls) {
 function render(full) {
   if (full) PARAMS.forEach(k => { $("p-" + k).value = S.params[k]; });  // no pisa lo que se está escribiendo
   BTNS.forEach(k => { $("b-" + k).disabled = !connected || !S.btn[k]; });  // sin servidor no hay acciones
-  $("check-lbl").textContent = S.check_lbl[0]; $("check-lbl").className = "note " + S.check_lbl[1];
+  $("mon-lbl").textContent = S.mon_lbl[0]; $("mon-lbl").className = "note " + S.mon_lbl[1];
+  $("elec").innerHTML = CHANNELS.map(c => {  // [color, σ µV, % segmentos > 150 µV]; null = sin datos
+    const [col, sd, pct] = (S.chan || {})[c] || [];
+    const txt = !col ? "—" : sd == null ? "no data" : `${sd.toFixed(0)} µV · ${pct}%`;  // σ robusto · % > 150 µV
+    return `<div class="el ${col || ""}" title="${c}: ${col ? COLOR[col] + " · " + txt : "monitor off"}">`
+         + `<i></i><span><b>${c}</b><small>${txt}</small></span></div>`;
+  }).join("");
   $("rep-note").innerHTML = S.btn.rep
     ? `Report ready · <a href="/api/reporte" target="_blank" style="color:var(--blue)">view it in the browser</a>` : "";
 
@@ -416,7 +445,7 @@ function render(full) {
   const procs = $("procs"), nav = $("nav");
   if (procs) {
     procs.innerHTML = "";
-    ["check", "behavior", "pipeline"].forEach(t => {
+    ["semaforo", "behavior", "pipeline"].forEach(t => {
       const c = document.createElement("span"), on = S.running.includes(t);
       c.className = "chip" + (on ? " run" : ""); c.textContent = (on ? "● " : "○ ") + t; procs.appendChild(c);
     });
