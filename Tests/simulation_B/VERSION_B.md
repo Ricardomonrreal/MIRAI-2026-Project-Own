@@ -389,3 +389,10 @@ Mann-Whitney sobre los minutos completos). `replay_offline.eeg_blinks` usa la mi
 - **Scrolling de 30 min (11 nov):** el protocolo por defecto del tablero pasa a `0 bloque:baseline 120 bloque:gonogo_pre
   300 bloque:scroll 2100 bloque:gonogo_post`, 2280 s (Baseline 2 min → Go/NoGo pre 3 min → Scrolling 30 min → Go/NoGo
   post 3 min → fin, 38 min). Solo cambian `PROTOCOL_PLAN` / `PROTOCOL_DUR` de `sesion_aura_web.py`.
+- **Intervalo entre ventanas fuera de los criterios (12 nov):** «ventana cada 1.0 s ± 1 bloque» ya no cuenta para
+  PASA / NO PASA (en vivo con Aura.exe fallaba siempre por sus ráfagas de envío). El intervalo se sigue imprimiendo
+  como dato (media, mín., máx.).
+- **Botón «Clear console & session data» (12 nov):** bajo *Open report* en el tablero web. Borra el registro y los
+  datos de la última sesión que guarda el servidor (bloques, estados, biomarcadores, intervenciones, enlace al
+  reporte); no toca `runs/` ni el semáforo. Deshabilitado mientras corre una sesión (`POST /api/sesion/limpiar`
+  también la rechaza).

@@ -216,15 +216,15 @@
     "semantic_hash": ""
   },
   "Tests/simulation_B/mock_lsl_streamer.py": {
-    "mtime": 1793936318.3096,
-    "seen": 1793937569.5382698,
-    "ast_hash": "690609e2c1383ea59c58a732db8b9afa",
+    "mtime": 1794379633.7826917,
+    "seen": 1794471788.0016556,
+    "ast_hash": "b46bff3078b7c12a7c1c797644f38651",
     "semantic_hash": ""
   },
   "Tests/simulation_B/realtime_pipeline.py": {
-    "mtime": 1794297114.597148,
-    "seen": 1794297152.0791347,
-    "ast_hash": "39157cc4792945932132a7b2aff25ae7",
+    "mtime": 1794467742.0867803,
+    "seen": 1794471788.0016603,
+    "ast_hash": "c17d6e4607b1fbbdd9b5e72983a2917d",
     "semantic_hash": ""
   },
   "Tests/simulation_B/replay_offline.py": {
@@ -240,9 +240,9 @@
     "semantic_hash": ""
   },
   "Tests/simulation_B/VERSION_B.md": {
-    "mtime": 1794377803.8735595,
-    "seen": 1794377822.7537405,
-    "ast_hash": "2375a8abc14b27b4614836e4d400b963",
+    "mtime": 1794471780.662643,
+    "seen": 1794471788.0017693,
+    "ast_hash": "095846ba1908a64407f576498091401c",
     "semantic_hash": ""
   },
   "Tests/simulation_B/requirements.txt": {
@@ -288,15 +288,15 @@
     "semantic_hash": ""
   },
   "Tests/simulation_B/sesion_aura.py": {
-    "mtime": 1794377760.8083663,
-    "seen": 1794377822.7536619,
-    "ast_hash": "2b9176bf80f78dde4c9aac3ad48a92d9",
+    "mtime": 1794455626.7086978,
+    "seen": 1794471788.0016763,
+    "ast_hash": "62f24c80d6e9f54a609faeaf4b6e0321",
     "semantic_hash": ""
   },
   "Tests/simulation_B/sesion_aura_web.py": {
-    "mtime": 1794377425.2083292,
-    "seen": 1794377822.7536662,
-    "ast_hash": "bf674b03286229247cfba0f77f0fc272",
+    "mtime": 1794471708.8795395,
+    "seen": 1794471788.0016797,
+    "ast_hash": "1779516dbb236b778f49827a65febf8a",
     "semantic_hash": ""
   },
   "Tests/Analisis_Semana_Muestra_Regresion.md": {
@@ -306,9 +306,9 @@
     "semantic_hash": ""
   },
   "Tests/simulation_B/web/sesion_aura.html": {
-    "mtime": 1794377590.5859506,
-    "seen": 1794377822.7537467,
-    "ast_hash": "1f2bfaeaec88d930bd804b15a5cf6ef0",
+    "mtime": 1794471708.8809824,
+    "seen": 1794471788.0017762,
+    "ast_hash": "379e2fb7993d4cc9ce7c94f95d0f2959",
     "semantic_hash": ""
   },
   "Tests/simulation_B/semaforo_canales.py": {

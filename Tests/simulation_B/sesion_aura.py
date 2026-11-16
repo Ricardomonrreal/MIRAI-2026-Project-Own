@@ -11,7 +11,7 @@ no se lanza; el semáforo de electrodos, semaforo_canales.py, está solo en la v
 Uso (desde una terminal: Detener necesita una consola compartida para mandar Ctrl+Break):
   python sesion_aura.py
 Con el emulador (prueba sin diadema): nombre del stream AURA y prefijo mirai-sim- con
-  python mock_lsl_streamer.py --name AURA --duration 1500 --wait
+  python mock_lsl_streamer.py --name AURA --duration 3600 --wait
 """
 import os
 import queue
@@ -70,7 +70,7 @@ class SessionApp:
             ttk.Entry(f_src, textvariable=var, width=w).grid(row=0, column=2 * i + 1, sticky="ew")
         f_ses = ttk.Frame(c)
         f_ses.pack(fill=tk.X, pady=2)
-        self.iaf_var, self.dur_var, self.per_var = tk.StringVar(value="10"), tk.StringVar(value="1260"), tk.StringVar(value="420")
+        self.iaf_var, self.dur_var, self.per_var = tk.StringVar(value="10"), tk.StringVar(value="3540"), tk.StringVar(value="420")
         for i, (lbl, var) in enumerate([("IAF (Hz)", self.iaf_var), ("Duración (s)", self.dur_var),
                                         ("Umbral parpadeo cada (s)", self.per_var)]):
             f_ses.columnconfigure(2 * i, weight=0)
@@ -79,7 +79,7 @@ class SessionApp:
             ttk.Entry(f_ses, textvariable=var, width=4).grid(row=0, column=2 * i + 1, sticky="ew")
         lbl_plan = ttk.Label(c, text="Bloques: pares <segundos> bloque:<nombre>")
         lbl_plan.pack(anchor="w", fill=tk.X)
-        self.plan_var = tk.StringVar(value="0 bloque:reposo 420 bloque:scroll 840 bloque:reposo")
+        self.plan_var = tk.StringVar(value="0 bloque:reposo 420 bloque:scroll 3120 bloque:reposo")
         ttk.Entry(c, textvariable=self.plan_var).pack(fill=tk.X, anchor="w", pady=(2, 4))
         f_ses_btns = ttk.Frame(c)
         f_ses_btns.pack(fill=tk.X, pady=4)

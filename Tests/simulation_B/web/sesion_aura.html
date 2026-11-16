@@ -284,6 +284,7 @@
         <button class="btn" id="b-stop">Stop session</button>
         <button class="btn danger" id="b-abort_ses">Abort</button>
         <button class="btn" id="b-rep">Open report</button>
+        <button class="btn" id="b-clear">Clear console</button>
       </div>
       <div class="note" id="rep-note"></div>
     </section>
@@ -348,7 +349,7 @@
 const $ = id => document.getElementById(id);
 const ARROW_Z = 0.5;  // ponytail: umbral fijo de la flecha (↑/↓ si |Z| ≥ 0.5); ajustar con datos reales
 const PARAMS = ["name", "sid", "iaf", "dur", "per", "plan"];
-const BTNS = ["mon", "mon_stop", "start", "stop", "abort_ses", "rep"];
+const BTNS = ["mon", "mon_stop", "start", "stop", "abort_ses", "rep", "clear"];
 const CHANNELS = ["Fp1", "F3", "Fz", "F4", "Cz", "Pz", "O1", "O2"];  // orden AURA (mock_lsl_streamer.AURA_CHANNELS)
 const COLOR = { g: "good", y: "fair", r: "bad" };
 let S = null, base = null, done = null, planKey = "";
@@ -402,6 +403,10 @@ $("b-abort_ses").onclick = () => {  // solo la sesión: el semáforo tiene su pr
   if (confirm(`Force-close the running processes (${run.join(", ")})?`)) post("/api/abortar");
 };
 $("b-rep").onclick = () => post("/api/reporte/abrir");
+$("b-clear").onclick = () => {  // solo sin sesión en vivo; los archivos de runs/ no se tocan
+  if (confirm("Clear the log and the last session's data from the dashboard? Files in runs/ are kept."))
+    post("/api/sesion/limpiar");
+};
 
 $("filters").onclick = e => {
   const b = e.target.closest("button"); if (!b) return;
@@ -593,7 +598,10 @@ function connect() {
   });
   on("state", e => { S = JSON.parse(e.data); render(false); });
   on("log", e => { const [t, c] = JSON.parse(e.data); addLog(t, c); });
-  on("clear", () => { $("log").innerHTML = ""; });
+  on("clear", () => {  // al iniciar o limpiar: registro, reloj y bloque vuelven a cero
+    $("log").innerHTML = ""; $("clock").textContent = "0:00 / 0:00";
+    $("block").textContent = "Block: —"; $("next").textContent = "Next: —"; $("next").className = "next";
+  });
   on("bell", bell);
   on("ping", () => {});  // el servidor lo manda cada 10 s sin otra actividad
   es.onerror = () => { es.close(); es = null; retryLater(); };

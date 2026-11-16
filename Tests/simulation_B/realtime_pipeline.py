@@ -793,12 +793,9 @@ def main():
            "intervalo_s_max": float(d.max()), "calculo_ms_p95": float(np.percentile(calc_ms, 95)),
            "calculo_ms_max": float(max(calc_ms)), "rechazo_ms_p95": float(np.percentile(rej_ms, 95)),
            "rechazo_ms_max": float(max(rej_ms)), "latencia_ms_p95": float(np.percentile(lat_ms, 95))}
-    # Criterio del Paso 2: una ventana cada 1.0 s ± 1 bloque (los bloques llegan cada ~20 ms; margen de 0.1 s)
-    # y cálculo < 10 ms.
-    checks = {"ventana cada 1.0 s ± 1 bloque": bool(abs(d.mean() - HOP_S) < 0.01 and np.abs(d - HOP_S).max() < 0.1),
-              "cálculo búfer + filtros < 10 ms (máx.)": bool(rep["calculo_ms_max"] < 10)}
-    if offline:  # sin tiempo real, el intervalo entre ventanas y la latencia no significan nada
-        del checks["ventana cada 1.0 s ± 1 bloque"]
+    # Criterio del Paso 2: cálculo < 10 ms. El intervalo entre ventanas (1.0 s ± 1 bloque) ya no es criterio
+    # (decisión del usuario, 12 nov): con Aura.exe depende de sus ráfagas de envío; solo se informa.
+    checks = {"cálculo búfer + filtros < 10 ms (máx.)": bool(rep["calculo_ms_max"] < 10)}
     rep3 = blink_report(wins, markers, blink_gain(fs, line))
     if rep3["parpadeos"]:  # solo hay verdad de campo con el emulador
         checks["segmentos con el pico de un parpadeo supraumbral rechazados ≥ 95 %"] = rep3["rechazo_con_parpadeo"] >= 0.95

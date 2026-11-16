@@ -1,0 +1,98 @@
+{
+  "behavior_markers.py": {
+    "mtime": 1793597527.590785,
+    "seen": 1794468094.440899,
+    "ast_hash": "ff6987b0021b5846acdc7603f26f978b",
+    "semantic_hash": ""
+  },
+  "calibration.py": {
+    "mtime": 1793334887.4652624,
+    "seen": 1794468094.4409125,
+    "ast_hash": "4e8cc643152c05fb50fb901656882b15",
+    "semantic_hash": ""
+  },
+  "check_lsl_stream.py": {
+    "mtime": 1794295699.8584087,
+    "seen": 1794468094.440919,
+    "ast_hash": "3c9c5e0ef5ead13a74c35399a6f6e48f",
+    "semantic_hash": ""
+  },
+  "jitai.py": {
+    "mtime": 1793334877.4271274,
+    "seen": 1794468094.4409244,
+    "ast_hash": "21c08c814595dc37c2059c58798b0884",
+    "semantic_hash": ""
+  },
+  "mock_lsl_streamer.py": {
+    "mtime": 1794379633.7826917,
+    "seen": 1794468094.4409292,
+    "ast_hash": "b46bff3078b7c12a7c1c797644f38651",
+    "semantic_hash": ""
+  },
+  "realtime_pipeline.py": {
+    "mtime": 1794467742.0867803,
+    "seen": 1794468094.4409337,
+    "ast_hash": "c17d6e4607b1fbbdd9b5e72983a2917d",
+    "semantic_hash": ""
+  },
+  "replay_offline.py": {
+    "mtime": 1793597527.25638,
+    "seen": 1794468094.440938,
+    "ast_hash": "1f7c4631ab9aeb44c75368a56e9b6153",
+    "semantic_hash": ""
+  },
+  "run_simulation.py": {
+    "mtime": 1793341093.1655831,
+    "seen": 1794468094.440942,
+    "ast_hash": "b5a92085bc3b057e7a69e921d517fdf4",
+    "semantic_hash": ""
+  },
+  "semaforo_canales.py": {
+    "mtime": 1794377345.6937268,
+    "seen": 1794468094.440946,
+    "ast_hash": "0ff016e51a1e6e29906f6e79de6a45b7",
+    "semantic_hash": ""
+  },
+  "sesion_aura.py": {
+    "mtime": 1794455626.7086978,
+    "seen": 1794468094.4409497,
+    "ast_hash": "62f24c80d6e9f54a609faeaf4b6e0321",
+    "semantic_hash": ""
+  },
+  "sesion_aura_web.py": {
+    "mtime": 1794381877.5433488,
+    "seen": 1794468094.4409535,
+    "ast_hash": "b668a52a66918e59ffbdfc9fb1f1e0fa",
+    "semantic_hash": ""
+  },
+  "spectral_features.py": {
+    "mtime": 1793595947.2878559,
+    "seen": 1794468094.4409583,
+    "ast_hash": "456c0d3b58209778cb47c58f41c4ce95",
+    "semantic_hash": ""
+  },
+  "test_realtime_pipeline.py": {
+    "mtime": 1793597715.1348813,
+    "seen": 1794468094.4409618,
+    "ast_hash": "4dcdf7e8abe947b84a2b75131142e6f0",
+    "semantic_hash": ""
+  },
+  "VERSION_B.md": {
+    "mtime": 1794468085.5552151,
+    "seen": 1794468094.4409654,
+    "ast_hash": "a8d172c9b58fc5205345d3a5bb424f8e",
+    "semantic_hash": ""
+  },
+  "requirements.txt": {
+    "mtime": 1794198695.6663728,
+    "seen": 1794468094.4409692,
+    "ast_hash": "9fd59d4d0b73568b0d9fe03d9362b4a0",
+    "semantic_hash": ""
+  },
+  "web/sesion_aura.html": {
+    "mtime": 1794381758.3330867,
+    "seen": 1794468094.440973,
+    "ast_hash": "1466ee5c8a0886ad94b169b047ea6fa9",
+    "semantic_hash": ""
+  }
+}

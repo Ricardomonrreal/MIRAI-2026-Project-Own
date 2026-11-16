@@ -89,7 +89,8 @@ class Session:
         # hist = [segundo de la sesión, Zθ, Zα, % válidas] cada 10 ventanas (Z = None antes de calibrar): línea de
         # progresión y resumen por etapa; ivs = [segundo, nivel] de cada intervención encendida.
         self.bio, self.hist, self.ivs = {}, [], []
-        self.btn = {"mon": True, "mon_stop": False, "start": True, "stop": False, "abort_ses": False, "rep": False}
+        self.btn = {"mon": True, "mon_stop": False, "start": True, "stop": False, "abort_ses": False, "rep": False,
+                    "clear": True}  # clear: solo sin sesión en vivo (12 nov)
         self.chan = {}  # semáforo: {canal: [g/y/r, σ µV, % segmentos > 150 µV]} del último segundo; {} = apagado
         self.mon_lbl = ("Monitor off", "")
         self.status = {k: ("—", "") for k in STATUS}
@@ -208,7 +209,7 @@ class Session:
         elif tag == "pipeline":
             self.stop_proc("behavior")
             self.t_start = None
-            self.btn.update(stop=False, abort_ses=False, start=True)
+            self.btn.update(stop=False, abort_ses=False, start=True, clear=True)
             if self.run_dir and os.path.exists(os.path.join(self.run_dir, "reporte.md")):
                 self.btn["rep"] = True
             self.emit("bell", None)
@@ -238,7 +239,7 @@ class Session:
             self.stop_proc(tag)
         self.t_start = None
         self.add_log(f"[system] Processes aborted manually: {', '.join(running)}", "err")
-        self.btn.update(abort_ses=False, stop=False, start=True)
+        self.btn.update(abort_ses=False, stop=False, start=True, clear=True)
         self.session_aborted = True
         return None
 
@@ -271,7 +272,7 @@ class Session:
         self.plan, self.dur, self.frozen = plan, dur, False
         self.run_dir, self.valid, self.bio, self.hist, self.ivs = None, [], {}, [], []
         self.session_aborted = False
-        self.btn.update(start=False, rep=False, stop=True, abort_ses=True)
+        self.btn.update(start=False, rep=False, stop=True, abort_ses=True, clear=False)
         for k in self.status:
             self.set_status(k, "—")
         self.launch("behavior", ["behavior_markers.py", *tok])
@@ -290,6 +291,20 @@ class Session:
         # El pipeline busca MIRAI_Behavior 2 s al arrancar: el stream de conducta tiene que existir antes.
         self._launch_timer = threading.Timer(1.5, launch_pipeline)
         self._launch_timer.start()
+        return None
+
+    def clear_session(self):
+        """Borra el registro y los datos de la última sesión que guarda el tablero (no toca runs/ ni el semáforo)."""
+        if any(t in self.running() for t in ("pipeline", "behavior")):
+            return "A session is live: stop or abort it first."
+        self.log.clear()
+        self.emit("clear", None)
+        self.plan, self.dur, self.frozen, self.t_start = [], 0.0, False, None
+        self.run_dir, self.valid, self.bio, self.hist, self.ivs = None, [], {}, [], []
+        self.session_aborted = False
+        self.btn["rep"] = False
+        for k in self.status:
+            self.set_status(k, "—")
         return None
 
     def stop_session(self):
@@ -391,6 +406,11 @@ def sesion_detener():
 @app.post("/api/abortar")
 def abortar():
     return act(S.abort_all)
+
+
+@app.post("/api/sesion/limpiar")
+def sesion_limpiar():
+    return act(S.clear_session)
 
 
 @app.post("/api/reporte/abrir")

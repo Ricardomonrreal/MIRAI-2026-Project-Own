@@ -17,6 +17,7 @@ Tests/Recordings/
 **/results/tonico_n_final/
 
 # === Caché interna de Graphify (se conservan graph.json, GRAPH_REPORT.md y graph.html) ===
+Tests/simulation_B/graphify-out/cache
 graphify-out/cache/
 graphify-out/2026-*/
 
