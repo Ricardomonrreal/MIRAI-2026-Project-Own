@@ -6,6 +6,12 @@
       "runtimeExecutable": "python",
       "runtimeArgs": ["Tests/simulation_B/sesion_aura_web.py", "--port", "8010"],
       "port": 8010
+    },
+    {
+      "name": "gonogo-autoprueba",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["Tests/simulation_B/sesion_aura_web.py", "--port", "8011", "--db", "C:/Users/ricar/AppData/Local/Temp/claude/57c04fc64a5c9d0b/35271d1a-41dd-4c45-90e0-72556fd89350/scratchpad/gng_autoprueba.db"],
+      "port": 8011
     }
   ]
 }

@@ -17,6 +17,8 @@ El navegador no puede leer LSL ni lanzar procesos: por eso este servidor tiene q
 """
 import argparse
 import atexit
+import csv
+import io
 import json
 import os
 import queue
@@ -29,9 +31,13 @@ import sys
 import threading
 import time
 
-from flask import Flask, Response, abort, jsonify, request, send_from_directory
+from flask import Flask, Response, abort, jsonify, redirect, request, send_from_directory
+
+import gonogo_db as gdb
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+os.environ.setdefault("LSLAPICFG", os.path.join(HERE, "lsl_api.cfg"))
+import pylsl  # noqa: E402  (después de LSLAPICFG) — solo local_clock(): el reloj LSL para la tarea Go/NoGo
 PY = sys.executable
 ENV = {**os.environ, "PYTHONIOENCODING": "utf-8", "PYTHONUNBUFFERED": "1"}  # θ, µ… por la tubería sin cp1252
 ANSI = re.compile(r"\x1b\[[0-9;]*m")
@@ -39,13 +45,18 @@ ANSI = re.compile(r"\x1b\[[0-9;]*m")
 # Interfaz en inglés (9 nov): los textos que ve la página están en inglés; la salida de los scripts (registro y parte de
 # algunos estados) sigue en español, y el servidor la lee por sus palabras clave en español (no cambiarlas).
 # Los nombres de bloque vienen del plan y behavior_markers.py los usa tal cual (marcadores bloque:<nombre>).
-# Protocolo del Progress Report (10 nov; scroll 45 → 30 min el 11 nov): Baseline 2 min → Go/NoGo pre 3 min → Scrolling 30 min → Go/NoGo post 3 min →
-# fin. La calibración (10 s de calidad + 90 s, hasta +60 s de extensión) cae dentro del baseline; el reporte compara los
-# parpadeos de cada bloque contra el primero con ≥ 2 min completos, que es el baseline.
-PROTOCOL_PLAN, PROTOCOL_DUR = "0 bloque:baseline 120 bloque:gonogo_pre 300 bloque:scroll 2100 bloque:gonogo_post", "2280"
+# Protocolo del Progress Report (10 nov; scroll 45 → 30 min el 11 nov; de vuelta a 45 min el 16 nov): Baseline 2 min →
+# Go/NoGo pre 3 min → Scrolling 45 min → Go/NoGo post 3 min → fin (53 min). La calibración (10 s de calidad + 90 s,
+# hasta +60 s de extensión) cae dentro del baseline; el reporte compara los parpadeos de cada bloque contra el primero
+# con ≥ 2 min completos, que es el baseline. Los bloques gonogo_* duran 180 s = gonogo_db.BLOQUE_S.
+PROTOCOL_PLAN, PROTOCOL_DUR = "0 bloque:baseline 120 bloque:gonogo_pre 300 bloque:scroll 3000 bloque:gonogo_post", "3180"
+# 16 nov: los bloques gonogo_* arrancan solos en el teléfono (Session.gng_auto); el investigador solo entrega el teléfono.
 ACTION = {"baseline": "eyes open, steady gaze, stay still (calibration)",
-          "gonogo_pre": "start the Go/NoGo task (pre)", "scroll": "start scrolling short videos",
-          "gonogo_post": "start the Go/NoGo task (post)", "reposo": "put the phone down, eyes open, steady gaze"}
+          "gonogo_pre": "hand over the lab phone: Go/NoGo starts by itself (pre)", "scroll": "start scrolling short videos",
+          "gonogo_post": "hand over the lab phone: Go/NoGo starts by itself (post)",
+          "reposo": "put the phone down, eyes open, steady gaze"}
+CODIGO = re.compile(r"[A-Z0-9_-]{1,16}")  # código de participante (sin datos personales)
+TIPO = {"practica": "Practice", "pre": "Before", "post": "After"}
 LABEL = {"baseline": "Baseline", "gonogo_pre": "Go/NoGo · pre", "scroll": "Scrolling", "gonogo_post": "Go/NoGo · post",
          "reposo": "Rest"}
 # Sin "Run" (9 nov): la carpeta de la sesión ya no se muestra; run_dir se sigue guardando para el reporte.
@@ -83,7 +94,7 @@ class Session:
         self._mon_stopped = False
         self.log = []  # [(texto, clase)] — se borra al iniciar la sesión
         self.params = {"name": "AURA", "sid": "AuraLSL-", "iaf": "10", "dur": PROTOCOL_DUR, "per": "420",
-                       "plan": PROTOCOL_PLAN}
+                       "plan": PROTOCOL_PLAN, "codigo": ""}
         self.valid = []  # % válidas de cada grupo de 10 ventanas (disjuntos): su media es el promedio de la sesión
         # Biomarcadores en tiempo real (10 nov): theta tónica y alfa periódica, último valor (dB) y Z frente al baseline;
         # hist = [segundo de la sesión, Zθ, Zα, % válidas] cada 10 ventanas (Z = None antes de calibrar): línea de
@@ -95,6 +106,10 @@ class Session:
         self.mon_lbl = ("Monitor off", "")
         self.status = {k: ("—", "") for k in STATUS}
         self.session_aborted = False  # "Bloque: — (abortado)"
+        # Go/NoGo: colas SSE de los teléfonos; sesión abierta en la base (iniciada = ya pasó por Start session);
+        # gng_hasta = hasta cuándo (time.monotonic) hay un bloque corriendo en el teléfono; gng_ult = resumen del último.
+        self.gng_subs, self.gng = [], {"codigo": None, "sesion": None, "iniciada": False}
+        self.gng_hasta, self.gng_ult = 0.0, None
 
     # ---------- emisión a la página ----------
     def snapshot(self):
@@ -103,11 +118,12 @@ class Session:
                 "dur": self.dur, "frozen": self.frozen, "bio": self.bio, "hist": self.hist, "ivs": self.ivs, "aborted": self.session_aborted,
                 "elapsed": None if self.t_start is None else time.monotonic() - self.t_start,
                 "running": [t for t, p in self.procs.items() if p.poll() is None],
-                "run_dir": self.run_dir}
+                "run_dir": self.run_dir,
+                "gng": {"telefonos": len(self.gng_subs), "urls": GNG_URLS, "bloque": self.gng_ult, "tipo": TIPO}}
 
-    def emit(self, kind, data):
+    def emit(self, kind, data, subs=None):
         msg = f"event: {kind}\ndata: {json.dumps(data, ensure_ascii=False)}\n\n"
-        for q in list(self.subs):
+        for q in list(self.subs if subs is None else subs):
             q.put(msg)
 
     def push_state(self):
@@ -152,8 +168,14 @@ class Session:
             return
         if line.startswith("Pipeline") and self.t_start is None:
             self.t_start = time.monotonic()  # el bucle arranca aquí; behavior_markers cuenta desde esta conexión
+            for t, nombre in self.plan:  # bloques gonogo_pre / gonogo_post: la orden al teléfono sale sola a su hora
+                if nombre.startswith("gonogo_") and nombre[7:] in gdb.PASADAS:
+                    tm = threading.Timer(t, self.gng_auto, (nombre[7:], self.t_start))
+                    tm.daemon = True  # no retiene el cierre del servidor; gng_auto descarta los de sesiones viejas
+                    tm.start()
         elif line.startswith("Registro:"):
             self.run_dir = line.split(":", 1)[1].strip()
+            gdb.run_dir(self.gng["sesion"], self.run_dir)  # la sesión de la base queda enlazada con la carpeta del pipeline
         elif line.startswith("Chequeo de calidad"):
             self.set_status("Quality", en(line.split(":", 1)[1].strip()), "err" if "malos ['Fp1'" in line else "")
         elif "CALIBRACIÓN CONGELADA" in line:
@@ -255,8 +277,52 @@ class Session:
         self._mon_stopped = True  # kill() da código ≠ 0: no es un fallo
         self.stop_proc("semaforo")
 
+    # ---------- Go/NoGo ----------
+    def gng_sesion(self, codigo, iniciar):
+        """Sesión de la base para este participante: la práctica abre una y Start session la reutiliza; otra persona,
+        o un nuevo Start session para la misma, abre otra."""
+        if self.gng["codigo"] != codigo or self.gng["iniciada"]:
+            self.gng = {"codigo": codigo, "sesion": gdb.sesion(codigo), "iniciada": False}
+        self.gng["iniciada"] = iniciar
+
+    def gng_start(self, codigo, tipo):
+        """Abre un bloque (practica / pre / post) y manda la orden a los teléfonos; ValueError si no se puede."""
+        live = not self.btn["start"]  # desde Start session hasta que el pipeline termina o se aborta
+        if not CODIGO.fullmatch(codigo) or tipo not in gdb.PASADAS:
+            raise ValueError("Participant code (letters, digits, - or _; max 16) and block type are required.")
+        if live and codigo != self.gng["codigo"]:
+            raise ValueError(f"A session is live for {self.gng['codigo']}: its Go/NoGo blocks cannot be mixed.")
+        if not self.gng_subs:
+            raise ValueError("No phone connected: open the Go/NoGo page (/gng) on the phone first.")
+        if time.monotonic() < self.gng_hasta:
+            raise ValueError("A Go/NoGo block is already running on the phone.")
+        if not live:
+            self.gng_sesion(codigo, False)
+        orden = {**gdb.bloque(self.gng["sesion"], tipo, pylsl.local_clock()), "codigo": codigo}
+        n = len(orden["secuencia"])
+        self.gng_hasta = time.monotonic() + (orden["prep_ms"] + n * orden["soa_ms"]) / 1000
+        self.gng_ult = gdb.resumen(bloque_id=orden["bloque"])[0]
+        self.emit("inicio", orden, self.gng_subs)
+        self.add_log(f"[gonogo] {TIPO[tipo]} block started for {codigo} ({n} trials)", "ok")
+        return orden
+
+    def gng_auto(self, tipo, t_start):
+        """Temporizador del plan: arranca el bloque si sigue viva la misma sesión; si no se puede, lo deja en el registro."""
+        with self.lock:
+            if self.t_start != t_start:
+                return
+            try:
+                self.gng_start(self.gng["codigo"], tipo)
+            except ValueError as e:
+                self.add_log(f"[gonogo] {TIPO[tipo]} block NOT started: {e}", "err")
+            self.push_state()
+
     def start_session(self, p):
+        codigo = str(p.get("codigo", "")).strip().upper()
+        if not CODIGO.fullmatch(codigo):
+            return "Enter the participant code (letters, digits, - or _; e.g. P01) before starting."
         self.params.update({k: str(p[k]) for k in ("name", "sid", "iaf", "dur", "per", "plan") if k in p})
+        self.params["codigo"] = codigo
         tok = self.params["plan"].split()
         try:
             if len(tok) % 2:
@@ -267,6 +333,8 @@ class Session:
         except (ValueError, IndexError):
             return "Check IAF, duration, period and blocks (<seconds> bloque:<name>)."
         self._aborted = False
+        self.gng_sesion(codigo, True)
+        self.gng_ult = None
         self.log.clear()  # el registro empieza con la sesión (el semáforo no escribe en él salvo al arrancar)
         self.emit("clear", None)
         self.plan, self.dur, self.frozen = plan, dur, False
@@ -302,6 +370,7 @@ class Session:
         self.plan, self.dur, self.frozen, self.t_start = [], 0.0, False, None
         self.run_dir, self.valid, self.bio, self.hist, self.ivs = None, [], {}, [], []
         self.session_aborted = False
+        self.gng_ult = None
         self.btn["rep"] = False
         for k in self.status:
             self.set_status(k, "—")
@@ -321,15 +390,26 @@ class Session:
 
 S = Session()
 app = Flask(__name__, static_folder=None)
-TOKEN = None  # solo con --lan
+TOKEN = None  # solo con --lan: acceso completo al tablero desde la red
+TEL = None  # solo con --lan: clave corta del teléfono, que solo abre la tarea Go/NoGo
+GNG_URLS = []  # enlaces cortos de la tarea Go/NoGo para el teléfono (solo con --lan)
 
 
 @app.before_request
 def check_token():
-    """Con --lan, cualquiera en la red podría lanzar o detener procesos: se exige el token impreso en la terminal."""
+    """Con --lan, cualquiera en la red podría lanzar o detener procesos: se exige el token impreso en la terminal.
+    El teléfono entra con un enlace corto, <IP>:<puerto>/<clave>: la clave se le queda guardada un año y solo le abre
+    la tarea Go/NoGo (/gng y /api/gng/…), no el tablero ni sus acciones. Por eso puede ser corta y fácil de teclear."""
+    if TEL and request.path == f"/{TEL}":
+        qs = request.query_string.decode()  # p. ej. ?demo=practica
+        resp = redirect("/gng" + (f"?{qs}" if qs else ""))
+        resp.set_cookie("tel", TEL, max_age=365 * 86400, httponly=True, samesite="Strict")
+        return resp
     if TOKEN is None or request.remote_addr in ("127.0.0.1", "::1"):
         return None
     if request.args.get("token") == TOKEN or request.cookies.get("token") == TOKEN:
+        return None
+    if request.cookies.get("tel") == TEL and request.path.startswith(("/gng", "/api/gng/")):
         return None
     abort(403)
 
@@ -342,6 +422,7 @@ def keep_token(resp):
 
 
 @app.get("/")
+@app.get("/resultados")  # misma página: la vista de resultados del Go/NoGo se muestra según la ruta
 def index():
     return send_from_directory(os.path.join(HERE, "web"), "sesion_aura.html")
 
@@ -352,16 +433,18 @@ def estado():
         return jsonify({**S.snapshot(), "log": S.log})
 
 
-@app.get("/api/eventos")
-def eventos():
+def sse(subs, first):
+    """Respuesta SSE: suscribe una cola a `subs`, manda first() y después cada mensaje que le llegue."""
     q = queue.Queue()
     with S.lock:
-        S.subs.append(q)
-        first = f"event: full\ndata: {json.dumps({**S.snapshot(), 'log': S.log}, ensure_ascii=False)}\n\n"
+        subs.append(q)
+        head = first()
+        if subs is S.gng_subs:
+            S.push_state()  # el dashboard muestra si hay un teléfono conectado
 
     def stream():
         try:
-            yield first
+            yield head
             while True:
                 try:
                     yield q.get(timeout=10)
@@ -370,9 +453,16 @@ def eventos():
                     yield "event: ping\ndata: \n\n"
         finally:
             with S.lock:
-                S.subs.remove(q)
+                subs.remove(q)
+                if subs is S.gng_subs:
+                    S.push_state()
 
     return Response(stream(), mimetype="text/event-stream", headers={"Cache-Control": "no-cache"})
+
+
+@app.get("/api/eventos")
+def eventos():
+    return sse(S.subs, lambda: f"event: full\ndata: {json.dumps({**S.snapshot(), 'log': S.log}, ensure_ascii=False)}\n\n")
 
 
 def act(fn):
@@ -431,19 +521,136 @@ def reporte_ver():
         return Response(f.read(), content_type="text/plain; charset=utf-8")
 
 
+# ---------- Go/NoGo (Fase 1 de Tests/Plan_App_GoNoGo.md): sincronización, orden de inicio y recepción de ensayos ----------
+# El teléfono mide los tiempos con su reloj y su desfase contra /api/gng/sync; la red no entra en el tiempo de reacción.
+def gng(fn):
+    """Ejecuta fn con el cuerpo JSON; los datos mal formados o de un bloque que no existe devuelven 400."""
+    try:
+        return jsonify(fn(request.get_json(silent=True) or {}))
+    except (AttributeError, KeyError, TypeError, ValueError) as e:
+        return jsonify({"error": str(e)}), 400
+
+
+@app.get("/gng")
+def gng_app():
+    """La tarea en el teléfono (Fase 2). Autoprueba: /gng?demo=practica."""
+    return send_from_directory(os.path.join(HERE, "web"), "gonogo.html")
+
+
+@app.get("/api/gng/eventos")
+def gng_eventos():
+    """Canal del teléfono: aquí recibe la orden de inicio de cada bloque (evento 'inicio')."""
+    return sse(S.gng_subs, lambda: "event: hola\ndata: {}\n\n")
+
+
+@app.post("/api/gng/sync")
+def gng_sync():
+    """Reloj LSL de esta PC (el del pipeline); el teléfono calcula su desfase con la ida y vuelta."""
+    return jsonify({"t": pylsl.local_clock()})
+
+
+@app.post("/api/gng/bloque/iniciar")
+def gng_iniciar():
+    """Desde el dashboard: abre un bloque (practica / pre / post) y manda la orden a los teléfonos conectados."""
+    def fn(p):
+        with S.lock:
+            orden = S.gng_start(str(p.get("codigo", "")).strip().upper(), p.get("tipo"))
+            S.push_state()
+        return orden
+    return gng(fn)
+
+
+@app.post("/api/gng/bloque/sync")
+def gng_bloque_sync():
+    """Desde el teléfono, al inicio y al final del bloque: su desfase contra el reloj LSL."""
+    def fn(p):
+        gdb.sync(int(p["bloque"]), p["fase"], float(p["desfase"]), float(p["tel"]), float(p["ida_vuelta_ms"]),
+                 pylsl.local_clock(), p.get("cuadro_ms"), request.user_agent.string)
+        if p["fase"] == "fin":  # llega después del último ensayo: el bloque terminó en el teléfono
+            with S.lock:
+                r = S.gng_ult = gdb.resumen(bloque_id=int(p["bloque"]))[0]
+                S.gng_hasta = 0.0
+                tr = "—" if r["tr_medio_ms"] is None else f"{r['tr_medio_ms']:.0f} ms"
+                S.add_log(f"[gonogo] {TIPO[r['tipo']]} block finished for {r['codigo']}: {r['ensayos']}/{r['total']} "
+                          f"trials · commission errors {r['comisiones']}/{r['nogo']} · omissions {r['omisiones']} · "
+                          f"mean RT {tr}" + ("" if r["completo"] else " · INCOMPLETE"), "ok" if r["completo"] else "err")
+                S.push_state()
+        return {"error": None}
+    return gng(fn)
+
+
+@app.post("/api/gng/ensayos")
+def gng_ensayos():
+    """Desde el teléfono, entre estímulos: uno o varios ensayos. Responde los n guardados; reenviar no duplica."""
+    def fn(p):
+        ok = gdb.ensayos(int(p["bloque"]), p["ensayos"], pylsl.local_clock())
+        S.gng_ult = gdb.resumen(bloque_id=int(p["bloque"]))[0]
+        S.emit("gng", S.gng_ult)  # contadores en vivo de la tarjeta Go/NoGo
+        return {"ok": ok}
+    return gng(fn)
+
+
+@app.get("/api/gng/resumen")
+def gng_resumen():
+    """Tabla por bloque (comisiones, omisiones, TR medio), de todos o de un participante (?codigo=P01)."""
+    return jsonify(gdb.resumen(request.args.get("codigo")))
+
+
+@app.get("/api/gng/ensayos")
+def gng_registros():
+    """Ensayos de un bloque, uno por uno (vista de resultados)."""
+    return jsonify(gdb.registros(bloque_id=request.args.get("bloque", type=int) or 0))
+
+
+@app.get("/api/gng/exportar")
+def gng_exportar():
+    """CSV para descargar: ?que=resumen (una fila por bloque) o ?que=ensayos (una por ensayo); ?codigo= filtra."""
+    que, codigo = request.args.get("que", "resumen"), request.args.get("codigo")
+    filas = gdb.registros(codigo) if que == "ensayos" else gdb.resumen(codigo)
+    buf = io.StringIO()
+    w = csv.DictWriter(buf, fieldnames=list(filas[0]) if filas else ["sin_datos"], lineterminator="\n")
+    w.writeheader()
+    w.writerows(filas)
+    nombre = f"gonogo_{'ensayos' if que == 'ensayos' else 'resumen'}{'_' + codigo if codigo else ''}.csv"
+    return Response("﻿" + buf.getvalue(), mimetype="text/csv; charset=utf-8",  # BOM: Excel lo abre como UTF-8
+                    headers={"Content-Disposition": f'attachment; filename="{nombre}"'})
+
+
+def guardado(nombre, nuevo):
+    """Secreto de --lan guardado en data/ (fuera de git): se crea una vez y no cambia al reiniciar el servidor, así el
+    enlace y el acceso directo del teléfono siguen sirviendo."""
+    path = os.path.join(HERE, "data", nombre)
+    if not os.path.exists(path):
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(nuevo())
+    with open(path, encoding="utf-8") as f:
+        return f.read().strip()
+
+
 def main():
-    global TOKEN
+    global TOKEN, TEL
     ap = argparse.ArgumentParser(description="Sesión AURA en el navegador (servidor local)")
     ap.add_argument("--port", type=int, default=8000)
     ap.add_argument("--lan", action="store_true", help="aceptar conexiones de la red local (con token)")
+    ap.add_argument("--db", help="otra base de datos Go/NoGo (pruebas); por defecto data/mirai.db")
     a = ap.parse_args()
+    if a.db:
+        gdb.DB = os.path.abspath(a.db)
+    gdb.init()
     atexit.register(S.shutdown)
     host = "127.0.0.1"
     print(f"Sesión AURA: http://localhost:{a.port}")
     if a.lan:
-        host, TOKEN = "0.0.0.0", secrets.token_urlsafe(8)
-        ip = socket.gethostbyname(socket.gethostname())
-        print(f"Desde la red: http://{ip}:{a.port}/?token={TOKEN}")
+        host, TOKEN = "0.0.0.0", guardado("token.txt", lambda: secrets.token_urlsafe(8))
+        # Clave del teléfono: 6 letras minúsculas y dígitos sin los que se confunden (0/o, 1/l/i), para teclearla.
+        TEL = guardado("telefono.txt", lambda: "".join(secrets.choice("abcdefghjkmnpqrstuvwxyz23456789") for _ in range(6)))
+        # Todas las IPv4 de esta PC (Wi-Fi, zona Wi-Fi propia…): el teléfono usa la de la red que comparte con ella.
+        ips = sorted({i[4][0] for i in socket.getaddrinfo(socket.gethostname(), None, socket.AF_INET)} - {"127.0.0.1"})
+        for ip in ips:
+            print(f"Desde la red: http://{ip}:{a.port}/?token={TOKEN}")
+            GNG_URLS.append(f"{ip}:{a.port}/{TEL}")  # sin http://: el navegador del teléfono lo pone solo
+            print(f"  Go/NoGo en el teléfono: http://{GNG_URLS[-1]}")
     print("Ctrl+C para cerrar el servidor (y los procesos que sigan corriendo).")
     app.run(host=host, port=a.port, threaded=True, debug=False)
 

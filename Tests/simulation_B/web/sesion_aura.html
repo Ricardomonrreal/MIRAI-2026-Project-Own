@@ -165,6 +165,38 @@
   .log.f-warn div:not(.warn):not(.err) { display: none; }
   .log.f-err div:not(.err) { display: none; }
 
+  /* ---------- Go/NoGo (16 nov): tarjeta en vivo + vista de resultados en /resultados ---------- */
+  .gstats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+  .gstats span { display: flex; flex-direction: column; background: var(--sky); border-radius: 12px; padding: 6px 10px;
+                 min-width: 0; }
+  .gstats small { font-size: 11px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .gstats b { font-size: 18px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  #g-lbl { overflow-wrap: anywhere; }
+  #results { display: none; }
+  .results .kpis, .results .grid { display: none; }
+  .results #results { display: flex; flex-direction: column; gap: 12px; }
+  select { border: 1px solid var(--line); border-radius: 999px; padding: 8px 12px; background: var(--white); font: inherit;
+           color: inherit; }
+  a.btn { text-decoration: none; display: inline-block; }
+  .rsplit { display: grid; grid-template-columns: minmax(0, 2.4fr) minmax(0, 1fr); gap: var(--gap); min-height: 0; flex: 1; }
+  .tbl { overflow: auto; background: #f6fbfd; border-radius: 16px; padding: 4px 14px 10px; min-height: 0; }
+  table { border-collapse: collapse; width: 100%; font-size: 13px; font-variant-numeric: tabular-nums; }
+  th { position: sticky; top: 0; background: #f6fbfd; text-align: left; font-size: 12px; font-weight: 600;
+       color: var(--muted); padding: 10px 8px 8px 0; white-space: nowrap; }
+  /* Encabezado que ordena: un botón con el aspecto del texto del encabezado */
+  th button { all: unset; cursor: pointer; border-radius: 6px; }
+  th button:hover, th[aria-sort] button { color: var(--blue); }
+  th button:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+  td { padding: 7px 8px 7px 0; border-top: 1px solid var(--line); white-space: nowrap; }
+  #r-blocks tbody tr { cursor: pointer; } #r-blocks tbody tr:hover td { background: var(--sky); }
+  #r-blocks tbody tr.sel td { background: var(--blue-soft); }
+  td.num, th.num { text-align: right; }
+  .tag { background: var(--blue-soft); color: var(--blue); border-radius: 999px; padding: 2px 10px; font-size: 12px;
+         font-weight: 600; }
+  .tag.bad { background: var(--coral-soft); color: var(--err); }
+  .empty { color: var(--muted); padding: 14px 0; }
+  @media (max-width: 900px) { .rsplit { grid-template-columns: minmax(0, 1fr); } .gstats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
   /* ---------- responsivo: 3 columnas ≥ 1280 px · 2 columnas en laptop chica y tableta · 1 en celular ---------- */
   @media (max-width: 1279px) {
     .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .span3 { grid-column: span 2; }
@@ -225,7 +257,9 @@
             grid-template-columns: minmax(150px, .45fr) minmax(0, 1.15fr) minmax(0, 1.15fr) minmax(230px, .5fr);
             grid-template-rows: auto minmax(0, 1fr); }
     .clockcard { grid-column: 4; grid-row: 1 / 3; } .statecard { grid-column: auto; }
-    #registro { grid-column: 1 / 4; grid-row: 2; display: flex; flex-direction: column; min-height: 0; }
+    #registro { grid-column: 1 / 3; grid-row: 2; display: flex; flex-direction: column; min-height: 0; }
+    #gng { grid-column: 3; grid-row: 2; display: flex; flex-direction: column; min-height: 0; overflow: auto; }
+    .results #results { flex: 1; min-height: 0; }  /* la vista de resultados ocupa el alto libre; desplazan las tablas */
     .log { flex: 1; height: auto; min-height: 90px; }  /* si no cabe ni así, la página hace scroll */
     .card h2 { margin-bottom: 8px; }  /* fila 1 más baja: más alto para el registro */
     /* Bloque actual: columna angosta a toda la altura (10 nov: sin barra de bloques, solo las etapas) */
@@ -246,6 +280,7 @@
     .bm { padding: 8px 10px; } .bm .sym { font-size: 40px; } .bm .lab, .bm .v { font-size: 13px; }
     .bm svg { min-height: 28px; } .iv { margin-top: 6px; font-size: 12px; }
     #registro .kicker { display: none; } .loghead { margin-bottom: 6px; } .log { padding: 8px 12px; }
+    .gstats span { padding: 4px 8px; } .gstats b { font-size: 15px; } select { padding: 5px 10px; font-size: 12px; }
     .block { font-size: 18px; } .next { font-size: 13px; }
   }
 </style>
@@ -279,12 +314,16 @@
            servidor (iaf 10, PROTOCOL_DUR, per 420, PROTOCOL_PLAN) -->
       <input type="hidden" id="p-iaf"><input type="hidden" id="p-dur"><input type="hidden" id="p-per">
       <input type="hidden" id="p-plan">
+      <!-- 16 nov: código del participante (obligatorio): con él se guardan sus resultados del Go/NoGo -->
+      <label class="f" style="margin-bottom: 8px">Participant code
+        <input type="text" id="p-codigo" placeholder="P01" maxlength="16" autocomplete="off" spellcheck="false"></label>
       <div class="row stack">
         <button class="btn primary" id="b-start">Start session</button>
         <button class="btn" id="b-stop">Stop session</button>
         <button class="btn danger" id="b-abort_ses">Abort</button>
         <button class="btn" id="b-rep">Open report</button>
         <button class="btn" id="b-clear">Clear console</button>
+        <button class="btn" id="b-results">Results</button>
       </div>
       <div class="note" id="rep-note"></div>
     </section>
@@ -333,6 +372,21 @@
       <div class="log" id="log"></div>
     </section>
 
+    <!-- Go/NoGo (16 nov): teléfono conectado y contadores en vivo del bloque; los bloques pre/post arrancan solos -->
+    <section class="card" id="gng">
+      <div class="kicker">Phone task · web/gonogo.html</div>
+      <h2>Go/NoGo</h2>
+      <div class="iv" style="margin: 0 0 8px"><b>Phone</b><span id="g-tel">—</span></div>
+      <div class="gstats">
+        <span><small>Trial</small><b id="g-n">—</b></span>
+        <span><small>Commissions</small><b id="g-c">—</b></span>
+        <span><small>Omissions</small><b id="g-o">—</b></span>
+        <span><small>Mean RT</small><b id="g-rt">—</b></span>
+      </div>
+      <div class="note" id="g-lbl"></div>
+      <div class="row" style="margin-top: 8px"><button class="btn" id="b-practice">Practice block</button></div>
+    </section>
+
     <!-- Bloque actual -->
     <section class="card span3 clockcard">
       <div class="kicker">Session timer</div>
@@ -343,12 +397,30 @@
       <div class="stages" id="stages"></div>
     </section>
   </main>
+
+  <!-- Resultados del Go/NoGo (16 nov): misma página, ruta /resultados. Bloques a la izquierda; ensayos del elegido a la derecha -->
+  <section class="card" id="results">
+    <div class="loghead">
+      <div><div class="kicker">Go/NoGo · one row per block</div><h2>Results</h2></div>
+      <div class="row">
+        <select id="r-code" aria-label="Participant"></select>
+        <a class="btn" id="r-csv" href="/api/gng/exportar?que=resumen">Export summary (CSV)</a>
+        <a class="btn" id="r-csv2" href="/api/gng/exportar?que=ensayos">Export trials (CSV)</a>
+        <button class="btn primary" id="b-back">Back to session</button>
+      </div>
+    </div>
+    <div class="rsplit">
+      <div class="tbl"><table id="r-blocks"></table></div>
+      <div class="tbl"><table id="r-trials"></table></div>
+    </div>
+  </section>
 </div>
 
 <script>
 const $ = id => document.getElementById(id);
 const ARROW_Z = 0.5;  // ponytail: umbral fijo de la flecha (↑/↓ si |Z| ≥ 0.5); ajustar con datos reales
-const PARAMS = ["name", "sid", "iaf", "dur", "per", "plan"];
+const PARAMS = ["name", "sid", "iaf", "dur", "per", "plan", "codigo"];
+const CODE_OK = /^[A-Za-z0-9_-]{1,16}$/;  // el servidor lo pasa a mayúsculas y lo vuelve a validar
 const BTNS = ["mon", "mon_stop", "start", "stop", "abort_ses", "rep", "clear"];
 const CHANNELS = ["Fp1", "F3", "Fz", "F4", "Cz", "Pz", "O1", "O2"];  // orden AURA (mock_lsl_streamer.AURA_CHANNELS)
 const COLOR = { g: "good", y: "fair", r: "bad" };
@@ -390,6 +462,8 @@ $("b-start").onclick = () => {
   const bad = tok.length % 2 || [p.iaf, p.dur, p.per].some(v => v === "" || isNaN(+v)) ||
               tok.some((t, i) => i % 2 ? !t.includes(":") : t === "" || isNaN(+t));
   if (bad) return alert("Check IAF, duration, period and blocks (<seconds> bloque:<name>).");
+  if (!CODE_OK.test(p.codigo)) { $("p-codigo").focus(); return alert("Enter the participant code (e.g. P01) before starting."); }
+  if (!S.gng.telefonos && !confirm("No phone is connected: the Go/NoGo blocks will not start. Start anyway?")) return;
   if (!confirm("Is Aura already recording (red button)?")) return;
   post("/api/sesion/iniciar", p);
 };
@@ -407,6 +481,124 @@ $("b-clear").onclick = () => {  // solo sin sesión en vivo; los archivos de run
   if (confirm("Clear the log and the last session's data from the dashboard? Files in runs/ are kept."))
     post("/api/sesion/limpiar");
 };
+
+$("b-practice").onclick = () => {
+  const codigo = $("p-codigo").value.trim();
+  if (!CODE_OK.test(codigo)) { $("p-codigo").focus(); return alert("Enter the participant code (e.g. P01) first."); }
+  post("/api/gng/bloque/iniciar", { codigo, tipo: "practica" });
+};
+
+// ---------- Go/NoGo: tarjeta en vivo ----------
+function gngRender() {
+  const g = S.gng, b = g.bloque, live = S.running.includes("pipeline") || S.running.includes("behavior");
+  $("g-tel").textContent = g.telefonos ? `connected${g.telefonos > 1 ? ` (${g.telefonos})` : ""}` : "not connected";
+  $("g-tel").className = g.telefonos ? "ok" : "err";
+  $("g-n").textContent = b ? `${b.ensayos}/${b.total}` : "—";
+  $("g-c").textContent = b ? `${b.comisiones}/${b.nogo}` : "—";
+  $("g-o").textContent = b ? b.omisiones : "—";
+  $("g-rt").textContent = b && b.tr_medio_ms != null ? `${Math.round(b.tr_medio_ms)} ms` : "—";
+  // 16 nov: el teléfono manda todos los ensayos juntos al terminar; durante el bloque la tarjeta solo avisa que corre.
+  $("g-lbl").textContent = b ? `${b.codigo} · ${g.tipo[b.tipo] || b.tipo}` + (b.completo ? " · complete" : b.ensayos === b.total ? " · closing"
+      : b.ensayos ? " · incomplete" : " · running on the phone: results arrive when it ends")
+    : g.telefonos ? "Before and After start by themselves during the session."
+    : g.urls.length ? `Open on the phone: ${g.urls.join("  or  ")}` : "Restart the server with --lan and open /gng on the phone.";
+  $("b-practice").disabled = !connected || !g.telefonos || live;
+  $("b-results").disabled = !connected;
+}
+
+// ---------- Go/NoGo: resultados (ruta /resultados, misma página) ----------
+const RES = { acierto: "Hit", omision: "Omission", comision: "Commission error", rechazo: "Correct stop", anticipacion: "Anticipation" };
+let rows = [], trials = [], selBlock = null;
+const sortB = { col: null, dir: 1 }, sortT = { col: null, dir: 1 };  // columna y sentido del orden de cada tabla
+const ms = v => v == null ? "—" : `${Math.round(v)} ms`;
+// Orden por columna (16 nov): cada columna es [título, numérica, valor para ordenar, celda]. Se ordena por el valor real
+// (no por el texto: "312 ms", "3/16 (19%)"); los vacíos van siempre al final y los empates conservan el orden de llegada.
+const cmp = (a, b, dir) => (a == null) - (b == null) ||
+  dir * (typeof a === "string" ? a.localeCompare(b, undefined, { numeric: true }) : a - b);
+function table(id, cols, data, st, redraw, onRow) {  // celdas con textContent: nada de lo guardado se interpreta como HTML
+  const t = $(id); t.innerHTML = "";
+  const tr = t.createTHead().insertRow();
+  cols.forEach(([h, num], j) => {
+    const th = document.createElement("th"); if (num) th.className = "num";
+    if (!st) { th.textContent = h; tr.appendChild(th); return; }
+    const b = document.createElement("button");  // encabezado: clic ordena; otro clic invierte
+    b.textContent = h + (st.col === j ? (st.dir > 0 ? " ▲" : " ▼") : "");
+    b.title = `Sort by ${h}`;
+    b.onclick = () => { st.dir = st.col === j ? -st.dir : 1; st.col = j; redraw(); };
+    if (st.col === j) th.setAttribute("aria-sort", st.dir > 0 ? "ascending" : "descending");
+    th.appendChild(b); tr.appendChild(th);
+  });
+  const tb = t.createTBody(), key = st && st.col != null ? cols[st.col][2] : null;
+  (key ? [...data].sort((a, b) => cmp(key(a), key(b), st.dir)) : data).forEach(d => {
+    const r = tb.insertRow();
+    cols.forEach(([, num, , cell]) => {
+      const td = r.insertCell(), c = cell(d); if (num) td.className = "num";
+      if (c && c.tag) { const s = document.createElement("span"); s.className = "tag" + (c.bad ? " bad" : ""); s.textContent = c.tag; td.appendChild(s); }
+      else td.textContent = c;
+    });
+    if (onRow) onRow(r, d);
+  });
+}
+const tipoTxt = r => S.gng.tipo[r.tipo] || r.tipo;
+const COLS_B = [
+  ["Participant", 0, r => r.codigo, r => r.codigo],
+  ["Session", 0, r => r.sesion_inicio, r => r.sesion_inicio.slice(0, 16)],
+  ["Block", 0, r => ["practica", "pre", "post"].indexOf(r.tipo), r => ({ tag: tipoTxt(r) })],
+  ["Trials", 1, r => r.ensayos, r => `${r.ensayos}/${r.total}`],
+  ["Commission errors", 1, r => r.nogo ? r.comisiones / r.nogo : null,
+   r => r.nogo ? `${r.comisiones}/${r.nogo} (${Math.round(100 * r.comisiones / r.nogo)}%)` : "—"],
+  ["Omissions", 1, r => r.omisiones, r => r.omisiones],
+  ["Antic.", 1, r => r.anticipaciones, r => r.anticipaciones],
+  ["Mean RT", 1, r => r.tr_medio_ms, r => ms(r.tr_medio_ms)],
+  ["Median RT", 1, r => r.tr_mediana_ms, r => ms(r.tr_mediana_ms)],
+  ["SD RT", 1, r => r.tr_de_ms, r => ms(r.tr_de_ms)],
+  ["Sync", 1, r => r.ida_vuelta_ms, r => ms(r.ida_vuelta_ms)],
+  ["EEG run", 0, r => r.run_dir, r => r.run_dir ? r.run_dir.split(/[\\/]/).pop() : "—"],
+  ["Status", 0, r => r.completo, r => ({ tag: r.completo ? "Complete" : "Incomplete", bad: !r.completo })]];
+const COLS_T = [
+  ["#", 1, e => e.n, e => e.n + 1],
+  ["Digit", 1, e => e.estimulo, e => e.estimulo],
+  ["Result", 0, e => RES[e.resultado] || e.resultado,
+   e => ["comision", "omision"].includes(e.resultado) ? { tag: RES[e.resultado], bad: 1 } : RES[e.resultado] || e.resultado],
+  ["RT", 1, e => e.tr_ms, e => ms(e.tr_ms)]];
+function drawBlocks() {
+  const code = $("r-code").value, list = rows.filter(r => !code || r.codigo === code);
+  $("r-csv").href = "/api/gng/exportar?que=resumen" + (code ? `&codigo=${code}` : "");
+  $("r-csv2").href = "/api/gng/exportar?que=ensayos" + (code ? `&codigo=${code}` : "");
+  table("r-blocks", COLS_B, list, sortB, drawBlocks, (tr, r) => {
+    tr.classList.toggle("sel", r.bloque_id === selBlock);
+    tr.onclick = () => { selBlock = r.bloque_id; drawBlocks(); loadTrials(); };
+  });
+  if (!list.length) {
+    const td = $("r-blocks").tBodies[0].insertRow().insertCell();
+    td.colSpan = COLS_B.length; td.className = "empty"; td.textContent = "No Go/NoGo blocks recorded yet.";
+  }
+}
+function drawTrials() {  // los ensayos del bloque elegido ya están cargados: reordenar no vuelve a pedirlos
+  const r = rows.find(x => x.bloque_id === selBlock);
+  if (!r) return table("r-trials", [["Select a block to see its trials"]], []);
+  table("r-trials", [[`${r.codigo} · ${tipoTxt(r)} · #`, ...COLS_T[0].slice(1)], ...COLS_T.slice(1)], trials, sortT, drawTrials);
+}
+async function loadTrials() {
+  trials = selBlock == null ? [] : await (await fetch(`/api/gng/ensayos?bloque=${selBlock}`)).json();
+  drawTrials();
+}
+async function route() {  // "/" = sesión · "/resultados" = resultados; sin recargar (la conexión en vivo sigue)
+  const res = location.pathname === "/resultados";
+  document.body.classList.toggle("results", res);
+  if (!res) return;
+  rows = await (await fetch("/api/gng/resumen")).json().catch(() => []);
+  const sel = $("r-code"), prev = sel.value;
+  sel.innerHTML = "";
+  [["", "All participants"], ...[...new Set(rows.map(r => r.codigo))].sort().map(c => [c, c])].forEach(([v, t]) => sel.add(new Option(t, v)));
+  sel.value = [...sel.options].some(o => o.value === prev) ? prev : "";
+  drawBlocks(); loadTrials();
+}
+const go = path => { history.pushState({}, "", path); route(); };
+$("b-results").onclick = () => go("/resultados");
+$("b-back").onclick = () => go("/");
+$("r-code").onchange = () => { selBlock = null; drawBlocks(); loadTrials(); };
+window.addEventListener("popstate", route);
 
 $("filters").onclick = e => {
   const b = e.target.closest("button"); if (!b) return;
@@ -437,6 +629,7 @@ function render(full) {
     ? `Report ready · <a href="/api/reporte" target="_blank" style="color:var(--blue)">view it in the browser</a>` : "";
 
   bio("t", "theta", 1); bio("a", "alpha", 2);
+  gngRender();
   const [ivt, ivc] = S.status.Intervention;
   $("iv").textContent = ivt; $("iv").className = ivc; $("iv").title = ivt;
   kpi("noise", "Noise");
@@ -595,7 +788,9 @@ function connect() {
     $("log").innerHTML = ""; S.log.forEach(([t, c]) => addLog(t, c));
     setConn(true, "Server connected");  // primero el indicador: un fallo al dibujar no lo deja en "Connecting…"
     render(true);
+    route();
   });
+  on("gng", e => { if (S) { S.gng.bloque = JSON.parse(e.data); gngRender(); } });  // un ensayo más del bloque en curso
   on("state", e => { S = JSON.parse(e.data); render(false); });
   on("log", e => { const [t, c] = JSON.parse(e.data); addLog(t, c); });
   on("clear", () => {  // al iniciar o limpiar: registro, reloj y bloque vuelven a cero

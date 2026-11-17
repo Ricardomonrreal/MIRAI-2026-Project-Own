@@ -30,3 +30,6 @@ Thumbs.db
 # === Registros de sesiones del pipeline en tiempo real ===
 Tests/simulation/runs/
 Tests/simulation_B/runs/
+
+# === Base de datos de la tarea Go/NoGo (resultados de participantes) ===
+Tests/simulation_B/data/

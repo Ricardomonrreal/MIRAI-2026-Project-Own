@@ -6,10 +6,10 @@
     "semantic_hash": "8a6643a420fdad6bfb583523bc6cef16"
   },
   "README.md": {
-    "mtime": 1793083545.2442982,
-    "seen": 1793334293.1855876,
-    "ast_hash": "45df98dc889bc4a2cb7c88714a9fd8b7",
-    "semantic_hash": "45df98dc889bc4a2cb7c88714a9fd8b7"
+    "mtime": 1794889632.6646924,
+    "seen": 1794889641.8241591,
+    "ast_hash": "f1bc99514921ecbf8fb7f5ba4fb238d4",
+    "semantic_hash": ""
   },
   "Tests/Plan_Avances.md": {
     "mtime": 1793083589.0594869,
@@ -191,18 +191,6 @@
     "ast_hash": "b15f8b2d07fe0a3f0a04d5fe4a4452e7",
     "semantic_hash": "b15f8b2d07fe0a3f0a04d5fe4a4452e7"
   },
-  "Tests/simulation/test_realtime_pipeline.py": {
-    "mtime": 1793261792.1705205,
-    "seen": 1793334293.1855621,
-    "ast_hash": "43169b1a494eb6987377be9a0bac3b66",
-    "semantic_hash": "43169b1a494eb6987377be9a0bac3b66"
-  },
-  "Tests/simulation/replay_offline.py": {
-    "mtime": 1793261792.1512172,
-    "seen": 1793334293.1855564,
-    "ast_hash": "79934700c14626f4d243c364e453ac9f",
-    "semantic_hash": "79934700c14626f4d243c364e453ac9f"
-  },
   "Tests/simulation/spectral_features.py": {
     "mtime": 1793261792.1662815,
     "seen": 1793334293.1855595,
@@ -225,18 +213,6 @@
     "mtime": 1794467742.0867803,
     "seen": 1794471788.0016603,
     "ast_hash": "c17d6e4607b1fbbdd9b5e72983a2917d",
-    "semantic_hash": ""
-  },
-  "Tests/simulation_B/replay_offline.py": {
-    "mtime": 1793597527.25638,
-    "seen": 1793598170.4250062,
-    "ast_hash": "1f7c4631ab9aeb44c75368a56e9b6153",
-    "semantic_hash": ""
-  },
-  "Tests/simulation_B/test_realtime_pipeline.py": {
-    "mtime": 1793597715.1348813,
-    "seen": 1793598170.425024,
-    "ast_hash": "4dcdf7e8abe947b84a2b75131142e6f0",
     "semantic_hash": ""
   },
   "Tests/simulation_B/VERSION_B.md": {
@@ -275,12 +251,6 @@
     "ast_hash": "21c08c814595dc37c2059c58798b0884",
     "semantic_hash": ""
   },
-  "Tests/simulation_B/run_simulation.py": {
-    "mtime": 1793341093.1655831,
-    "seen": 1793342445.483929,
-    "ast_hash": "b5a92085bc3b057e7a69e921d517fdf4",
-    "semantic_hash": ""
-  },
   "Tests/Diagrama_Pipeline.md": {
     "mtime": 1793597780.9186964,
     "seen": 1793598170.4250667,
@@ -294,9 +264,9 @@
     "semantic_hash": ""
   },
   "Tests/simulation_B/sesion_aura_web.py": {
-    "mtime": 1794471708.8795395,
-    "seen": 1794471788.0016797,
-    "ast_hash": "1779516dbb236b778f49827a65febf8a",
+    "mtime": 1794823855.951934,
+    "seen": 1794823902.9779778,
+    "ast_hash": "b8f2a8f1d1598224efdc131c7b7798d8",
     "semantic_hash": ""
   },
   "Tests/Analisis_Semana_Muestra_Regresion.md": {
@@ -306,15 +276,69 @@
     "semantic_hash": ""
   },
   "Tests/simulation_B/web/sesion_aura.html": {
-    "mtime": 1794471708.8809824,
-    "seen": 1794471788.0017762,
-    "ast_hash": "379e2fb7993d4cc9ce7c94f95d0f2959",
+    "mtime": 1794827124.1149886,
+    "seen": 1794827132.8957198,
+    "ast_hash": "2aed30a75ebacd05b54f8ccd97691d83",
     "semantic_hash": ""
   },
   "Tests/simulation_B/semaforo_canales.py": {
     "mtime": 1794377345.6937268,
     "seen": 1794377822.7536573,
     "ast_hash": "0ff016e51a1e6e29906f6e79de6a45b7",
+    "semantic_hash": ""
+  },
+  "Tests/simulation_B/gonogo_db.py": {
+    "mtime": 1794825114.4145467,
+    "seen": 1794825304.5824292,
+    "ast_hash": "320ab8da45e8a3bbdf83cbe4db1728db",
+    "semantic_hash": ""
+  },
+  "Tests/simulation_B/test_gonogo.py": {
+    "mtime": 1794823856.2630248,
+    "seen": 1794823902.9779863,
+    "ast_hash": "1f7d8d208c051ff7310ec8c1e0877f39",
+    "semantic_hash": ""
+  },
+  "Tests/Plan_App_GoNoGo.md": {
+    "mtime": 1794827124.5128198,
+    "seen": 1794827132.8956182,
+    "ast_hash": "9ba02be220442ef42898bb050fa498c2",
+    "semantic_hash": ""
+  },
+  "Tests/Script_2nd_Progress_Report.md": {
+    "mtime": 1794536358.1527562,
+    "seen": 1794808532.2401488,
+    "ast_hash": "1460420ac3211e99805a8ea09ef7d5cd",
+    "semantic_hash": ""
+  },
+  "Tests/2nd Progress Report MIRAI Ricardo_Monrreal.pdf": {
+    "mtime": 1794798463.0494766,
+    "seen": 1794808532.2402165,
+    "ast_hash": "423070290549e9e9b3c7a5f688a4ad41",
+    "semantic_hash": ""
+  },
+  "Tests/simulation_B/web/gonogo.html": {
+    "mtime": 1794825114.0778477,
+    "seen": 1794825304.5825565,
+    "ast_hash": "218ec02833970090044952f9b51d279d",
+    "semantic_hash": ""
+  },
+  "Tests/simulation/replay_offline.py": {
+    "mtime": 1794889627.1717749,
+    "seen": 1794889641.8240838,
+    "ast_hash": "bf0d4a4a71cb752171705a41b6d8bc78",
+    "semantic_hash": ""
+  },
+  "Tests/simulation_B/replay_offline.py": {
+    "mtime": 1794889627.173895,
+    "seen": 1794889641.8241196,
+    "ast_hash": "1f7c4631ab9aeb44c75368a56e9b6153",
+    "semantic_hash": ""
+  },
+  "Tests/simulation_B/run_simulation.py": {
+    "mtime": 1794889627.1754017,
+    "seen": 1794889641.824123,
+    "ast_hash": "8fd5336996ba1a0863d1be758f34aeaa",
     "semantic_hash": ""
   }
 }

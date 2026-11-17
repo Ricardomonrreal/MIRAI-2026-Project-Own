@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<title>Go/NoGo</title>
+<!--
+  gonogo.html — tarea Go/NoGo en el teléfono (MIRAI 2026) · Fase 2 de Tests/Plan_App_GoNoGo.md
+  La sirve sesion_aura_web.py en /gng. Un solo archivo, sin librerías, imágenes ni fuentes: nada que descargar.
+  SART de Perzl et al. (2024): dígitos blancos sobre negro, 250 ms, 1150 ms entre inicios, no tocar con el 3.
+  Interfaz en inglés (decisión del 16 nov). Sin retroalimentación.
+
+  Tiempo: todo se mide en el teléfono, en el reloj de performance.now(). El inicio de cada dígito es la marca del
+  cuadro (requestAnimationFrame) en que se pinta; el toque es event.timeStamp de pointerdown. La red no interviene:
+  durante la tarea no se manda nada (16 nov); al terminar el bloque salen todos los ensayos juntos en un solo envío,
+  que espera en una cola y se reintenta hasta que el servidor confirma.
+  El desfase con el reloj LSL de la PC se mide al inicio y al final del bloque (10 idas y vueltas, se usa la más corta).
+
+  Prueba sin sesión: /gng?demo=pre (o practica, post) abre un bloque del participante TEST (&code=OTRO lo cambia)
+  para hacerlo a mano; al final compara lo que contó el teléfono con lo que guardó el servidor (resultado en pantalla
+  y en window.gngTest). Con &auto=1 responde solo, con tiempos conocidos, y además mide el error del TR.
+-->
+<style>
+  html, body { margin: 0; height: 100%; background: #000; color: #fff; overflow: hidden; overscroll-behavior: none;
+    touch-action: none; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  .scr { position: fixed; inset: 0; display: none; flex-direction: column; align-items: center; justify-content: center;
+    gap: clamp(18px, 4.5vh, 40px); padding: 56px 32px; box-sizing: border-box; text-align: center; }
+  body[data-s="wait"] #wait, body[data-s="inst"] #inst, body[data-s="task"] #task { display: flex; }
+  #wait { justify-content: space-between; }
+  .conn { display: flex; align-items: center; gap: 10px; font-size: 16px; color: #B4C2CB; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; background: #FFB347; }
+  .on .dot { background: #5FD39A; }
+  h1 { margin: 0; font-size: 28px; font-weight: 600; line-height: 1.25; }
+  p { margin: 0; }
+  .sub { font-size: 17px; line-height: 1.45; color: #B4C2CB; }
+  h1 + .sub { margin-top: 16px; }
+  .foot { font-size: 15px; color: #B4C2CB; min-height: 1.2em; }
+  .rule { font-size: 24px; font-weight: 600; line-height: 1.3; }
+  #digits { font-size: 34px; font-weight: 600; letter-spacing: 12px; margin-right: -12px; font-variant-numeric: tabular-nums; }
+  #count { font-size: 64px; font-weight: 700; line-height: 1; min-height: 64px; }
+  #d { font-size: 96px; font-weight: 500; line-height: 1; font-variant-numeric: tabular-nums; visibility: hidden; }
+  #demo { position: fixed; left: 0; right: 0; bottom: 0; margin: 0; padding: 8px 12px; color: #B4C2CB; text-align: left;
+    background: #000;
+    font: 12px/1.4 ui-monospace, Consolas, monospace; white-space: pre-wrap; }
+</style>
+</head>
+<body data-s="wait">
+
+<div class="scr" id="wait">
+  <div class="conn" id="conn"><span class="dot"></span><span id="conn-t">Connecting…</span></div>
+  <div>
+    <h1 id="w-title">Please wait</h1>
+    <p class="sub" id="w-sub">The task starts by itself when the researcher launches it.</p>
+  </div>
+  <div class="foot" id="w-foot">Tap once to go full screen</div>
+</div>
+
+<div class="scr" id="inst">
+  <p class="rule">Tap the screen every time a number appears</p>
+  <div id="digits"></div>
+  <p class="rule">Except <span id="nogo"></span>: do not tap</p>
+  <p class="sub">You can tap anywhere. Be fast, but avoid mistakes.</p>
+  <div id="count"></div>
+  <div class="foot" id="i-foot"></div>
+</div>
+
+<div class="scr" id="task"><div id="d">0</div></div>
+<pre id="demo"></pre>
+
+<script>
+const $ = id => document.getElementById(id), now = () => performance.now(), sleep = ms => new Promise(r => setTimeout(r, ms));
+const Q = new URLSearchParams(location.search);
+const DEMO = Q.get("demo");  // practica | pre | post → bloque de prueba sin sesión, hecho a mano
+const AUTO = DEMO && Q.get("auto");  // con &auto=1 responde solo (autoprueba del programa)
+const LABEL = {practica: "Practice", pre: "Before", post: "After"};
+const D = $("d");
+// Un dígito que se atrasa menos de LATE_MS (cuadros perdidos sueltos) se presenta igual: su inicio real queda guardado
+// y el atraso se ve en la base (inicio_tel). Con más atraso el ensayo se salta y el bloque queda incompleto.
+const LATE_MS = 100;
+let frameMs = 1000 / 60, run = null, out = [], pumping = false;
+
+const show = s => { document.body.dataset.s = s; };
+const post = (url, body) => fetch(url, {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(body || {})});
+
+// Intervalo real entre cuadros de esta pantalla (mediana de 30): 16.7 ms a 60 Hz, 8.3 ms a 120 Hz.
+function measureFrame() {
+  return new Promise(res => {
+    const d = []; let prev = 0;
+    const f = t => { if (prev) d.push(t - prev); prev = t; d.length < 30 ? requestAnimationFrame(f) : res(d.sort((a, b) => a - b)[15]); };
+    requestAnimationFrame(f);
+  });
+}
+
+// Desfase (s) = reloj LSL de la PC − reloj del teléfono, con la ida y vuelta más corta de 10. Reintenta sin límite.
+async function sync() {
+  for (;;) {
+    try {
+      let best = null;
+      for (let i = 0; i < 10; i++) {
+        const t0 = now(), r = await post("/api/gng/sync"), t1 = now();
+        if (!r.ok) throw 0;
+        const {t} = await r.json();
+        if (!best || t1 - t0 < best.ida_vuelta_ms) best = {ida_vuelta_ms: t1 - t0, tel: (t0 + t1) / 2, desfase: t - (t0 + t1) / 2000};
+      }
+      return best;
+    } catch (e) { await sleep(1000); }
+  }
+}
+
+// Cola de envío en orden: cada mensaje se reintenta hasta que el servidor responde (400 = dato rechazado, no se repite).
+// ponytail: los ensayos viven en memoria hasta el final del bloque; si la página se cierra antes, ese bloque se pierde.
+async function pump() {
+  if (pumping) return;
+  pumping = true;
+  while (out.length) {
+    try {
+      const r = await post(out[0].url, out[0].body);
+      if (!r.ok && r.status !== 400) throw 0;
+      out.shift();
+    } catch (e) { await sleep(1000); }
+  }
+  pumping = false;
+}
+// Nada sale antes que la sincronización inicial del bloque: el servidor la necesita para fechar los ensayos.
+const send = (r, url, body) => r.ready.then(() => { out.push({url, body}); pump(); });
+
+function close(r, i) {  // ensayo terminado: ya no admite toques; se manda con los demás al final del bloque
+  if (r.trials[i]) r.trials[i].done = true;
+}
+
+function start(o) {
+  if (run) return;  // ya hay un bloque en curso
+  const r = run = {o, t0: now() + o.prep_ms, k: -1, shown: false, trials: [], late: 0, c: null, fin: false,
+                   x: {go: 0, nogo: 0, target: {}}};
+  r.ready = measureFrame().then(v => { frameMs = v; return sync(); }).then(s => {
+    r.s0 = s;
+    out.push({url: "/api/gng/bloque/sync", body: {bloque: o.bloque, fase: "inicio", ...s, cuadro_ms: frameMs}});
+    pump();
+  });
+  $("digits").textContent = "123456789".replace(o.nogo, "");
+  $("nogo").textContent = o.nogo;
+  $("i-foot").textContent = `${o.codigo || ""} · ${LABEL[o.tipo] || o.tipo}`;
+  $("demo").textContent = "";
+  show("inst");
+  requestAnimationFrame(frame);
+}
+
+function frame(ts) {
+  const r = run, o = r.o, half = frameMs / 2, rel = ts - r.t0 + half;
+  if (rel < 0) {  // preparación: cuenta atrás y, en el último segundo, pantalla negra
+    const c = Math.ceil((-rel - 1000) / 1000);
+    if (c !== r.c) { r.c = c; if (c > 0) $("count").textContent = c; else show("task"); }
+    return requestAnimationFrame(frame);
+  }
+  const due = Math.floor(rel / o.soa_ms);  // ensayo cuyo inicio ya tocaba en este cuadro
+  if (due > r.k) {
+    if (r.shown) { D.style.visibility = "hidden"; r.shown = false; }
+    if (due >= o.secuencia.length) return finish(r);
+    r.k = due;
+    if (rel - due * o.soa_ms < LATE_MS) {
+      D.textContent = o.secuencia[due];
+      D.style.visibility = "visible";
+      r.shown = true;
+      r.trials[due] = {n: due, t_on: ts, rt: null, done: false};
+      if (AUTO) bot(r, due, ts);
+    } else r.late++;  // sin cuadros durante más de LATE_MS (página oculta o bloqueada): el ensayo no se presenta ni se manda
+  } else if (r.shown && ts - r.trials[r.k].t_on >= o.stim_ms - half) {
+    D.style.visibility = "hidden";
+    r.shown = false;
+    close(r, r.k - 1);
+  }
+  requestAnimationFrame(frame);
+}
+
+function finish(r) {
+  r.trials.forEach((_, i) => close(r, i));
+  // Un solo envío con todos los ensayos presentados (los saltados no existen) y, detrás, la sincronización final.
+  send(r, "/api/gng/ensayos", {bloque: r.o.bloque, ensayos: r.trials.filter(Boolean).map(t => ({n: t.n, t_on: t.t_on, rt: t.rt}))});
+  r.ready.then(sync).then(s => {
+    r.s1 = s;
+    out.push({url: "/api/gng/bloque/sync", body: {bloque: r.o.bloque, fase: "fin", ...s}});
+    r.fin = true;
+    pump();
+  });
+  run = null;
+  $("w-title").textContent = "Finished. Thank you.";
+  $("w-sub").textContent = "Please wait for the researcher.";
+  $("w-foot").textContent = $("i-foot").textContent;
+  show("wait");
+  if (DEMO) report(r);
+}
+
+// Toque: cuenta el primero de cada ensayo, desde que aparece su dígito hasta que aparece el siguiente.
+document.addEventListener("pointerdown", e => {
+  if (!run || run.k < 0) {
+    if (!document.fullscreenElement) document.documentElement.requestFullscreen?.()?.catch(() => {});
+    return;
+  }
+  const t = Math.abs(e.timeStamp - now()) < 5000 ? e.timeStamp : now();
+  let tr = run.trials[run.k];
+  if (!tr || t < tr.t_on) tr = run.trials[run.k - 1];  // toque anterior al dígito actual, entregado después de pintarlo
+  if (tr && !tr.done && tr.rt === null && t >= tr.t_on) tr.rt = t - tr.t_on;
+});
+document.addEventListener("contextmenu", e => e.preventDefault());
+
+// Canal con el servidor: aquí llega la orden de inicio de cada bloque.
+let asked = false;
+const es = new EventSource("/api/gng/eventos");
+const conn = ok => { $("conn").classList.toggle("on", ok); $("conn-t").textContent = ok ? "Connected" : "Reconnecting…"; };
+es.onopen = () => {
+  conn(true);
+  if (DEMO && !asked) { asked = true; post("/api/gng/bloque/iniciar", {codigo: Q.get("code") || (AUTO ? "DEMO" : "TEST"), tipo: DEMO}); }
+};
+es.onerror = () => conn(false);
+es.addEventListener("inicio", e => start(JSON.parse(e.data)));
+measureFrame().then(v => { frameMs = v; });
+navigator.wakeLock?.request("screen").catch(() => {});  // solo funciona con HTTPS; sin él, los toques mantienen la pantalla
+
+// ---------- Bloque de prueba sin sesión (?demo=…) ----------
+// Solo con &auto=1: respondedor con tiempos conocidos. Go a 200–499 ms (omite 1 de cada 10); NoGo: toca en uno sí y uno no, a 230 ms.
+function bot(r, n, ts) {
+  const nogo = +r.o.secuencia[n] === r.o.nogo, i = nogo ? r.x.nogo++ : r.x.go++;
+  const target = nogo ? (i % 2 ? null : 230) : (i % 10 === 9 ? null : 200 + n * 37 % 300);
+  r.x.target[n] = target;
+  if (target !== null) setTimeout(() => document.dispatchEvent(new PointerEvent("pointerdown")), target - (now() - ts));
+}
+
+// Resumen al final de un bloque de prueba (?demo=…): lo que contó el teléfono, con las mismas reglas del servidor, frente
+// a lo que el servidor guardó. PASS = coinciden, llegaron todos los ensayos y ningún dígito se saltó.
+async function report(r) {
+  while (!r.fin || out.length || pumping) await sleep(200);
+  const o = r.o, seq = o.secuencia, antic = o.anticip_ms ?? 100, isNogo = n => +seq[n] === o.nogo;
+  const rows = await (await fetch(`/api/gng/resumen?codigo=${o.codigo}`)).json(), s = rows.find(x => x.bloque_id === o.bloque) || {};
+  const tr = r.trials.filter(Boolean), hits = tr.filter(t => !isNogo(t.n) && t.rt !== null && t.rt >= antic).map(t => t.rt);
+  const tel = {ensayos: tr.length, nogo: tr.filter(t => isNogo(t.n)).length,
+               comisiones: tr.filter(t => isNogo(t.n) && t.rt !== null).length,
+               omisiones: tr.filter(t => !isNogo(t.n) && t.rt === null).length,
+               anticipaciones: tr.filter(t => !isNogo(t.n) && t.rt !== null && t.rt < antic).length,
+               tr_medio_ms: hits.length ? hits.reduce((a, b) => a + b, 0) / hits.length : null};
+  const igual = ["ensayos", "nogo", "comisiones", "omisiones", "anticipaciones"].every(k => s[k] === tel[k]) &&
+    (tel.tr_medio_ms === null ? s.tr_medio_ms == null : Math.abs(s.tr_medio_ms - tel.tr_medio_ms) < 0.01);
+  const t = window.gngTest = {telefono: tel, servidor: s, total: seq.length, tarde: r.late, cuadro_ms: +frameMs.toFixed(2),
+                              ida_vuelta_ms: [r.s0, r.s1].map(x => +x.ida_vuelta_ms.toFixed(1)), coincide: igual};
+  t.pasa = igual && s.completo === 1 && tel.ensayos === seq.length && r.late === 0;
+  let extra = "";
+  if (AUTO) {  // autoprueba del programa: el TR medido frente al que el respondedor quiso dar
+    const err = tr.filter(x => r.x.target[x.n] !== null).map(x => x.rt === null ? Infinity : x.rt - r.x.target[x.n]);
+    t.error_max_ms = +Math.max(...err.map(Math.abs)).toFixed(2);
+    t.error_medio_ms = +(err.reduce((a, b) => a + b, 0) / err.length).toFixed(2);
+    t.pasa = t.pasa && t.error_max_ms <= frameMs;
+    extra = `\nRT error max ${t.error_max_ms} ms, mean ${t.error_medio_ms} ms (limit: 1 frame)`;
+  }
+  $("demo").textContent = `${AUTO ? "SELF-TEST" : "TEST"} ${t.pasa ? "PASS" : "FAIL"} · ${tel.ensayos}/${seq.length} trials · skipped ${r.late}\n` +
+    `commission errors ${tel.comisiones}/${tel.nogo} · omissions ${tel.omisiones} · anticipations ${tel.anticipaciones} · ` +
+    `mean RT ${tel.tr_medio_ms === null ? "—" : tel.tr_medio_ms.toFixed(0) + " ms"}\n` +
+    `server ${igual ? "matches" : "DIFFERS"} · round trip ${t.ida_vuelta_ms.join(" / ")} ms · frame ${t.cuadro_ms} ms` + extra;
+}
+</script>
+</body>
+</html>
