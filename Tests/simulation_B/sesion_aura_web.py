@@ -50,10 +50,12 @@ ANSI = re.compile(r"\x1b\[[0-9;]*m")
 # hasta +60 s de extensión) cae dentro del baseline; el reporte compara los parpadeos de cada bloque contra el primero
 # con ≥ 2 min completos, que es el baseline. Los bloques gonogo_* duran 180 s = gonogo_db.BLOQUE_S.
 PROTOCOL_PLAN, PROTOCOL_DUR = "0 bloque:baseline 120 bloque:gonogo_pre 300 bloque:scroll 3000 bloque:gonogo_post", "3180"
-# 16 nov: los bloques gonogo_* arrancan solos en el teléfono (Session.gng_auto); el investigador solo entrega el teléfono.
+# 17 nov: control manual de bloques. Cada bloque espera a Continue (el primero lanza conducta + pipeline, así la
+# calibración sigue dentro del baseline), dura lo del plan y se detiene solo (marcador bloque:pausa hasta el siguiente
+# Continue). Los gonogo_* mandan la orden al teléfono al pulsar Continue. Tras el último, Continue detiene la sesión.
 ACTION = {"baseline": "eyes open, steady gaze, stay still (calibration)",
-          "gonogo_pre": "hand over the lab phone: Go/NoGo starts by itself (pre)", "scroll": "start scrolling short videos",
-          "gonogo_post": "hand over the lab phone: Go/NoGo starts by itself (post)",
+          "gonogo_pre": "hand over the lab phone: Go/NoGo starts on Continue (pre)", "scroll": "start scrolling short videos",
+          "gonogo_post": "hand over the lab phone: Go/NoGo starts on Continue (post)",
           "reposo": "put the phone down, eyes open, steady gaze"}
 CODIGO = re.compile(r"[A-Z0-9_-]{1,16}")  # código de participante (sin datos personales)
 TIPO = {"practica": "Practice", "pre": "Before", "post": "After"}
@@ -110,16 +112,30 @@ class Session:
         # gng_hasta = hasta cuándo (time.monotonic) hay un bloque corriendo en el teléfono; gng_ult = resumen del último.
         self.gng_subs, self.gng = [], {"codigo": None, "sesion": None, "iniciada": False}
         self.gng_hasta, self.gng_ult = 0.0, None
+        # Bloques manuales (17 nov): blocks = [(nombre, duración s)]; bt = [inicio, fin] real de cada uno (s de la
+        # sesión; None = sin empezar); idx = bloque que corre o espera Continue (len = fin; None = sin sesión).
+        # 18 nov: el reloj que ve el investigador solo corre dentro de los bloques (pausas = reloj parado): act = s
+        # acumulados de los bloques ya terminados; blk_t0 = time.monotonic() del inicio del bloque que corre (None en
+        # pausa); bt va en ese reloj. Los datos NO se descartan en las pausas (todo cuenta para el análisis): el
+        # registro, la progresión y las intervenciones siguen en segundos reales desde el arranque del pipeline, y
+        # bw = [inicio, fin] real de cada bloque en esos segundos (resumen por bloque = solo lo de dentro del bloque).
+        self.blocks, self.bt, self.bw, self.idx, self._blk_timer = [], [], [], None, None
+        self.act, self.blk_t0 = 0.0, None
 
     # ---------- emisión a la página ----------
     def snapshot(self):
         return {"action": ACTION, "label": LABEL, "params": self.params,
-                "btn": self.btn, "chan": self.chan, "mon_lbl": self.mon_lbl, "status": self.status, "plan": self.plan,
+                "btn": {**self.btn, "next": self.can_next()}, "blk": {"i": self.idx, "t": self.bt, "w": self.bw}, "chan": self.chan, "mon_lbl": self.mon_lbl, "status": self.status, "plan": self.plan,
                 "dur": self.dur, "frozen": self.frozen, "bio": self.bio, "hist": self.hist, "ivs": self.ivs, "aborted": self.session_aborted,
                 "elapsed": None if self.t_start is None else time.monotonic() - self.t_start,
+                "clock": None if self.t_start is None else self.clock(), "paused": self.blk_t0 is None,
                 "running": [t for t, p in self.procs.items() if p.poll() is None],
                 "run_dir": self.run_dir,
                 "gng": {"telefonos": len(self.gng_subs), "urls": GNG_URLS, "bloque": self.gng_ult, "tipo": TIPO}}
+
+    def clock(self):
+        """Segundos de sesión contados solo dentro de los bloques: entre bloques (esperando Continue) no avanza."""
+        return self.act + (0.0 if self.blk_t0 is None else time.monotonic() - self.blk_t0)
 
     def emit(self, kind, data, subs=None):
         msg = f"event: {kind}\ndata: {json.dumps(data, ensure_ascii=False)}\n\n"
@@ -137,8 +153,9 @@ class Session:
         self.status[k] = (txt, color)
 
     # ---------- procesos ----------
-    def launch(self, tag, args):
-        p = subprocess.Popen([PY, "-u", *args], cwd=HERE, env=ENV, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+    def launch(self, tag, args, stdin=None):
+        p = subprocess.Popen([PY, "-u", *args], cwd=HERE, env=ENV, stdin=stdin, stdout=subprocess.PIPE,
+                             stderr=subprocess.STDOUT,
                              text=True, encoding="utf-8", errors="replace",
                              creationflags=getattr(subprocess, "CREATE_NEW_PROCESS_GROUP", 0))
         self.procs[tag] = p
@@ -168,11 +185,8 @@ class Session:
             return
         if line.startswith("Pipeline") and self.t_start is None:
             self.t_start = time.monotonic()  # el bucle arranca aquí; behavior_markers cuenta desde esta conexión
-            for t, nombre in self.plan:  # bloques gonogo_pre / gonogo_post: la orden al teléfono sale sola a su hora
-                if nombre.startswith("gonogo_") and nombre[7:] in gdb.PASADAS:
-                    tm = threading.Timer(t, self.gng_auto, (nombre[7:], self.t_start))
-                    tm.daemon = True  # no retiene el cierre del servidor; gng_auto descarta los de sesiones viejas
-                    tm.start()
+            if self.idx == 0:  # el baseline (primer Continue) empieza con el pipeline
+                self.begin_block()
         elif line.startswith("Registro:"):
             self.run_dir = line.split(":", 1)[1].strip()
             gdb.run_dir(self.gng["sesion"], self.run_dir)  # la sesión de la base queda enlazada con la carpeta del pipeline
@@ -230,6 +244,8 @@ class Session:
                             else (f"Monitor exited (code {code}): see the log", "err"))
         elif tag == "pipeline":
             self.stop_proc("behavior")
+            self.stop_rec()
+            self.close_blocks()
             self.t_start = None
             self.btn.update(stop=False, abort_ses=False, start=True, clear=True)
             if self.run_dir and os.path.exists(os.path.join(self.run_dir, "reporte.md")):
@@ -244,6 +260,19 @@ class Session:
             except Exception:
                 pass
 
+    def stop_rec(self):
+        """Cierra la grabación LSL con Ctrl+Break (cierra los archivos); si en 5 s sigue viva, la mata (lo escrito ya
+        está en disco)."""
+        p = self.procs.get("grabacion")
+        if p and p.poll() is None:
+            try:
+                p.send_signal(signal.CTRL_BREAK_EVENT if os.name == "nt" else signal.SIGINT)
+            except Exception:
+                pass
+            t = threading.Timer(5.0, lambda: p.poll() is None and p.kill())
+            t.daemon = True
+            t.start()
+
     def running(self):
         return [tag for tag, p in self.procs.items() if p.poll() is None]
 
@@ -254,13 +283,14 @@ class Session:
             self._launch_timer.cancel()
             self._launch_timer = None
         running = [t for t in self.running() if t != "semaforo"]
-        if not running:
+        if not running and self.idx is None:
             return "No session process is running."
         self._aborted = True
         for tag in running:
             self.stop_proc(tag)
+        self.close_blocks()
         self.t_start = None
-        self.add_log(f"[system] Processes aborted manually: {', '.join(running)}", "err")
+        self.add_log(f"[system] Processes aborted manually: {', '.join(running) or 'none (baseline not started)'}", "err")
         self.btn.update(abort_ses=False, stop=False, start=True, clear=True)
         self.session_aborted = True
         return None
@@ -285,13 +315,14 @@ class Session:
             self.gng = {"codigo": codigo, "sesion": gdb.sesion(codigo), "iniciada": False}
         self.gng["iniciada"] = iniciar
 
-    def gng_start(self, codigo, tipo):
-        """Abre un bloque (practica / pre / post) y manda la orden a los teléfonos; ValueError si no se puede."""
+    def gng_start(self, codigo, tipo, de_bloque=False):
+        """Abre un bloque (practica / pre / post) y manda la orden a los teléfonos; ValueError si no se puede.
+        de_bloque: lo pide el bloque gonogo_* de la sesión (begin_block), la única forma durante una sesión."""
         live = not self.btn["start"]  # desde Start session hasta que el pipeline termina o se aborta
         if not CODIGO.fullmatch(codigo) or tipo not in gdb.PASADAS:
             raise ValueError("Participant code (letters, digits, - or _; max 16) and block type are required.")
-        if live and codigo != self.gng["codigo"]:
-            raise ValueError(f"A session is live for {self.gng['codigo']}: its Go/NoGo blocks cannot be mixed.")
+        if live and not de_bloque:  # 18 nov: en sesión, el teléfono solo arranca con los bloques Go/NoGo pre/post
+            raise ValueError("A session is live: the Go/NoGo task starts only with its Go/NoGo pre and post blocks.")
         if not self.gng_subs:
             raise ValueError("No phone connected: open the Go/NoGo page (/gng) on the phone first.")
         if time.monotonic() < self.gng_hasta:
@@ -306,16 +337,103 @@ class Session:
         self.add_log(f"[gonogo] {TIPO[tipo]} block started for {codigo} ({n} trials)", "ok")
         return orden
 
-    def gng_auto(self, tipo, t_start):
-        """Temporizador del plan: arranca el bloque si sigue viva la misma sesión; si no se puede, lo deja en el registro."""
-        with self.lock:
-            if self.t_start != t_start:
-                return
+    # ---------- bloques manuales (17 nov) ----------
+    def blk_running(self):
+        return self.idx is not None and self.idx < len(self.bt) and self.bt[self.idx] is not None
+
+    def can_next(self):
+        """Continue: con un bloque esperando; el primero, antes de lanzar los procesos; los demás, con el pipeline vivo."""
+        if self.idx is None or self.blk_running():
+            return False
+        if self.idx == 0:
+            return not any(t in self.running() for t in ("pipeline", "behavior"))
+        return self.t_start is not None
+
+    def next_block(self):
+        if not self.can_next():
+            return "No block is waiting for Continue."
+        if self.idx == len(self.blocks):  # tras el último bloque: detener (el pipeline escribe el reporte)
+            self.idx = None  # un segundo clic no manda otro Ctrl+Break
+            self.stop_session()
+            return None
+        if self.idx == 0:  # el baseline empieza cuando el pipeline arranca (on_line → begin_block)
+            self.launch_session()
+            return None
+        return self.begin_block()
+
+    def begin_block(self):
+        """Empieza el bloque idx: marcador bloque:<nombre>, orden al teléfono si es gonogo_* y fin a su duración."""
+        nombre, d = self.blocks[self.idx]
+        if nombre.startswith("gonogo_") and nombre[7:] in gdb.PASADAS:
             try:
-                self.gng_start(self.gng["codigo"], tipo)
-            except ValueError as e:
-                self.add_log(f"[gonogo] {TIPO[tipo]} block NOT started: {e}", "err")
+                self.gng_start(self.gng["codigo"], nombre[7:], de_bloque=True)
+            except ValueError as e:  # sin teléfono, etc.: el bloque sigue esperando Continue
+                return f"Go/NoGo {TIPO[nombre[7:]]} not started: {e}"
+        self.bt[self.idx] = [round(self.act), None]
+        self.blk_t0 = time.monotonic()  # el reloj de la sesión vuelve a correr
+        self.bw[self.idx] = [round(self.blk_t0 - self.t_start), None]
+        self.marker(f"bloque:{nombre}")
+        self.add_log(f"[system] Block {LABEL.get(nombre, nombre)} started ({d / 60:g} min)", "ok")
+        self._blk_timer = threading.Timer(d, self.end_block, (self.idx, self.t_start))
+        self._blk_timer.daemon = True
+        self._blk_timer.start()
+        return None
+
+    def end_block(self, i, t_start):
+        with self.lock:
+            if self.t_start != t_start or self.idx != i:  # sesión vieja o ya cerrado
+                return
+            self.act, self.blk_t0 = self.clock(), None  # pausa: el reloj se para hasta el siguiente Continue
+            self.bt[i][1], self.bw[i][1] = round(self.act), round(time.monotonic() - self.t_start)
+            self.idx += 1
+            self.marker("bloque:pausa")  # la espera hasta el siguiente Continue no se suma al bloque que terminó
+            nxt = LABEL.get(self.blocks[self.idx][0], self.blocks[self.idx][0]) if self.idx < len(self.blocks) else "End"
+            self.add_log(f"[system] Block {LABEL.get(self.blocks[i][0], self.blocks[i][0])} finished · "
+                         f"press Continue for {nxt}", "ok")
+            self.emit("bell", None)
             self.push_state()
+
+    def close_blocks(self):
+        """Al terminar o abortar: cancela el fin pendiente y cierra el bloque que corría."""
+        if self._blk_timer:
+            self._blk_timer.cancel()
+            self._blk_timer = None
+        if self.blk_running() and self.bt[self.idx][1] is None and self.t_start is not None:
+            self.bt[self.idx][1] = round(self.clock())
+            self.bw[self.idx][1] = round(time.monotonic() - self.t_start)
+        self.act, self.blk_t0 = self.clock(), None
+        self.idx = None
+
+    def marker(self, m):
+        """Manda un marcador al stream MIRAI_Behavior (behavior_markers.py lo lee de su entrada estándar)."""
+        try:
+            self.procs["behavior"].stdin.write(m + "\n")
+            self.procs["behavior"].stdin.flush()
+        except (KeyError, AttributeError, OSError, ValueError):
+            self.add_log(f"[system] Marker {m} NOT sent: behavior_markers.py is not running", "err")
+        try:  # el mismo marcador a la grabación LSL (columna bloque de eeg.csv y marcadores.csv)
+            self.procs["grabacion"].stdin.write(m + "\n")
+            self.procs["grabacion"].stdin.flush()
+        except (KeyError, AttributeError, OSError, ValueError):
+            self.add_log(f"[system] Marker {m} NOT written to the LSL recording: grabar_lsl.py is not running", "err")
+
+    def launch_session(self):
+        self.launch("behavior", ["behavior_markers.py"], stdin=subprocess.PIPE)
+
+        def launch_pipeline():
+            with self.lock:
+                if self._launch_timer is None:  # abortado durante la espera
+                    return
+                self._launch_timer = None
+                # Sin --seconds: la sesión dura lo que tarden los bloques; termina con el último Continue o Stop.
+                self.launch("pipeline", [
+                    "realtime_pipeline.py", "--name", self.params["name"], "--source-id", self.params["sid"],
+                    "--iaf", self.params["iaf"], "--parpadeo-periodo", self.params["per"]])
+                self.push_state()
+
+        # El pipeline busca MIRAI_Behavior 2 s al arrancar: el stream de conducta tiene que existir antes.
+        self._launch_timer = threading.Timer(1.5, launch_pipeline)
+        self._launch_timer.start()
 
     def start_session(self, p):
         codigo = str(p.get("codigo", "")).strip().upper()
@@ -343,22 +461,17 @@ class Session:
         self.btn.update(start=False, rep=False, stop=True, abort_ses=True, clear=False)
         for k in self.status:
             self.set_status(k, "—")
-        self.launch("behavior", ["behavior_markers.py", *tok])
-
-        def launch_pipeline():
-            with self.lock:
-                if self._launch_timer is None:  # abortado durante la espera
-                    return
-                self._launch_timer = None
-                self.launch("pipeline", [
-                    "realtime_pipeline.py", "--name", self.params["name"], "--source-id", self.params["sid"],
-                    "--seconds", self.params["dur"], "--iaf", self.params["iaf"], "--parpadeo-periodo",
-                    self.params["per"]])
-                self.push_state()
-
-        # El pipeline busca MIRAI_Behavior 2 s al arrancar: el stream de conducta tiene que existir antes.
-        self._launch_timer = threading.Timer(1.5, launch_pipeline)
-        self._launch_timer.start()
+        # 17 nov: nada arranca aquí; el primer Continue lanza conducta + pipeline y empieza el baseline.
+        live = [(t, n) for t, n in plan if t < dur]
+        self.blocks = [(n, min(live[i + 1][0] if i + 1 < len(live) else dur, dur) - t) for i, (t, n) in enumerate(live)]
+        self.bt, self.bw, self.idx = [None] * len(self.blocks), [None] * len(self.blocks), 0
+        self.act, self.blk_t0 = 0.0, None
+        # 18 nov: la grabación del EEG desde LSL empieza aquí (todo cuenta, también la espera antes del baseline) y se
+        # cierra cuando termina el pipeline; Abort la mata como a los demás procesos de la sesión.
+        self.launch("grabacion", ["grabar_lsl.py", "--name", self.params["name"], "--source-id", self.params["sid"],
+                                  "--codigo", codigo], stdin=subprocess.PIPE)  # stdin: marcadores (ver marker())
+        self.add_log(f"[system] Session ready for {codigo} · press Continue to start "
+                     f"{LABEL.get(self.blocks[0][0], self.blocks[0][0])}", "ok")
         return None
 
     def clear_session(self):
@@ -368,6 +481,7 @@ class Session:
         self.log.clear()
         self.emit("clear", None)
         self.plan, self.dur, self.frozen, self.t_start = [], 0.0, False, None
+        self.blocks, self.bt, self.bw, self.idx, self.act, self.blk_t0 = [], [], [], None, 0.0, None
         self.run_dir, self.valid, self.bio, self.hist, self.ivs = None, [], {}, [], []
         self.session_aborted = False
         self.gng_ult = None
@@ -382,6 +496,8 @@ class Session:
             p.send_signal(signal.CTRL_BREAK_EVENT if os.name == "nt" else signal.SIGINT)
 
     def shutdown(self):
+        if self._blk_timer:
+            self._blk_timer.cancel()
         if self._launch_timer:
             self._launch_timer.cancel()
         for tag in list(self.procs):
@@ -409,7 +525,10 @@ def check_token():
         return None
     if request.args.get("token") == TOKEN or request.cookies.get("token") == TOKEN:
         return None
-    if request.cookies.get("tel") == TEL and request.path.startswith(("/gng", "/api/gng/")):
+    # 18 nov: el teléfono no abre bloques (/api/gng/bloque/iniciar): antes, un enlace guardado con ?demo=pre creaba un
+    # bloque TEST al entrar. Los bloques los abre solo el dashboard (Go/NoGo pre/post de la sesión, o Practice).
+    if (request.cookies.get("tel") == TEL and request.path.startswith(("/gng", "/api/gng/"))
+            and request.path != "/api/gng/bloque/iniciar"):
         return None
     abort(403)
 
@@ -486,6 +605,11 @@ def semaforo_detener():
 @app.post("/api/sesion/iniciar")
 def sesion_iniciar():
     return act(lambda: S.start_session(request.get_json()))
+
+
+@app.post("/api/bloque/siguiente")
+def bloque_siguiente():
+    return act(S.next_block)
 
 
 @app.post("/api/sesion/detener")

@@ -17,9 +17,12 @@
   que espera en una cola y se reintenta hasta que el servidor confirma.
   El desfase con el reloj LSL de la PC se mide al inicio y al final del bloque (10 idas y vueltas, se usa la más corta).
 
-  Prueba sin sesión: /gng?demo=pre (o practica, post) abre un bloque del participante TEST (&code=OTRO lo cambia)
-  para hacerlo a mano; al final compara lo que contó el teléfono con lo que guardó el servidor (resultado en pantalla
-  y en window.gngTest). Con &auto=1 responde solo, con tiempos conocidos, y además mide el error del TR.
+  18 nov: la tarea solo arranca cuando el dashboard abre un bloque (Go/NoGo pre / post de la sesión, o Practice fuera
+  de sesión); entrar a la página nunca la inicia: muestra "Waiting for the Go/NoGo task block".
+  Prueba sin sesión, solo desde la PC del servidor (el teléfono ya no puede abrir bloques): /gng?demo=pre (o practica,
+  post) abre un bloque del participante TEST (&code=OTRO lo cambia) para hacerlo a mano; al final compara lo que contó
+  el teléfono con lo que guardó el servidor (resultado en pantalla y en window.gngTest). Con &auto=1 responde solo, con
+  tiempos conocidos, y además mide el error del TR.
 -->
 <style>
   html, body { margin: 0; height: 100%; background: #000; color: #fff; overflow: hidden; overscroll-behavior: none;
@@ -51,8 +54,8 @@
 <div class="scr" id="wait">
   <div class="conn" id="conn"><span class="dot"></span><span id="conn-t">Connecting…</span></div>
   <div>
-    <h1 id="w-title">Please wait</h1>
-    <p class="sub" id="w-sub">The task starts by itself when the researcher launches it.</p>
+    <h1 id="w-title">Waiting for the Go/NoGo task block</h1>
+    <p class="sub" id="w-sub">The task starts by itself when its block begins.</p>
   </div>
   <div class="foot" id="w-foot">Tap once to go full screen</div>
 </div>
@@ -156,6 +159,7 @@ function frame(ts) {
   }
   const due = Math.floor(rel / o.soa_ms);  // ensayo cuyo inicio ya tocaba en este cuadro
   if (due > r.k) {
+    if (r.k < 0) show("task");  // 18 nov: aunque la cuenta atrás se haya saltado cuadros, los dígitos se ven
     if (r.shown) { D.style.visibility = "hidden"; r.shown = false; }
     if (due >= o.secuencia.length) return finish(r);
     r.k = due;
@@ -189,7 +193,7 @@ function finish(r) {
   $("w-sub").textContent = "Please wait for the researcher.";
   $("w-foot").textContent = $("i-foot").textContent;
   show("wait");
-  if (DEMO) report(r);
+  if (DEMO && r.o.bloque === demoBloque) report(r);  // el resumen de prueba, solo en el bloque que abrió ?demo
 }
 
 // Toque: cuenta el primero de cada ensayo, desde que aparece su dígito hasta que aparece el siguiente.
@@ -206,12 +210,14 @@ document.addEventListener("pointerdown", e => {
 document.addEventListener("contextmenu", e => e.preventDefault());
 
 // Canal con el servidor: aquí llega la orden de inicio de cada bloque.
-let asked = false;
+let asked = false, demoBloque = null;
 const es = new EventSource("/api/gng/eventos");
 const conn = ok => { $("conn").classList.toggle("on", ok); $("conn-t").textContent = ok ? "Connected" : "Reconnecting…"; };
 es.onopen = () => {
   conn(true);
-  if (DEMO && !asked) { asked = true; post("/api/gng/bloque/iniciar", {codigo: Q.get("code") || (AUTO ? "DEMO" : "TEST"), tipo: DEMO}); }
+  // ?demo: el servidor la rechaza desde el teléfono (403) y durante una sesión (400); entonces la página solo espera.
+  if (DEMO && !asked) { asked = true; post("/api/gng/bloque/iniciar", {codigo: Q.get("code") || (AUTO ? "DEMO" : "TEST"), tipo: DEMO})
+    .then(r => r.ok ? r.json() : null).then(o => { demoBloque = o && o.bloque; }).catch(() => {}); }
 };
 es.onerror = () => conn(false);
 es.addEventListener("inicio", e => start(JSON.parse(e.data)));

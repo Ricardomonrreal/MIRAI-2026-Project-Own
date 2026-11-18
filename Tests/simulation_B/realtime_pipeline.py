@@ -532,7 +532,9 @@ def main():
     blk = BlinkCounter(fs, a.parpadeo_periodo) if "Fp1" not in bads else None
     # 4 nov: en la AURA real el parpadeo sale NEGATIVO en Fp1 (CSV RAW 17:43: ~−200 µV, 140 ms); blink_peaks busca picos
     # positivos, así que se invierte. Emulador, ds007537 y SVRec van con la convención (positivo).
-    aura_real = src["source_id"].startswith(("AuraLSL-", "AURA_RAW___"))  # en vivo o replay de Tests/Recordings
+    # 18 nov: AURA_COM = AURA_LSL_Connector.exe (Mirai Innovation, p. ej. AURA_COM5), mismo casco, µV y riel ±375000.
+    # ponytail: signo de Fp1 asumido igual al de Aura.exe; confirmar con parpadeos reales.
+    aura_real = src["source_id"].startswith(("AuraLSL-", "AURA_RAW___", "AURA_COM"))  # en vivo o replay de Tests/Recordings
     fp1_sign = -1.0 if aura_real else 1.0
     # 5 nov: la AURA real trae ~12 mV de 60 Hz idénticos en los 8 canales (modo común por REF/sin bias); la red está en
     # 59.97 Hz y el notch deja ~100 µV → 99 % de ventanas rechazadas. Re-referencia promedio por ventana (sin Fp1, para

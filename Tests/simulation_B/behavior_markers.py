@@ -11,6 +11,7 @@ Uso (antes de lanzar el pipeline):
 """
 import argparse
 import os
+import sys
 import time
 
 os.environ.setdefault("LSLAPICFG", os.path.join(os.path.dirname(os.path.abspath(__file__)), "lsl_api.cfg"))
@@ -19,7 +20,8 @@ import pylsl  # noqa: E402  (después de LSLAPICFG: entorno LSL cerrado a esta P
 
 def main():
     p = argparse.ArgumentParser(description="Marcadores de conducta de prueba (stream MIRAI_Behavior)")
-    p.add_argument("eventos", nargs="+", help="pares <segundos> <marcador>, p. ej. 200 nogo:error 220 nogo:slow")
+    p.add_argument("eventos", nargs="*", help="pares <segundos> <marcador>, p. ej. 200 nogo:error 220 nogo:slow; "
+                   "sin pares lee un marcador por línea de la entrada estándar (control manual de bloques, 17 nov)")
     a = p.parse_args()
     if len(a.eventos) % 2:
         p.error("se esperan pares <segundos> <marcador>")
@@ -34,6 +36,11 @@ def main():
         time.sleep(max(0.0, t - (time.monotonic() - t0)))
         out.push_sample([m])
         print(f"  t={time.monotonic() - t0:6.1f} s  → {m}")
+    if not plan:  # el servidor escribe cada marcador cuando el investigador pulsa Continue
+        for linea in sys.stdin:
+            if m := linea.strip():
+                out.push_sample([m])
+                print(f"  t={time.monotonic() - t0:6.1f} s  → {m}")
     time.sleep(2.0)  # deja que el último marcador llegue antes de cerrar el stream
 
 

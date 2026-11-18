@@ -89,7 +89,7 @@ def main():
         sys.exit(f"Se esperaba EEG regular de {len(AURA_CHANNELS)} canales; llegó {nch} ch a {fs} Hz")
     line = float(info.desc().child_value("line_freq") or 60.0)  # Aura.exe no publica la red: México
     filt = CausalFilter(fs, line, nch)
-    car = info.source_id().startswith("AuraLSL-")
+    car = info.source_id().startswith(("AuraLSL-", "AURA_COM"))  # Aura.exe o AURA_LSL_Connector.exe (18 nov)
     n, raw, y = int(VENTANA_S * fs), None, None
     print(f"Semáforo: {info.name()} ({info.source_id()}) | {fs:.0f} Hz | {'ref. promedio | ' if car else ''}"
           f"verde σ ≤ {VERDE_UV:.0f} µV · rojo σ > {ROJO_UV:.0f} µV o ≥ {RUIDO_FRAC:.0%} de segmentos > {PTP_UV:.0f} µV")

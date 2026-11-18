@@ -264,6 +264,7 @@
     .card h2 { margin-bottom: 8px; }  /* fila 1 más baja: más alto para el registro */
     /* Bloque actual: columna angosta a toda la altura (10 nov: sin barra de bloques, solo las etapas) */
     .clockcard { display: flex; flex-direction: column; padding-inline: 16px; overflow: auto; }
+    .clockcard > * { flex-shrink: 0; }  /* 17 nov: con el botón Continue, el texto de "Next" no se encoge bajo él */
   }
   /* Computadora con pantalla baja (laptop 1366×768, escala 125–150 %, zoom del navegador): todo más compacto
      para que la vista completa siga cabiendo sin scroll */
@@ -395,6 +396,8 @@
       <div class="next" id="next">Next: —</div>
       <!-- Etapas del protocolo (10 nov): una sección por bloque del plan + fin -->
       <div class="stages" id="stages"></div>
+      <!-- 17 nov: control manual; cada bloque espera este botón y se detiene solo al cumplir su duración -->
+      <div class="row" style="margin-top: auto; padding-top: 12px"><button class="btn primary" id="b-next">Continue</button></div>
     </section>
   </main>
 
@@ -421,10 +424,10 @@ const $ = id => document.getElementById(id);
 const ARROW_Z = 0.5;  // ponytail: umbral fijo de la flecha (↑/↓ si |Z| ≥ 0.5); ajustar con datos reales
 const PARAMS = ["name", "sid", "iaf", "dur", "per", "plan", "codigo"];
 const CODE_OK = /^[A-Za-z0-9_-]{1,16}$/;  // el servidor lo pasa a mayúsculas y lo vuelve a validar
-const BTNS = ["mon", "mon_stop", "start", "stop", "abort_ses", "rep", "clear"];
+const BTNS = ["mon", "mon_stop", "start", "stop", "abort_ses", "rep", "clear", "next"];
 const CHANNELS = ["Fp1", "F3", "Fz", "F4", "Cz", "Pz", "O1", "O2"];  // orden AURA (mock_lsl_streamer.AURA_CHANNELS)
 const COLOR = { g: "good", y: "fair", r: "bad" };
-let S = null, base = null, done = null, planKey = "";
+let S = null, base = null, planKey = "";
 
 const fmt = s => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, "0")}`;
 
@@ -473,8 +476,12 @@ $("b-stop").onclick = () => {
 };
 $("b-abort_ses").onclick = () => {  // solo la sesión: el semáforo tiene su propio botón
   const run = S.running.filter(t => t !== "semaforo");
-  if (!run.length) return alert("No session process is running.");
-  if (confirm(`Force-close the running processes (${run.join(", ")})?`)) post("/api/abortar");
+  if (!run.length && S.blk.i == null) return alert("No session process is running.");
+  if (confirm(`Force-close the running processes (${run.join(", ") || "session waiting for baseline"})?`)) post("/api/abortar");
+};
+$("b-next").onclick = () => {  // 17 nov: arranca el bloque que espera; tras el último, detiene la sesión
+  if (S.blk.i === S.blk.t.length && !confirm("End the session? The pipeline will write its report.")) return;
+  post("/api/bloque/siguiente");
 };
 $("b-rep").onclick = () => post("/api/reporte/abrir");
 $("b-clear").onclick = () => {  // solo sin sesión en vivo; los archivos de runs/ no se tocan
@@ -490,7 +497,7 @@ $("b-practice").onclick = () => {
 
 // ---------- Go/NoGo: tarjeta en vivo ----------
 function gngRender() {
-  const g = S.gng, b = g.bloque, live = S.running.includes("pipeline") || S.running.includes("behavior");
+  const g = S.gng, b = g.bloque, live = !S.btn.start;  // 18 nov: desde Start session, solo los bloques pre/post
   $("g-tel").textContent = g.telefonos ? `connected${g.telefonos > 1 ? ` (${g.telefonos})` : ""}` : "not connected";
   $("g-tel").className = g.telefonos ? "ok" : "err";
   $("g-n").textContent = b ? `${b.ensayos}/${b.total}` : "—";
@@ -500,7 +507,7 @@ function gngRender() {
   // 16 nov: el teléfono manda todos los ensayos juntos al terminar; durante el bloque la tarjeta solo avisa que corre.
   $("g-lbl").textContent = b ? `${b.codigo} · ${g.tipo[b.tipo] || b.tipo}` + (b.completo ? " · complete" : b.ensayos === b.total ? " · closing"
       : b.ensayos ? " · incomplete" : " · running on the phone: results arrive when it ends")
-    : g.telefonos ? "Before and After start by themselves during the session."
+    : g.telefonos ? "Before and After start when you press Continue on their block."
     : g.urls.length ? `Open on the phone: ${g.urls.join("  or  ")}` : "Restart the server with --lan and open /gng on the phone.";
   $("b-practice").disabled = !connected || !g.telefonos || live;
   $("b-results").disabled = !connected;
@@ -654,9 +661,11 @@ function render(full) {
               : "verif";
   if (nav) [...nav.children].forEach(a => a.classList.toggle("active", a.dataset.p === phase));
 
-  base = S.elapsed == null ? null : { el: S.elapsed, at: performance.now() };
+  // 18 nov: el reloj que se ve (S.clock, el de S.blk.t) solo cuenta dentro de los bloques; en pausa (esperando
+  // Continue) la página no lo adelanta. Los datos siguen en segundos reales (S.hist, S.ivs, S.blk.w): todo cuenta.
+  base = S.clock == null ? null : { el: S.clock, at: performance.now(), run: !S.paused };
   const key = JSON.stringify([S.plan, S.dur]);
-  if (key !== planKey) { planKey = key; done = null; drawTimeline(); }
+  if (key !== planKey) { planKey = key; drawTimeline(); }
   else if (full && !S.plan.length) drawTimeline();  // la vista previa se dibujaba antes de llenar los campos
 }
 
@@ -665,7 +674,8 @@ function bio(id, k, col) {  // flecha y valor actuales + Z de cada 10 s sobre la
   $(`b${id}-ar`).textContent = z == null ? "·" : z >= ARROW_Z ? "↑" : z <= -ARROW_Z ? "↓" : "→";
   $(`b${id}-v`).textContent = !b ? "—" : (z == null ? "calibrating" : `Z ${z >= 0 ? "+" : ""}${z.toFixed(2)}`)
     + (b.per == null ? "" : ` · ${b.per.toFixed(2)} dB`);
-  const pts = (S.hist || []).filter(p => p[col] != null).map(p => `${(100 * p[0] / (S.dur || 1)).toFixed(1)},${(13 - 13 * Math.max(-3, Math.min(3, p[col])) / 3).toFixed(1)}`);
+  const span = Math.max(S.dur || 1, ...(S.hist || []).map(p => p[0]));  // con pausas la sesión puede pasar del plan
+  const pts = (S.hist || []).filter(p => p[col] != null).map(p => `${(100 * p[0] / span).toFixed(1)},${(13 - 13 * Math.max(-3, Math.min(3, p[col])) / 3).toFixed(1)}`);
   $(`b${id}-sp`).innerHTML = `<line x1="0" x2="100" y1="13" y2="13"/><polyline points="${pts.join(" ")}"/>`;
 }
 
@@ -707,26 +717,29 @@ function drawStages(plan, dur) {
                    + `<span><small>valid</small><b></b></span><span class="th"><small>θ Z</small><b></b></span>`
                    + `<span class="al"><small>α Z</small><b></b></span></div><div class="n"></div>`);
     d.querySelector(".t span").textContent = n === "end" ? "End" : (L[n] || n);
-    d.querySelector(".t span:last-child").textContent = n === "end" ? fmt(dur) : `${fmt(t0)} · ${Math.round((t1 - t0) / 60)} min`;
+    d.querySelector(".t span:last-child").textContent = n === "end" ? "" : `${Math.round((t1 - t0) / 60)} min`;
     d.querySelector(".d").textContent = n === "end" ? "stop the recording in Aura · report is written" : (A[n] || "");
     $("stages").appendChild(d);
   });
 }
-function updateStages(el) {  // el = null: sin sesión, todas pendientes
+function updateStages(el) {  // 17 nov: tiempos reales de cada bloque (S.blk.t = [inicio, fin] o null) en vez del plan
+  const B = S.blk || { t: [] };
   [...$("stages").children].forEach((d, i) => {
-    const [t0, t1, n] = stages[i], cur = el != null && el >= t0 && (el < t1 || n === "end"),
-          done = el != null && !cur && el >= t1;
+    const [p0, p1, n] = stages[i], dur = p1 - p0, bt = B.t[i] || [null, null], [t0, t1] = bt;
+    const cur = n === "end" ? B.i === B.t.length : t0 != null && t1 == null, done = t1 != null;
     d.className = "stage" + (cur ? " cur" : done ? " done" : "");
     const bar = d.querySelector(".bar i");
-    if (bar) bar.style.setProperty("--p", `${el == null ? 0 : 100 * Math.min(1, Math.max(0, (el - t0) / (t1 - t0)))}%`);
+    if (bar) bar.style.setProperty("--p", `${t0 == null ? 0 : 100 * Math.min(1, Math.max(0, ((t1 ?? el ?? t0) - t0) / dur))}%`);
     if (n === "end") return;
-    d.querySelector(".t span:last-child").textContent =
-      cur ? `${fmt(t1 - el)} left` : `${fmt(t0)} · ${Math.round((t1 - t0) / 60)} min`;
+    d.querySelector(".t span:last-child").textContent = cur && el != null ? `${fmt(Math.max(0, t0 + dur - el))} left`
+      : `${Math.round(dur / 60)} min` + (t0 != null ? ` · from ${fmt(t0)}` : "");
     // Resumen desde que la etapa empieza: medias de los grupos de 10 ventanas y conteo de intervenciones del bloque
     const s = d.querySelector(".s"), b = s.querySelectorAll("b");
-    s.style.display = el != null && el >= t0 ? "" : "none";
+    s.style.display = t0 != null ? "" : "none";
     if (s.style.display) return;
-    const h = (S.hist || []).filter(p => p[0] >= t0 && p[0] < t1), iv = (S.ivs || []).filter(p => p[0] >= t0 && p[0] < t1);
+    // Con los segundos reales del bloque (S.blk.w): lo de las pausas cuenta para la sesión, no para este bloque.
+    const [w0, w1] = (B.w || [])[i] || [t0, t1], e = w1 ?? Infinity;
+    const h = (S.hist || []).filter(p => p[0] >= w0 && p[0] < e), iv = (S.ivs || []).filter(p => p[0] >= w0 && p[0] < e);
     const mean = c => { const v = h.map(p => p[c]).filter(x => x != null); return v.length ? v.reduce((a, x) => a + x, 0) / v.length : null; };
     const sz = z => z == null ? "—" : `${z >= 0 ? "+" : ""}${z.toFixed(2)}`, va = mean(3);
     b[0].textContent = va == null ? "—" : `${Math.round(va)}%`; b[1].textContent = sz(mean(1)); b[2].textContent = sz(mean(2));
@@ -737,29 +750,36 @@ function updateStages(el) {  // el = null: sin sesión, todas pendientes
 }
 
 // ---------- cronómetro (como tick() de sesion_aura.py) ----------
-function tick() {
+function tick() {  // 17 nov: los bloques avanzan con Continue; el servidor manda el aviso sonoro al terminar cada uno
   if (!S) return;
-  if (base == null) {
-    // las etapas quedan como estaban al terminar (drawStages las crea pendientes)
+  const B = S.blk || { i: null, t: [] }, el = base == null ? null : base.el + (base.run ? (performance.now() - base.at) / 1000 : 0);
+  const A = S.action, L = S.label || {}, nm = i => (stages[i] || [])[2], lab = i => L[nm(i)] || nm(i);
+  if (B.i == null) {  // sin sesión: las etapas quedan como estaban al terminar
     if (S.aborted) { $("block").textContent = "Block: — (aborted)"; $("next").textContent = "Next: —";
                      $("next").className = "next"; }
+    $("b-next").textContent = "Continue";
+    if (stages.length) updateStages(null);
     return;
   }
-  const el = base.el + (performance.now() - base.at) / 1000, A = S.action;
-  $("clock").textContent = `${fmt(el)} / ${fmt(S.dur)}`;
-  const cur = S.plan.filter(([t]) => t <= el).map(p => p[1]);
-  $("block").textContent = `Block: ${cur.length ? cur[cur.length - 1] : "—"}`
-    + (el < 160 && !S.frozen ? "  ·  calibration: stay still, relax forehead and jaw" : "");
-  const steps = S.plan.filter(([t]) => t > 0)
-    .map(([t, n]) => [t, `${n}: press the space bar in Aura and ${A[n] || "switch block"}`])
-    .concat([[S.dur, "end: press the space bar and stop the recording in Aura"]]);
-  if (done == null) done = new Set(steps.filter(([t]) => t <= el).map(([t]) => t));  // al recargar no repite avisos
-  steps.forEach(([t]) => { if (t <= el && !done.has(t)) { done.add(t); bell(); } });  // aviso en el cambio
-  const nxt = steps.filter(([t]) => t > el);
-  if (nxt.length) {
-    const [t, a] = nxt[0], soon = t - el < 15;
-    $("next").textContent = `Next in ${fmt(t - el)} (${fmt(t)}): ${a}`;
-    $("next").className = "next" + (soon ? " soon" : "");
+  if (el != null) $("clock").textContent = `${fmt(el)} / ${fmt(S.dur)}`;
+  const n = B.t.length, run = B.i < n && B.t[B.i] != null;
+  $("block").textContent = `Block: ${run ? lab(B.i) : "— (waiting for Continue)"}`
+    + (el != null && el < 160 && !S.frozen ? "  ·  calibration: stay still, relax forehead and jaw" : "");
+  if (run) {
+    const left = B.t[B.i][0] + stages[B.i][1] - stages[B.i][0] - el;
+    $("next").textContent = `${lab(B.i)} ends in ${fmt(Math.max(0, left))} and stops · then Continue: `
+      + (B.i + 1 < n ? lab(B.i + 1) : "end of session");
+    $("next").className = "next" + (left < 15 ? " soon" : "");
+    $("b-next").textContent = "Block running…";
+  } else if (B.i < n) {
+    $("next").textContent = `Continue → ${lab(B.i)}: ` + (B.i ? `press the space bar in Aura and ${A[nm(B.i)] || "switch block"}`
+      : A[nm(0)] || "start");
+    $("next").className = "next soon";
+    $("b-next").textContent = `Start ${lab(B.i)}`;
+  } else {
+    $("next").textContent = "Continue → end: press the space bar and stop the recording in Aura";
+    $("next").className = "next soon";
+    $("b-next").textContent = "End session";
   }
   updateStages(el);
 }

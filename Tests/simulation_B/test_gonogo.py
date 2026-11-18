@@ -6,6 +6,7 @@ import queue
 import sqlite3
 import statistics
 import tempfile
+import time
 
 import gonogo_db as gdb
 
@@ -119,18 +120,39 @@ assert len(csv_r.get_data(as_text=True).strip().split("\n")) == 1 + 3 and len(cs
 assert c.get("/resultados").status_code == 200 and c.get("/api/estado").get_json()["gng"]["telefonos"] == 1
 
 # 9. Sesión del dashboard sin procesos reales: Start session exige el código, abre la sesión en la base y la enlaza
-#    con la carpeta del pipeline; los bloques gonogo_pre y gonogo_post del plan arrancan solos y el teléfono los completa.
+#    con la carpeta del pipeline; cada bloque espera Continue (17 nov), los gonogo_* mandan la orden al teléfono y este
+#    los completa. 18 nov: entre bloques el reloj que se ve se para, pero lo que llega del pipeline sí cuenta (en
+#    segundos reales) y el resumen de cada bloque usa sus segundos reales (blk.w).
 while not tel.empty():
     tel.get_nowait()
-web.S.launch = lambda tag, args: None  # ni behavior_markers ni el pipeline: sus líneas se simulan abajo
+web.S.launch = lambda tag, args, stdin=None: None  # ni behavior_markers ni el pipeline: sus líneas se simulan abajo
 PLAN = {"plan": "0 bloque:baseline 0.3 bloque:gonogo_pre 0.9 bloque:scroll 1.2 bloque:gonogo_post", "dur": "2"}
 assert c.post("/api/sesion/iniciar", json=PLAN).get_json()["error"]  # sin código no arranca
 assert c.post("/api/sesion/iniciar", json={**PLAN, "codigo": "s01"}).get_json()["error"] is None
 assert c.post("/api/gng/bloque/iniciar", json={"codigo": "T01", "tipo": "practica"}).status_code == 400  # sesión de otro en vivo
+for tipo in ("practica", "pre"):  # 18 nov: en sesión, ni el mismo participante abre bloques a mano; solo pre/post
+    assert c.post("/api/gng/bloque/iniciar", json={"codigo": "S01", "tipo": tipo}).status_code == 400
+assert tel.empty()
+VAL = "ventana 10  válidas(últ. 10)=50%"
 with web.S.lock:
     web.S.on_line("pipeline", "Registro: C:/runs/sintetica")
-    web.S.on_line("pipeline", "Pipeline en vivo")  # aquí arranca el reloj de la sesión y se programan los bloques
-for tipo in ("pre", "post"):
+    web.S.on_line("pipeline", "Pipeline en vivo")  # primer Continue: el baseline arranca con el pipeline
+    web.S.on_line("pipeline", VAL)
+time.sleep(0.6)  # el baseline (0.3 s) terminó: pausa hasta el siguiente Continue
+e1 = c.get("/api/estado").get_json()
+assert e1["paused"] and e1["blk"]["i"] == 1 and e1["blk"]["t"][0] == [0, 0] and 0.29 < e1["clock"] < 0.4, e1["clock"]
+with web.S.lock:
+    web.S.on_line("pipeline", VAL)  # ventanas de la pausa: cuentan para la sesión (promedio y progresión)
+time.sleep(0.3)
+e2 = c.get("/api/estado").get_json()
+assert e2["clock"] == e1["clock"] and e2["elapsed"] > e1["elapsed"] + 0.25  # el reloj visible parado; el real sigue
+assert len(e2["hist"]) == 2 and "over 20 windows" in e2["status"]["Valid windows"][0]
+for tipo, espera in (("pre", 0), ("post", 1)):
+    for _ in range(espera):  # pausa tras gonogo_pre → Scrolling (0.3 s) → pausa
+        time.sleep(0.7)
+        assert c.post("/api/bloque/siguiente").get_json()["error"] is None
+    time.sleep(0.7)
+    assert c.post("/api/bloque/siguiente").get_json()["error"] is None  # Continue → gonogo_*
     o = json.loads(tel.get(timeout=3).split("data: ", 1)[1])
     assert (o["tipo"], o["codigo"], len(o["secuencia"])) == (tipo, "S01", N), o
     c.post("/api/gng/bloque/sync", json={"bloque": o["bloque"], "fase": "inicio", "desfase": D0, "tel": T0, "ida_vuelta_ms": 7})
@@ -141,11 +163,14 @@ assert [(r["tipo"], r["completo"], r["run_dir"]) for r in s] == [("pre", 1, "C:/
 assert s[0]["sesion_id"] == s[1]["sesion_id"] != r2[0]["sesion_id"]
 est = c.get("/api/estado").get_json()
 assert est["gng"]["bloque"]["tipo"] == "post" and est["params"]["codigo"] == "S01"
+assert 1.2 < est["clock"] < 1.6, est["clock"]  # reloj visible: baseline + pre + scroll + lo que va del post, sin pausas
+assert est["elapsed"] > 3 and est["blk"]["w"][1][0] > est["blk"]["t"][1][0] - 1  # segundos reales: con las pausas
+assert all(w is not None and w[0] >= t[0] for w, t in zip(est["blk"]["w"], est["blk"]["t"]))
 assert sum("[gonogo]" in t and "finished" in t for t, _ in est["log"]) == 2
 with web.S.lock:
     web.S.t_start = None
     web.S.btn.update(start=True)
-print("PASA · Fase 3 Go/NoGo: sesión con código, bloques pre y post automáticos, completos y enlazados a su run_dir")
+print("PASA · Fase 3 Go/NoGo: sesión con código, Continue por bloque, reloj parado en las pausas, Go/NoGo pre y post completos y enlazados a su run_dir")
 
 # 10. Modo red: el enlace corto del teléfono (<IP>:<puerto>/<clave>) abre la tarea Go/NoGo y nada más.
 web.TOKEN, web.TEL = "token-largo", "abc234"
@@ -155,6 +180,8 @@ assert t.get("/gng", environ_base=red).status_code == 403 and t.get("/abc235", e
 r = t.get("/abc234?demo=practica", environ_base=red)
 assert r.status_code == 302 and r.headers["Location"] == "/gng?demo=practica" and "tel=abc234" in r.headers["Set-Cookie"]
 assert t.get("/gng", environ_base=red).status_code == 200 and t.post("/api/gng/sync", environ_base=red).status_code == 200
+# 18 nov: entrar con ?demo=pre ya no abre un bloque desde el teléfono (antes creaba bloques TEST sin querer)
+assert t.post("/api/gng/bloque/iniciar", json={"codigo": "TEST", "tipo": "pre"}, environ_base=red).status_code == 403
 for metodo, url in (("get", "/"), ("get", "/api/estado"), ("get", "/api/eventos"), ("post", "/api/sesion/iniciar"),
                     ("post", "/api/abortar"), ("post", "/api/semaforo/iniciar")):  # el teléfono no entra al tablero
     assert getattr(t, metodo)(url, environ_base=red).status_code == 403, url
