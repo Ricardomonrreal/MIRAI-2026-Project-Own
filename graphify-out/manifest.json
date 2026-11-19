@@ -210,8 +210,8 @@
     "semantic_hash": ""
   },
   "Tests/simulation_B/realtime_pipeline.py": {
-    "mtime": 1794995414.397129,
-    "seen": 1794995540.9074457,
+    "mtime": 1795085561.1529438,
+    "seen": 1795085576.018267,
     "ast_hash": "6a12c1980ea8453ed8dff17b919477df",
     "semantic_hash": ""
   },
@@ -264,8 +264,8 @@
     "semantic_hash": ""
   },
   "Tests/simulation_B/sesion_aura_web.py": {
-    "mtime": 1794985009.3217716,
-    "seen": 1794986023.842544,
+    "mtime": 1795085561.1554637,
+    "seen": 1795085576.018287,
     "ast_hash": "b42e7ee9ec817508806e4ef230c91336",
     "semantic_hash": ""
   },
@@ -276,8 +276,8 @@
     "semantic_hash": ""
   },
   "Tests/simulation_B/web/sesion_aura.html": {
-    "mtime": 1794985031.8938696,
-    "seen": 1794986023.8426254,
+    "mtime": 1795085561.1589859,
+    "seen": 1795085576.0183778,
     "ast_hash": "e9789436a51b25d111a70337565999b8",
     "semantic_hash": ""
   },
@@ -351,6 +351,24 @@
     "mtime": 1794984023.4404407,
     "seen": 1794984287.7606654,
     "ast_hash": "11600f70f8fe51cbe4df77568d96fc16",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_Sesiones_19nov/alfa_periodica_suavizado.png": {
+    "mtime": 1795084159.645347,
+    "seen": 1795085576.0183945,
+    "ast_hash": "e4f6fd51e20f0962fe831c39575ab5b2",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_Sesiones_19nov/Analisis_Sesiones_P01-P04.md": {
+    "mtime": 1795084602.3582542,
+    "seen": 1795085576.0183182,
+    "ast_hash": "12e7ea7fab1e539cd528ff86f2f198fc",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_Sesiones_19nov/hipotesis_n4.png": {
+    "mtime": 1795084160.7452385,
+    "seen": 1795085576.0183969,
+    "ast_hash": "adbe01f0756d33af387bc1aa3167d75b",
     "semantic_hash": ""
   }
 }
