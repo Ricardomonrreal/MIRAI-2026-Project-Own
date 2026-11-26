@@ -36,7 +36,7 @@ flowchart TD
   end
 
   subgraph S3["Paso 3 · Rechazo de artefactos"]
-    REJ["9 segmentos de 2 s, paso 0.5 s<br/>fuera si PTP sobre 150 µV<br/>en Fp1 o F3/F4, o en la ROI<br/>EMG 25–40 Hz solo medido"]
+    REJ["9 segmentos de 2 s, paso 0.5 s<br/>fuera si PTP sobre 150 µV<br/>en Fp1 o F3/F4, o en la ROI<br/>(26 nov: con CAR, tras 60 s se resta b·Fp1<br/>y el veto de Fp1 pasa a 1000 µV)<br/>EMG 25–40 Hz solo medido"]
     VAL{"¿≥ 1 segmento<br/>limpio?"}
     REJ --> VAL
   end

@@ -67,6 +67,8 @@ BLINK_BAND = (1.0, 10.0)  # contador de parpadeos en Fp1: banda de h1_ds007537.d
 BLINK_PERIOD_S = 420.0  # umbral móvil (2 nov): cada 7 min se recalcula con los datos de esos 7 min
 BLINK_EDGE_S = 2.0  # espera tras un tramo: su último pico (≤ 0.5 s) completo y lejos del borde del filtro sin desfase
 BLINK_CTX_S = 5.0  # Fp1 que se conserva antes de cada tramo (contexto del filtro y de find_peaks)
+EOG_FIT_S = 60.0  # 26 nov: s de datos (tras el chequeo de calidad) para ajustar la regresión de Fp1
+EOG_GUARD_UV = 1000.0  # con la corrección activa el veto de Fp1 solo para riel/saltos (los parpadeos no pasan de ~500)
 HERE =os.path.dirname(os.path.abspath(__file__))
 
 
@@ -162,6 +164,38 @@ class Rejector:
                 "perdida": self.invalid_run > LOST_S / HOP_S, "emg_db": float(np.nanmean(emg)) if self.emg else None,
                 # Aviso de ruido (sesion_aura.py): fracción de segmentos de cada canal que superan el mismo PTP_UV
                 "ptp_alto": (ptp > PTP_UV).mean(axis=0)}
+
+
+class EogRegression:
+    """26 nov: resta el parpadeo de cada canal después del CAR: y_c − b_c·Fp1 (mínimos cuadrados; Fp1 no se toca).
+
+    P08 abortó la calibración dos veces: parpadeos de ~250 µV a ~45/min → el veto de 150 µV en Fp1 rechazaba todos los
+    segmentos. Replay offline (Tests/Analisis_26nov/Analisis_EOG.md): 22 → 100 % válidas, parpadeo residual en Pz/O1
+    30–40 → 6–8 µV, α sin sesgo en ventanas sin parpadeo, θ +0.1 dB. Quitar solo el veto, sin corregir, bajaba α_per
+    1.4–2.9 dB (el parpadeo entra a Pz/O1/O2 por el CAR). En el espacio del CAR Σ b de los demás canales = 0; antes del
+    CAR, b ≈ 0.9 en todos (modo común) y el CAR anula la corrección. Se ajusta con los primeros EOG_FIT_S s de bloques
+    de 1 s sin ningún canal bueno > EOG_GUARD_UV; mientras tanto rige el veto de 150 µV de siempre.
+    """
+
+    def __init__(self, fs, hop, good):
+        self.need, self.hop, self.good = int(round(EOG_FIT_S * fs)), hop, good
+        self.i = AURA_CHANNELS.index("Fp1")
+        self.chunks, self.b = [], None
+
+    def __call__(self, w):
+        """w: ventana con CAR. Devuelve (ventana corregida o igual mientras se ajusta, True si se ajustó en esta)."""
+        fitted = False
+        if self.b is None:
+            x = w[-self.hop:]  # lo nuevo de esta ventana: los bloques se encadenan sin solaparse
+            if np.ptp(x[:, self.good], axis=0).max() <= EOG_GUARD_UV:
+                self.chunks.append(x)
+            if sum(map(len, self.chunks)) >= self.need:
+                y = np.concatenate(self.chunks)
+                y = y - y.mean(0)
+                self.b = y.T @ y[:, self.i] / np.sum(y[:, self.i] ** 2)
+                self.b[self.i] = 0.0
+                self.chunks, fitted = [], True
+        return (w if self.b is None else w - np.outer(w[:, self.i], self.b)), fitted
 
 
 def blink_gain(fs, line):
@@ -375,6 +409,14 @@ def write_report_md(run, cfg, rep, rep3, rep4, rep5, rep6, rep7, checks, repb=No
     pr = rep5.get("parametros") or {}
     L += ["## Calibración (Paso 5)", "", f"- Estado: {rep5['estado']} {rep5['motivo']} · canales malos: "
           f"{', '.join(rep5['canales_malos']) or 'ninguno'}"]
+    eo = cfg.get("eog")
+    if isinstance(eo, dict):
+        L.append("- Corrección de parpadeos (regresión de Fp1 tras el CAR): " + (
+            "b " + ", ".join(f"{k} {v:+.2f}" for k, v in eo["b"].items() if k != "Fp1")
+            + f" · ajustada con {eo['ajuste_s']:.0f} s · veto de Fp1 {eo['veto_fp1_tras_ajuste_uv']:.0f} µV desde entonces"
+            if eo["b"] else f"sin ajustar (no se juntaron {eo['ajuste_s']:.0f} s sin canales > {EOG_GUARD_UV:.0f} µV)"))
+    elif eo:
+        L.append(f"- Corrección de parpadeos: {eo}")
     if pr:
         L.append(f"- {pr['fuente']} · IAF {pr['iaf']:g} Hz ({pr['iaf_de']})"
                  + (f" · Berger (potencia clásica) {pr['berger_db']:+.1f} dB" if "berger_db" in pr else ""))
@@ -475,6 +517,8 @@ def main():
     p.add_argument("--sin-nivel2", action="store_true", help="desactiva el Nivel 2 (escenario H1 ✅ H2 ❌)")
     p.add_argument("--parpadeo-periodo", type=float, default=BLINK_PERIOD_S,
                    help="s entre recalibraciones del umbral de parpadeo (umbral móvil; 420 = 7 min)")
+    p.add_argument("--sin-eog", action="store_true",
+                   help="sin corrección de parpadeos por regresión de Fp1 (comportamiento anterior al 26 nov)")
     g = p.add_argument_group("replay sin LSL (Paso 7)")
     g.add_argument("--offline", default=None, help="'synthetic', CSV de AURA o archivo EEG: se procesa sin LSL")
     g.add_argument("--fs", type=float, default=None)
@@ -628,10 +672,11 @@ def main():
     proc_ms, feat_ts = [], []  # Paso 7: procesamiento por ventana (bloque → decisión) y ts de cada feature
     res = []  # Paso 7: (reloj, CPU del proceso, memoria MB) cada 10 ventanas
     seg, step = int(round(SEG_S * fs)), int(round(SEG_STEP_S * fs))
+    eog = None  # se decide en el chequeo de calidad (necesita Fp1 bueno y CAR)
 
     def on_window(w, ts_last):
         # Paso 3: rechazo de artefactos. Paso 4: features con los segmentos limpios. Pasos 5–6 se enganchan aquí.
-        nonlocal rej, front, post, blk
+        nonlocal rej, front, post, blk, eog
         t_cut = pylsl.local_clock()  # el búfer acaba de cortar la ventana: aquí se mide el intervalo del Paso 2
         t_ready = time.perf_counter()
         c = (t_ready - state["t_chunk"]) * 1000
@@ -651,12 +696,27 @@ def main():
             if not front or not post:
                 state["stop"] = "sin canales válidos en la ROI " + ("frontal" if not front else "posterior")
                 return
+            if car and "Fp1" not in bads and not a.sin_eog:
+                eog = EogRegression(fs, hop, [i for i, c_ in enumerate(AURA_CHANNELS) if c_ not in bads])
+                cfg["eog"] = {"metodo": "regresión de Fp1 tras el CAR (y_c − b_c·Fp1)", "ajuste_s": EOG_FIT_S,
+                              "veto_fp1_tras_ajuste_uv": EOG_GUARD_UV, "b": None, "ts_ajuste": None}
+            else:
+                cfg["eog"] = "sin corrección: " + ("--sin-eog" if a.sin_eog else "Fp1 malo" if car else "sin CAR")
             state["cal"] = cal.Calibration(ts_last, WIN_S, a.sigma_factor)
             for m in markers:
                 if not (a.sin_fases and m[1].startswith("file:")):
                     state["cal"].marker(*m)
         if car:  # después del chequeo de calidad: un canal en el riel se ve muerto antes de re-referenciar, no después
             w = w - w[:, [i for i, c_ in enumerate(AURA_CHANNELS) if c_ != "Fp1" and c_ not in bads]].mean(1, keepdims=True)
+        if eog:
+            w, fitted = eog(w)
+            if fitted:
+                rej.ocular_uv = EOG_GUARD_UV
+                cfg["eog"].update(b=dict(zip(AURA_CHANNELS, np.round(eog.b, 4).tolist())), ts_ajuste=ts_last)
+                txt = " ".join(f"{c_} {v:+.2f}" for c_, v in zip(AURA_CHANNELS, eog.b) if c_ != "Fp1")
+                we.writerow([f"{ts_last:.4f}", "eog", f"regresión ajustada: {txt}"])
+                print(f"\n  CORRECCIÓN EOG ajustada ({ts_last - state['t0']:.0f} s): b {txt} | veto Fp1 → "
+                      f"{EOG_GUARD_UV:.0f} µV\n")
         r = rej(w)
         t_rej = time.perf_counter()
         rj = (t_rej - t_ready) * 1000
@@ -918,6 +978,7 @@ def main():
     with open(os.path.join(run, "config.json"), "r+", encoding="utf-8") as f:
         c = json.load(f)
         c["parpadeos_reporte"] = repb
+        c["eog"] = cfg.get("eog")
         c["calibracion"] = rep5
         c["jitai_reporte"] = rep6
         c["paso7"] = rep7

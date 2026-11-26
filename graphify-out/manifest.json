@@ -210,15 +210,15 @@
     "semantic_hash": ""
   },
   "Tests/simulation_B/realtime_pipeline.py": {
-    "mtime": 1795085561.1529438,
-    "seen": 1795085576.018267,
-    "ast_hash": "6a12c1980ea8453ed8dff17b919477df",
+    "mtime": 1795669934.8056526,
+    "seen": 1795670318.7198164,
+    "ast_hash": "d6b0804d8ffdbdf7c534104a4d0c9161",
     "semantic_hash": ""
   },
   "Tests/simulation_B/VERSION_B.md": {
-    "mtime": 1794471780.662643,
-    "seen": 1794471788.0017693,
-    "ast_hash": "095846ba1908a64407f576498091401c",
+    "mtime": 1795670067.666361,
+    "seen": 1795670318.7199633,
+    "ast_hash": "13146531a8300ce5793678da3673d76f",
     "semantic_hash": ""
   },
   "Tests/simulation_B/requirements.txt": {
@@ -252,9 +252,9 @@
     "semantic_hash": ""
   },
   "Tests/Diagrama_Pipeline.md": {
-    "mtime": 1793597780.9186964,
-    "seen": 1793598170.4250667,
-    "ast_hash": "87e4cb7f2d64c8bce6cb16c6ee63f59c",
+    "mtime": 1795670067.6689093,
+    "seen": 1795670318.7199047,
+    "ast_hash": "e9b9a31e8c5ac6718936ca65cbdc9a6e",
     "semantic_hash": ""
   },
   "Tests/simulation_B/sesion_aura.py": {
@@ -354,21 +354,447 @@
     "semantic_hash": ""
   },
   "Tests/Analisis_Sesiones_19nov/alfa_periodica_suavizado.png": {
-    "mtime": 1795084159.645347,
-    "seen": 1795085576.0183945,
-    "ast_hash": "e4f6fd51e20f0962fe831c39575ab5b2",
+    "mtime": 1795685382.8148992,
+    "seen": 1795685551.6864274,
+    "ast_hash": "16f8403a395e3794d06bebcb2ea6118e",
     "semantic_hash": ""
   },
-  "Tests/Analisis_Sesiones_19nov/Analisis_Sesiones_P01-P04.md": {
-    "mtime": 1795084602.3582542,
-    "seen": 1795085576.0183182,
-    "ast_hash": "12e7ea7fab1e539cd528ff86f2f198fc",
+  "Tests/Analisis_Tendencias_24nov/resumen.json": {
+    "mtime": 1795497711.741894,
+    "seen": 1795497842.834524,
+    "ast_hash": "efd1864bad1e79e90e6d4ca856e170b2",
     "semantic_hash": ""
   },
-  "Tests/Analisis_Sesiones_19nov/hipotesis_n4.png": {
-    "mtime": 1795084160.7452385,
-    "seen": 1795085576.0183969,
-    "ast_hash": "adbe01f0756d33af387bc1aa3167d75b",
+  "Tests/Analisis_Tendencias_24nov/tendencias.py": {
+    "mtime": 1795497609.631238,
+    "seen": 1795497842.8345423,
+    "ast_hash": "fc02ad86f624b6dcc349892463d63258",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_Sesiones_19nov/Analisis_Sesiones_P01-P06.md": {
+    "mtime": 1795157129.3116689,
+    "seen": 1795494877.1289184,
+    "ast_hash": "1769352eb3968250a52bb08868d83f13",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_Tendencias_24nov/Tendencias_Biomarcadores_P01-P06.md": {
+    "mtime": 1795497799.2250443,
+    "seen": 1795497842.8347065,
+    "ast_hash": "92caf545c38a5254aa7b58baea0bbecb",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_Sesiones_19nov/hipotesis_n6.png": {
+    "mtime": 1795157016.0526617,
+    "seen": 1795494877.1290047,
+    "ast_hash": "fe4e0c131670a57fca9b6e8e65bd04a8",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_Tendencias_24nov/parpadeos_bloques.png": {
+    "mtime": 1795497711.73053,
+    "seen": 1795497842.8347836,
+    "ast_hash": "84394fd5a0fc5ef16667ce03896d1aa3",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_Tendencias_24nov/parpadeos_qc.png": {
+    "mtime": 1795497710.8201375,
+    "seen": 1795497842.8347864,
+    "ast_hash": "0360d9c5555eb5fa3375fb43c460bbf5",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_Tendencias_24nov/tend_alpha.png": {
+    "mtime": 1795497683.5971515,
+    "seen": 1795497842.8347886,
+    "ast_hash": "769700c6d7cd7a3da8ac289e22058259",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_Tendencias_24nov/tend_amp_parpadeo.png": {
+    "mtime": 1795497695.261508,
+    "seen": 1795497842.8347912,
+    "ast_hash": "5bf9301999b648392a82e8c2134b200e",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_Tendencias_24nov/tend_chi_frontal.png": {
+    "mtime": 1795497685.8087685,
+    "seen": 1795497842.8347936,
+    "ast_hash": "70e83874b97b422157de2199f9485d49",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_Tendencias_24nov/tend_chi_posterior.png": {
+    "mtime": 1795497688.3567348,
+    "seen": 1795497842.8347957,
+    "ast_hash": "5e174bbf599d7955803b0249127faa8d",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_Tendencias_24nov/tend_emg.png": {
+    "mtime": 1795497690.6425116,
+    "seen": 1795497842.8347983,
+    "ast_hash": "1dae38e9ca809979f9393f3b726a2025",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_Tendencias_24nov/tend_gonogo.png": {
+    "mtime": 1795497699.981705,
+    "seen": 1795497842.8348007,
+    "ast_hash": "19f2255c9d30a8b40a8a68890da8fb2c",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_Tendencias_24nov/tend_parpadeos.png": {
+    "mtime": 1795497692.9825783,
+    "seen": 1795497842.8348026,
+    "ast_hash": "8cdbaf0a0ae90c8f78d5b1001614a58c",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_Tendencias_24nov/tend_rafagas_4hz.png": {
+    "mtime": 1795497698.3608892,
+    "seen": 1795497842.834805,
+    "ast_hash": "92cef7da70e3d67c90c2ab988513721e",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_Tendencias_24nov/tend_theta.png": {
+    "mtime": 1795497680.8805542,
+    "seen": 1795497842.8348076,
+    "ast_hash": "87439262f38ba51bb8b4c830c2aad4d3",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_P07_25nov/comparar_replays.py": {
+    "mtime": 1795580580.224922,
+    "seen": 1795582021.06562,
+    "ast_hash": "77348176103524615b5981a09d5ef27f",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_P07_25nov/p07_cmp.py": {
+    "mtime": 1795578537.7706726,
+    "seen": 1795582021.0656343,
+    "ast_hash": "d2480018f19148281e8503c60c76731e",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_P07_25nov/p07_fp1.py": {
+    "mtime": 1795578537.762599,
+    "seen": 1795582021.0656402,
+    "ast_hash": "6916cf9e9966ae9d7cfafc942067c59a",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_P07_25nov/p07_psd.py": {
+    "mtime": 1795578537.7666276,
+    "seen": 1795582021.0656443,
+    "ast_hash": "3dd576d662c76caadbd52e637018a37d",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_P07_25nov/p07_qc.py": {
+    "mtime": 1795578537.7440934,
+    "seen": 1795582021.065648,
+    "ast_hash": "ffed43ce23ea8cef311e7dab40928736",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_P07_25nov/qc_p07.json": {
+    "mtime": 1795578343.567979,
+    "seen": 1795582021.0656521,
+    "ast_hash": "b21163346218d9dda032af9772d3672e",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_P07_25nov/replay_fp1.py": {
+    "mtime": 1795580527.2635229,
+    "seen": 1795582021.0656557,
+    "ast_hash": "407447ee75f7d605a3a567a60a9b51a3",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_P07_25nov/replays_fp1.json": {
+    "mtime": 1795580881.404226,
+    "seen": 1795582021.0656593,
+    "ast_hash": "cffb7d0ffb80914db82aa9748448a793",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_Sesiones_19nov/analisis_n7.py": {
+    "mtime": 1795581809.143657,
+    "seen": 1795582021.0656629,
+    "ast_hash": "1508dbc4d2bbebfb64f5f6e25ced9dfa",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_Sesiones_19nov/resultados_n7.json": {
+    "mtime": 1795581835.1700618,
+    "seen": 1795582021.065667,
+    "ast_hash": "5afe4ff66622586cc01986b4fda32ab9",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_P07_25nov/Analisis_P07.md": {
+    "mtime": 1795580940.189877,
+    "seen": 1795582021.0658524,
+    "ast_hash": "8931293d0ffa65854a52dda0ffdbf316",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_Sesiones_19nov/Analisis_Sesiones_P01-P07.md": {
+    "mtime": 1795581985.5662832,
+    "seen": 1795582021.0658677,
+    "ast_hash": "af025906865a144cf871d4fdd68af7fc",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_P07_25nov/qc_p07.png": {
+    "mtime": 1795578344.9758625,
+    "seen": 1795582021.06599,
+    "ast_hash": "d0ec2b685ce0ce0572f69d5876c386d5",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_Sesiones_19nov/hipotesis_n7.png": {
+    "mtime": 1795581838.9955566,
+    "seen": 1795582021.0660014,
+    "ast_hash": "c1795adbe1ea53b8728d4ae8bce232f4",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_26nov/fp1_26nov.py": {
+    "mtime": 1795667097.624599,
+    "seen": 1795669675.6171017,
+    "ast_hash": "ea6fad77e9cf725abad1a3572dc30806",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_26nov/fp1_26nov.png": {
+    "mtime": 1795667109.4742188,
+    "seen": 1795669675.6177018,
+    "ast_hash": "465344cedb7601bc1548eb370340c1b7",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_26nov/comparar_eog.py": {
+    "mtime": 1795669228.5481274,
+    "seen": 1795669675.6170797,
+    "ast_hash": "925d984c94068568839804692c92e1f9",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_26nov/matrices/p04_control.json": {
+    "mtime": 1795668427.4257152,
+    "seen": 1795669675.6171105,
+    "ast_hash": "5546b32c5c4ba5df8a208271b08632cc",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_26nov/matrices/p04_ica.json": {
+    "mtime": 1795668462.4164875,
+    "seen": 1795669675.6171172,
+    "ast_hash": "aec59b0c40188739b3d51939f8fd5b47",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_26nov/matrices/p04_regresion.json": {
+    "mtime": 1795669196.7473056,
+    "seen": 1795669675.617124,
+    "ast_hash": "768894683a83444cad1aff9da7e58f16",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_26nov/matrices/p04_sinveto.json": {
+    "mtime": 1795668432.5019577,
+    "seen": 1795669675.6171303,
+    "ast_hash": "5546b32c5c4ba5df8a208271b08632cc",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_26nov/matrices/p07_control.json": {
+    "mtime": 1795668428.0877564,
+    "seen": 1795669675.6171365,
+    "ast_hash": "4ea07edfb1b6256305d0ae018e36a3ed",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_26nov/matrices/p07_ica.json": {
+    "mtime": 1795668502.754114,
+    "seen": 1795669675.617142,
+    "ast_hash": "3328f4901e22fba404eccacfb4f0a4b8",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_26nov/matrices/p07_regresion.json": {
+    "mtime": 1795669196.061474,
+    "seen": 1795669675.617147,
+    "ast_hash": "c0265e36cca8a34871d4e99425c1e9fe",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_26nov/matrices/p07_sinveto.json": {
+    "mtime": 1795668421.4155712,
+    "seen": 1795669675.6171527,
+    "ast_hash": "4ea07edfb1b6256305d0ae018e36a3ed",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_26nov/matrices/p08a_control.json": {
+    "mtime": 1795668405.7141223,
+    "seen": 1795669675.6171584,
+    "ast_hash": "e37dd7e23b1fc42051faa6aac3230692",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_26nov/matrices/p08a_ica.json": {
+    "mtime": 1795668429.573773,
+    "seen": 1795669675.6171641,
+    "ast_hash": "5da587e1e32e548e215a48c57a6134a1",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_26nov/matrices/p08a_regresion.json": {
+    "mtime": 1795669191.2753253,
+    "seen": 1795669675.617169,
+    "ast_hash": "3dc8659709fa421d707770dbc2adb2dc",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_26nov/matrices/p08a_sinveto.json": {
+    "mtime": 1795668404.4673147,
+    "seen": 1795669675.6171749,
+    "ast_hash": "e37dd7e23b1fc42051faa6aac3230692",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_26nov/matrices/p08b_control.json": {
+    "mtime": 1795670016.5706303,
+    "seen": 1795670318.7196612,
+    "ast_hash": "3f07f0b825898127b1ff64f6805ecd0d",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_26nov/matrices/p08b_ica.json": {
+    "mtime": 1795668322.1705287,
+    "seen": 1795669675.6171858,
+    "ast_hash": "c66f0899c965e031b261ff4f2ce16042",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_26nov/matrices/p08b_regresion.json": {
+    "mtime": 1795669191.608565,
+    "seen": 1795669675.617191,
+    "ast_hash": "2be27b8a3f0c8b6229b77212a53e670a",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_26nov/matrices/p08b_sinveto.json": {
+    "mtime": 1795668405.6553469,
+    "seen": 1795669675.617196,
+    "ast_hash": "3f07f0b825898127b1ff64f6805ecd0d",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_26nov/matrices/ric_control.json": {
+    "mtime": 1795668411.8417244,
+    "seen": 1795669675.6172013,
+    "ast_hash": "5a36986cfcb972232ef3c0ec6baaf793",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_26nov/matrices/ric_ica.json": {
+    "mtime": 1795668451.6865964,
+    "seen": 1795669675.6172059,
+    "ast_hash": "70df06779c46d987696b28cdb4a9e7bf",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_26nov/matrices/ric_regresion.json": {
+    "mtime": 1795669191.8303502,
+    "seen": 1795669675.6172113,
+    "ast_hash": "af56765bb8e76f175d90b2d471b154d0",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_26nov/matrices/ric_sinveto.json": {
+    "mtime": 1795668411.1413631,
+    "seen": 1795669675.617216,
+    "ast_hash": "5a36986cfcb972232ef3c0ec6baaf793",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_26nov/replay_eog.py": {
+    "mtime": 1795683938.5045469,
+    "seen": 1795684342.7277467,
+    "ast_hash": "3934b80305b20e2f910e8d16b8ca81d7",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_26nov/resultados_eog.json": {
+    "mtime": 1795669596.1804304,
+    "seen": 1795669675.6172254,
+    "ast_hash": "90f0f406f2f98b2710536b0473d4a100",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_26nov/Analisis_EOG.md": {
+    "mtime": 1795669648.4866123,
+    "seen": 1795669675.6175168,
+    "ast_hash": "ad8d71d1105f0d84c594e786d5b0e883",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_26nov/resultados_eog.txt": {
+    "mtime": 1795669596.1899862,
+    "seen": 1795669675.617522,
+    "ast_hash": "15715fffdc4a0fa82f893fd356fcb86a",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_26nov/matrices/p04_vivo.json": {
+    "mtime": 1795670020.6764336,
+    "seen": 1795670318.719615,
+    "ast_hash": "5546b32c5c4ba5df8a208271b08632cc",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_26nov/matrices/p07_vivo.json": {
+    "mtime": 1795670019.7128327,
+    "seen": 1795670318.719636,
+    "ast_hash": "4ea07edfb1b6256305d0ae018e36a3ed",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_26nov/matrices/p08a_vivo.json": {
+    "mtime": 1795670016.4148722,
+    "seen": 1795670318.719658,
+    "ast_hash": "e37dd7e23b1fc42051faa6aac3230692",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_26nov/matrices/p08b_vivo.json": {
+    "mtime": 1795670016.3121972,
+    "seen": 1795670318.719676,
+    "ast_hash": "3f07f0b825898127b1ff64f6805ecd0d",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_26nov/matrices/ric_vivo.json": {
+    "mtime": 1795670016.1593633,
+    "seen": 1795670318.7196946,
+    "ast_hash": "5a36986cfcb972232ef3c0ec6baaf793",
+    "semantic_hash": ""
+  },
+  "Tests/simulation_B/test_eog.py": {
+    "mtime": 1795669968.722215,
+    "seen": 1795670318.7198465,
+    "ast_hash": "d345a4d3c1d44e08cec649a39cd8b8d4",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_26nov/matrices/p09_control_iaf.json": {
+    "mtime": 1795683953.0210829,
+    "seen": 1795684342.7276874,
+    "ast_hash": "fdd1d962657af7d37758bed69cdb6c6b",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_26nov/matrices/p09_vivo_iaf.json": {
+    "mtime": 1795683953.0455475,
+    "seen": 1795684342.727695,
+    "ast_hash": "fdd1d962657af7d37758bed69cdb6c6b",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_26nov/p09_senal.py": {
+    "mtime": 1795683959.6488655,
+    "seen": 1795684342.7277398,
+    "ast_hash": "136367ef0a20b6225b934edc1364ca6d",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_26nov/Analisis_P09.md": {
+    "mtime": 1795684325.8764355,
+    "seen": 1795684342.7280924,
+    "ast_hash": "4953461a6825ec2c2f7197687d073be5",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_Sesiones_19nov/analisis_n9.py": {
+    "mtime": 1795685299.8470092,
+    "seen": 1795685551.6842556,
+    "ast_hash": "477cb5d41e1c81e25235e7514be92d81",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_Sesiones_19nov/resultados_n9.json": {
+    "mtime": 1795685375.403738,
+    "seen": 1795685551.6842759,
+    "ast_hash": "c3f4cfee036fde1b2f6d5d4f1b450014",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_Sesiones_19nov/Analisis_Sesiones_P01-P09.md": {
+    "mtime": 1795685501.986385,
+    "seen": 1795685551.6848967,
+    "ast_hash": "da0392c61e79e0b80f9a6b87c7ae63fd",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_Sesiones_19nov/Reporte_Rapido_26nov.md": {
+    "mtime": 1795685525.519404,
+    "seen": 1795685551.6849065,
+    "ast_hash": "cb838e0cdd3d17ea9ce5803f0f7a9ac4",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_Sesiones_19nov/hipotesis_n9.png": {
+    "mtime": 1795685387.1216092,
+    "seen": 1795685551.6865368,
+    "ast_hash": "e2a4e2ab6d1f8030c99e43e477a26dad",
+    "semantic_hash": ""
+  },
+  "Tests/Analisis_Sesiones_19nov/parpadeos_n9.png": {
+    "mtime": 1795685388.3866737,
+    "seen": 1795685551.6865482,
+    "ast_hash": "6cb3b9627660759e20d7d8be71e225bc",
     "semantic_hash": ""
   }
 }

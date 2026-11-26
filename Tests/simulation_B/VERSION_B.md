@@ -350,6 +350,13 @@ Mann-Whitney sobre los minutos completos). `replay_offline.eeg_blinks` usa la mi
   Fp1 queda fuera (sus parpadeos superan el umbral en el 52–80 % de los segmentos con buen contacto).
   `sesion_aura.py` colorea la línea y la muestra en el estado *Ruido*. No cambia el rechazo. En el replay del 5 nov:
   sin avisos hasta 18:08; F4 desde 18:09 (~7 min antes de perder las válidas), Pz 18:15, todos desde 18:20.
+- **Corrección de parpadeos por regresión de Fp1 (26 nov):** P08 abortó la calibración dos veces (parpadeos de ~250 µV
+  a ~45/min → el veto de 150 µV en Fp1 rechazaba todos los segmentos). Con CAR y Fp1 bueno, `EogRegression` ajusta
+  b (mínimos cuadrados, tras el CAR) con los primeros 60 s posteriores al chequeo de calidad (bloques de 1 s sin canales
+  buenos > 1000 µV) y desde entonces resta b_c·Fp1 a cada canal; Fp1 queda igual (contador de parpadeos) y su veto pasa
+  de 150 a 1000 µV (solo riel/saltos). Antes del ajuste rige el veto de siempre. `--sin-eog` vuelve al comportamiento
+  anterior. b y el instante del ajuste quedan en config.json (`eog`), eventos.csv y reporte.md. Validación offline:
+  `Tests/Analisis_26nov/Analisis_EOG.md`; chequeo: `test_eog.py`.
 - **Verificación del stream con la AURA real (10 nov):** `check_lsl_stream.py` daba siempre NO PASA con Aura.exe porque
   medía el RMS del stream crudo (offset ~−100 000 µV, deriva y mV de 60 Hz → 600–2300 µV) y exigía latencia p95
   < 54 ms (Aura.exe entrega en ráfagas: p95 ~216 ms en la sesión del 10 nov). Ahora juzga el RMS tras el filtro del
